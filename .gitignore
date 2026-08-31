@@ -1,0 +1,22 @@
+.DS_Store
+.idea/
+.next/
+*.iml
+
+# Secrets — never commit
+**/.env.json
+**/key.properties
+**/*.jks
+**/*.keystore
+**/google-services.json
+
+# Flutter build artifacts
+yordambor_app/build/
+yordambor_app/.dart_tool/
+yordambor_app/.flutter-plugins
+yordambor_app/.flutter-plugins-dependencies
+yordambor_app/.pub/
+yordambor_app/**/ephemeral/
+
+# Android local signing
+yordambor_app/android/local.properties

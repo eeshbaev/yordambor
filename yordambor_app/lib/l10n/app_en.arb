@@ -1,0 +1,710 @@
+{
+  "@@locale": "en",
+  "appName": "YordamBor",
+  "splashTagline": "On YordamBor, help is here!",
+  "tabHome": "Home",
+  "tabFavorites": "Saved",
+  "tabProfile": "Profile",
+  "filterYordamBor": "Help here",
+  "filterYordamKerak": "Help needed",
+  "filterCategory": "Category",
+  "filterSubcategory": "Subcategory",
+  "filterPickCategoryFirst": "Select a category first",
+  "filterProviderType": "Type",
+  "filterProviderAll": "All types",
+  "filterProviderTypeHint": "Choose a provider type",
+  "filterProviderAllHint": "Individuals and organizations",
+  "filterProviderIndividualHint": "Freelancers, tutors, specialists",
+  "filterProviderInstitutionHint": "Clinics, studios, companies",
+  "filterAllCategories": "All sectors",
+  "filterAllSubcategories": "All subsectors",
+  "filterCategoryHint": "Which field are you looking in?",
+  "filterAllCategoriesHint": "Services across every field",
+  "filterAllSubcategoriesHint": "All specialties in the selected field",
+  "homeFeedShowing": "Showing: {summary}",
+  "@homeFeedShowing": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "filterPickProviderTypeFirst": "Select individual or organization first",
+  "homeEmptyTitle": "Services will appear here soon",
+  "homeEmptySubtitle": "Wait while service listings are added across categories",
+  "homeDemoXizmat": "Demo services shown as examples",
+  "homeDemoPosts": "Demo posts shown as examples",
+  "homeJobsEmptyTitle": "Help needed posts",
+  "homeJobsEmptySubtitle": "Post the first request or change filters",
+  "favoritesEmptyTitle": "Save services you like",
+  "favoritesEmptySubtitle": "Tap ♥ on a card",
+  "profileGuestTitle": "Welcome to YordamBor",
+  "profileGuestSubtitle": "Sign up for deals and posting. Favorites work without an account.",
+  "profilePhone": "Phone",
+  "profileChangePhoto": "Change photo",
+  "profilePhotoUpdated": "Profile photo updated",
+  "profilePhotoFailed": "Could not upload photo",
+  "login": "Log in",
+  "register": "Sign up",
+  "notificationsTitle": "Notifications",
+  "notificationsEmpty": "No notifications yet",
+  "fabPostYordamKerak": "Post request",
+  "welcomeTitle": "On YordamBor, help is here!",
+  "welcomeBrand": "YordamBor.",
+  "welcomeBody": "Discover all kinds of services. Offer help or ask for help.",
+  "startBrowsing": "Get started",
+  "createAccount": "Create account",
+  "alreadyHaveAccount": "Already have an account?",
+  "authContinueTitle": "Sign in to continue",
+  "authContextGeneric": "Sign in to continue",
+  "authContextFavorite": "Sign in to save favorites",
+  "authContextYordamKerak": "Sign in to send a request",
+  "authContextYordamBor": "Sign in to send an offer",
+  "authContextPostJob": "Sign in to post",
+  "authContextDeal": "Sign in to start a deal",
+  "later": "Later",
+  "fullName": "Full name",
+  "email": "Email",
+  "phone": "Phone",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "fieldRequired": "This field is required",
+  "invalidEmail": "Enter a valid email address",
+  "invalidPhone": "Enter a valid phone number (+998...)",
+  "invalidNumber": "Enter a valid number",
+  "invalidMinutes": "Enter valid minutes",
+  "passwordTooShort": "Password must be at least 8 characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "acceptTermsRequired": "You must accept the terms of use",
+  "acceptTerms": "I accept the terms of use",
+  "acceptTermsLead": "I accept the ",
+  "acceptTermsLink": "terms of use",
+  "acceptTermsTrail": "",
+  "forgotPassword": "Forgot password?",
+  "resetPasswordTitle": "New password",
+  "resetPasswordBody": "Enter and save your new password.",
+  "resetPasswordSubmit": "Save password",
+  "resetPasswordSuccess": "Password updated",
+  "resetPasswordSendLink": "Send reset link",
+  "resetPasswordEmailSent": "We sent a password reset link to {emailAddress}.",
+  "@resetPasswordEmailSent": {
+    "placeholders": {
+      "emailAddress": {"type": "String"}
+    }
+  },
+  "resetPasswordEmailHint": "Open the link on your phone. The app will open so you can set a new password.",
+  "resetPasswordExpiredTitle": "Link expired",
+  "resetPasswordExpiredBody": "Request a new password reset link.",
+  "continueAction": "Continue",
+  "verifyEmailTitle": "Verify your email",
+  "verifyEmailBody": "We sent a confirmation link to {emailAddress}.",
+  "verifyEmailBodyMissing": "We sent a confirmation link to your email. After opening it, tap \"I confirmed\".",
+  "verifyEmailCheck": "I confirmed",
+  "verifyEmailPending": "Email not verified yet. Check your inbox.",
+  "@verifyEmailBody": {
+    "placeholders": {
+      "emailAddress": {"type": "String"}
+    }
+  },
+  "openMail": "Open mail app",
+  "resendEmail": "Resend",
+  "continueBrowsing": "Continue browsing",
+  "welcomeBack": "Welcome, {name}!",
+  "@welcomeBack": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "welcomeGuestName": "friend",
+  "welcomeNewTitle": "Welcome, {name}!",
+  "@welcomeNewTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "welcomeNewBody": "We're so glad you joined YordamBor. Find services, offer help, or post a job — we're here for you every step of the way.",
+  "welcomeLoginTitle": "Welcome back, {name}!",
+  "@welcomeLoginTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "welcomeLoginBody": "Great to see you again. What can we help you with today?",
+  "welcomeReturnTitle": "Hello, {name}!",
+  "@welcomeReturnTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "welcomeReturnBody": "The services you need are waiting for you.",
+  "welcomeReturnBodyYordamKerak": "Do your services match client needs?",
+  "homeGreetingShort": "Hello, {name}!",
+  "@homeGreetingShort": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "homeGreetingYordamBor": "What help do you need today?",
+  "homeGreetingYordamKerak": "Can you help today?",
+  "providerPromptTitle": "Do you offer services?",
+  "providerPromptBody": "Add a portfolio — clients will find you.",
+  "createXizmat": "Create service",
+  "signOut": "Sign out",
+  "settings": "Settings",
+  "settingsSubtitle": "Language, privacy, account",
+  "settingsAppearance": "Appearance",
+  "settingsDarkMode": "Theme",
+  "settingsThemeSystem": "System",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsLanguage": "Language",
+  "settingsTools": "Tools",
+  "settingsLegal": "Legal",
+  "settingsPrivacy": "Privacy policy",
+  "settingsPrivacySection": "Privacy",
+  "settingsShowPhoneLabel": "Show phone on my profile",
+  "settingsShowPhoneSubtitle": "Your phone number appears on your public profile",
+  "postContactSectionTitle": "Contact",
+  "postContactSectionSubtitle": "Your profile is always public. Showing your phone number is optional.",
+  "postContactPhoneLabel": "Phone number",
+  "postContactPhoneHint": "+998 90 123 45 67",
+  "postContactPhoneOptional": "Optional",
+  "postShowPhoneLabel": "Show phone number",
+  "postShowPhoneSubtitle": "Your phone appears on this listing",
+  "postShowProfileLabel": "Show profile",
+  "postShowProfileSubtitle": "Users can view your profile from this listing",
+  "postAuthorHidden": "Author hidden",
+  "settingsTerms": "Terms of use",
+  "settingsDeleteAccount": "Delete account",
+  "settingsDeleteAccountHint": "All deals will be cancelled",
+  "settingsDeleteAccountConfirm": "All your data, services, and active deals will be deleted. This cannot be undone.",
+  "settingsDeleteAccountAction": "Delete account",
+  "settingsDeleteAccountDone": "Account deleted",
+  "remindersTitle": "Reminders",
+  "remindersAdd": "Add reminder",
+  "remindersEmptyTitle": "No reminders",
+  "remindersEmptySubtitle": "Synced with client book calendar. Also created when deals go in progress",
+  "remindersFieldClientName": "Client name",
+  "remindersUpcoming": "Upcoming",
+  "remindersPast": "Past",
+  "remindersFieldTitle": "Title",
+  "remindersFieldBody": "Note (optional)",
+  "remindersSave": "Save",
+  "remindersSettingsSubtitle": "Deal and appointment reminders",
+  "legalPrivacyTitle": "Privacy policy",
+  "legalTermsTitle": "Terms of use",
+  "legalPrivacyBody": "YordamBor uses your data only to provide services, deals, and security.\n\n1. What we collect\n\nName, email, phone, service portfolio images, deal messages, and notifications.\n\n2. Where it is stored\n\nData is stored encrypted on Supabase servers.\n\n3. Third parties\n\nWe do not sell your data. We only share with technical partners required to run the app (hosting, email).\n\n4. Your rights\n\nYou may view, update, or delete your account and data.\n\n5. Contact\n\nQuestions: use the Settings section in the app.",
+  "legalTermsBody": "YordamBor is a mobile platform connecting service providers and clients across categories. Using the app means you accept these terms.\n\n1. General\n\nYordamBor does not perform services itself — it connects parties. The platform is not a payment intermediary.\n\n2. Account and registration\n\nYou must provide accurate, up-to-date information and verify your email.\n\n3. Services and portfolio\n\nEvery service listing must include at least one real portfolio photo. False, misleading, or illegal listings may be removed.\n\n4. Deals (Yordam Bor / Yordam Kerak)\n\nPrice, timing, and scope are agreed between parties. YordamBor stores the deal process but does not collect payments.\n\n5. Prohibited conduct\n\nFraud, abuse, spam, illegal services, or deliberate rule violations are not allowed.\n\n6. Account suspension\n\nYordamBor may suspend or delete accounts that violate these terms.\n\n7. Changes\n\nTerms may be updated. Continued use means acceptance of the updated terms.\n\n8. Contact\n\nQuestions: use the Settings section in the app.",
+  "shareXizmat": "Share service",
+  "shareXizmatMessage": "Check out {name} on YordamBor",
+  "@shareXizmatMessage": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "shareYordamKerak": "Share request",
+  "shareYordamKerakMessage": "Help needed: {title} on YordamBor",
+  "@shareYordamKerakMessage": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "postNotFound": "Request not found",
+  "shareCopied": "Link copied",
+  "languageUz": "O'zbek",
+  "languageRu": "Русский",
+  "languageEn": "English",
+  "languageZh": "中文",
+  "actionSave": "Save",
+  "actionCancel": "Cancel",
+  "actionEdit": "Edit",
+  "actionDelete": "Delete",
+  "actionView": "View",
+  "actionUnblock": "Unblock",
+  "actionSubmit": "Submit",
+  "kelishuvTitle": "Deal",
+  "kelishuvNotFound": "Deal not found",
+  "kelishuvMessages": "Messages",
+  "kelishuvNoMessages": "No messages yet",
+  "kelishuvOpeningOffer": "Initial offer",
+  "kelishuvReject": "Reject",
+  "kelishuvCancel": "Cancel",
+  "kelishuvAccept": "I accept",
+  "kelishuvComplete": "Work completed",
+  "kelishuvEditTerms": "Edit terms",
+  "kelishuvTermsChanged": "Terms changed — both parties must confirm again",
+  "kelishuvAwaitingComplete": "The other party confirmed completion — please confirm too",
+  "kelishuvPartyA": "Party A",
+  "kelishuvPartyB": "Party B",
+  "kelishuvCompleteA": "A completed",
+  "kelishuvCompleteB": "B completed",
+  "kelishuvDualAccepted": "Both parties accepted",
+  "kelishuvCompleteTooEarly": "Completion can be marked 3 days after work starts",
+  "kelishuvCompleteDaysLeft": "{days} day(s) until completion can be marked",
+  "@kelishuvCompleteDaysLeft": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "kelishuvMessageHint": "Write a message...",
+  "kelishuvIncoming": "Incoming",
+  "kelishuvIncomingSub": "Requests to your services",
+  "kelishuvRequests": "My requests",
+  "kelishuvRequestsSub": "Deals you started",
+  "kelishuvArchive": "Archive",
+  "kelishuvArchiveSub": "Closed deals",
+  "kelishuvNeedsResponse": "Response needed",
+  "kelishuvNeedsConfirm": "Confirm",
+  "profileBlocked": "Blocked users",
+  "profileClientBook": "Client book",
+  "profileClientBookSub": "Local client list",
+  "profileEarnings": "My earnings",
+  "profileEarningsSub": "Self-declared income",
+  "profileMyXizmatlar": "My services",
+  "profileSetAvailability": "Set availability",
+  "profileSectionLoadFailed": "Could not load. Check your internet connection.",
+  "actionRetry": "Try again",
+  "clientBookTitle": "Client book",
+  "clientBookList": "List",
+  "clientBookCalendar": "Calendar",
+  "clientBookOpenDeal": "Open deal",
+  "clientBookEditClient": "Edit client",
+  "clientBookAdd": "Add client",
+  "clientBookBookClient": "Book client",
+  "clientBookEditBooking": "Edit booking",
+  "clientBookNameRequired": "Enter client name",
+  "clientBookDateRequired": "Pick an appointment date",
+  "clientBookNoteLabel": "Note",
+  "clientBookEmptyTitle": "Client book is empty",
+  "clientBookEmptySub": "Book clients on the calendar or they are added when deals go in progress",
+  "clientBookDateLabel": "Appointment date",
+  "clientBookBookDay": "Book this day",
+  "clientBookCalendarHint": "Tap a day to book a client",
+  "clientBookMarkComplete": "Mark service delivered",
+  "clientBookMarkCancelled": "Mark cancelled",
+  "clientBookMarkPending": "Mark pending",
+  "clientBookCompleteAmount": "Income from this client (UZS)",
+  "clientBookDeliveryCompleted": "Delivered",
+  "clientBookDeliveryPending": "Pending",
+  "clientBookDeliveryCancelled": "Cancelled",
+  "clientBookNewClientOption": "New client",
+  "clientBookSelectClient": "Client",
+  "clientBookServiceLabel": "Service (optional)",
+  "clientBookBookingCount": "{count} appointments",
+  "@clientBookBookingCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "appointmentStatusUpcoming": "Upcoming",
+  "appointmentStatusCancelled": "Cancelled",
+  "appointmentStatusPostponed": "Postponed",
+  "appointmentStatusIncomplete": "Incomplete",
+  "appointmentStatusCompleted": "Completed",
+  "kelishuvAppointmentRequiredTitle": "Set appointment date",
+  "kelishuvAppointmentRequiredBody": "Both sides approved the deal. Pick when the service will happen.",
+  "remindersSettingsFollowUpLabel": "Follow-up checks (hours after appointment)",
+  "remindersFollowUpPrompt": "Was this appointment successful?",
+  "clientBookAppointmentHistory": "Appointment history",
+  "clientBookAppointmentNotesLabel": "Appointment notes",
+  "clientBookPhotosLabel": "Photos",
+  "clientBookPhotosEmpty": "No photos yet",
+  "clientBookAddPhoto": "Add photo",
+  "clientBookClientStats": "{completed} completed · {cancelled} cancelled · {upcoming} upcoming",
+  "@clientBookClientStats": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "cancelled": {"type": "int"},
+      "upcoming": {"type": "int"}
+    }
+  },
+  "remindersUpdateStatus": "Update status",
+  "remindersSettingsTitle": "Reminder settings",
+  "remindersSettingsAlertsLabel": "Alert times (minutes before)",
+  "remindersSettingsAtTime": "At time",
+  "earningsTitle": "My earnings",
+  "earningsTotal": "Total (self-declared)",
+  "earningsEdit": "Edit earnings",
+  "earningsAdd": "Add earnings",
+  "earningsAmountLabel": "Amount (UZS)",
+  "earningsNoteLabel": "Note",
+  "earningsAmountRequired": "Enter an amount",
+  "earningsEmptyTitle": "No earnings records",
+  "earningsEmptySub": "Added automatically for priced deals in progress",
+  "earningsDisclaimer": "This is for your personal records only. Not tax or official reporting.",
+  "notificationsEmptySub": "Deal updates will appear here",
+  "notificationKelishuvAccept": "Deal accepted",
+  "notificationKelishuvMessage": "New message",
+  "notificationKelishuvComplete": "Job completed",
+  "notificationGeneric": "Notification",
+  "notificationTimeMinutes": "{count} min",
+  "@notificationTimeMinutes": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "notificationTimeHours": "{count} h",
+  "@notificationTimeHours": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "notificationTimeDate": "{day}.{month}",
+  "@notificationTimeDate": {
+    "placeholders": {
+      "day": {"type": "int"},
+      "month": {"type": "int"}
+    }
+  },
+  "reviewsTitle": "Reviews",
+  "reviewProviderReplyLabel": "Provider reply",
+  "reviewsEmpty": "No reviews yet",
+  "reviewsRate": "Rate",
+  "xizmatCompletedCount": "{count} completed",
+  "@xizmatCompletedCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "demoKelishuvBlocked": "Cannot create deals in demo mode",
+  "genericUser": "User",
+  "actionPick": "Select",
+  "xizmatStepIdentity": "1/3 — Who are you?",
+  "xizmatStepPortfolio": "2/3 — Portfolio",
+  "xizmatProviderIndividual": "Individual",
+  "xizmatProviderInstitution": "Organization",
+  "xizmatNameLabel": "Service name",
+  "xizmatDescriptionLabel": "Short description",
+  "xizmatDescriptionFull": "Description",
+  "xizmatServiceCityLabel": "City you serve",
+  "xizmatServiceCityHint": "e.g. Tashkent (optional)",
+  "xizmatContinue": "Continue",
+  "xizmatPortfolioHint": "At least 1 image required. First image is the cover.",
+  "xizmatHeroLabel": "Cover",
+  "xizmatUploading": "Uploading…",
+  "xizmatReady": "Ready",
+  "xizmatBack": "Back",
+  "xizmatSuccessTitle": "Your service is ready!",
+  "xizmatSuccessBody": "Portfolio uploaded. Clients can now find you in Discover.",
+  "xizmatEditTitle": "Edit service",
+  "cannotRequestOwnXizmat": "You can't send a request to your own service",
+  "xizmatNotFound": "Service not found",
+  "xizmatNoPermission": "No permission",
+  "xizmatBasicInfo": "Basic info",
+  "xizmatPortfolio": "Portfolio",
+  "xizmatPortfolioEmpty": "Portfolio is empty. At least one image required.",
+  "xizmatAddPhoto": "Add photo",
+  "xizmatSetHero": "Set as cover",
+  "xizmatAnalytics": "Analytics",
+  "xizmatReviewReplies": "Review replies",
+  "xizmatSaved": "Saved",
+  "xizmatReplySaved": "Reply saved",
+  "xizmatPickCategoryError": "Select category and subcategory",
+  "yordamKerakPostTitle": "Help needed post",
+  "yordamKerakTitleLabel": "Title",
+  "yordamKerakTitleHint": "e.g. Plumber needed",
+  "yordamKerakMessageLabel": "Project description",
+  "yordamKerakMessageHint": "What needs to be done, where, and when?",
+  "yordamKerakBudgetLabel": "Budget (optional, UZS)",
+  "yordamKerakDateLabel": "Preferred date (optional)",
+  "yordamKerakDurationLabel": "Duration (minutes, optional)",
+  "yordamKerakPublish": "Publish",
+  "yordamKerakTitleTooShort": "Title must be at least 3 characters",
+  "yordamKerakMessageTooShort": "Description must be at least 10 characters",
+  "yordamKerakCategoryRequired": "Select a category",
+  "yordamKerakSubcategoryRequired": "Select a subcategory",
+  "userProfileTitle": "Profile",
+  "userProfileNotFound": "Profile not found",
+  "userProfileServices": "Services",
+  "userProfileServicesEmpty": "No services yet",
+  "userProfileRequests": "Help needed posts",
+  "userProfileRequestsEmpty": "No open posts",
+  "userProfileAvailable": "Available",
+  "userProfileBusy": "Unavailable",
+  "userProfilePartiallyBusy": "Partially unavailable",
+  "userProfileCall": "Call",
+  "userProfilePhoneHidden": "Phone number is hidden",
+  "userProfileViewProfile": "View profile",
+  "xizmatProviderSection": "Service provider",
+  "profileViewPublic": "My public profile",
+  "profileCertificatesTitle": "Certificates & credentials",
+  "profileCertificatesSubtitle": "Upload credentials so clients can review them",
+  "profileCertificatesDisclaimer": "YordamBor does not verify uploaded documents. Clients should confirm credentials themselves.",
+  "profileCertificatesAdd": "Add certificate",
+  "profileCertificatesTitleLabel": "Title",
+  "profileCertificatesTitleHint": "e.g. Plumbing course certificate",
+  "profileCertificatesIssuerLabel": "Issuer (optional)",
+  "profileCertificatesIssuerHint": "e.g. Training center name",
+  "profileCertificatesEmpty": "No certificates uploaded yet",
+  "profileCertificatesMaxReached": "Maximum 8 certificates",
+  "profileCertificatesAdded": "Certificate added",
+  "profileCertificatesRemoved": "Certificate removed",
+  "profileCertificatesRemoveTitle": "Remove certificate?",
+  "xizmatOtherServices": "Other services",
+  "xizmatViewAllServices": "View all services",
+  "xizmatStatusAvailable": "Available",
+  "xizmatStatusBusy": "Unavailable",
+  "safetyTitle": "Safety",
+  "safetyBlock": "Block",
+  "safetyBlockConfirmMessage": "Block {name}? Their content will be hidden.",
+  "@safetyBlockConfirmMessage": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "safetyBlockDone": "User blocked",
+  "safetyHideUser": "Hide user",
+  "safetyReportReason": "Report reason (optional)",
+  "safetyReportHint": "What happened?",
+  "safetyReportSubmit": "Submit report",
+  "safetyReportDone": "Report submitted. Thank you.",
+  "reviewLater": "Later",
+  "blockedUnblocked": "Unblocked",
+  "kelishuvMoreCount": "{count} more",
+  "@kelishuvMoreCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "demoPostPickReal": "Demo post — pick a real one",
+  "createXizmatFirst": "Create your service profile first",
+  "pickXizmat": "Pick a service",
+  "categoryPickTitle": "Pick category",
+  "categoryAll": "All categories",
+  "subcategoryAll": "All subcategories",
+  "analyticsViews": "Views",
+  "analyticsFavorites": "Saved",
+  "analyticsActiveDeals": "Active deals",
+  "analyticsCompletedDeals": "Completed",
+  "analyticsConversion": "Conversion: {rate}%",
+  "@analyticsConversion": {
+    "placeholders": {
+      "rate": {"type": "String"}
+    }
+  },
+  "kelishuvArchiveEmptyTitle": "Archive is empty",
+  "kelishuvArchiveEmptySub": "Completed or cancelled deals appear here",
+  "kelishuvStatusNegotiating": "Negotiating",
+  "kelishuvStatusInProgress": "In progress",
+  "kelishuvStatusCompleted": "Completed",
+  "kelishuvStatusCancelled": "Cancelled",
+  "kelishuvStatusRejected": "Rejected",
+  "kelishuvStatusArchived": "Archived",
+  "busySlotTitle": "Busy time",
+  "busySlotMessage": "You have an appointment on this date: {names}. Continue anyway?",
+  "@busySlotMessage": {
+    "placeholders": {
+      "names": {"type": "String"}
+    }
+  },
+  "taklifFlowTitleYordamBor": "Help here — {name}",
+  "@taklifFlowTitleYordamBor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "taklifFlowTitleYordamKerak": "Help needed — {name}",
+  "@taklifFlowTitleYordamKerak": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "taklifTitle": "Send offer",
+  "repeatBook": "Book again",
+  "repeatBookTitle": "Book again",
+  "taklifSubtitle": "Send your message and price at the start. Work begins after both parties accept.",
+  "taklifMessageLabel": "Message",
+  "taklifMessageHint": "How can you help?",
+  "taklifPriceLabel": "Price (optional, UZS)",
+  "taklifDateLabel": "Pick date (optional)",
+  "taklifDurationLabel": "Duration (minutes, optional)",
+  "taklifSubmit": "Send offer",
+  "reviewCommentLabel": "Comment (optional)",
+  "reviewCommentHint": "How was your experience?",
+  "xizmatReplyLabel": "Your reply",
+  "xizmatReplyHint": "Reply to the client",
+  "xizmatClientLabel": "Client",
+  "kelishuvTermsDateLabel": "Pick date",
+  "kelishuvTermsMessageLabel": "Message",
+  "kelishuvTermsPriceLabel": "Price (UZS)",
+  "kelishuvDetailPost": "Post: {title}",
+  "@kelishuvDetailPost": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "kelishuvDetailPrice": "Price: {amount} {currency}",
+  "@kelishuvDetailPrice": {
+    "placeholders": {
+      "amount": {"type": "String"},
+      "currency": {"type": "String"}
+    }
+  },
+  "kelishuvDetailTime": "Time: {slot}",
+  "@kelishuvDetailTime": {
+    "placeholders": {
+      "slot": {"type": "String"}
+    }
+  },
+  "kelishuvSlotDateDuration": "{date} · {minutes} min",
+  "@kelishuvSlotDateDuration": {
+    "placeholders": {
+      "date": {"type": "String"},
+      "minutes": {"type": "int"}
+    }
+  },
+  "xizmatPricingSectionTitle": "Pricing",
+  "xizmatPricingSectionSubtitle": "Choose negotiable, fixed, or hourly — it's up to you.",
+  "xizmatPricingNegotiable": "Negotiable",
+  "xizmatPricingFixed": "Fixed",
+  "xizmatPricingHourly": "Hourly",
+  "xizmatPricingFixedRateLabel": "Price (UZS)",
+  "xizmatPricingHourlyRateLabel": "Hourly rate (UZS)",
+  "xizmatPricingRateHint": "e.g. 150000",
+  "xizmatPricingMinDurationLabel": "Minimum duration (minutes, optional)",
+  "xizmatPricingMinDurationHint": "e.g. 120",
+  "xizmatPricingRequiredError": "Enter a price for fixed or hourly pricing",
+  "xizmatPriceNegotiable": "Price negotiable",
+  "xizmatPricePerHour": "{amount}/hr",
+  "@xizmatPricePerHour": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "xizmatAvailabilitySectionTitle": "Availability",
+  "xizmatAvailabilitySectionSubtitle": "Optional — let clients know if you're free. Client Book does not change this.",
+  "xizmatAvailabilityShowLabel": "Show availability",
+  "xizmatAvailabilityShowSubtitle": "When off, no status badge is shown",
+  "xizmatAvailabilityAvailableNow": "Available now",
+  "xizmatAvailabilityBusy": "Unavailable",
+  "xizmatAvailabilityCallMe": "Call to book",
+  "xizmatAvailabilityFromLabel": "From (optional)",
+  "xizmatAvailabilityUntilLabel": "Until (optional)",
+  "xizmatAvailabilityUntilSuffix": " · until {time}",
+  "@xizmatAvailabilityUntilSuffix": {
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+  "xizmatAvailabilityFromSuffix": " · from {time}",
+  "@xizmatAvailabilityFromSuffix": {
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+  "xizmatAvailabilityRangeSuffix": " · {from}–{until}",
+  "@xizmatAvailabilityRangeSuffix": {
+    "placeholders": {
+      "from": {"type": "String"},
+      "until": {"type": "String"}
+    }
+  },
+  "xizmatAvailabilityModeRequiredError": "Pick an availability mode",
+  "xizmatAvailabilityWindowInvalidError": "End time must be after start time",
+  "xizmatPromiseSectionTitle": "Your promise",
+  "xizmatPromiseSectionSubtitle": "Tell clients what you stand for. This is your motto — not a YordamBor warranty.",
+  "xizmatPromiseShowLabel": "Show my promise",
+  "xizmatPromiseShowSubtitle": "Displayed on your listing for clients to read",
+  "xizmatPromisePresetsLabel": "Quick presets (editable)",
+  "xizmatPromiseFieldLabel": "Your promise",
+  "xizmatPromiseFieldHint": "Write your own or edit a preset",
+  "xizmatPromisePreset1": "If you're not satisfied, I'll redo the work",
+  "xizmatPromisePreset2": "Quality guaranteed — if there's a problem, I'll refund you",
+  "xizmatPromisePreset3": "On time and at the agreed price",
+  "xizmatPromiseDisclaimer": "YordamBor does not provide warranties. This is the provider's own statement.",
+  "xizmatPromiseRequiredError": "Enter your promise or turn this off",
+  "xizmatPromiseTooLongError": "Promise is too long",
+  "settingsHelp": "Help & support",
+  "supportReportTitle": "Report a problem",
+  "supportReportSubtitle": "Bug, account, or payment concern",
+  "supportCategoryLabelField": "Category",
+  "supportCategoryBug": "Bug",
+  "supportCategoryAccount": "Account",
+  "supportCategoryPayment": "Payment concern",
+  "supportCategoryOther": "Other",
+  "supportDescriptionLabel": "Description",
+  "supportDescriptionHint": "Describe what happened…",
+  "supportSubmit": "Submit",
+  "supportSubmitted": "Thank you — we received your report",
+  "supportLoginRequired": "Sign in to report a problem",
+  "supportContactHint": "Support email: eeshbaev@outlook.com",
+  "supportMailtoFailed": "Could not open email app",
+  "feedbackTitle": "Send feedback",
+  "feedbackSubtitle": "Help us improve YordamBor",
+  "feedbackMessageLabel": "Your feedback",
+  "feedbackMessageHint": "What could be better?",
+  "feedbackSubmit": "Send feedback",
+  "feedbackThanks": "Thank you for your feedback",
+  "feedbackOpenFromSheet": "Use Help & support to send feedback.",
+  "appReviewTitle": "Enjoying YordamBor?",
+  "appReviewSubtitle": "Your rating helps other users find trusted providers.",
+  "appReviewYes": "Yes, love it",
+  "appReviewNo": "Not really",
+  "appReviewLater": "Not now",
+  "providerProgressTitle": "Your progress",
+  "providerProgressSubtitle": "Build your reputation step by step",
+  "providerTierNew": "New",
+  "providerTierActive": "Active",
+  "providerTierTrusted": "Trusted",
+  "providerTierTop": "Top provider",
+  "providerJobsRating": "{jobs} jobs · {rating}★",
+  "@providerJobsRating": {
+    "placeholders": {
+      "jobs": {"type": "int"},
+      "rating": {"type": "String"}
+    }
+  },
+  "providerNextMilestone": "{count} more jobs → {tier}",
+  "@providerNextMilestone": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "tier": {"type": "String"}
+    }
+  },
+  "providerTipsTitle": "Next steps",
+  "progressTipAddCertificate": "Add a certificate to build trust",
+  "progressTipSetAvailability": "Set availability on your listing",
+  "progressTipReplyReviews": "Reply to client reviews",
+  "progressTipAddPortfolio": "Add more portfolio photos",
+  "progressTipSetPricing": "Set fixed or hourly pricing",
+  "progressTipRepeatClients": "Ask happy clients to book again",
+  "achievementsTitle": "Achievements",
+  "achievementsEmptySub": "No achievements yet. Complete jobs and grow your profile to earn badges.",
+  "achievementFirstXizmat": "First service listed",
+  "achievementFirstDeal": "First completed job",
+  "achievementJobs5": "5 jobs completed",
+  "achievementJobs10": "10 jobs completed",
+  "achievementJobs25": "25 jobs completed",
+  "achievementFirstFiveStar": "First 5★ review",
+  "achievementCertificate": "Certificate uploaded",
+  "achievementRepeatClient": "Loyal client (3+ jobs)",
+  "achievementBodyFirstXizmat": "You listed your first service on YordamBor.",
+  "achievementBodyFirstDeal": "You completed your first deal. Keep going!",
+  "achievementBodyJobs5": "Five jobs done — clients are noticing.",
+  "achievementBodyJobs10": "Ten completed jobs. You're building a real reputation.",
+  "achievementBodyJobs25": "Twenty-five jobs. Top-tier providers start here.",
+  "achievementBodyFirstFiveStar": "A client gave you 5 stars. Well deserved!",
+  "achievementBodyCertificate": "Your credentials are visible on your profile.",
+  "achievementBodyRepeatClient": "A client booked you three times or more.",
+  "actionContinue": "Continue",
+  "guidesTitle": "Business tips",
+  "guidesSubtitle": "Grow your service step by step",
+  "guideXizmatConvertsTitle": "Create a listing that converts",
+  "guidePricingTitle": "Pricing: fixed vs hourly",
+  "guideRepeatClientsTitle": "Get repeat bookings",
+  "guideCertificatesTitle": "Certificates & trust",
+  "guideReviewRepliesTitle": "Reply to reviews professionally",
+  "guideXizmatConvertsBody": "Use a clear title, real portfolio photos, and your subcategory. Show pricing or say negotiable. Add availability so clients know when you can work.",
+  "guidePricingBody": "Fixed price works for predictable jobs. Hourly fits cleaning, tutoring, and care. Negotiable is fine — but a starting price gets more messages.",
+  "guideRepeatClientsBody": "Do great work, reply quickly, and ask happy clients to use Book again after a completed deal. Repeat clients trust you already.",
+  "guideCertificatesBody": "Upload credentials clients can review. YordamBor does not verify documents — they help clients decide, not guarantee quality.",
+  "guideReviewRepliesBody": "Reply politely to every review. Thank clients for 5★ feedback. For criticism, stay professional — future clients read your replies.",
+  "safetyPaymentsBanner": "Pay only as agreed with the provider. YordamBor does not handle money and is not responsible for off-platform payments.",
+  "settingsSafety": "Safety & payments",
+  "legalSafetyTitle": "Safety & payments",
+  "legalSafetyBody": "YordamBor connects clients and providers. It does not perform services, hold money, or guarantee outcomes.\n\nPayments\n\nAll payments are agreed directly between you and the other party. Never send full payment upfront to someone you do not trust. Meet in person when possible. YordamBor is not responsible for fraud, poor service, or disputes about money paid outside the app.\n\nYour responsibility\n\nVerify credentials, reviews, and certificates yourself. Use completed deals and reviews to judge providers.\n\nReporting\n\nReport abuse in the app. For product issues, use Help & support."
+}

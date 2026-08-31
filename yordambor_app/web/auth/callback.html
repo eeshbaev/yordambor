@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YordamBor — Email tasdiqlandi</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 480px;
+      margin: 48px auto;
+      padding: 0 16px;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.5rem; }
+    p { color: #64748b; }
+  </style>
+</head>
+<body>
+  <h1>Email tasdiqlandi</h1>
+  <p>YordamBor mobil ilovasiga qayting. Agar ilova ochilmasa, uni qo'lda oching.</p>
+  <script>
+    (function () {
+      var target = 'yordambor://auth/callback' + window.location.search + window.location.hash;
+      window.location.replace(target);
+    })();
+  </script>
+</body>
+</html>
