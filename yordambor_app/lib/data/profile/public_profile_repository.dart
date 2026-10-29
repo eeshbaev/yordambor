@@ -68,4 +68,12 @@ class PublicProfileRepository {
       language: language,
     );
   }
+
+  /// Fetches the public phone number for a user (shown after deal agreement).
+  /// Stub — implementation pending.
+  Future<String?> fetchPublicPhone(String userId) async => null;
+
+  /// Fetches the public phone number linked to a listing.
+  /// Stub — implementation pending.
+  Future<String?> fetchServicePublicPhone(String xizmatId) async => null;
 }

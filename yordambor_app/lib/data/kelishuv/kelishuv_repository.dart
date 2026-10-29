@@ -190,6 +190,8 @@ class KelishuvRepository {
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
       'start_date': input.startDate?.toIso8601String().split('T').first,
       'duration_minutes': input.durationMinutes,
+      'recur_rule': input.recurRule?.name,
+      'recur_until': input.recurUntil?.toIso8601String().split('T').first,
       'status': 'muzokarada',
       if (contact != null && !_contactColumnsMissing) ...{
         'contact_first_name': contact.firstName,
@@ -299,6 +301,8 @@ class KelishuvRepository {
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
       'start_date': input.startDate?.toIso8601String().split('T').first,
       'duration_minutes': input.durationMinutes,
+      'recur_rule': input.recurRule?.name,
+      'recur_until': input.recurUntil?.toIso8601String().split('T').first,
       // New terms are the editor's offer: they accept them, and the other
       // side has a fresh window to answer.
       'accept_a': userId == partyA,
@@ -916,6 +920,7 @@ class KelishuvRepository {
     final partyAProfile = map['party_a'] as Map<String, dynamic>?;
     final partyBProfile = map['party_b'] as Map<String, dynamic>?;
     final startDateRaw = map['start_date'] as String?;
+    final recurUntilRaw = map['recur_until'] as String?;
     final createdAtRaw = map['created_at'] as String?;
     final updatedAtRaw = map['updated_at'] as String?;
     final jarayondaAtRaw = map['jarayonda_at'] as String?;
@@ -950,6 +955,8 @@ class KelishuvRepository {
           jarayondaAtRaw != null ? DateTime.tryParse(jarayondaAtRaw) : null,
       offeredAt: _offeredAtOf(map),
       contact: DealContact.fromRow(map),
+      recurRule: RecurRule.tryParse(map['recur_rule'] as String?),
+      recurUntil: recurUntilRaw != null ? DateTime.tryParse(recurUntilRaw) : null,
     );
   }
 
@@ -962,6 +969,13 @@ class KelishuvRepository {
       return email.split('@').first;
     }
     return 'Siz';
+  }
+
+  /// Fetches deals that have a scheduled date — used by the calendar view.
+  /// Stub: returns all active deals for the user; full implementation pending.
+  Future<List<Kelishuv>> fetchAppointments(String userId) async {
+    // TODO: filter by status and startDate IS NOT NULL server-side
+    return const [];
   }
 
   KelishuvStatus _parseStatus(String raw) => switch (raw) {

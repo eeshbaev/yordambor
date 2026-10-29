@@ -401,7 +401,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               listShownAt: _feedShownAt,
               child: YbJobPostCard(
                 item: item,
-                priceText: helpRequestPriceLabel(item, strings),
                 sampleLabel: item.isDemo ? strings.sampleTag : null,
                 sectorLine: strings.sectorLine(
                   item.categoryLabel,

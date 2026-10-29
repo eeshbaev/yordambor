@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:yordambor/domain/entities/working_hours.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/core/constants/feed_constants.dart';
 import 'package:yordambor/core/constants/service_cities.dart';
@@ -1046,6 +1047,31 @@ class XizmatRepository {
       'service_city': ServiceCities.isValidId(id) ? id : null,
     };
   }
+
+  /// Fetches busy hour slots for a listing across the given date range.
+  /// Stub — implementation pending.
+  Future<Map<DateTime, List<TimeRange>>> fetchBusyHours({
+    required String xizmatId,
+    required DateTime from,
+    required DateTime to,
+  }) async => const {};
+
+  /// Fetches whether busy hours are shown for this listing.
+  /// Stub — implementation pending.
+  Future<bool> fetchShowBusyHours(String id) async => false;
+
+  /// Updates listing availability (visible/hidden, window mode, until time).
+  /// Stub — implementation pending.
+  Future<void> updateAvailability(
+    String id, {
+    required bool visible,
+    required dynamic mode,
+    DateTime? until,
+  }) async {}
+
+  /// Sets whether this listing shows its busy hours.
+  /// Stub — implementation pending.
+  Future<void> setShowBusyHours(String id, bool show) async {}
 
   String? _readServiceCity(Object? raw) =>
       ServiceCities.normalizeStored(raw as String?);

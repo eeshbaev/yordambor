@@ -18,7 +18,6 @@ import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
-import 'package:yordambor/core/design_system/widgets/yb_scale_tap.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
@@ -839,9 +838,9 @@ class _BusyDayControlState extends State<_BusyDayControl> {
           const SizedBox(height: AppSpacing.xs),
           OutlinedButton.icon(
             onPressed: () => showWorkingHoursSheet(
-              context: context,
-              hours: widget.workingHours,
+              context,
               strings: strings,
+              initial: widget.workingHours,
             ),
             icon: const Icon(YbIcons.scheduleFilled, size: 18),
             label: Text(strings.availabilityHoursTitle),

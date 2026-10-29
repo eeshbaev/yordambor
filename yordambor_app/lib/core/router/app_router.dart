@@ -17,6 +17,7 @@ import 'package:yordambor/presentation/onboarding/onboarding_screen.dart';
 import 'package:yordambor/presentation/onboarding/splash_screen.dart';
 import 'package:yordambor/presentation/onboarding/verify_email_screen.dart';
 import 'package:yordambor/presentation/onboarding/welcome_screen.dart';
+import 'package:yordambor/presentation/auth/profile_setup_screen.dart';
 import 'package:yordambor/presentation/auth/reset_password_screen.dart';
 import 'package:yordambor/presentation/profile/blocked_users_screen.dart';
 import 'package:yordambor/presentation/profile/profile_screen.dart';
@@ -40,6 +41,7 @@ import 'package:yordambor/presentation/xizmat/my_xizmatlar_screen.dart';
 import 'package:yordambor/presentation/xizmat/create_xizmat_screen.dart';
 import 'package:yordambor/presentation/xizmat/manage_xizmat_screen.dart';
 import 'package:yordambor/presentation/xizmat/xizmat_profile_screen.dart';
+import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/presentation/guides/guides_list_screen.dart';
 import 'package:yordambor/presentation/support/help_screen.dart';
@@ -77,10 +79,52 @@ Widget _shellTransition(
   );
 }
 
+/// Notifies go_router to re-run its redirect whenever the session changes.
+class _RouterNotifier extends ChangeNotifier {
+  _RouterNotifier(this._ref) {
+    _ref.listen<SessionState>(sessionProvider, (_, __) => notifyListeners());
+  }
+  final Ref _ref;
+
+  String? redirect(BuildContext context, GoRouterState state) {
+    final location = state.uri.path;
+
+    // Skip the guard on screens that don't need a completed profile.
+    const skipPaths = {
+      '/splash',
+      '/welcome',
+      '/start',
+      '/verify-email',
+      '/reset-password',
+      '/profile-setup',
+    };
+    if (skipPaths.any((p) => location.startsWith(p))) return null;
+
+    // If the user is authenticated but hasn't completed their profile
+    // (name or phone missing), redirect to /profile-setup.
+    final session = _ref.read(sessionProvider);
+    final user = session.user;
+    final profile = session.profile;
+
+    if (user != null && profile != null) {
+      final nameBlank = profile.fullName.trim().isEmpty;
+      final phoneBlank = profile.phone.trim().isEmpty;
+      if (nameBlank || phoneBlank) return '/profile-setup';
+    }
+
+    return null;
+  }
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
+  final notifier = _RouterNotifier(ref);
+  ref.onDispose(notifier.dispose);
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/splash',
+    refreshListenable: notifier,
+    redirect: notifier.redirect,
     routes: [
       GoRoute(
         path: '/splash',
@@ -362,6 +406,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           final id = state.pathParameters['id']!;
           return XizmatProfileScreen(xizmatId: id);
         },
+      ),
+      GoRoute(
+        path: '/profile-setup',
+        builder: (context, state) => const ProfileSetupScreen(),
       ),
     ],
   );

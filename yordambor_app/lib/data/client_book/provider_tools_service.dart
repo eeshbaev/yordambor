@@ -527,6 +527,16 @@ class ProviderToolsService {
         )
         .toList();
   }
+
+  /// Syncs calendar appointments from active deals into the local booking store.
+  /// Stub — full implementation pending.
+  Future<void> syncAppointments(
+    List<Kelishuv> deals,
+    String userId,
+  ) async {
+    // TODO: implement appointment sync from deals
+  }
+
 }
 
 extension _FirstOrNull<E> on Iterable<E> {
