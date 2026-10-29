@@ -1,4 +1,5 @@
-storePassword=Fcbarselona1995
-keyPassword=Fcbarselona1995
+# Copy to android/key.properties (never committed) and fill in your own values.
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
 keyAlias=upload
 storeFile=upload-keystore.jks
