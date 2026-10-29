@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yordambor/application/providers/appointment_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
-import 'package:yordambor/core/design_system/app_haptics.dart';
 import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
@@ -16,9 +15,11 @@ import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/core/utils/category_icons.dart';
 
-/// The ticket-style appointment card. Swipe left on an active one to
-/// reveal "cancel"; a grey version shows done or cancelled ones.
-class AppointmentPass extends ConsumerStatefulWidget {
+// ── Compact card ──────────────────────────────────────────────────────────────
+
+/// A compact single-row appointment card.
+/// Tap to open the full [AppointmentDetailSheet].
+class AppointmentPass extends ConsumerWidget {
   const AppointmentPass({
     super.key,
     required this.appt,
@@ -29,64 +30,181 @@ class AppointmentPass extends ConsumerStatefulWidget {
 
   final CalendarAppointment appt;
   final AppStrings strings;
-
-  /// Confirm and cancel the appointment.
   final VoidCallback onCancel;
-
-  /// Prompt the provider to save this client.
   final VoidCallback? onSaveClient;
 
   @override
-  ConsumerState<AppointmentPass> createState() => _AppointmentPassState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colors = context.ybColors;
+    final locale = ref.watch(appStringsProvider).languageCode;
+    final phase = appt.phaseAt(DateTime.now());
+    final isDimmed = appt.isCancelled || appt.isDone;
+    final bandColor = appt.iProvide ? colors.teal : colors.apricot;
+
+    final (phaseLabel, phaseTone) = switch (phase) {
+      AppointmentPhase.now => (strings.appointmentPhaseNow, YbStatusTone.success),
+      AppointmentPhase.today => (strings.appointmentPhaseToday, YbStatusTone.primary),
+      AppointmentPhase.planned => (strings.appointmentPhasePlanned, YbStatusTone.neutral),
+      AppointmentPhase.past => (strings.appointmentPhasePast, YbStatusTone.warning),
+      AppointmentPhase.done => (strings.appointmentPhaseDone, YbStatusTone.success),
+      AppointmentPhase.cancelled => (strings.appointmentPhaseCancelled, YbStatusTone.neutral),
+    };
+
+    final timeFmt = DateFormat.Hm(locale);
+    final timeStr = appt.hasTime
+        ? '${timeFmt.format(appt.startsAt)} – ${timeFmt.format(appt.endsAt)}'
+        : DateFormat.MMMd(locale).format(appt.startsAt);
+
+    final roleLabel = appt.iProvide
+        ? strings.appointmentRoleProvider
+        : strings.appointmentRoleClient;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: Opacity(
+        opacity: isDimmed ? 0.6 : 1.0,
+        child: YbScaleTap(
+          onTap: () => showAppointmentDetailSheet(
+            context: context,
+            appt: appt,
+            strings: strings,
+            onCancel: onCancel,
+            onSaveClient: onSaveClient,
+          ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.card,
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              boxShadow: [
+                BoxShadow(
+                  color: bandColor.withValues(alpha: 0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Left accent bar showing provider/client role.
+                    Container(width: 4, color: bandColor),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
+                          vertical: AppSpacing.sm + 2,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    timeStr,
+                                    style: AppTypography.label.copyWith(
+                                      color: colors.ink,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    '${appt.serviceName} · $roleLabel',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: AppTypography.caption.copyWith(
+                                      color: colors.ink3,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 1),
+                                  Text(
+                                    appt.otherPartyName,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: AppTypography.body.copyWith(
+                                      color: colors.ink2,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                            YbStatusBadge(label: phaseLabel, tone: phaseTone),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _AppointmentPassState extends ConsumerState<AppointmentPass>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _reveal;
+// ── Detail sheet ──────────────────────────────────────────────────────────────
 
-  static const _revealWidth = 118.0;
-  bool _swipeOpen = false;
+/// Opens the full appointment ticket as a bottom sheet.
+Future<void> showAppointmentDetailSheet({
+  required BuildContext context,
+  required CalendarAppointment appt,
+  required AppStrings strings,
+  required VoidCallback onCancel,
+  required VoidCallback? onSaveClient,
+}) {
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    showDragHandle: true,
+    sheetAnimationStyle: AppMotion.sheetOf(context),
+    builder: (_) => AppointmentDetailSheet(
+      appt: appt,
+      strings: strings,
+      onCancel: onCancel,
+      onSaveClient: onSaveClient,
+    ),
+  );
+}
+
+/// Full ticket-style appointment detail. Used inside a bottom sheet.
+class AppointmentDetailSheet extends ConsumerStatefulWidget {
+  const AppointmentDetailSheet({
+    super.key,
+    required this.appt,
+    required this.strings,
+    required this.onCancel,
+    required this.onSaveClient,
+  });
+
+  final CalendarAppointment appt;
+  final AppStrings strings;
+  final VoidCallback onCancel;
+  final VoidCallback? onSaveClient;
 
   @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: AppMotion.standardDuration,
-    );
-    _reveal = CurvedAnimation(parent: _controller, curve: AppMotion.standard);
-  }
+  ConsumerState<AppointmentDetailSheet> createState() =>
+      _AppointmentDetailSheetState();
+}
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _toggleSwipe() {
-    if (_swipeOpen) {
-      _controller.reverse();
-      _swipeOpen = false;
-    } else {
-      AppHaptics.select();
-      _controller.forward();
-      _swipeOpen = true;
-    }
-  }
-
-  void _close() {
-    _controller.reverse();
-    _swipeOpen = false;
-  }
-
+class _AppointmentDetailSheetState
+    extends ConsumerState<AppointmentDetailSheet> {
   Future<void> _call(String phone) async {
-    final uri = Uri(scheme: 'tel', path: phone);
-    await launchUrl(uri);
+    await launchUrl(Uri(scheme: 'tel', path: phone));
   }
 
   Future<void> _confirmCancel() async {
-    _close();
     final strings = widget.strings;
     final confirmed = await showDialog<bool>(
       context: context,
@@ -108,7 +226,10 @@ class _AppointmentPassState extends ConsumerState<AppointmentPass>
         ],
       ),
     );
-    if (confirmed == true) widget.onCancel();
+    if (confirmed == true && mounted) {
+      Navigator.of(context).pop();
+      widget.onCancel();
+    }
   }
 
   @override
@@ -119,127 +240,42 @@ class _AppointmentPassState extends ConsumerState<AppointmentPass>
     final locale = ref.watch(appStringsProvider).languageCode;
     final phase = appt.phaseAt(DateTime.now());
     final isActive = appt.isActive;
-    final isCancelled = appt.isCancelled;
-    final isDone = appt.isDone;
 
-    // The pass's gradient band: teal for "I do it", apricot for "I need it".
     final bandColor = appt.iProvide ? colors.teal : colors.apricot;
     final bandColorInk = appt.iProvide ? colors.tealInk : colors.apricotInk;
     final bandSoft = appt.iProvide ? colors.tealSoft : colors.apricotSoft;
 
-    // Greyed out when done or cancelled.
-    final dimmed = isCancelled || isDone;
-    final opacity = dimmed ? 0.55 : 1.0;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
-      child: Stack(
-        children: [
-          // "Cancel" revealed by swiping.
-          if (isActive)
-            Positioned.fill(
-              child: Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppRadius.card),
-                  child: Container(
-                    width: _revealWidth,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          colors.error.withValues(alpha: 0.8),
-                          colors.error,
-                        ],
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          YbIcons.eventBusyFilled,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          strings.appointmentCancel,
-                          style: AppTypography.label.copyWith(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          AnimatedBuilder(
-            animation: _reveal,
-            builder: (context, child) => Transform.translate(
-              offset: Offset(-_revealWidth * _reveal.value, 0),
-              child: child,
-            ),
-            child: GestureDetector(
-              onHorizontalDragEnd: (details) {
-                if (!isActive) return;
-                final velocity = details.primaryVelocity ?? 0;
-                if (velocity < -400) {
-                  _controller.forward();
-                  _swipeOpen = true;
-                  AppHaptics.select();
-                } else if (velocity > 400) {
-                  _controller.reverse();
-                  _swipeOpen = false;
-                }
-              },
-              onTap: _swipeOpen ? _close : null,
-              child: Opacity(
-                opacity: opacity,
-                child: YbScaleTap(
-                  onTap: _swipeOpen
-                      ? _close
-                      : () => context.push('/kelishuv/${appt.id}'),
-                  child: _PassCard(
-                    appt: appt,
-                    strings: strings,
-                    phase: phase,
-                    bandColor: bandColor,
-                    bandColorInk: bandColorInk,
-                    bandSoft: bandSoft,
-                    locale: locale,
-                    colors: colors,
-                    onCall: appt.dealPhone != null
-                        ? () => _call(appt.dealPhone!)
-                        : () => ref
-                            .read(
-                              publicPhoneProvider(appt.otherPartyId).future,
-                            )
-                            .then(
-                              (phone) =>
-                                  phone != null ? _call(phone) : null,
-                            ),
-                    onSwipe: isActive ? _toggleSwipe : null,
-                    onConfirmCancel: isActive ? _confirmCancel : null,
-                    onSaveClient: widget.onSaveClient,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          // Swipe target outside the card.
-          if (isActive && _swipeOpen)
-            Positioned.fill(
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: _close,
-              ),
-            ),
-        ],
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.viewInsetsOf(context).bottom + AppSpacing.lg,
+      ),
+      child: _PassCard(
+        appt: appt,
+        strings: strings,
+        phase: phase,
+        bandColor: bandColor,
+        bandColorInk: bandColorInk,
+        bandSoft: bandSoft,
+        locale: locale,
+        colors: colors,
+        isActive: isActive,
+        onCall: appt.dealPhone != null
+            ? () => _call(appt.dealPhone!)
+            : () => ref
+                .read(publicPhoneProvider(appt.otherPartyId).future)
+                .then((phone) => phone != null ? _call(phone) : null),
+        onViewDeal: () {
+          Navigator.of(context).pop();
+          context.push('/kelishuv/${appt.id}');
+        },
+        onConfirmCancel: isActive ? _confirmCancel : null,
+        onSaveClient: widget.onSaveClient,
       ),
     );
   }
 }
+
+// ── Pass card (full ticket visual) ───────────────────────────────────────────
 
 class _PassCard extends StatelessWidget {
   const _PassCard({
@@ -251,8 +287,9 @@ class _PassCard extends StatelessWidget {
     required this.bandSoft,
     required this.locale,
     required this.colors,
+    required this.isActive,
     required this.onCall,
-    required this.onSwipe,
+    required this.onViewDeal,
     required this.onConfirmCancel,
     required this.onSaveClient,
   });
@@ -265,8 +302,9 @@ class _PassCard extends StatelessWidget {
   final Color bandSoft;
   final String locale;
   final YbThemeColors colors;
+  final bool isActive;
   final VoidCallback onCall;
-  final VoidCallback? onSwipe;
+  final VoidCallback onViewDeal;
   final VoidCallback? onConfirmCancel;
   final VoidCallback? onSaveClient;
 
@@ -278,42 +316,25 @@ class _PassCard extends StatelessWidget {
       subcategoryId: deal.serviceSubcategoryId,
     );
 
-    // Phase chip label.
     final (phaseLabel, phaseTone) = switch (phase) {
       AppointmentPhase.now => (strings.appointmentPhaseNow, YbStatusTone.success),
-      AppointmentPhase.today =>
-        (strings.appointmentPhaseToday, YbStatusTone.primary),
-      AppointmentPhase.planned =>
-        (strings.appointmentPhasePlanned, YbStatusTone.neutral),
-      AppointmentPhase.past => (
-          strings.appointmentPhasePast,
-          YbStatusTone.warning,
-        ),
+      AppointmentPhase.today => (strings.appointmentPhaseToday, YbStatusTone.primary),
+      AppointmentPhase.planned => (strings.appointmentPhasePlanned, YbStatusTone.neutral),
+      AppointmentPhase.past => (strings.appointmentPhasePast, YbStatusTone.warning),
       AppointmentPhase.done => (strings.appointmentPhaseDone, YbStatusTone.success),
-      AppointmentPhase.cancelled => (
-          strings.appointmentPhaseCancelled,
-          YbStatusTone.neutral,
-        ),
+      AppointmentPhase.cancelled => (strings.appointmentPhaseCancelled, YbStatusTone.neutral),
     };
 
-    // Time range.
     final timeFmt = DateFormat.Hm(locale);
     final timeStr = appt.hasTime
         ? '${timeFmt.format(appt.startsAt)} – ${timeFmt.format(appt.endsAt)}'
         : DateFormat.yMMMMd(locale).format(appt.startsAt);
 
-    // Role line.
-    final roleLabel = appt.iProvide
-        ? strings.appointmentRoleProvider
-        : strings.appointmentRoleClient;
+    final roleLabel =
+        appt.iProvide ? strings.appointmentRoleProvider : strings.appointmentRoleClient;
+    final otherLabel =
+        appt.iProvide ? strings.appointmentPartyClient : strings.appointmentPartyProvider;
 
-    // Other party line.
-    final otherName = appt.otherPartyName;
-    final otherLabel = appt.iProvide
-        ? strings.appointmentPartyClient
-        : strings.appointmentPartyProvider;
-
-    // Price and duration facts.
     final price = (deal.price ?? 0) > 0
         ? '${deal.price!.toStringAsFixed(0)} UZS'
         : null;
@@ -321,234 +342,232 @@ class _PassCard extends StatelessWidget {
         ? strings.appointmentDuration(appt.durationMinutes)
         : null;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.card,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        boxShadow: [
-          BoxShadow(
-            color: bandColor.withValues(alpha: 0.12),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
-            spreadRadius: -4,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Gradient band with watermark icon.
-            SizedBox(
-              height: 72,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color.lerp(bandColor, Colors.white, 0.12)!,
-                          bandColor,
-                          Color.lerp(bandColor, Colors.black, 0.15)!,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.card,
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          boxShadow: [
+            BoxShadow(
+              color: bandColor.withValues(alpha: 0.12),
+              blurRadius: 20,
+              offset: const Offset(0, 6),
+              spreadRadius: -4,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ── Gradient band ────────────────────────────────────────────
+              SizedBox(
+                height: 72,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color.lerp(bandColor, Colors.white, 0.12)!,
+                            bandColor,
+                            Color.lerp(bandColor, Colors.black, 0.15)!,
+                          ],
+                        ),
+                      ),
+                    ),
+                    PositionedDirectional(
+                      end: -16,
+                      bottom: -12,
+                      child: ExcludeSemantics(
+                        child: Icon(
+                          categoryIcon,
+                          size: 80,
+                          color: Colors.white.withValues(alpha: 0.12),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(AppSpacing.md),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  timeStr,
+                                  style: AppTypography.largeTitle.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  '${appt.serviceName} · $roleLabel',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTypography.caption.copyWith(
+                                    color: Colors.white.withValues(alpha: 0.9),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          YbStatusBadge(label: phaseLabel, tone: phaseTone),
                         ],
                       ),
                     ),
-                  ),
-                  PositionedDirectional(
-                    end: -16,
-                    bottom: -12,
-                    child: ExcludeSemantics(
-                      child: Icon(
-                        categoryIcon,
-                        size: 80,
-                        color: Colors.white.withValues(alpha: 0.12),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ],
+                ),
+              ),
+              // ── Notch divider ────────────────────────────────────────────
+              _Notch(fill: colors.card),
+              // ── Body ─────────────────────────────────────────────────────
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Other party row + action tiles.
+                    Row(
                       children: [
+                        _Avatar(
+                          url: appt.otherPartyAvatar,
+                          radius: 22,
+                          ringColor: bandColor,
+                        ),
+                        const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                timeStr,
-                                style: AppTypography.largeTitle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 22,
+                                appt.otherPartyName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTypography.body.copyWith(
+                                  color: colors.ink,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               Text(
-                                '${appt.serviceName} · $roleLabel',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                otherLabel,
                                 style: AppTypography.caption.copyWith(
-                                  color: Colors.white.withValues(alpha: 0.9),
+                                  color: colors.ink3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        _ActionTile(
+                          icon: YbIcons.callFilled,
+                          color: colors.success,
+                          onTap: onCall,
+                          tooltip: strings.appointmentCall,
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                        // "Kelishuv" tile: go to deal discussion / edit terms.
+                        _ActionTile(
+                          icon: YbIcons.chatBubbleFilled,
+                          color: bandColor,
+                          onTap: onViewDeal,
+                          tooltip: strings.kelishuvTitle,
+                        ),
+                      ],
+                    ),
+                    // Facts row.
+                    if (price != null || duration != null) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      Row(
+                        children: [
+                          if (price != null) ...[
+                            _FactTile(
+                              label: strings.appointmentFactPrice,
+                              value: price,
+                              color: bandSoft,
+                              ink: bandColorInk,
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                          ],
+                          if (duration != null)
+                            _FactTile(
+                              label: strings.appointmentFactDuration,
+                              value: duration,
+                              color: colors.surface2,
+                              ink: colors.ink,
+                            ),
+                        ],
+                      ),
+                    ],
+                    // Save-client button (providers only).
+                    if (onSaveClient != null) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          foregroundColor: colors.teal,
+                          alignment: AlignmentDirectional.centerStart,
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: onSaveClient,
+                        icon: const Icon(YbIcons.personAddFilled, size: 18),
+                        label: Text(strings.appointmentSaveClient),
+                      ),
+                    ],
+                    // Cancel button (active appointments only).
+                    if (onConfirmCancel != null) ...[
+                      const SizedBox(height: AppSpacing.xs),
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: colors.error,
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: onConfirmCancel,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(YbIcons.closeFilled, size: 14),
+                              const SizedBox(width: 4),
+                              Text(
+                                strings.appointmentCancel,
+                                style: AppTypography.caption.copyWith(
+                                  color: colors.error,
                                   fontSize: 12,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        // Phase chip.
-                        YbStatusBadge(label: phaseLabel, tone: phaseTone),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Notch divider.
-            _Notch(fill: colors.surface),
-            // Body: other party, facts, actions.
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                0,
-                AppSpacing.lg,
-                AppSpacing.md,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Other party row with avatar.
-                  Row(
-                    children: [
-                      _Avatar(
-                        url: appt.otherPartyAvatar,
-                        radius: 22,
-                        ringColor: bandColor,
-                      ),
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              otherName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTypography.body.copyWith(
-                                color: colors.ink,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              otherLabel,
-                              style: AppTypography.caption.copyWith(
-                                color: colors.ink3,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Action tiles: call and chat.
-                      _ActionTile(
-                        icon: YbIcons.callFilled,
-                        color: colors.success,
-                        onTap: onCall,
-                        tooltip: strings.appointmentCall,
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      _ActionTile(
-                        icon: YbIcons.chatBubbleFilled,
-                        color: bandColor,
-                        onTap: () => context.push('/kelishuv/${appt.id}'),
-                        tooltip: strings.actionChat,
                       ),
                     ],
-                  ),
-                  // Facts row: price, duration.
-                  if (price != null || duration != null) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    Row(
-                      children: [
-                        if (price != null) ...[
-                          _FactTile(
-                            label: strings.appointmentFactPrice,
-                            value: price,
-                            color: bandSoft,
-                            ink: bandColorInk,
-                          ),
-                          const SizedBox(width: AppSpacing.sm),
-                        ],
-                        if (duration != null)
-                          _FactTile(
-                            label: strings.appointmentFactDuration,
-                            value: duration,
-                            color: colors.surface2,
-                            ink: colors.ink,
-                          ),
-                      ],
-                    ),
                   ],
-                  // Save-client button (providers only, not yet saved).
-                  if (onSaveClient != null) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: colors.teal,
-                        alignment: AlignmentDirectional.centerStart,
-                        padding: EdgeInsets.zero,
-                      ),
-                      onPressed: onSaveClient,
-                      icon: const Icon(YbIcons.personAddFilled, size: 18),
-                      label: Text(strings.appointmentSaveClient),
-                    ),
-                  ],
-                  // Swipe hint.
-                  if (onSwipe != null) ...[
-                    const SizedBox(height: AppSpacing.xs),
-                    Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          foregroundColor: colors.error,
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        onPressed: onConfirmCancel,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(YbIcons.closeFilled, size: 14),
-                            const SizedBox(width: 4),
-                            Text(
-                              strings.appointmentCancel,
-                              style: AppTypography.caption.copyWith(
-                                color: colors.error,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-/// The ticket-stub notch: two circles on the edge of the divider.
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 class _Notch extends StatelessWidget {
   const _Notch({required this.fill});
-
   final Color fill;
 
   @override
@@ -562,23 +581,12 @@ class _Notch extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
-                color: fill,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: fill, shape: BoxShape.circle),
             ),
           ),
           Expanded(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: context.ybColors.line.withValues(alpha: 0.5),
-                    style: BorderStyle.none,
-                  ),
-                ),
-              ),
-              child: CustomPaint(painter: _DashedLinePainter(context.ybColors.line)),
+            child: CustomPaint(
+              painter: _DashedLinePainter(context.ybColors.line),
             ),
           ),
           Transform.translate(
@@ -586,10 +594,7 @@ class _Notch extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
-                color: fill,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: fill, shape: BoxShape.circle),
             ),
           ),
         ],
@@ -600,7 +605,6 @@ class _Notch extends StatelessWidget {
 
 class _DashedLinePainter extends CustomPainter {
   const _DashedLinePainter(this.color);
-
   final Color color;
 
   @override
@@ -624,7 +628,6 @@ class _DashedLinePainter extends CustomPainter {
 
 class _Avatar extends StatelessWidget {
   const _Avatar({required this.url, required this.radius, required this.ringColor});
-
   final String? url;
   final double radius;
   final Color ringColor;
@@ -646,15 +649,10 @@ class _Avatar extends StatelessWidget {
                 errorIcon: YbIcons.personFilled,
               )
             : DecoratedBox(
-                decoration: BoxDecoration(
-                  color: ringColor.withValues(alpha: 0.15),
-                ),
+                decoration:
+                    BoxDecoration(color: ringColor.withValues(alpha: 0.15)),
                 child: Center(
-                  child: Icon(
-                    YbIcons.personFilled,
-                    size: radius,
-                    color: ringColor,
-                  ),
+                  child: Icon(YbIcons.personFilled, size: radius, color: ringColor),
                 ),
               ),
       ),
@@ -669,7 +667,6 @@ class _ActionTile extends StatelessWidget {
     required this.onTap,
     required this.tooltip,
   });
-
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
@@ -702,7 +699,6 @@ class _FactTile extends StatelessWidget {
     required this.color,
     required this.ink,
   });
-
   final String label;
   final String value;
   final Color color;
