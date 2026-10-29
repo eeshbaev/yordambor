@@ -106,7 +106,7 @@ class _DayViewSheetState extends ConsumerState<DayViewSheet> {
   /// Busy at [range], on top of what the day already has.
   Future<void> _markBusy(DayMark? mark, TimeRange range) {
     final merged = mergeBusyHours(
-      {if (mark != null) _day: mark},
+      {_day: ?mark},
       {_day: [range]},
     );
     return _setMark(merged[_day]);

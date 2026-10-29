@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yordambor/app.dart';
 import 'package:yordambor/application/providers/experience_providers.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
+import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/data/experience/experience_prefs_repository.dart';
 import 'package:yordambor/data/onboarding/onboarding_prefs_repository.dart';
 
@@ -16,6 +17,8 @@ import 'package:yordambor/data/onboarding/onboarding_prefs_repository.dart';
 /// its Android implementation over a silent channel, deep links answer
 /// "none", and Hive a temporary home.
 void setUpPluginFakes() {
+  // Tests run without Supabase, whatever keys this machine has.
+  Env.debugConfiguredOverride = false;
   AndroidFlutterLocalNotificationsPlugin.registerWith();
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(
@@ -53,6 +56,7 @@ void mockReturningGuestPrefs() {
 
 /// Pumps the app through the splash and its hand-off to home.
 Future<void> pumpAppToHome(WidgetTester tester) async {
+  Env.debugConfiguredOverride = false;
   // The categories file is parsed in a background isolate, which fake time
   // never finishes; read it for real once, and the app gets it from the
   // bundle's cache.

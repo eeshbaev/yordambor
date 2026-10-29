@@ -22,7 +22,12 @@ class Env {
   static String get supabaseAnonKey =>
       _definedKey.isNotEmpty ? _definedKey : kLocalSupabaseAnonKey;
 
+  /// Tests set this to false: the keys on a developer's machine would
+  /// otherwise make the app reach for a Supabase it never started.
+  static bool? debugConfiguredOverride;
+
   static bool get isConfigured =>
+      debugConfiguredOverride ??
       supabaseUrl.isNotEmpty &&
       !supabaseUrl.contains('YOUR_PROJECT') &&
       supabaseAnonKey.isNotEmpty &&
