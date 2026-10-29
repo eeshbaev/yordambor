@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:yordambor/application/providers/appointment_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/schedule_calendar_providers.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
@@ -48,10 +49,17 @@ class XizmatScheduleSection extends ConsumerWidget {
         : ref.watch(userWorkingHoursProvider(owner)).valueOrNull;
     final hours = ownHours ?? ownerHours ?? WorkingHours.standard;
 
-    final marks = owner == null
+    final ownMarks = owner == null
         ? const <DateTime, DayMark>{}
         : ref.watch(ownerUpcomingMarksProvider(owner)).valueOrNull ??
             const <DateTime, DayMark>{};
+    // The hours agreed appointments take, when the provider chose to show
+    // them (off by default: then none come back).
+    final booked = isDemo
+        ? const <DateTime, List<TimeRange>>{}
+        : ref.watch(xizmatBusyHoursProvider(xizmatId)).valueOrNull ??
+            const <DateTime, List<TimeRange>>{};
+    final marks = mergeBusyHours(ownMarks, booked);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final todayLine = _todayLine(strings, marks[today]);
@@ -94,6 +102,14 @@ class XizmatScheduleSection extends ConsumerWidget {
             _TwoWeeks(
               from: today,
               marks: marks,
+              strings: strings,
+              locale: strings.languageCode,
+            ),
+          ],
+          if (booked.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _BookedHours(
+              booked: booked,
               strings: strings,
               locale: strings.languageCode,
             ),
@@ -299,6 +315,103 @@ class _DayCell extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The provider's own day marks with the hours their appointments take
+/// laid over them: a day with appointments is busy at those hours (with
+/// any busy hours it already had), unless it is busy all day anyway.
+Map<DateTime, DayMark> mergeBusyHours(
+  Map<DateTime, DayMark> marks,
+  Map<DateTime, List<TimeRange>> booked,
+) {
+  if (booked.isEmpty) return marks;
+  final merged = {...marks};
+  for (final entry in booked.entries) {
+    if (entry.value.isEmpty) continue;
+    final mark = marks[entry.key];
+    if (mark != null &&
+        mark.status == ScheduleDayAvailability.busy &&
+        mark.wholeDay) {
+      continue;
+    }
+    final own = mark != null && mark.status == ScheduleDayAvailability.busy
+        ? mark.slots!
+        : const <TimeRange>[];
+    merged[entry.key] = DayMark(
+      ScheduleDayAvailability.busy,
+      slots: unionTimeRanges([...own, ...entry.value]),
+    );
+  }
+  return merged;
+}
+
+/// [ranges] sorted, with overlapping or touching ones joined.
+List<TimeRange> unionTimeRanges(List<TimeRange> ranges) {
+  final sorted = [...ranges]..sort((a, b) => a.start.compareTo(b.start));
+  final joined = <TimeRange>[];
+  for (final range in sorted) {
+    if (joined.isNotEmpty && range.start <= joined.last.end) {
+      final last = joined.removeLast();
+      joined.add(
+        TimeRange(last.start, range.end > last.end ? range.end : last.end),
+      );
+    } else {
+      joined.add(range);
+    }
+  }
+  return joined;
+}
+
+/// "Busy hours": each coming day with appointments and the times they
+/// take, e.g. "Thu 30 · 14:30–16:00". Nothing else about the deals.
+class _BookedHours extends StatelessWidget {
+  const _BookedHours({
+    required this.booked,
+    required this.strings,
+    required this.locale,
+  });
+
+  final Map<DateTime, List<TimeRange>> booked;
+  final AppStrings strings;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.ybColors;
+    final days = booked.keys.where((day) => booked[day]!.isNotEmpty).toList()
+      ..sort();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          strings.calendarBusyHours,
+          style: AppTypography.label.copyWith(color: colors.ink2),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        for (final day in days)
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(YbIcons.eventBusy, size: 16, color: colors.error),
+                const SizedBox(width: AppSpacing.xs),
+                Expanded(
+                  child: Text(
+                    '${DateFormat.MMMEd(locale).format(day)} · '
+                    '${unionTimeRanges(booked[day]!).map((r) => r.label).join(', ')}',
+                    style: AppTypography.tabular(
+                      AppTypography.caption.copyWith(color: colors.ink),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
