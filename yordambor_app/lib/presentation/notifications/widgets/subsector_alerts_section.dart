@@ -15,8 +15,24 @@ import 'package:yordambor/core/utils/category_label_resolver.dart';
 import 'package:yordambor/domain/entities/subsector_alert_subscription.dart';
 import 'package:yordambor/presentation/notifications/widgets/subsector_alert_add_sheet.dart';
 
+/// The person's sub-sector alerts with their switches. [where] limits the
+/// rows (inside a service: the alerts made for it); [showAdd] offers a new
+/// alert by hand; [hideWhenEmpty] draws nothing when no row is left.
 class SubsectorAlertsSection extends ConsumerWidget {
-  const SubsectorAlertsSection({super.key});
+  const SubsectorAlertsSection({
+    super.key,
+    this.where,
+    this.showAdd = true,
+    this.hideWhenEmpty = false,
+    this.showOrigin = true,
+  });
+
+  final bool Function(SubsectorAlertSubscription item)? where;
+  final bool showAdd;
+  final bool hideWhenEmpty;
+
+  /// Whether rows made for a service carry their "for your service" tag.
+  final bool showOrigin;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,6 +42,14 @@ class SubsectorAlertsSection extends ConsumerWidget {
     ref.watch(categoriesProvider);
     final language = ref.watch(onboardingPrefsProvider).language;
     final resolver = ref.watch(categoryLabelResolverProvider);
+    final filter = where;
+    final visible = alertsAsync.whenData(
+      (items) =>
+          filter == null ? items : items.where(filter).toList(growable: false),
+    );
+    if (hideWhenEmpty && (visible.valueOrNull?.isEmpty ?? true)) {
+      return const SizedBox.shrink();
+    }
 
     return YbSurfaceCard(
       child: Column(
@@ -53,15 +77,16 @@ class SubsectorAlertsSection extends ConsumerWidget {
                   ],
                 ),
               ),
-              IconButton(
-                tooltip: strings.notificationAlertsAdd,
-                onPressed: () => showSubsectorAlertAddSheet(context),
-                icon: const Icon(YbIcons.addCircle),
-              ),
+              if (showAdd)
+                IconButton(
+                  tooltip: strings.notificationAlertsAdd,
+                  onPressed: () => showSubsectorAlertAddSheet(context),
+                  icon: const Icon(YbIcons.addCircle),
+                ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          alertsAsync.when(
+          visible.when(
             loading: () => const LinearProgressIndicator(minHeight: 2),
             error: (_, _) => Text(
               strings.profileSectionLoadFailed,
@@ -79,11 +104,12 @@ class SubsectorAlertsSection extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    YbSecondaryButton(
-                      label: strings.notificationAlertsAdd,
-                      icon: YbIcons.addFilled,
-                      onPressed: () => showSubsectorAlertAddSheet(context),
-                    ),
+                    if (showAdd)
+                      YbSecondaryButton(
+                        label: strings.notificationAlertsAdd,
+                        icon: YbIcons.addFilled,
+                        onPressed: () => showSubsectorAlertAddSheet(context),
+                      ),
                   ],
                 );
               }
@@ -95,6 +121,7 @@ class SubsectorAlertsSection extends ConsumerWidget {
                       item: item,
                       label: _labelFor(item, resolver, language, strings),
                       strings: strings,
+                      showOrigin: showOrigin,
                     ),
                 ],
               );
@@ -130,11 +157,13 @@ class _AlertSubscriptionTile extends ConsumerWidget {
     required this.item,
     required this.label,
     required this.strings,
+    required this.showOrigin,
   });
 
   final SubsectorAlertSubscription item;
   final String label;
   final AppStrings strings;
+  final bool showOrigin;
 
   Future<void> _update(
     WidgetRef ref,
@@ -178,7 +207,7 @@ class _AlertSubscriptionTile extends ConsumerWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          if (item.fromService) ...[
+          if (item.fromService && showOrigin) ...[
             const SizedBox(height: AppSpacing.xs),
             Align(
               alignment: AlignmentDirectional.centerStart,

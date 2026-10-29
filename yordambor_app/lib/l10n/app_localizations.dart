@@ -4959,13 +4959,13 @@ abstract class AppLocalizations {
   /// No description provided for @workingHoursSheetHint.
   ///
   /// In en, this message translates to:
-  /// **'Your usual working day. By default 9:00–13:00 and 14:00–18:00.'**
+  /// **'The days and hours you work. By default Monday to Friday, 9:00–13:00 and 14:00–18:00.'**
   String get workingHoursSheetHint;
 
   /// No description provided for @workingHoursReset.
   ///
   /// In en, this message translates to:
-  /// **'Back to 9–13 and 14–18'**
+  /// **'Back to the default'**
   String get workingHoursReset;
 
   /// No description provided for @workingHoursInvalid.
@@ -4979,6 +4979,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Working hours saved'**
   String get workingHoursSaved;
+
+  /// No description provided for @calendarDayWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working day'**
+  String get calendarDayWorking;
+
+  /// No description provided for @calendarDayOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Day off'**
+  String get calendarDayOff;
+
+  /// No description provided for @calendarSlotMarkBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as busy'**
+  String get calendarSlotMarkBusy;
+
+  /// No description provided for @calendarSlotMarkFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as free'**
+  String get calendarSlotMarkFree;
+
+  /// No description provided for @calendarPreviousDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day'**
+  String get calendarPreviousDay;
+
+  /// No description provided for @calendarNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Next day'**
+  String get calendarNextDay;
+
+  /// No description provided for @remindersShowBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this time as busy'**
+  String get remindersShowBusy;
+
+  /// No description provided for @remindersShowBusyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients see it as busy on your services.'**
+  String get remindersShowBusyHint;
+
+  /// No description provided for @workingDaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days'**
+  String get workingDaysTitle;
+
+  /// No description provided for @workingDaysNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick at least one day.'**
+  String get workingDaysNone;
+
+  /// No description provided for @xizmatTodayDayOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Day off today'**
+  String get xizmatTodayDayOff;
+
+  /// No description provided for @remindersCancelledEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No cancelled reminders.'**
+  String get remindersCancelledEmpty;
+
+  /// No description provided for @notificationsAppointmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming appointments'**
+  String get notificationsAppointmentsTitle;
 
   /// No description provided for @xizmatOwnHoursTitle.
   ///

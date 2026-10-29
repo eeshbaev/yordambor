@@ -2663,10 +2663,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workingHoursSheetHint =>
-      'Your usual working day. By default 9:00–13:00 and 14:00–18:00.';
+      'The days and hours you work. By default Monday to Friday, 9:00–13:00 and 14:00–18:00.';
 
   @override
-  String get workingHoursReset => 'Back to 9–13 and 14–18';
+  String get workingHoursReset => 'Back to the default';
 
   @override
   String get workingHoursInvalid =>
@@ -4023,4 +4023,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String profileSetupSignedInWith(String provider) {
     return 'You signed in with $provider';
   }
+
+  @override
+  String get workingDaysTitle => 'Working days';
+
+  @override
+  String get workingDaysNone => 'Pick at least one day.';
+
+  @override
+  String get xizmatTodayDayOff => 'Day off today';
+
+  @override
+  String get remindersCancelledEmpty => 'No cancelled reminders.';
+
+  @override
+  String get notificationsAppointmentsTitle => 'Upcoming appointments';
+
+  @override
+  String get calendarDayWorking => 'Working day';
+
+  @override
+  String get calendarDayOff => 'Day off';
+
+  @override
+  String get calendarSlotMarkBusy => 'Mark as busy';
+
+  @override
+  String get calendarSlotMarkFree => 'Mark as free';
+
+  @override
+  String get calendarPreviousDay => 'Previous day';
+
+  @override
+  String get calendarNextDay => 'Next day';
+
+  @override
+  String get remindersShowBusy => 'Show this time as busy';
+
+  @override
+  String get remindersShowBusyHint => 'Clients see it as busy on your services.';
 }

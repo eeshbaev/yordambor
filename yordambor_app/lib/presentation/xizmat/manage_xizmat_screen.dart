@@ -37,6 +37,8 @@ import 'package:yordambor/presentation/shared/xizmat_pricing_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_promise_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_service_city_field.dart';
 import 'package:yordambor/presentation/xizmat/widgets/xizmat_hours_section.dart';
+import 'package:yordambor/presentation/notifications/widgets/subsector_alerts_section.dart';
+import 'package:yordambor/presentation/profile/widgets/profile_certificates_section.dart';
 
 final xizmatPortfolioProvider =
     FutureProvider.family<List<PortfolioItem>, String>((ref, xizmatId) async {
@@ -501,6 +503,26 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
               const SizedBox(height: AppSpacing.lg),
               // Hours clients see on the service; saved on their own.
               XizmatHoursSection(xizmatId: widget.xizmatId),
+              // The alerts made for this service's sub-sector, kept here
+              // rather than among the notifications.
+              if (_category != null && _subcategory != null) ...[
+                const SizedBox(height: AppSpacing.lg),
+                SubsectorAlertsSection(
+                  showAdd: false,
+                  hideWhenEmpty: true,
+                  showOrigin: false,
+                  where: (alert) =>
+                      alert.fromService &&
+                      alert.categoryId == _category!.id &&
+                      alert.subcategoryId == _subcategory!.id,
+                ),
+              ],
+              // Certificates clients see; one set for all the person's
+              // services.
+              if (userId != null) ...[
+                const SizedBox(height: AppSpacing.lg),
+                ProfileCertificatesSection(profileId: userId, embedded: true),
+              ],
               const SizedBox(height: AppSpacing.lg),
               XizmatPricingSection(
                 strings: strings,

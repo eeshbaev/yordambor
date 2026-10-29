@@ -2,57 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
-import 'package:yordambor/application/providers/certificate_providers.dart';
 import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/notification_providers.dart';
-import 'package:yordambor/application/providers/subsector_alert_providers.dart';
 import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
+import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/notifications/notification_repository.dart';
 import 'package:yordambor/presentation/growth/growth_tips_section.dart';
 import 'package:yordambor/presentation/notifications/widgets/deal_activity_section.dart';
-import 'package:yordambor/presentation/notifications/widgets/subsector_alerts_section.dart';
-import 'package:yordambor/presentation/profile/widgets/profile_certificates_section.dart';
+import 'package:yordambor/presentation/notifications/widgets/upcoming_appointments_section.dart';
+import 'package:yordambor/application/providers/appointment_providers.dart';
 
-class NotificationsScreen extends ConsumerStatefulWidget {
+/// One list: the coming week's appointments, live deals, today's growth
+/// tip, then the news, newest first.
+/// Each row opens: a deal, a post or a service, or the full message. The
+/// alerts a person set up sit behind the switch icon; alerts made for a
+/// service and certificates live inside the service.
+class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
 
   @override
-  ConsumerState<NotificationsScreen> createState() =>
-      _NotificationsScreenState();
-}
-
-class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
-  /// The certificates, which a growth tip scrolls to.
-  final _certificatesKey = GlobalKey();
-
-  void _showCertificates() {
-    final target = _certificatesKey.currentContext;
-    if (target == null) return;
-    Scrollable.ensureVisible(
-      target,
-      duration: AppMotion.reduced(context) ? Duration.zero : AppMotion.normal,
-      curve: Curves.easeOutCubic,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final strings = ref.watch(appStringsProvider);
     final session = ref.watch(sessionProvider);
     final notificationsAsync = ref.watch(notificationsProvider);
     final colors = context.ybColors;
-    final userId = session.user?.id;
+    final signedIn = session.user?.id != null;
+    final hasDeals = signedIn && ref.watch(dealActivityProvider).isNotEmpty;
+    final hasTip = signedIn && GrowthTipsSection.hasTip(ref);
+    final hasAppointments = signedIn &&
+        UpcomingAppointmentsSection.upcoming(ref).isNotEmpty;
 
-    // Live deals first, then the news, then the alerts the person set up
-    // and their certificates.
     final List<Widget> news = notificationsAsync.when(
       loading: () => [
         for (var i = 0; i < 3; i++) const YbSkeletonCard(),
@@ -67,13 +55,16 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         ),
       ],
       data: (items) => items.isEmpty
-          ? [
-              YbEmptyState(
-                icon: YbIcons.notifications,
-                title: strings.notificationsEmpty,
-                subtitle: strings.notificationsEmptySub,
-              ),
-            ]
+          // Only "nothing yet" when there is truly nothing on the page.
+          ? (hasDeals || hasTip || hasAppointments)
+              ? const []
+              : [
+                  YbEmptyState(
+                    icon: YbIcons.notifications,
+                    title: strings.notificationsEmpty,
+                    subtitle: strings.notificationsEmptySub,
+                  ),
+                ]
           : _notificationTiles(
               context: context,
               ref: ref,
@@ -84,7 +75,17 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.notificationsTitle)),
+      appBar: AppBar(
+        title: Text(strings.notificationsTitle),
+        actions: [
+          if (signedIn)
+            IconButton(
+              tooltip: strings.notificationAlertsTitle,
+              onPressed: () => context.push('/notifications/alerts'),
+              icon: const Icon(YbIcons.tune),
+            ),
+        ],
+      ),
       body: AppLayout.page(
         context: context,
         child: RefreshIndicator(
@@ -93,48 +94,25 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             ref.invalidate(unreadNotificationsCountProvider);
             ref.invalidate(incomingKelishuvProvider);
             ref.invalidate(myKelishuvRequestsProvider);
-            ref.invalidate(subsectorAlertsProvider);
-            if (userId != null) {
-              ref.invalidate(profileCertificatesProvider(userId));
-            }
+            ref.invalidate(myAppointmentsProvider);
           },
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
             children: [
-              if (userId != null) ...[
+              if (signedIn) ...[
+                const UpcomingAppointmentsSection(),
                 const DealActivitySection(),
-                // The 30-day growth tips, while the program runs.
-                GrowthTipsSection(onCertificates: _showCertificates),
-              ],
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.md,
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                ),
-                child: Semantics(
-                  header: true,
-                  child: Text(
-                    strings.notificationsTitle,
-                    style: AppTypography.headline.copyWith(
-                      color: colors.textPrimary,
-                    ),
+                const GrowthTipsSection(),
+                if (hasTip)
+                  Divider(
+                    height: 1,
+                    color: colors.borderSubtle,
+                    indent: AppSpacing.lg,
+                    endIndent: AppSpacing.lg,
                   ),
-                ),
-              ),
-              ...news,
-              if (userId != null) ...[
-                const SizedBox(height: AppSpacing.xl),
-                const SubsectorAlertsSection(),
-                const SizedBox(height: AppSpacing.lg),
-                ProfileCertificatesSection(
-                  key: _certificatesKey,
-                  profileId: userId,
-                  embedded: true,
-                ),
               ],
+              ...news,
             ],
           ),
         ),
@@ -162,7 +140,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           item: items[i],
           strings: strings,
           colors: colors,
-          onTap: () => _onNotificationTap(context, ref, items[i]),
+          onTap: () => _onNotificationTap(context, ref, strings, items[i]),
         ),
       ],
     ];
@@ -171,6 +149,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Future<void> _onNotificationTap(
     BuildContext context,
     WidgetRef ref,
+    AppStrings strings,
     AppNotification item,
   ) async {
     if (!item.read) {
@@ -184,11 +163,38 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     final xizmatId = item.payload?['xizmat_id'] as String?;
     final postId = item.payload?['post_id'] as String?;
     if (kelishuvId != null) {
-      context.push('/kelishuv/$kelishuvId');
+      await context.push('/kelishuv/$kelishuvId');
     } else if (postId != null) {
-      context.push('/post/$postId');
+      await context.push('/post/$postId');
     } else if (xizmatId != null) {
-      context.push('/xizmat/$xizmatId');
+      await context.push('/xizmat/$xizmatId');
+    } else {
+      // Nothing to go to: the whole message, in a sheet.
+      await showModalBottomSheet<void>(
+        context: context,
+        sheetAnimationStyle: AppMotion.sheetOf(context),
+        isScrollControlled: true,
+        useSafeArea: true,
+        showDragHandle: true,
+        builder: (sheetContext) => YbSheetBody(
+          title: item.title ?? strings.notificationTypeTitle(item.type),
+          children: [
+            if (item.body != null)
+              Text(
+                item.body!,
+                style: AppTypography.bodyRegular.copyWith(
+                  color: sheetContext.ybColors.textPrimary,
+                  height: 1.45,
+                ),
+              ),
+            const SizedBox(height: AppSpacing.lg),
+            YbSecondaryButton(
+              label: strings.actionClose,
+              onPressed: () => Navigator.of(sheetContext).pop(),
+            ),
+          ],
+        ),
+      );
     }
   }
 }

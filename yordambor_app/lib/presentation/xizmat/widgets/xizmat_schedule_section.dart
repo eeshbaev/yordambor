@@ -62,7 +62,9 @@ class XizmatScheduleSection extends ConsumerWidget {
     final marks = mergeBusyHours(ownMarks, booked);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final todayLine = _todayLine(strings, marks[today]);
+    // A day the provider marked wins; otherwise a day off says so.
+    final todayLine = _todayLine(strings, marks[today]) ??
+        (hours.worksOn(today) ? null : (strings.xizmatTodayDayOff, true));
 
     return YbSectionCard(
       icon: YbIcons.scheduleFilled,
@@ -73,7 +75,7 @@ class XizmatScheduleSection extends ConsumerWidget {
           Semantics(
             label: strings.workingHoursTitle,
             child: Text(
-              hours.label,
+              hours.fullLabel(strings.calendarWeekdayShortLabels),
               style: AppTypography.tabular(
                 AppTypography.headline.copyWith(color: colors.ink),
               ),

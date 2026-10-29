@@ -2549,10 +2549,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workingHoursHint => '客户会在您的服务中看到';
 
   @override
-  String get workingHoursSheetHint => '您通常的工作日。默认 9:00–13:00 和 14:00–18:00。';
+  String get workingHoursSheetHint => '您工作的日期和时间。默认周一至周五，9:00–13:00 和 14:00–18:00。';
 
   @override
-  String get workingHoursReset => '恢复为 9–13 和 14–18';
+  String get workingHoursReset => '恢复默认';
 
   @override
   String get workingHoursInvalid => '请检查时间：每段开始早于结束，且互不重叠。';
@@ -3811,4 +3811,43 @@ class AppLocalizationsZh extends AppLocalizations {
   String profileSetupSignedInWith(String provider) {
     return '您已通过 $provider 登录';
   }
+
+  @override
+  String get workingDaysTitle => '工作日';
+
+  @override
+  String get workingDaysNone => '请至少选择一天。';
+
+  @override
+  String get xizmatTodayDayOff => '今天休息';
+
+  @override
+  String get remindersCancelledEmpty => '没有已取消的提醒。';
+
+  @override
+  String get notificationsAppointmentsTitle => '即将到来的预约';
+
+  @override
+  String get calendarDayWorking => '工作日';
+
+  @override
+  String get calendarDayOff => '休息日';
+
+  @override
+  String get calendarSlotMarkBusy => '标记为忙碌';
+
+  @override
+  String get calendarSlotMarkFree => '标记为空闲';
+
+  @override
+  String get calendarPreviousDay => '前一天';
+
+  @override
+  String get calendarNextDay => '后一天';
+
+  @override
+  String get remindersShowBusy => '将此时间显示为忙碌';
+
+  @override
+  String get remindersShowBusyHint => '客户会在您的服务中看到此时间为忙碌。';
 }

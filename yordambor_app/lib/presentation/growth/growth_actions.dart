@@ -33,6 +33,11 @@ Future<void> runGrowthAction(
         await showServiceAvailabilitySheet(context, ref, item: target);
       }
     case GrowthAction.hours:
+      // Hours are set inside the service now.
+      final service = target ?? (services.isNotEmpty ? services.first : null);
+      if (service != null) {
+        await showServiceAvailabilitySheet(context, ref, item: service);
+      }
     case GrowthAction.calendar:
       context.go('/calendar');
     case GrowthAction.share:
@@ -57,7 +62,12 @@ Future<void> runGrowthAction(
     case GrowthAction.tools:
       await context.push('/earnings');
     case GrowthAction.certificates:
-      onCertificates?.call();
+      // Certificates are kept inside the service, on its manage screen.
+      if (onCertificates != null) {
+        onCertificates();
+      } else if (services.isNotEmpty) {
+        await context.push('/xizmat/${services.first.id}/manage');
+      }
     case GrowthAction.moreServices:
       await openCreateXizmat(context, ref);
     case GrowthAction.myServices:

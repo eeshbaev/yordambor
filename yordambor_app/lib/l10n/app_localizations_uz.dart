@@ -2652,10 +2652,10 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get workingHoursSheetHint =>
-      'Odatiy ish kuningiz. Standart: 9:00–13:00 va 14:00–18:00.';
+      'Qaysi kunlari va soatlarda ishlaysiz. Standart: Du–Ju, 9:00–13:00 va 14:00–18:00.';
 
   @override
-  String get workingHoursReset => '9–13 va 14–18 ga qaytarish';
+  String get workingHoursReset => 'Standartga qaytarish';
 
   @override
   String get workingHoursInvalid =>
@@ -3994,4 +3994,43 @@ class AppLocalizationsUz extends AppLocalizations {
   String profileSetupSignedInWith(String provider) {
     return '$provider orqali kirdiniz';
   }
+
+  @override
+  String get workingDaysTitle => 'Ish kunlari';
+
+  @override
+  String get workingDaysNone => 'Kamida bitta kunni tanlang.';
+
+  @override
+  String get xizmatTodayDayOff => 'Bugun dam olish kuni';
+
+  @override
+  String get remindersCancelledEmpty => 'Bekor qilingan eslatmalar yoʻq.';
+
+  @override
+  String get notificationsAppointmentsTitle => 'Yaqin uchrashuvlar';
+
+  @override
+  String get calendarDayWorking => 'Ish kuni';
+
+  @override
+  String get calendarDayOff => 'Dam olish kuni';
+
+  @override
+  String get calendarSlotMarkBusy => 'Band deb belgilash';
+
+  @override
+  String get calendarSlotMarkFree => 'Boʻsh deb belgilash';
+
+  @override
+  String get calendarPreviousDay => 'Oldingi kun';
+
+  @override
+  String get calendarNextDay => 'Keyingi kun';
+
+  @override
+  String get remindersShowBusy => 'Bu vaqtni band deb koʻrsatish';
+
+  @override
+  String get remindersShowBusyHint => 'Mijozlar xizmatlaringizda bu vaqtni band deb koʻradi.';
 }

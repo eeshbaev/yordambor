@@ -331,6 +331,7 @@ class _ServiceAvailabilitySheetState
           _Label(strings.availabilityHoursTitle),
           const SizedBox(height: AppSpacing.sm),
           _HoursRow(
+            dayNames: strings.calendarWeekdayShortLabels,
             hours: hours,
             caption: ownHours != null
                 ? strings.availabilityHoursOwn
@@ -671,12 +672,14 @@ class _UntilChip extends StatelessWidget {
 class _HoursRow extends StatelessWidget {
   const _HoursRow({
     required this.hours,
+    required this.dayNames,
     required this.caption,
     required this.editLabel,
     required this.onEdit,
   });
 
   final WorkingHours hours;
+  final List<String> dayNames;
   final String caption;
   final String editLabel;
   final VoidCallback onEdit;
@@ -701,7 +704,7 @@ class _HoursRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      hours.label,
+                      hours.fullLabel(dayNames),
                       style: AppTypography.tabular(
                         AppTypography.body.copyWith(
                           color: colors.ink,

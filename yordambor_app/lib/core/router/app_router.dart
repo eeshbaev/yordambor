@@ -12,6 +12,7 @@ import 'package:yordambor/presentation/margin/margin_units_screen.dart';
 import 'package:yordambor/presentation/calendar/schedule_calendar_screen.dart';
 import 'package:yordambor/presentation/favorites/favorites_screen.dart';
 import 'package:yordambor/presentation/home/home_screen.dart';
+import 'package:yordambor/presentation/notifications/alert_settings_screen.dart';
 import 'package:yordambor/presentation/notifications/notifications_screen.dart';
 import 'package:yordambor/presentation/onboarding/onboarding_screen.dart';
 import 'package:yordambor/presentation/onboarding/splash_screen.dart';
@@ -287,6 +288,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/notifications/alerts',
+        builder: (context, state) => const AlertSettingsScreen(),
       ),
       GoRoute(
         path: '/settings',

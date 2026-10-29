@@ -14,20 +14,108 @@ import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/presentation/growth/growth_actions.dart';
 
-/// "Grow your business": where the person is in their 30 days, the newest
-/// tip with its one button, and the earlier ones below. Seeing them here
-/// counts as reading them.
-class GrowthTipsSection extends ConsumerStatefulWidget {
+/// "Grow your business" as one row among the notifications: where the
+/// person is in their 30 days and today's tip title. Tapping it opens the
+/// tip in full, with its one button and the earlier tips.
+class GrowthTipsSection extends ConsumerWidget {
   const GrowthTipsSection({super.key, this.onCertificates});
 
   /// Opens the certificates, for the tip that asks for documents.
   final VoidCallback? onCertificates;
 
+  /// Whether the row will show: the program is on and has a tip.
+  static bool hasTip(WidgetRef ref) =>
+      ref.watch(growthProgramProvider).valueOrNull?.latest != null;
+
+  void _open(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      sheetAnimationStyle: AppMotion.sheetOf(context),
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (_) => SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+        child: _GrowthTipsPanel(onCertificates: onCertificates),
+      ),
+    );
+  }
+
   @override
-  ConsumerState<GrowthTipsSection> createState() => _GrowthTipsSectionState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(growthProgramProvider).valueOrNull;
+    final latest = state?.latest;
+    if (state == null || latest == null) return const SizedBox.shrink();
+    final strings = ref.watch(appStringsProvider);
+    final colors = context.ybColors;
+    final unread = state.unread > 0;
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.xs,
+      ),
+      onTap: () => _open(context),
+      leading: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [colors.teal, colors.tealInk],
+          ),
+        ),
+        child: const SizedBox.square(
+          dimension: 40,
+          child: Icon(
+            YbIcons.rocketLaunchFilled,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ),
+      title: Text(
+        GrowthProgram.title(strings, latest.tip.id),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: AppTypography.body.copyWith(
+          color: colors.textPrimary,
+          fontWeight: unread ? FontWeight.w700 : FontWeight.w500,
+        ),
+      ),
+      subtitle: Text(
+        '${strings.growthProgramTitle} · '
+        '${strings.growthProgramDay(state.day.clamp(1, GrowthProgram.days))}',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: AppTypography.caption.copyWith(color: colors.textSecondary),
+      ),
+      trailing: unread
+          ? Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                color: colors.teal,
+                shape: BoxShape.circle,
+              ),
+            )
+          : Icon(YbIcons.chevronRight, color: colors.ink3),
+    );
+  }
 }
 
-class _GrowthTipsSectionState extends ConsumerState<GrowthTipsSection> {
+/// The program in full, in its sheet: progress, the newest tip with its
+/// button, and the earlier ones below. Opening it counts as reading them.
+class _GrowthTipsPanel extends ConsumerStatefulWidget {
+  const _GrowthTipsPanel({this.onCertificates});
+
+  final VoidCallback? onCertificates;
+
+  @override
+  ConsumerState<_GrowthTipsPanel> createState() => _GrowthTipsPanelState();
+}
+
+class _GrowthTipsPanelState extends ConsumerState<_GrowthTipsPanel> {
   bool _showEarlier = false;
   bool _markedRead = false;
 
@@ -37,18 +125,31 @@ class _GrowthTipsSectionState extends ConsumerState<GrowthTipsSection> {
     final userId = ref.read(sessionProvider).user?.id;
     if (userId == null) return;
     final ids = [for (final view in state.delivered) view.tip.id];
-    // After the screen has shown them as new once.
+    // The row under the sheet must update even after the sheet is closed.
+    final container = ProviderScope.containerOf(context, listen: false);
+    // After the sheet has shown them as new once.
     unawaited(
       Future<void>.delayed(const Duration(seconds: 2), () async {
         await GrowthProgramStore.markRead(userId, ids);
-        if (mounted) ref.invalidate(growthProgramProvider);
+        container.invalidate(growthProgramProvider);
       }),
     );
   }
 
+  /// [action] after closing the sheet, so the screen it opens is in view.
+  VoidCallback? _closeThen(VoidCallback? action) {
+    if (action == null) return null;
+    return () {
+      Navigator.of(context).pop();
+      action();
+    };
+  }
+
   Future<void> _turnOff(AppStrings strings) async {
     final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     await ref.read(growthTipsEnabledProvider.notifier).set(false);
+    if (navigator.canPop()) navigator.pop();
     messenger
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(strings.growthTipsOffDone)));
@@ -180,7 +281,7 @@ class _GrowthTipsSectionState extends ConsumerState<GrowthTipsSection> {
                           ref,
                           latest.tip.action,
                           state.services,
-                          onCertificates: widget.onCertificates,
+                          onCertificates: _closeThen(widget.onCertificates),
                         ),
                       ),
                     ),
@@ -226,8 +327,9 @@ class _GrowthTipsSectionState extends ConsumerState<GrowthTipsSection> {
                                           ref,
                                           view.tip.action,
                                           state.services,
-                                          onCertificates:
-                                              widget.onCertificates,
+                                          onCertificates: _closeThen(
+                                            widget.onCertificates,
+                                          ),
                                         ),
                                       ),
                                     ),

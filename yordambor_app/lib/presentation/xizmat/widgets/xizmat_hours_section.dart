@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/schedule_calendar_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
@@ -10,9 +10,9 @@ import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/domain/entities/working_hours.dart';
 import 'package:yordambor/presentation/calendar/widgets/working_hours_sheet.dart';
 
-/// On "manage service": the hours this service is offered. With one service
-/// they are the person's working hours, changed in the calendar; with two to
-/// five services, each one can keep hours of its own. Saved at once.
+/// On "manage service": the days and hours this service is offered. With
+/// one service they are the person's working hours, edited right here; with
+/// two to five services, each one can keep hours of its own. Saved at once.
 class XizmatHoursSection extends ConsumerStatefulWidget {
   const XizmatHoursSection({super.key, required this.xizmatId});
 
@@ -36,6 +36,40 @@ class _XizmatHoursSectionState extends ConsumerState<XizmatHoursSection> {
     );
     if (picked == null || !mounted) return;
     await _save(picked);
+  }
+
+  /// The person's own hours, which a single service follows.
+  Future<void> _editMine(WorkingHours initial) async {
+    final strings = ref.read(appStringsProvider);
+    final repo = ref.read(workingHoursRepositoryProvider);
+    final messenger = ScaffoldMessenger.of(context);
+    final userId = ref.read(sessionProvider).user?.id;
+    final picked = await showWorkingHoursSheet(
+      context,
+      strings: strings,
+      initial: initial,
+    );
+    if (picked == null || userId == null || !mounted) return;
+    setState(() => _saving = true);
+    var saved = true;
+    try {
+      await repo.saveForUser(userId, picked);
+    } catch (_) {
+      saved = false;
+    }
+    if (!mounted) return;
+    ref.invalidate(myWorkingHoursProvider);
+    ref.invalidate(userWorkingHoursProvider(userId));
+    setState(() => _saving = false);
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            saved ? strings.workingHoursSaved : strings.stateErrorBody,
+          ),
+        ),
+      );
   }
 
   /// [hours] null: the service follows the person's hours again.
@@ -108,7 +142,7 @@ class _XizmatHoursSectionState extends ConsumerState<XizmatHoursSection> {
             const SizedBox(height: AppSpacing.sm),
             if (!several) ...[
               Text(
-                myHours.label,
+                myHours.fullLabel(strings.calendarWeekdayShortLabels),
                 style: AppTypography.tabular(
                   AppTypography.body.copyWith(
                     color: colors.ink,
@@ -116,19 +150,12 @@ class _XizmatHoursSectionState extends ConsumerState<XizmatHoursSection> {
                   ),
                 ),
               ),
-              const SizedBox(height: 2),
-              Text(
-                strings.xizmatHoursInCalendar,
-                style: AppTypography.caption.copyWith(
-                  color: colors.textSecondary,
-                ),
-              ),
               Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: TextButton.icon(
-                  onPressed: () => context.go('/calendar'),
-                  icon: const Icon(YbIcons.calendarMonth, size: 18),
-                  label: Text(strings.xizmatHoursOpenCalendar),
+                  onPressed: _saving ? null : () => _editMine(myHours),
+                  icon: const Icon(YbIcons.edit, size: 18),
+                  label: Text(strings.actionEdit),
                 ),
               ),
             ] else ...[
@@ -146,7 +173,10 @@ class _XizmatHoursSectionState extends ConsumerState<XizmatHoursSection> {
                   ),
                 ),
                 subtitle: Text(
-                  own?.label ?? strings.xizmatOwnHoursOff(myHours.label),
+                  own?.fullLabel(strings.calendarWeekdayShortLabels) ??
+                      strings.xizmatOwnHoursOff(
+                        myHours.fullLabel(strings.calendarWeekdayShortLabels),
+                      ),
                   style: AppTypography.caption.copyWith(color: colors.ink2),
                 ),
               ),

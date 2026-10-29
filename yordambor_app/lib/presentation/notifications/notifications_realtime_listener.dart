@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/notification_providers.dart';
+import 'package:yordambor/application/schedule/reminder_busy_sync.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/core/notifications/local_notification_service.dart';
 
@@ -117,6 +118,9 @@ class _NotificationsRealtimeListenerState
       _syncSubscription();
       _askPermissionOnce();
     });
+
+    // Keeps reminders shown as busy in step with the calendar marks.
+    ref.watch(reminderBusySyncProvider);
 
     return widget.child;
   }

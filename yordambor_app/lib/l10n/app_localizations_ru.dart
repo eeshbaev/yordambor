@@ -2665,10 +2665,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get workingHoursSheetHint =>
-      'Ваш обычный рабочий день. По умолчанию 9:00–13:00 и 14:00–18:00.';
+      'Дни и часы, когда вы работаете. По умолчанию Пн–Пт, 9:00–13:00 и 14:00–18:00.';
 
   @override
-  String get workingHoursReset => 'Вернуть 9–13 и 14–18';
+  String get workingHoursReset => 'Вернуть по умолчанию';
 
   @override
   String get workingHoursInvalid =>
@@ -4028,4 +4028,43 @@ class AppLocalizationsRu extends AppLocalizations {
   String profileSetupSignedInWith(String provider) {
     return 'Вы вошли через $provider';
   }
+
+  @override
+  String get workingDaysTitle => 'Рабочие дни';
+
+  @override
+  String get workingDaysNone => 'Выберите хотя бы один день.';
+
+  @override
+  String get xizmatTodayDayOff => 'Сегодня выходной';
+
+  @override
+  String get remindersCancelledEmpty => 'Отменённых напоминаний нет.';
+
+  @override
+  String get notificationsAppointmentsTitle => 'Ближайшие встречи';
+
+  @override
+  String get calendarDayWorking => 'Рабочий день';
+
+  @override
+  String get calendarDayOff => 'Выходной';
+
+  @override
+  String get calendarSlotMarkBusy => 'Отметить как занято';
+
+  @override
+  String get calendarSlotMarkFree => 'Отметить как свободно';
+
+  @override
+  String get calendarPreviousDay => 'Предыдущий день';
+
+  @override
+  String get calendarNextDay => 'Следующий день';
+
+  @override
+  String get remindersShowBusy => 'Показать это время как занятое';
+
+  @override
+  String get remindersShowBusyHint => 'Клиенты увидят это время занятым в ваших услугах.';
 }

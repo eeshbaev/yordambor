@@ -4,39 +4,40 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:yordambor/application/providers/appointment_providers.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
-import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
-import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/application/providers/pending_reminder_notification.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
 import 'package:yordambor/application/providers/schedule_calendar_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
-import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
+import 'package:yordambor/core/design_system/widgets/yb_network_image.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
-import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/widgets/yb_status_badge.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/core/utils/category_icons.dart';
-import 'package:yordambor/domain/entities/schedule_calendar_event.dart';
-import 'package:yordambor/domain/entities/schedule_day_availability.dart';
+import 'package:yordambor/core/utils/xizmat_availability_display.dart';
+import 'package:yordambor/domain/entities/appointment_status.dart';
+import 'package:yordambor/domain/entities/reminder.dart';
 import 'package:yordambor/domain/entities/working_hours.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
 import 'package:yordambor/presentation/auth/auth_bottom_sheet.dart';
-import 'package:yordambor/presentation/calendar/widgets/appointment_pass.dart';
 import 'package:yordambor/presentation/calendar/widgets/calendar_reminders_list.dart';
+import 'package:yordambor/presentation/calendar/widgets/day_view_sheet.dart';
 import 'package:yordambor/presentation/calendar/widgets/schedule_month_grid.dart';
 import 'package:yordambor/presentation/calendar/widgets/service_availability_sheet.dart';
-import 'package:yordambor/presentation/calendar/widgets/time_ranges_editor.dart';
-import 'package:yordambor/presentation/calendar/widgets/working_hours_sheet.dart';
-import 'package:yordambor/presentation/shared/save_client_prompt.dart';
-import 'package:yordambor/presentation/reminders/widgets/reminder_status_sheet.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_add_sheet.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_open_helper.dart';
+import 'package:yordambor/presentation/reminders/widgets/reminder_status_sheet.dart';
+import 'package:yordambor/presentation/reminders/widgets/reminder_tile.dart';
 
+/// The calendar tab: the month (tap a day to open it hour by hour), the
+/// person's services (tap one to set when clients can reach it), a button to
+/// add a job reminder, and the reminders, upcoming or cancelled.
 class ScheduleCalendarScreen extends ConsumerStatefulWidget {
   const ScheduleCalendarScreen({super.key});
 
@@ -45,9 +46,25 @@ class ScheduleCalendarScreen extends ConsumerStatefulWidget {
       _ScheduleCalendarScreenState();
 }
 
-class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen> {
-  DateTime? _selectedDay;
+/// Which reminders are listed.
+enum _ReminderView { upcoming, cancelled }
+
+class _ScheduleCalendarScreenState
+    extends ConsumerState<ScheduleCalendarScreen> {
   bool _followUpChecked = false;
+  _ReminderView _view = _ReminderView.upcoming;
+  DateTime? _selectedDay;
+
+  void _shiftMonth(int delta) {
+    final month = ref.read(scheduleVisibleMonthProvider);
+    ref.read(scheduleVisibleMonthProvider.notifier).state =
+        DateTime(month.year, month.month + delta);
+  }
+
+  Future<void> _openDay(DateTime day) async {
+    setState(() => _selectedDay = day);
+    await showDayViewSheet(context, day: day);
+  }
 
   @override
   void initState() {
@@ -100,7 +117,8 @@ class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen>
 
     final strings = ref.watch(appStringsProvider);
     final session = ref.watch(sessionProvider);
-    final colors = context.ybColors;
+    // Loading the appointments keeps their reminders in step with the deals.
+    ref.watch(myAppointmentsProvider);
 
     if (session.isLoading) {
       return const YbSkeletonList(count: 4);
@@ -130,284 +148,94 @@ class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen>
       );
     }
 
-    final month = ref.watch(scheduleVisibleMonthProvider);
-    final snapshotAsync = ref.watch(scheduleMonthSnapshotProvider);
-    final locale = _localeTag(ref.watch(onboardingPrefsProvider).language);
-
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => showReminderAddSheet(
-          context: context,
-          ref: ref,
-          strings: strings,
-        ),
-        icon: const Icon(YbIcons.addFilled),
-        label: Text(strings.remindersAdd),
-      ),
       body: RefreshIndicator(
-        onRefresh: () => CalendarRemindersList.refresh(ref),
+        onRefresh: () async {
+          ref.invalidate(myXizmatlarProvider);
+          ref.invalidate(myAppointmentsProvider);
+          await CalendarRemindersList.refresh(ref);
+        },
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(
-            0,
-            0,
-            0,
-            AppShell.scrollBottomPadding(context, includeExtendedFab: true),
+          padding: EdgeInsets.only(
+            bottom: AppShell.scrollBottomPadding(context),
           ),
           children: [
-          _CalendarHeader(
-            month: month,
-            locale: locale,
-            strings: strings,
-            selectedDay: _selectedDay,
-            onPrev: () => _shiftMonth(-1),
-            onNext: () => _shiftMonth(1),
-            onDaySelected: (day) => setState(() => _selectedDay = day),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.lg,
-              0,
+            _MonthHeader(
+              month: ref.watch(scheduleVisibleMonthProvider),
+              locale: strings.languageCode,
+              strings: strings,
+              selectedDay: _selectedDay,
+              onPrev: () => _shiftMonth(-1),
+              onNext: () => _shiftMonth(1),
+              onDaySelected: _openDay,
             ),
-            child: snapshotAsync.when(
-              loading: () =>
-                  const YbSkeletonBox(width: double.infinity, height: 320),
-              error: (_, _) => Text(strings.profileSectionLoadFailed),
-              data: (snapshot) {
-                final selected = _selectedDay ?? DateTime.now();
-                final day =
-                    DateTime(selected.year, selected.month, selected.day);
-                final dayEvents = snapshot.eventsByDay[day] ?? const [];
-                // Appointments on the selected day.
-                final dayAppts = ref.watch(
-                  appointmentsByDayProvider.select(
-                    (map) => map[day] ?? const <CalendarAppointment>[],
+            const _MyServices(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.sm,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Text(
+                        strings.calendarReminders,
+                        style: AppTypography.headline.copyWith(
+                          color: context.ybColors.textPrimary,
+                        ),
+                      ),
+                    ),
                   ),
-                );
-                final savedClients = ref.watch(savedClientAccountsProvider);
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _Legend(
-                      strings: strings,
-                      showStatus: snapshot.isProvider,
+                  IconButton(
+                    tooltip: strings.remindersSettingsTitle,
+                    onPressed: () => context.push('/reminders/settings'),
+                    icon: Icon(
+                      YbIcons.tuneFilled,
+                      color: context.ybColors.ink2,
                     ),
-                    const SizedBox(height: AppSpacing.md),
-                    Text(
-                      snapshot.isProvider
-                          ? strings.calendarHintMark
-                          : strings.calendarHintClient,
-                      style: AppTypography.caption.copyWith(
-                        color: colors.textSecondary,
-                      ),
-                    ),
-                    if (snapshot.isProvider) ...[
-                      const SizedBox(height: AppSpacing.md),
-                      const _WorkingHoursTile(),
-                    ],
-                    const SizedBox(height: AppSpacing.lg),
-                    YbSurfaceCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            DateFormat.yMMMd(locale).format(selected),
-                            style: AppTypography.title.copyWith(
-                              color: colors.textPrimary,
-                            ),
-                          ),
-                          // Appointments on this day.
-                          if (dayAppts.isNotEmpty) ...[
-                            const SizedBox(height: AppSpacing.md),
-                            Text(
-                              strings.calendarTabTitle,
-                              style: AppTypography.label.copyWith(
-                                color: colors.ink2,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            for (final appt in dayAppts)
-                              _pass(appt, strings, savedClients),
-                          ],
-                          // "Band vaqt" busy control for providers.
-                          if (snapshot.isProvider) ...[
-                            const SizedBox(height: AppSpacing.sm),
-                            _BusyDayControl(
-                              key: ValueKey('busy-${day.toIso8601String()}'),
-                              mark: snapshot.marks[day],
-                              strings: strings,
-                              workingHours:
-                                  ref.watch(myWorkingHoursProvider).valueOrNull ??
-                                      WorkingHours.standard,
-                              onChanged: (mark) => _saveMark(day, mark),
-                            ),
-                          ],
-                          // Reminders for this day (non-appointment).
-                          const SizedBox(height: AppSpacing.md),
-                          if (dayEvents.isEmpty && dayAppts.isEmpty)
-                            Text(
-                              strings.calendarNoRemindersDay,
-                              style: AppTypography.bodyRegular.copyWith(
-                                color: colors.textSecondary,
-                              ),
-                            )
-                          else if (dayEvents.isNotEmpty) ...[
-                            Text(
-                              strings.calendarDayEvents,
-                              style: AppTypography.label.copyWith(
-                                color: colors.ink2,
-                              ),
-                            ),
-                            for (final event in dayEvents)
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: Icon(
-                                  _roleIcon(event.role),
-                                  color: _roleColor(colors, event.role),
-                                ),
-                                title: Text(event.title),
-                                subtitle: Text(
-                                  DateFormat.Hm(locale).format(event.scheduledAt),
-                                ),
-                                onTap: () async {
-                                  final reminder = await ref
-                                      .read(remindersRepositoryProvider)
-                                      .fetchById(event.id);
-                                  if (reminder == null || !context.mounted) {
-                                    return;
-                                  }
-                                  await openReminderContext(
-                                    context: context,
-                                    ref: ref,
-                                    strings: strings,
-                                    reminder: reminder,
-                                  );
-                                },
-                              ),
-                          ],
-                          const SizedBox(height: AppSpacing.sm),
-                          YbSecondaryButton(
-                            label: strings.remindersAdd,
-                            icon: YbIcons.addAlarmFilled,
-                            onPressed: () => showReminderAddSheet(
-                              context: context,
-                              ref: ref,
-                              strings: strings,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          _AppointmentsAgenda(
-            selectedDay: _selectedDay ?? DateTime.now(),
-            passFor: (appt, savedClients) => _pass(appt, strings, savedClients),
-            onDaySelected: (day) => setState(() => _selectedDay = day),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            child: Semantics(
-              header: true,
-              child: Text(
-                strings.calendarReminders,
-                style:
-                    AppTypography.headline.copyWith(color: colors.textPrimary),
+                  ),
+                ],
               ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          const CalendarRemindersList(),
-          // Services strip — providers only.
-          const _ServicesStrip(),
-          SizedBox(height: AppShell.scrollBottomPadding(context, includeExtendedFab: true) / 2),
-        ],
+            // Job reminders of the person's own: a client (saved to the
+            // client list) and, if they want, the time shown as busy.
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                0,
+                AppSpacing.lg,
+                AppSpacing.md,
+              ),
+              child: YbSecondaryButton(
+                label: strings.remindersAdd,
+                icon: YbIcons.addAlarmFilled,
+                onPressed: () => showReminderAddSheet(
+                  context: context,
+                  ref: ref,
+                  strings: strings,
+                ),
+              ),
+            ),
+            _RemindersByStatus(
+              view: _view,
+              onView: (view) => setState(() => _view = view),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  /// One appointment's card, with cancelling and (for a client not yet in
-  /// the client book) saving the client.
-  Widget _pass(
-    CalendarAppointment appt,
-    AppStrings strings,
-    Set<String> savedClients,
-  ) {
-    return AppointmentPass(
-      key: ValueKey('appt-${appt.id}'),
-      appt: appt,
-      strings: strings,
-      onCancel: () => _cancelAppointment(appt.id),
-      onSaveClient: appt.iProvide &&
-              appt.isActive &&
-              !savedClients.contains(appt.otherPartyId)
-          ? () => _promptSaveClient(appt)
-          : null,
-    );
-  }
-
-  void _shiftMonth(int delta) {
-    final current = ref.read(scheduleVisibleMonthProvider);
-    ref.read(scheduleVisibleMonthProvider.notifier).state =
-        DateTime(current.year, current.month + delta);
-    setState(() => _selectedDay = null);
-  }
-
-  /// Saves the day's mark (null clears it) and shows the calendar again.
-  Future<void> _saveMark(DateTime day, DayMark? mark) async {
-    final userId = ref.read(sessionProvider).user?.id;
-    if (userId == null) return;
-
-    await ref
-        .read(scheduleCalendarRepositoryProvider)
-        .setMark(userId: userId, day: day, mark: mark);
-    if (!mounted) return;
-    ref.invalidate(scheduleMonthSnapshotProvider);
-    ref.invalidate(ownerUpcomingMarksProvider(userId));
-    setState(() => _selectedDay = day);
-  }
-
-  Future<void> _cancelAppointment(String dealId) async {
-    final userId = ref.read(sessionProvider).user?.id;
-    if (userId == null) return;
-    try {
-      await ref
-          .read(kelishuvRepositoryProvider)
-          .cancel(dealId, userId);
-      if (!mounted) return;
-      ref.invalidate(myAppointmentsProvider);
-    } catch (e) {
-      // Errors surface in the Kelishuv screen; nothing more to do here.
-    }
-  }
-
-  Future<void> _promptSaveClient(CalendarAppointment appt) => promptSaveClient(
-        context,
-        ref,
-        dealId: appt.id,
-        otherPartyId: appt.otherPartyId,
-        name: appt.otherPartyName,
-      );
-
-  String _localeTag(String language) => switch (language) {
-        'ru' => 'ru',
-        'en' => 'en',
-        'zh' => 'zh',
-        _ => 'uz',
-      };
 }
 
-class _CalendarHeader extends ConsumerWidget {
-  const _CalendarHeader({
+/// The month with its arrows. Busy days red, free days green, a bar for
+/// appointments and dots for reminders; a tap opens the day.
+class _MonthHeader extends ConsumerWidget {
+  const _MonthHeader({
     required this.month,
     required this.locale,
     required this.strings,
@@ -428,7 +256,6 @@ class _CalendarHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final snapshotAsync = ref.watch(scheduleMonthSnapshotProvider);
-    final weekdayLabels = strings.calendarWeekdayShortLabels;
     final appointmentDays = ref.watch(
       appointmentsByDayProvider.select(
         (byDay) => {
@@ -446,7 +273,7 @@ class _CalendarHeader extends ConsumerWidget {
       ),
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.lg,
-        AppSpacing.md,
+        AppSpacing.sm,
         AppSpacing.lg,
         AppSpacing.lg,
       ),
@@ -475,11 +302,6 @@ class _CalendarHeader extends ConsumerWidget {
                 onPressed: onNext,
                 icon: Icon(YbIcons.chevronRightFilled, color: colors.ink2),
               ),
-              IconButton(
-                tooltip: strings.remindersSettingsTitle,
-                onPressed: () => context.push('/reminders/settings'),
-                icon: Icon(YbIcons.tuneFilled, color: colors.ink2),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -491,7 +313,7 @@ class _CalendarHeader extends ConsumerWidget {
               marks: snapshot.marks,
               eventsByDay: snapshot.eventsByDay,
               selectedDay: selectedDay,
-              weekdayLabels: weekdayLabels,
+              weekdayLabels: strings.calendarWeekdayShortLabels,
               onDaySelected: onDaySelected,
               appointmentDays: appointmentDays,
             ),
@@ -502,429 +324,48 @@ class _CalendarHeader extends ConsumerWidget {
   }
 }
 
-/// Help the person asked for in apricot, help they give in teal, their own
-/// notes in grey: the same colours as the dots on the days.
-IconData _roleIcon(ScheduleEventRole role) => switch (role) {
-      ScheduleEventRole.needHelp => YbIcons.campaignFilled,
-      ScheduleEventRole.giveHelp => YbIcons.handshake,
-      ScheduleEventRole.personal => YbIcons.notificationsActiveFilled,
-    };
-
-Color _roleColor(YbThemeColors colors, ScheduleEventRole role) =>
-    switch (role) {
-      ScheduleEventRole.needHelp => colors.apricot,
-      ScheduleEventRole.giveHelp => colors.teal,
-      ScheduleEventRole.personal => colors.ink3,
-    };
-
-/// What the colours mean, in two groups: the person's free and busy days
-/// (which clients see), then their reminders.
-class _Legend extends StatelessWidget {
-  const _Legend({required this.strings, required this.showStatus});
-
-  final AppStrings strings;
-
-  /// Free and busy days are for people who offer services.
-  final bool showStatus;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.ybColors;
-    final caption = AppTypography.label.copyWith(color: colors.ink2);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (showStatus) ...[
-          Text(strings.calendarStatusCaption, style: caption),
-          const SizedBox(height: AppSpacing.xs),
-          Wrap(
-            spacing: AppSpacing.md,
-            runSpacing: AppSpacing.xs,
-            children: [
-              _LegendItem(
-                swatch: _DaySwatch(
-                  fill: colors.successSoft,
-                  edge: colors.success,
-                ),
-                label: strings.calendarLegendAvailable,
-              ),
-              _LegendItem(
-                swatch: _DaySwatch(fill: colors.error),
-                label: strings.calendarLegendBusy,
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-        ],
-        Text(strings.calendarReminders, style: caption),
-        const SizedBox(height: AppSpacing.xs),
-        Wrap(
-          spacing: AppSpacing.md,
-          runSpacing: AppSpacing.xs,
-          children: [
-            _LegendItem(
-              swatch: ScheduleMonthGrid.appointmentMarker(colors),
-              label: strings.calendarLegendAppointment,
-            ),
-            for (final role in ScheduleEventRole.values)
-              _LegendItem(
-                swatch: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: _roleColor(colors, role),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                label: switch (role) {
-                  ScheduleEventRole.needHelp => strings.calendarLegendNeedHelp,
-                  ScheduleEventRole.giveHelp => strings.calendarLegendGiveHelp,
-                  ScheduleEventRole.personal => strings.calendarLegendPersonal,
-                },
-              ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _LegendItem extends StatelessWidget {
-  const _LegendItem({required this.swatch, required this.label});
-
-  final Widget swatch;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        swatch,
-        const SizedBox(width: AppSpacing.xs),
-        Text(
-          label,
-          style: AppTypography.caption.copyWith(
-            color: context.ybColors.textSecondary,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// A small day cell, coloured like the calendar's.
-class _DaySwatch extends StatelessWidget {
-  const _DaySwatch({required this.fill, this.edge});
-
-  final Color fill;
-  final Color? edge;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 14,
-      height: 14,
-      decoration: BoxDecoration(
-        color: fill,
-        borderRadius: BorderRadius.circular(4),
-        border: edge == null ? null : Border.all(color: edge!, width: 1.5),
-      ),
-    );
-  }
-}
-
-/// The person's usual working day, one tap from changing it.
-class _WorkingHoursTile extends ConsumerWidget {
-  const _WorkingHoursTile();
-
-  Future<void> _edit(
-    BuildContext context,
-    WidgetRef ref,
-    WorkingHours hours,
-  ) async {
-    final strings = ref.read(appStringsProvider);
-    final picked = await showWorkingHoursSheet(
-      context,
-      strings: strings,
-      initial: hours,
-    );
-    if (picked == null || !context.mounted) return;
-    final userId = ref.read(sessionProvider).user?.id;
-    if (userId == null) return;
-    final messenger = ScaffoldMessenger.of(context);
-
-    var saved = true;
-    try {
-      await ref.read(workingHoursRepositoryProvider).saveForUser(userId, picked);
-    } catch (_) {
-      saved = false;
-    }
-    if (!context.mounted) return;
-    ref.invalidate(myWorkingHoursProvider);
-    ref.invalidate(userWorkingHoursProvider(userId));
-    messenger
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            saved ? strings.workingHoursSaved : strings.stateErrorBody,
-          ),
-        ),
-      );
-  }
+/// The person's services, one row each: its status as clients see it and
+/// its hours. Tapping a row opens that service's availability sheet.
+class _MyServices extends ConsumerWidget {
+  const _MyServices();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = ref.watch(appStringsProvider);
-    final colors = context.ybColors;
-    final hours =
-        ref.watch(myWorkingHoursProvider).valueOrNull ?? WorkingHours.standard;
-
-    return Semantics(
-      button: true,
-      label: '${strings.workingHoursTitle}: ${hours.label}. '
-          '${strings.workingHoursHint}',
-      excludeSemantics: true,
-      child: Material(
-        color: colors.card,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          side: BorderSide(color: colors.borderSubtle),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          onTap: () => _edit(context, ref, hours),
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child: Row(
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: colors.tealSoft,
-                    borderRadius: BorderRadius.circular(AppRadius.tile),
-                  ),
-                  child: SizedBox.square(
-                    dimension: 44,
-                    child: Icon(YbIcons.schedule, color: colors.teal),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        strings.workingHoursTitle,
-                        style: AppTypography.label.copyWith(
-                          color: colors.ink2,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        hours.label,
-                        style: AppTypography.tabular(
-                          AppTypography.headline.copyWith(color: colors.ink),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        strings.workingHoursHint,
-                        style: AppTypography.caption.copyWith(
-                          color: colors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Text(
-                  strings.actionEdit,
-                  style: AppTypography.label.copyWith(
-                    color: colors.teal,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// A simpler "Band vaqt" control: toggle busy all day or pick hours.
-class _BusyDayControl extends StatefulWidget {
-  const _BusyDayControl({
-    super.key,
-    required this.mark,
-    required this.strings,
-    required this.workingHours,
-    required this.onChanged,
-  });
-
-  final DayMark? mark;
-  final AppStrings strings;
-  final WorkingHours workingHours;
-  final ValueChanged<DayMark?> onChanged;
-
-  @override
-  State<_BusyDayControl> createState() => _BusyDayControlState();
-}
-
-class _BusyDayControlState extends State<_BusyDayControl> {
-  late bool _busyAllDay;
-  late List<TimeRange> _slots;
-
-  @override
-  void initState() {
-    super.initState();
-    _busyAllDay = widget.mark?.status == ScheduleDayAvailability.busy &&
-        (widget.mark?.slots ?? const []).isEmpty;
-    _slots = [...?widget.mark?.slots];
-  }
-
-  @override
-  void didUpdateWidget(covariant _BusyDayControl old) {
-    super.didUpdateWidget(old);
-    if (old.mark != widget.mark) {
-      _busyAllDay = widget.mark?.status == ScheduleDayAvailability.busy &&
-          (widget.mark?.slots ?? const []).isEmpty;
-      _slots = [...?widget.mark?.slots];
-    }
-  }
-
-  void _toggleBusy(bool value) {
-    setState(() {
-      _busyAllDay = value;
-      if (!value) _slots = [];
-    });
-    widget.onChanged(
-      value
-          ? const DayMark(ScheduleDayAvailability.busy)
-          : null,
-    );
-  }
-
-  void _setSlots(List<TimeRange> slots) {
-    setState(() => _slots = slots);
-    if (!timeRangesValid(slots)) return;
-    widget.onChanged(
-      DayMark(ScheduleDayAvailability.busy, slots: sortedTimeRanges(slots)),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final strings = widget.strings;
-    final colors = context.ybColors;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          value: _busyAllDay,
-          onChanged: _toggleBusy,
-          title: Text(
-            strings.calendarBusyTitle,
-            style: AppTypography.body.copyWith(
-              color: colors.ink,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          subtitle: Text(
-            strings.calendarBusyAllDay,
-            style: AppTypography.caption.copyWith(color: colors.ink2),
-          ),
-        ),
-        if (_busyAllDay) ...[
-          const SizedBox(height: AppSpacing.xs),
-          OutlinedButton.icon(
-            // Busy for part of the day only: pick those hours, starting
-            // from the usual working day.
-            onPressed: () async {
-              final picked = await showWorkingHoursSheet(
-                context,
-                strings: strings,
-                initial: _slots.isEmpty
-                    ? widget.workingHours
-                    : WorkingHours(_slots),
-                title: strings.calendarBusyHours,
-              );
-              if (picked != null && mounted) _setSlots(picked.ranges);
-            },
-            icon: const Icon(YbIcons.scheduleFilled, size: 18),
-            label: Text(strings.availabilityHoursTitle),
-          ),
-          if (_slots.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.xs),
-            TimeRangesEditor(
-              ranges: _slots,
-              strings: strings,
-              onChanged: _setSlots,
-            ),
-            if (!timeRangesValid(_slots))
-              YbInlineMessage(message: strings.workingHoursInvalid),
-          ],
-        ],
-      ],
-    );
-  }
-}
-
-/// Horizontal strip of the provider's services at the bottom of the
-/// calendar screen. Tapping one opens the availability sheet.
-class _ServicesStrip extends ConsumerWidget {
-  const _ServicesStrip();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final strings = ref.watch(appStringsProvider);
-    final session = ref.watch(sessionProvider);
-    if (!session.isAuthenticated) return const SizedBox.shrink();
-
-    final mineAsync = ref.watch(myXizmatlarProvider);
-    final items = mineAsync.valueOrNull;
+    final items = ref.watch(myXizmatlarProvider).valueOrNull;
     if (items == null || items.isEmpty) return const SizedBox.shrink();
-
     final colors = context.ybColors;
 
     return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.lg),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        0,
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          Semantics(
+            header: true,
             child: Text(
               strings.calendarServicesStrip,
               style: AppTypography.headline.copyWith(color: colors.textPrimary),
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          SizedBox(
-            height: 96,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              itemCount: items.length,
-              separatorBuilder: (_, _) =>
-                  const SizedBox(width: AppSpacing.sm),
-              itemBuilder: (context, i) =>
-                  _ServiceChip(item: items[i], strings: strings),
-            ),
-          ),
+          for (final (index, item) in items.indexed) ...[
+            if (index > 0) const SizedBox(height: AppSpacing.sm),
+            _ServiceRow(item: item, strings: strings),
+          ],
         ],
       ),
     );
   }
 }
 
-class _ServiceChip extends ConsumerWidget {
-  const _ServiceChip({required this.item, required this.strings});
+class _ServiceRow extends ConsumerWidget {
+  const _ServiceRow({required this.item, required this.strings});
 
   final XizmatFeedItem item;
   final AppStrings strings;
@@ -936,397 +377,169 @@ class _ServiceChip extends ConsumerWidget {
       categoryId: item.categoryId,
       subcategoryId: item.subcategoryId,
     );
+    final status = xizmatAvailabilityDisplay(item, strings);
+    final hours = ref.watch(xizmatOwnHoursProvider(item.id)).valueOrNull ??
+        ref.watch(myWorkingHoursProvider).valueOrNull ??
+        WorkingHours.standard;
 
     return YbScaleTap(
       onTap: () => showServiceAvailabilitySheet(context, ref, item: item),
       child: Container(
-        width: 130,
-        padding: const EdgeInsets.all(AppSpacing.sm),
+        padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           color: colors.card,
           borderRadius: BorderRadius.circular(AppRadius.card),
           border: Border.all(color: colors.borderSubtle),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
           children: [
-            Icon(icon, size: 24, color: colors.teal),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              item.serviceDisplayName,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTypography.caption.copyWith(
-                color: colors.textPrimary,
-                fontWeight: FontWeight.w600,
-                height: 1.2,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Free or busy for one day, and when: the whole working day unless the
-/// person picks hours. Every valid change is saved at once.
-class _DayStatusEditor extends StatefulWidget {
-  const _DayStatusEditor({
-    required this.mark,
-    required this.strings,
-    required this.workingHours,
-    required this.onChanged,
-  });
-
-  final DayMark? mark;
-  final AppStrings strings;
-  final WorkingHours workingHours;
-  final ValueChanged<DayMark?> onChanged;
-
-  @override
-  State<_DayStatusEditor> createState() => _DayStatusEditorState();
-}
-
-class _DayStatusEditorState extends State<_DayStatusEditor> {
-  late ScheduleDayAvailability _status;
-  late List<TimeRange> _slots;
-
-  /// Hours picked by hand; else the whole working day.
-  late bool _custom;
-
-  @override
-  void initState() {
-    super.initState();
-    _load(widget.mark);
-  }
-
-  @override
-  void didUpdateWidget(covariant _DayStatusEditor oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // A new mark from the server replaces what is shown; the same one keeps
-    // an edit in progress.
-    if (!_sameMark(oldWidget.mark, widget.mark)) _load(widget.mark);
-  }
-
-  void _load(DayMark? mark) {
-    _status = mark?.status ?? ScheduleDayAvailability.unset;
-    _slots = [...?mark?.slots];
-    _custom = _slots.isNotEmpty;
-  }
-
-  static bool _sameMark(DayMark? a, DayMark? b) {
-    if (a == null || b == null) return a == b;
-    if (a.status != b.status) return false;
-    final x = a.slots ?? const <TimeRange>[];
-    final y = b.slots ?? const <TimeRange>[];
-    if (x.length != y.length) return false;
-    for (var i = 0; i < x.length; i++) {
-      if (x[i] != y[i]) return false;
-    }
-    return true;
-  }
-
-  void _emit() {
-    if (_status == ScheduleDayAvailability.unset) {
-      widget.onChanged(null);
-      return;
-    }
-    // Hours that do not make sense wait, with a note, until they are fixed.
-    if (_custom && !timeRangesValid(_slots)) return;
-    widget.onChanged(
-      DayMark(_status, slots: _custom ? sortedTimeRanges(_slots) : null),
-    );
-  }
-
-  void _setStatus(ScheduleDayAvailability status) {
-    if (status == _status) return;
-    setState(() => _status = status);
-    _emit();
-  }
-
-  void _setWholeDay(bool wholeDay) {
-    setState(() {
-      _custom = !wholeDay;
-      if (_custom && _slots.isEmpty) {
-        _slots = [widget.workingHours.ranges.first];
-      }
-    });
-    _emit();
-  }
-
-  void _setSlots(List<TimeRange> slots) {
-    setState(() {
-      _slots = slots;
-      if (slots.isEmpty) _custom = false;
-    });
-    _emit();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final strings = widget.strings;
-    final colors = context.ybColors;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            for (final (index, status) in ScheduleDayAvailability.values.indexed) ...[
-              if (index > 0) const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _StatusChoice(
-                  status: status,
-                  selected: status == _status,
-                  label: switch (status) {
-                    ScheduleDayAvailability.unset => strings.calendarDayNotMarked,
-                    ScheduleDayAvailability.available =>
-                      strings.calendarLegendAvailable,
-                    ScheduleDayAvailability.busy => strings.calendarLegendBusy,
-                  },
-                  onTap: () => _setStatus(status),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox.square(
+                dimension: 48,
+                child: YbNetworkImage(
+                  url: item.galleryUrls.isNotEmpty ? item.galleryUrls.first : '',
+                  placeholderIcon: icon,
+                  errorIcon: icon,
                 ),
               ),
-            ],
-          ],
-        ),
-        if (_status != ScheduleDayAvailability.unset) ...[
-          const SizedBox(height: AppSpacing.sm),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            value: !_custom,
-            onChanged: _setWholeDay,
-            title: Text(
-              strings.calendarWholeWorkingDay,
-              style: AppTypography.body.copyWith(
-                color: colors.ink,
-                fontWeight: FontWeight.w600,
-              ),
             ),
-            subtitle: Text(
-              widget.workingHours.label,
-              style: AppTypography.caption.copyWith(color: colors.ink2),
-            ),
-          ),
-          if (_custom) ...[
-            const SizedBox(height: AppSpacing.xs),
-            TimeRangesEditor(
-              ranges: _slots,
-              strings: strings,
-              onChanged: _setSlots,
-            ),
-            if (!timeRangesValid(_slots))
-              YbInlineMessage(message: strings.workingHoursInvalid),
-          ],
-        ],
-      ],
-    );
-  }
-}
-
-/// One of "Not marked", "Free" and "Busy": chosen, it takes the colour the
-/// day will have in the calendar.
-class _StatusChoice extends StatelessWidget {
-  const _StatusChoice({
-    required this.status,
-    required this.selected,
-    required this.label,
-    required this.onTap,
-  });
-
-  final ScheduleDayAvailability status;
-  final bool selected;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.ybColors;
-    final (Color fill, Color ink, Color edge) = switch (status) {
-      ScheduleDayAvailability.available => selected
-          ? (colors.successSoft, colors.success, colors.success)
-          : (colors.card, colors.ink2, colors.line),
-      ScheduleDayAvailability.busy => selected
-          ? (colors.error, colors.onError, colors.error)
-          : (colors.card, colors.ink2, colors.line),
-      ScheduleDayAvailability.unset => selected
-          ? (colors.surface2, colors.ink, colors.outline)
-          : (colors.card, colors.ink2, colors.line),
-    };
-
-    return Semantics(
-      button: true,
-      selected: selected,
-      label: label,
-      excludeSemantics: true,
-      child: Material(
-        color: fill,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.sm),
-          side: BorderSide(color: edge, width: selected ? 1.5 : 1),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadius.sm),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: AppTouch.minTarget),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.xs,
-                vertical: AppSpacing.sm,
-              ),
-              child: Center(
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: AppTypography.label.copyWith(
-                    color: ink,
-                    fontSize: 13,
-                    fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.serviceDisplayName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.body.copyWith(
+                      color: colors.ink,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 2),
+                  Text(
+                    hours.fullLabel(strings.calendarWeekdayShortLabels),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.tabular(
+                      AppTypography.caption.copyWith(color: colors.ink2),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  YbStatusBadge(
+                    label: status?.label ?? strings.availabilityTileHidden,
+                    tone: status?.tone ?? YbStatusTone.neutral,
+                  ),
+                ],
               ),
             ),
-          ),
+            Icon(YbIcons.chevronRight, color: colors.ink3),
+          ],
         ),
       ),
     );
   }
 }
 
-/// Every appointment in one list: today's, the coming ones, then the past
-/// week's. The selected day's are in its card above, so they are left out
-/// here; tapping a date picks that day.
-class _AppointmentsAgenda extends ConsumerWidget {
-  const _AppointmentsAgenda({
-    required this.selectedDay,
-    required this.passFor,
-    required this.onDaySelected,
-  });
+/// Reminders in two lists: upcoming (not cancelled, not yet due) and
+/// cancelled. A two-way switch picks the list.
+class _RemindersByStatus extends ConsumerWidget {
+  const _RemindersByStatus({required this.view, required this.onView});
 
-  final Widget Function(CalendarAppointment appt, Set<String> savedClients)
-      passFor;
-  final ValueChanged<DateTime> onDaySelected;
-  final DateTime selectedDay;
+  final _ReminderView view;
+  final ValueChanged<_ReminderView> onView;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = ref.watch(appStringsProvider);
-    final colors = context.ybColors;
-    final appointmentsAsync = ref.watch(myAppointmentsProvider);
-    final savedClients = ref.watch(savedClientAccountsProvider);
-    final locale = strings.languageCode;
+    final remindersAsync = ref.watch(remindersProvider);
 
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final all = appointmentsAsync.valueOrNull ?? const <CalendarAppointment>[];
-    final selected =
-        DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
-    final items = [for (final a in all) if (a.day != selected) a];
-    // All of them are on the selected day, in its card above.
-    if (all.isNotEmpty && items.isEmpty) return const SizedBox.shrink();
-    final todays = [for (final a in items) if (a.day == today) a];
-    final upcoming = [for (final a in items) if (a.day.isAfter(today)) a];
-    // Most recent first.
-    final past = [for (final a in items) if (a.day.isBefore(today)) a]
-        .reversed
-        .toList();
+    return remindersAsync.when(
+      loading: () => const Padding(
+        padding: EdgeInsets.all(AppSpacing.lg),
+        child: YbSkeletonList(count: 3),
+      ),
+      error: (_, _) => Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Text(strings.profileSectionLoadFailed),
+      ),
+      data: (items) {
+        final upcoming = <Reminder>[
+          for (final r in items)
+            if (r.status != AppointmentStatus.cancelled && !r.isPast) r,
+        ]..sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
+        final cancelled = <Reminder>[
+          for (final r in items)
+            if (r.status == AppointmentStatus.cancelled) r,
+        ]..sort((a, b) => b.scheduledAt.compareTo(a.scheduledAt));
+        final shown =
+            view == _ReminderView.upcoming ? upcoming : cancelled;
 
-    Widget section(String title, List<CalendarAppointment> list) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            '$title · ${list.length}',
-            style: AppTypography.label.copyWith(color: colors.ink2),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          for (var i = 0; i < list.length; i++) ...[
-            // The date over the first card of each day (not for today's).
-            if (list[i].day != today &&
-                (i == 0 || list[i - 1].day != list[i].day))
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-                child: InkWell(
-                  onTap: () => onDaySelected(list[i].day),
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Text(
-                      DateFormat.MMMEd(locale).format(list[i].day),
-                      style: AppTypography.caption.copyWith(
-                        color: colors.textSecondary,
-                        fontWeight: FontWeight.w600,
-                      ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: SegmentedButton<_ReminderView>(
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment(
+                    value: _ReminderView.upcoming,
+                    label: Text(
+                      '${strings.remindersUpcoming} · ${upcoming.length}',
                     ),
                   ),
-                ),
-              ),
-            passFor(list[i], savedClients),
-          ],
-        ],
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Semantics(
-            header: true,
-            child: Text(
-              strings.calendarTabTitle,
-              style: AppTypography.headline.copyWith(color: colors.textPrimary),
-            ),
-          ),
-          if (appointmentsAsync.isLoading && all.isEmpty) ...[
-            const SizedBox(height: AppSpacing.md),
-            const YbSkeletonBox(width: double.infinity, height: 96),
-          ] else if (all.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: AppSpacing.md),
-              child: YbSurfaceCard(
-                child: Row(
-                  children: [
-                    Icon(YbIcons.calendarMonthFilled, color: colors.teal),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            strings.calendarNoAppointments,
-                            style: AppTypography.body.copyWith(
-                              color: colors.ink,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            strings.calendarNoAppointmentsHint,
-                            style: AppTypography.caption.copyWith(
-                              color: colors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
+                  ButtonSegment(
+                    value: _ReminderView.cancelled,
+                    label: Text(
+                      '${strings.appointmentPhaseCancelled} · '
+                      '${cancelled.length}',
                     ),
-                  ],
-                ),
+                  ),
+                ],
+                selected: {view},
+                onSelectionChanged: (picked) => onView(picked.first),
               ),
-            )
-          else ...[
-            if (todays.isNotEmpty) section(strings.calendarSectionToday, todays),
-            if (upcoming.isNotEmpty)
-              section(strings.calendarSectionUpcoming, upcoming),
-            if (past.isNotEmpty) section(strings.calendarSectionPast, past),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AnimatedSwitcher(
+              duration: AppMotion.of(context, AppMotion.standardDuration),
+              child: shown.isEmpty
+                  ? Padding(
+                      key: ValueKey('empty-$view'),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: YbEmptyState(
+                        icon: view == _ReminderView.upcoming
+                            ? YbIcons.alarm
+                            : YbIcons.eventBusy,
+                        title: view == _ReminderView.upcoming
+                            ? strings.remindersEmptyTitle
+                            : strings.appointmentPhaseCancelled,
+                        subtitle: view == _ReminderView.upcoming
+                            ? strings.remindersEmptySubtitle
+                            : strings.remindersCancelledEmpty,
+                      ),
+                    )
+                  : Column(
+                      key: ValueKey('list-$view'),
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final r in shown)
+                          ReminderTile(
+                            reminder: r,
+                            strings: strings,
+                            dimmed: view == _ReminderView.cancelled,
+                          ),
+                      ],
+                    ),
+            ),
           ],
-        ],
-      ),
+        );
+      },
     );
   }
 }
