@@ -3750,4 +3750,14 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get remindersSettingsFollowUpHint =>
       'Мы спросим, как всё прошло, чтобы сделка и доход были актуальны.';
+
+  @override
+  String get alertFromServiceTag => 'Для вашей услуги';
+
+  @override
+  String get alertFromServiceHint =>
+      'Создано, когда вы добавили эту услугу. Отключите лишнее.';
+
+  @override
+  String get alertAnyCity => 'Любой город';
 }

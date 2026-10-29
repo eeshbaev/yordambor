@@ -1193,5 +1193,8 @@
   "reminderFollowUpServiceDone": "服务完成了吗？",
   "reminderDefaultBody": "与{name}的预约",
   "remindersSettingsPickOne": "请至少选择一个时间",
-  "remindersSettingsFollowUpHint": "我们会询问进展，让交易和收入保持最新。"
+  "remindersSettingsFollowUpHint": "我们会询问进展，让交易和收入保持最新。",
+  "alertFromServiceTag": "为您的服务",
+  "alertFromServiceHint": "添加此服务时自动创建。可关闭不需要的提醒。",
+  "alertAnyCity": "任何城市"
 }

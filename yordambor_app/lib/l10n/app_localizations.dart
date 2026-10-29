@@ -6827,6 +6827,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We ask how it went, so the deal and your earnings stay up to date.'**
   String get remindersSettingsFollowUpHint;
+
+  /// No description provided for @alertFromServiceTag.
+  ///
+  /// In en, this message translates to:
+  /// **'For your service'**
+  String get alertFromServiceTag;
+
+  /// No description provided for @alertFromServiceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Made when you added this service. Switch off what you don\'t need.'**
+  String get alertFromServiceHint;
+
+  /// No description provided for @alertAnyCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Any city'**
+  String get alertAnyCity;
 }
 
 class _AppLocalizationsDelegate

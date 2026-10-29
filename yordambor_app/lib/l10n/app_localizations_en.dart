@@ -3743,4 +3743,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get remindersSettingsFollowUpHint =>
       'We ask how it went, so the deal and your earnings stay up to date.';
+
+  @override
+  String get alertFromServiceTag => 'For your service';
+
+  @override
+  String get alertFromServiceHint =>
+      'Made when you added this service. Switch off what you don\'t need.';
+
+  @override
+  String get alertAnyCity => 'Any city';
 }

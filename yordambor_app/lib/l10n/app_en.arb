@@ -1412,5 +1412,8 @@
   "reminderDefaultBody": "Appointment with {name}",
   "@reminderDefaultBody": {"placeholders": {"name": {"type": "String"}}},
   "remindersSettingsPickOne": "Pick at least one time",
-  "remindersSettingsFollowUpHint": "We ask how it went, so the deal and your earnings stay up to date."
+  "remindersSettingsFollowUpHint": "We ask how it went, so the deal and your earnings stay up to date.",
+  "alertFromServiceTag": "For your service",
+  "alertFromServiceHint": "Made when you added this service. Switch off what you don't need.",
+  "alertAnyCity": "Any city"
 }

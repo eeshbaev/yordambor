@@ -7,6 +7,7 @@ import 'package:yordambor/application/providers/subsector_alert_providers.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/widgets/yb_info_tag.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
@@ -117,7 +118,10 @@ class SubsectorAlertsSection extends ConsumerWidget {
       language,
     );
     final type = strings.providerTypeLabel(item.providerType);
-    return '$category · $sub ($type)';
+    final city = item.serviceCity == null
+        ? strings.alertAnyCity
+        : strings.serviceCityLabel(item.serviceCity!);
+    return '$category · $sub ($type) · $city';
   }
 }
 
@@ -137,7 +141,9 @@ class _AlertSubscriptionTile extends ConsumerWidget {
     SubsectorAlertSubscription updated,
   ) async {
     final repo = ref.read(subsectorAlertRepositoryProvider);
-    if (!updated.hasAnyAlert) {
+    // An alert made for a service stays, switched off: deleting it would
+    // only have the next edit of the service make it again.
+    if (!updated.hasAnyAlert && !item.fromService) {
       await repo.delete(item.id);
       if (ref.context.mounted) {
         ScaffoldMessenger.of(ref.context).showSnackBar(
@@ -150,6 +156,7 @@ class _AlertSubscriptionTile extends ConsumerWidget {
         alertNewService: updated.alertNewService,
         alertDiscount: updated.alertDiscount,
         alertHelpPost: updated.alertHelpPost,
+        keepWhenOff: item.fromService,
       );
     }
     ref.invalidate(subsectorAlertsProvider);
@@ -171,6 +178,24 @@ class _AlertSubscriptionTile extends ConsumerWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
+          if (item.fromService) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: YbInfoTag(
+                icon: YbIcons.storefrontFilled,
+                label: strings.alertFromServiceTag,
+                tone: YbInfoTone.service,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              strings.alertFromServiceHint,
+              style: AppTypography.caption.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+          ],
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             dense: true,

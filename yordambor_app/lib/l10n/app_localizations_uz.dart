@@ -3708,4 +3708,14 @@ class AppLocalizationsUz extends AppLocalizations {
   @override
   String get remindersSettingsFollowUpHint =>
       'Qanday oʻtganini soʻraymiz — kelishuv va daromadingiz yangilanib turadi.';
+
+  @override
+  String get alertFromServiceTag => 'Xizmatingiz uchun';
+
+  @override
+  String get alertFromServiceHint =>
+      'Ushbu xizmatni qoʻshganingizda yaratildi. Keraksizini oʻchirib qoʻying.';
+
+  @override
+  String get alertAnyCity => 'Istalgan shahar';
 }

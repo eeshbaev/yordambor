@@ -1190,5 +1190,8 @@
   "reminderFollowUpServiceDone": "Xizmat bajarildimi?",
   "reminderDefaultBody": "{name} bilan uchrashuv",
   "remindersSettingsPickOne": "Kamida bitta vaqtni tanlang",
-  "remindersSettingsFollowUpHint": "Qanday oʻtganini soʻraymiz — kelishuv va daromadingiz yangilanib turadi."
+  "remindersSettingsFollowUpHint": "Qanday oʻtganini soʻraymiz — kelishuv va daromadingiz yangilanib turadi.",
+  "alertFromServiceTag": "Xizmatingiz uchun",
+  "alertFromServiceHint": "Ushbu xizmatni qoʻshganingizda yaratildi. Keraksizini oʻchirib qoʻying.",
+  "alertAnyCity": "Istalgan shahar"
 }

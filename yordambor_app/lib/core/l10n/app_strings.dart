@@ -1287,6 +1287,9 @@ class AppStrings {
   String get reminderFollowUpServiceDone => _l10n.reminderFollowUpServiceDone;
   String reminderDefaultBody(String name) => _l10n.reminderDefaultBody(name);
   String get remindersSettingsPickOne => _l10n.remindersSettingsPickOne;
+  String get alertFromServiceTag => _l10n.alertFromServiceTag;
+  String get alertFromServiceHint => _l10n.alertFromServiceHint;
+  String get alertAnyCity => _l10n.alertAnyCity;
   String get remindersSettingsFollowUpHint =>
       _l10n.remindersSettingsFollowUpHint;
 

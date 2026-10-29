@@ -3551,4 +3551,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get remindersSettingsFollowUpHint => '我们会询问进展，让交易和收入保持最新。';
+
+  @override
+  String get alertFromServiceTag => '为您的服务';
+
+  @override
+  String get alertFromServiceHint => '添加此服务时自动创建。可关闭不需要的提醒。';
+
+  @override
+  String get alertAnyCity => '任何城市';
 }

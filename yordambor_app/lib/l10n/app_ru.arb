@@ -1193,5 +1193,8 @@
   "reminderFollowUpServiceDone": "Услуга выполнена?",
   "reminderDefaultBody": "Встреча с {name}",
   "remindersSettingsPickOne": "Выберите хотя бы одно время",
-  "remindersSettingsFollowUpHint": "Мы спросим, как всё прошло, чтобы сделка и доход были актуальны."
+  "remindersSettingsFollowUpHint": "Мы спросим, как всё прошло, чтобы сделка и доход были актуальны.",
+  "alertFromServiceTag": "Для вашей услуги",
+  "alertFromServiceHint": "Создано, когда вы добавили эту услугу. Отключите лишнее.",
+  "alertAnyCity": "Любой город"
 }

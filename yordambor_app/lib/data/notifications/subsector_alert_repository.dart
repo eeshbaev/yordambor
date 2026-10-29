@@ -82,13 +82,16 @@ class SubsectorAlertRepository {
     return _map(Map<String, dynamic>.from(row));
   }
 
+  /// Sets the alert's switches. With all off it is deleted, unless
+  /// [keepWhenOff] (an alert made for a service).
   Future<void> updateFlags({
     required String id,
     required bool alertNewService,
     required bool alertDiscount,
     required bool alertHelpPost,
+    bool keepWhenOff = false,
   }) async {
-    if (!alertNewService && !alertDiscount && !alertHelpPost) {
+    if (!keepWhenOff && !alertNewService && !alertDiscount && !alertHelpPost) {
       await delete(id);
       return;
     }
@@ -109,18 +112,6 @@ class SubsectorAlertRepository {
     await client.from('subsector_alert_subscriptions').delete().eq('id', id);
   }
 
-  SubsectorAlertSubscription _map(Map<String, dynamic> map) {
-    return SubsectorAlertSubscription(
-      id: map['id'] as String,
-      userId: map['user_id'] as String,
-      categoryId: map['category_id'] as String,
-      subcategoryId: map['subcategory_id'] as String,
-      providerType: map['provider_type'] as String,
-      alertNewService: map['alert_new_service'] as bool? ?? false,
-      alertDiscount: map['alert_discount'] as bool? ?? false,
-      alertHelpPost: map['alert_help_post'] as bool? ?? false,
-      createdAt: DateTime.parse(map['created_at'] as String),
-      updatedAt: DateTime.parse(map['updated_at'] as String),
-    );
-  }
+  SubsectorAlertSubscription _map(Map<String, dynamic> map) =>
+      SubsectorAlertSubscription.fromRow(map);
 }
