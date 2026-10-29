@@ -76,6 +76,7 @@ abstract final class DemoEnrichment {
       authorName: item.authorName,
       message: item.message,
       price: item.price,
+      pricingModel: item.pricingModel,
       currency: item.currency,
       startDate: item.startDate,
       durationMinutes: item.durationMinutes,

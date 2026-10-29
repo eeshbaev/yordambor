@@ -4,6 +4,7 @@ import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_summary.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
+import 'package:yordambor/domain/entities/yordam_kerak_post.dart';
 
 /// "120 000 soʻm": grouped with no-break spaces, "soʻm" instead of UZS.
 String formatXizmatPriceAmount(
@@ -14,39 +15,67 @@ String formatXizmatPriceAmount(
   return formatMoney(price, currency, languageCode: languageCode);
 }
 
-String xizmatPricingLabel(XizmatFeedItem item, AppStrings strings) {
-  if (item.pricingModel == XizmatPricingModel.negotiable) {
-    return strings.xizmatPriceNegotiable;
-  }
+String xizmatPricingLabel(XizmatFeedItem item, AppStrings strings) =>
+    pricingLabel(
+      model: item.pricingModel,
+      amount: item.basePrice,
+      currency: item.currency,
+      strings: strings,
+    );
 
-  final amount = item.basePrice;
-  if (amount == null || amount <= 0) {
+/// What a help request offers to pay: "350 000 soʻm", "50 000 soʻm/day"...,
+/// or "Price negotiable".
+String yordamKerakPriceLabel(YordamKerakFeedItem item, AppStrings strings) {
+  final price = item.price;
+  // Requests from before price units (and the samples) give an amount for
+  // the whole job.
+  final model = price != null && price > 0 && !item.pricingModel.hasAmount
+      ? XizmatPricingModel.fixed
+      : item.pricingModel;
+  return pricingLabel(
+    model: model,
+    amount: price,
+    currency: item.currency,
+    strings: strings,
+  );
+}
+
+/// "120 000 soʻm", "120 000 soʻm/hr" and so on; "Price negotiable" when
+/// there is no amount to show.
+String pricingLabel({
+  required XizmatPricingModel model,
+  required double? amount,
+  required String? currency,
+  required AppStrings strings,
+}) {
+  if (!model.hasAmount || amount == null || amount <= 0) {
     return strings.xizmatPriceNegotiable;
   }
 
   final formatted = formatXizmatPriceAmount(
     amount,
-    item.currency,
+    currency ?? 'UZS',
     languageCode: strings.languageCode,
   );
-  return switch (item.pricingModel) {
+  return switch (model) {
     XizmatPricingModel.fixed => formatted,
     XizmatPricingModel.hourly => strings.xizmatPricePerHour(formatted),
+    XizmatPricingModel.daily => strings.xizmatPricePerDay(formatted),
+    XizmatPricingModel.monthly => strings.xizmatPricePerMonth(formatted),
+    XizmatPricingModel.unit => strings.xizmatPricePerUnit(formatted),
     XizmatPricingModel.negotiable => strings.xizmatPriceNegotiable,
   };
 }
 
 /// The price in two parts, for a figure with a word under it: "120 000 soʻm"
-/// over "narx" (or "soatiga" when it is by the hour); "Kelishiladi" over
+/// over "narx" (or "soatiga", "kuniga"... for a rate); "Kelishiladi" over
 /// "narx" when it is agreed case by case.
 ({String value, String unit}) xizmatPriceParts(
   XizmatFeedItem item,
   AppStrings strings,
 ) {
   final amount = item.basePrice;
-  if (item.pricingModel == XizmatPricingModel.negotiable ||
-      amount == null ||
-      amount <= 0) {
+  if (!item.pricingModel.hasAmount || amount == null || amount <= 0) {
     return (value: strings.xizmatStatNegotiable, unit: strings.xizmatStatPrice);
   }
   final formatted = formatXizmatPriceAmount(
@@ -56,9 +85,15 @@ String xizmatPricingLabel(XizmatFeedItem item, AppStrings strings) {
   );
   return (
     value: formatted,
-    unit: item.pricingModel == XizmatPricingModel.hourly
-        ? strings.xizmatStatPerHour
-        : strings.xizmatStatPrice,
+    unit: switch (item.pricingModel) {
+      XizmatPricingModel.hourly => strings.xizmatStatPerHour,
+      XizmatPricingModel.daily => strings.xizmatStatPerDay,
+      XizmatPricingModel.monthly => strings.xizmatStatPerMonth,
+      XizmatPricingModel.unit => strings.xizmatStatPerUnit,
+      XizmatPricingModel.fixed ||
+      XizmatPricingModel.negotiable =>
+        strings.xizmatStatPrice,
+    },
   );
 }
 
@@ -104,27 +139,20 @@ TaklifPricingPrefill taklifPrefillFromKelishuvSummary(KelishuvSummary summary) {
 }
 
 TaklifPricingPrefill taklifPrefillFromXizmat(XizmatFeedItem item) {
-  if (item.pricingModel == XizmatPricingModel.negotiable) {
-    return const TaklifPricingPrefill();
-  }
-
   final rate = item.basePrice;
-  if (rate == null || rate <= 0) {
+  if (!item.pricingModel.hasAmount || rate == null || rate <= 0) {
     return const TaklifPricingPrefill();
   }
 
-  return switch (item.pricingModel) {
-    XizmatPricingModel.fixed => TaklifPricingPrefill(price: rate),
-    XizmatPricingModel.hourly => () {
-        final min = item.minDurationMinutes;
-        if (min != null && min > 0) {
-          return TaklifPricingPrefill(
-            price: rate * (min / 60),
-            durationMinutes: min,
-          );
-        }
-        return TaklifPricingPrefill(price: rate);
-      }(),
-    XizmatPricingModel.negotiable => const TaklifPricingPrefill(),
-  };
+  if (item.pricingModel == XizmatPricingModel.hourly) {
+    final min = item.minDurationMinutes;
+    if (min != null && min > 0) {
+      return TaklifPricingPrefill(
+        price: rate * (min / 60),
+        durationMinutes: min,
+      );
+    }
+  }
+  // Per job, day, month or piece: the rate is where the offer starts.
+  return TaklifPricingPrefill(price: rate);
 }

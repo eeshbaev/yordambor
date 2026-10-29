@@ -108,8 +108,8 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
     _pricingModel = item.pricingModel;
     if (item.basePrice != null) {
       final price = item.basePrice!;
-      _priceController.text =
-          price % 1 == 0 ? price.toInt().toString() : price.toString();
+      // Whole soʻm: a decimal point would read as a thousands separator.
+      _priceController.text = price.round().toString();
     }
     if (item.minDurationMinutes != null) {
       _minDurationController.text = item.minDurationMinutes.toString();
@@ -209,9 +209,9 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
       return;
     }
 
-    final basePrice = _pricingModel == XizmatPricingModel.negotiable
-        ? null
-        : parseOptionalPrice(_priceController.text);
+    final basePrice = _pricingModel.hasAmount
+        ? parseOptionalPrice(_priceController.text)
+        : null;
     final minDuration = _pricingModel == XizmatPricingModel.hourly
         ? parseOptionalMinutes(_minDurationController.text)
         : null;

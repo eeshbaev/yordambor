@@ -9,6 +9,7 @@ class RequestDraft {
     this.title = '',
     this.message = '',
     this.price = '',
+    this.pricingModel,
     this.duration = '',
     this.categoryId,
     this.subcategoryId,
@@ -24,6 +25,10 @@ class RequestDraft {
   final String title;
   final String message;
   final String price;
+
+  /// How the price is meant (a [XizmatPricingModel] name); null until
+  /// picked.
+  final String? pricingModel;
   final String duration;
   final String? categoryId;
   final String? subcategoryId;
@@ -47,6 +52,7 @@ class RequestDraft {
         'title': title,
         'message': message,
         'price': price,
+        'pricingModel': pricingModel,
         'duration': duration,
         'categoryId': categoryId,
         'subcategoryId': subcategoryId,
@@ -75,6 +81,7 @@ class RequestDraft {
       title: text('title'),
       message: text('message'),
       price: text('price'),
+      pricingModel: id('pricingModel'),
       duration: text('duration'),
       categoryId: id('categoryId'),
       subcategoryId: id('subcategoryId'),

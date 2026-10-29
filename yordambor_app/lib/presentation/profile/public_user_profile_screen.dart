@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 import 'package:yordambor/application/providers/certificate_providers.dart';
 import 'package:yordambor/application/providers/growth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
@@ -217,6 +218,7 @@ class PublicUserProfileScreen extends ConsumerWidget {
                             ),
                             cityLabel: strings.serviceCityDisplayLabel(item.serviceCity),
                             sampleLabel: item.isDemo ? strings.sampleTag : null,
+                            priceLabel: yordamKerakPriceLabel(item, strings),
                             yordamBorLabel: strings.filterYordamBor,
                             onTap: () => context.push('/post/${item.id}'),
                             onYordamBor: () => answerHelpRequest(context, ref, item),

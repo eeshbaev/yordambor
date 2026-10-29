@@ -1008,10 +1008,6 @@
   "businessStepAvailabilityWhy": "Clients write to people who can come soon",
   "businessStepShare": "Share your service link",
   "businessStepShareWhy": "Send it on Telegram so friends can recommend you",
-  "businessStartTitle": "Turn your skills into income",
-  "businessStartStep1": "Describe your service and price",
-  "businessStartStep2": "Add photos and your city",
-  "businessStartStep3": "Get requests and agree on the deal",
   "businessServicesCount": "My services · {count} of {max}",
   "@businessServicesCount": {
     "placeholders": {"count": {"type": "int"}, "max": {"type": "int"}}

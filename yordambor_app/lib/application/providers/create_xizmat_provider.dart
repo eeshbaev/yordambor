@@ -40,7 +40,7 @@ class CreateXizmatState {
     this.errorMessage,
     this.contactPhone = '',
     this.showContactPhone = false,
-    this.pricingModel = XizmatPricingModel.negotiable,
+    this.pricingModel,
     this.basePriceText = '',
     this.minDurationText = '',
     this.availabilityVisible = false,
@@ -63,7 +63,8 @@ class CreateXizmatState {
   final String? errorMessage;
   final String contactPhone;
   final bool showContactPhone;
-  final XizmatPricingModel pricingModel;
+  /// Null until the person picks a price; every service states one.
+  final XizmatPricingModel? pricingModel;
   final String basePriceText;
   final String minDurationText;
   final bool availabilityVisible;
@@ -324,10 +325,11 @@ class CreateXizmatNotifier extends StateNotifier<CreateXizmatState> {
         return false;
       }
 
-      final basePrice = state.pricingModel == XizmatPricingModel.negotiable
-          ? null
-          : parseOptionalPrice(state.basePriceText);
-      final minDuration = state.pricingModel == XizmatPricingModel.hourly
+      final pricingModel = state.pricingModel!;
+      final basePrice = pricingModel.hasAmount
+          ? parseOptionalPrice(state.basePriceText)
+          : null;
+      final minDuration = pricingModel == XizmatPricingModel.hourly
           ? parseOptionalMinutes(state.minDurationText)
           : null;
 
@@ -340,7 +342,7 @@ class CreateXizmatNotifier extends StateNotifier<CreateXizmatState> {
         portfolioImageUrls: const [],
         contactPhone: normalizeOptionalContactPhone(state.contactPhone),
         showContactPhone: state.showContactPhone,
-        pricingModel: state.pricingModel,
+        pricingModel: pricingModel,
         basePrice: basePrice,
         minDurationMinutes: minDuration,
         availabilityVisible: state.availabilityVisible,

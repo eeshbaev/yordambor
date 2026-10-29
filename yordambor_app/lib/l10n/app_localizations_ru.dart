@@ -1777,7 +1777,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get xizmatPricingSectionSubtitle =>
-      'Договорная, фиксированная или почасовая — вы сами выбираете.';
+      'Когда цена видна, клиенты пишут быстрее.';
 
   @override
   String get xizmatPricingNegotiable => 'Договорная';
@@ -1805,8 +1805,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get xizmatPricingMinDurationHint => 'Например: 120';
 
   @override
-  String get xizmatPricingRequiredError =>
-      'Укажите цену для фиксированной или почасовой оплаты';
+  String get xizmatPricingRequiredError => 'Укажите сумму';
 
   @override
   String get xizmatPriceNegotiable => 'Цена по договорённости';
@@ -2187,9 +2186,9 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count сделки ждут вашего ответа',
-      one: '$count сделка ждёт вашего ответа',
-      few: '$count сделки ждут вашего ответа',
       many: '$count сделок ждут вашего ответа',
+      few: '$count сделки ждут вашего ответа',
+      one: '$count сделка ждёт вашего ответа',
     );
     return '$_temp0';
   }
@@ -2200,9 +2199,9 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count сделки в работе',
-      one: '$count сделка в работе',
-      few: '$count сделки в работе',
       many: '$count сделок в работе',
+      few: '$count сделки в работе',
+      one: '$count сделка в работе',
     );
     return '$_temp0';
   }
@@ -2304,9 +2303,9 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other: 'выполненной работы',
-      one: 'выполненная работа',
-      few: 'выполненные работы',
       many: 'выполненных работ',
+      few: 'выполненные работы',
+      one: 'выполненная работа',
     );
     return '$_temp0';
   }
@@ -2418,9 +2417,9 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count звезды',
-      one: '$count звезда',
-      few: '$count звезды',
       many: '$count звёзд',
+      few: '$count звезды',
+      one: '$count звезда',
     );
     return '$_temp0';
   }
@@ -2447,9 +2446,9 @@ class AppLocalizationsRu extends AppLocalizations {
       days,
       locale: localeName,
       other: '$days дня',
-      one: '$days день',
-      few: '$days дня',
       many: '$days дней',
+      few: '$days дня',
+      one: '$days день',
     );
     return 'Если ответа не будет, предложение отменится через $_temp0';
   }
@@ -2460,9 +2459,9 @@ class AppLocalizationsRu extends AppLocalizations {
       days,
       locale: localeName,
       other: '$days дня',
-      one: '$days дня',
-      few: '$days дней',
       many: '$days дней',
+      few: '$days дней',
+      one: '$days дня',
     );
     return 'Ответьте в течение $_temp0, иначе предложение отменится';
   }
@@ -2619,18 +2618,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get businessStepShareWhy =>
       'Отправьте в Telegram — друзья порекомендуют вас';
-
-  @override
-  String get businessStartTitle => 'Превратите навыки в доход';
-
-  @override
-  String get businessStartStep1 => 'Опишите услугу и цену';
-
-  @override
-  String get businessStartStep2 => 'Добавьте фото и город';
-
-  @override
-  String get businessStartStep3 => 'Получайте заявки и договаривайтесь';
 
   @override
   String businessServicesCount(int count, int max) {
@@ -3132,9 +3119,9 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count отзыва',
-      one: '$count отзыв',
-      few: '$count отзыва',
       many: '$count отзывов',
+      few: '$count отзыва',
+      one: '$count отзыв',
     );
     return '$_temp0';
   }
@@ -3178,9 +3165,9 @@ class AppLocalizationsRu extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count услуги',
-      one: '$count услуга',
-      few: '$count услуги',
       many: '$count услуг',
+      few: '$count услуги',
+      one: '$count услуга',
     );
     return '$_temp0';
   }
@@ -3188,4 +3175,517 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get xizmatAboutHint =>
       'Что вы делаете, как работаете, что обещаете клиентам';
+
+  @override
+  String xizmatPricePerDay(String amount) {
+    return '$amount/день';
+  }
+
+  @override
+  String xizmatPricePerMonth(String amount) {
+    return '$amount/мес.';
+  }
+
+  @override
+  String xizmatPricePerUnit(String amount) {
+    return '$amount/шт.';
+  }
+
+  @override
+  String get xizmatStatPerDay => 'в день';
+
+  @override
+  String get xizmatStatPerMonth => 'в месяц';
+
+  @override
+  String get xizmatStatPerUnit => 'за штуку';
+
+  @override
+  String get priceChoiceTitle => 'Цена';
+
+  @override
+  String get priceChoiceServiceHint =>
+      'Когда цена видна, клиенты пишут быстрее.';
+
+  @override
+  String get priceChoiceRequestHint => 'Сколько вы готовы заплатить?';
+
+  @override
+  String get priceChoiceNegotiable => 'Договорная';
+
+  @override
+  String get priceChoiceNegotiableHint => 'Обсудите в чате';
+
+  @override
+  String get priceChoiceAmount => 'Точная цена';
+
+  @override
+  String get priceChoiceAmountHint => 'Сумма и единица';
+
+  @override
+  String get priceAmountLabel => 'Сумма (сум)';
+
+  @override
+  String get priceAmountHint => 'Например: 150000';
+
+  @override
+  String get priceUnitFixed => 'За работу';
+
+  @override
+  String get priceUnitHour => 'В час';
+
+  @override
+  String get priceUnitDay => 'В день';
+
+  @override
+  String get priceUnitMonth => 'В месяц';
+
+  @override
+  String get priceUnitUnit => 'За штуку';
+
+  @override
+  String get priceChoiceRequired =>
+      'Выберите цену: договорная или точная сумма';
+
+  @override
+  String get growthI00Title => 'Ваша услуга на YordamBor!';
+
+  @override
+  String get growthI00Body =>
+      'Поздравляем! 30 дней мы будем присылать короткие советы, которые помогут найти больше клиентов.';
+
+  @override
+  String get growthI01Title => 'Фото вызывают доверие';
+
+  @override
+  String get growthI01Body =>
+      'Добавьте хотя бы 3 фото своих работ — снимки «до и после» работают особенно хорошо.';
+
+  @override
+  String get growthI02Title => 'Покажите цену';
+
+  @override
+  String get growthI02Body =>
+      'Точная цена — меньше вопросов и быстрее сделка. Укажите цену за час, день или работу.';
+
+  @override
+  String get growthI03Title => 'Когда вы свободны?';
+
+  @override
+  String get growthI03Body =>
+      'Включите статус «Сейчас свободен»: клиенты первыми пишут тем, кто может прийти быстро.';
+
+  @override
+  String get growthI04Title => 'Пригласите своих клиентов в YordamBor';
+
+  @override
+  String get growthI04Body =>
+      'Отправьте постоянным клиентам ссылку на услугу: в следующий раз они найдут вас в одно касание.';
+
+  @override
+  String get growthI05Title => 'Быстрый ответ — больше работы';
+
+  @override
+  String get growthI05Body =>
+      'Отвечайте на запросы в течение часа: клиенты обычно выбирают того, кто ответил первым.';
+
+  @override
+  String get growthI06Title => 'Расскажите о себе';
+
+  @override
+  String get growthI06Body =>
+      'Опишите опыт и манеру работы в 3–4 предложениях: клиенту важно знать, с кем он работает.';
+
+  @override
+  String get growthI07Title => 'Отзыв — лучшая реклама';
+
+  @override
+  String get growthI07Body =>
+      'После работы попросите клиента оставить отзыв в YordamBor: каждая оценка приводит новых клиентов.';
+
+  @override
+  String get growthI08Title => 'YordamBor пригодится и вашим друзьям';
+
+  @override
+  String get growthI08Body =>
+      'Расскажите друзьям и соседям о YordamBor: больше клиентов — больше заказов.';
+
+  @override
+  String get growthI09Title => 'Обновите календарь';
+
+  @override
+  String get growthI09Body =>
+      'Отметьте занятые дни: клиенты увидят свободное время и запишутся на конкретный день.';
+
+  @override
+  String get growthI10Title => 'Следите за доходом';
+
+  @override
+  String get growthI10Body =>
+      'В «Инструментах» есть доход, книга клиентов и чеки — всё в одном месте.';
+
+  @override
+  String get growthI11Title => '30 дней — отличный старт!';
+
+  @override
+  String get growthI11Body =>
+      'Поделитесь ссылкой на услугу в соцсетях и продолжайте расти на YordamBor.';
+
+  @override
+  String get growthO00Title => 'Ваша организация на YordamBor!';
+
+  @override
+  String get growthO00Body =>
+      'Поздравляем! 30 дней мы будем присылать короткие советы, как увеличить поток клиентов.';
+
+  @override
+  String get growthO01Title => 'Покажите своё место';
+
+  @override
+  String get growthO01Body =>
+      'Добавьте хотя бы 3 фото здания, команды и работ: клиент заранее увидит, куда придёт.';
+
+  @override
+  String get growthO02Title => 'Откройте цены';
+
+  @override
+  String get growthO02Body =>
+      'Укажите цену основной услуги: клиенты чаще пишут организациям с понятными ценами.';
+
+  @override
+  String get growthO03Title => 'Укажите часы работы';
+
+  @override
+  String get growthO03Body =>
+      'Укажите рабочие дни и часы: клиенты сразу увидят, когда можно прийти.';
+
+  @override
+  String get growthO04Title => 'Пригласите своих клиентов в YordamBor';
+
+  @override
+  String get growthO04Body =>
+      'Поделитесь ссылкой в своём Telegram-канале, на кассе или в SMS: клиенты найдут вас в одно касание.';
+
+  @override
+  String get growthO05Title => 'Лицензии и сертификаты';
+
+  @override
+  String get growthO05Body =>
+      'Добавьте документы в профиль: официальное подтверждение повышает доверие к организации.';
+
+  @override
+  String get growthO06Title => 'Каждое направление — отдельная услуга';
+
+  @override
+  String get growthO06Body =>
+      'Добавьте услуги по отдельности (до 5): клиент быстрее найдёт именно то, что нужно.';
+
+  @override
+  String get growthO07Title => 'Отвечайте на запросы быстро';
+
+  @override
+  String get growthO07Body =>
+      'Назначьте сотрудника, отвечающего на запросы: быстрый ответ — больше сделок.';
+
+  @override
+  String get growthO08Title => 'Просите отзыв у каждого клиента';
+
+  @override
+  String get growthO08Body =>
+      'Отзывы довольных клиентов поднимают рейтинг и приводят новых клиентов.';
+
+  @override
+  String get growthO09Title => 'Разместите ссылку на визитке';
+
+  @override
+  String get growthO09Body =>
+      'Разместите ссылку YordamBor на визитке, в меню или на витрине: запись в одно касание.';
+
+  @override
+  String get growthO10Title => 'Учёт в одном месте';
+
+  @override
+  String get growthO10Body =>
+      'Чеки, доход и книга клиентов — в «Инструментах»: управляйте организацией аккуратно.';
+
+  @override
+  String get growthO11Title => 'Первый месяц позади!';
+
+  @override
+  String get growthO11Body =>
+      'Смотрите результаты в карточке услуги и продолжайте приумножать клиентов на YordamBor.';
+
+  @override
+  String get growthProgramTitle => 'Развивайте свой бизнес';
+
+  @override
+  String growthProgramDay(int day) {
+    return 'День $day из 30';
+  }
+
+  @override
+  String get growthTipDone => 'Готово';
+
+  @override
+  String get growthEarlierTips => 'Предыдущие советы';
+
+  @override
+  String get growthTipsOff => 'Отключить советы';
+
+  @override
+  String get growthTipsOffDone =>
+      'Советы отключены. Включить их снова можно в настройках напоминаний.';
+
+  @override
+  String get growthTipsSetting => 'Советы для бизнеса';
+
+  @override
+  String get growthTipsSettingSub => '30 дней после добавления услуги';
+
+  @override
+  String growthInviteShareText(String link) {
+    return 'YordamBor — надёжные мастера и услуги в одном месте. Скачайте: $link';
+  }
+
+  @override
+  String get growthActionPhotos => 'Добавить фото';
+
+  @override
+  String get growthActionPrice => 'Указать цену';
+
+  @override
+  String get growthActionAvailability => 'Указать статус';
+
+  @override
+  String get growthActionHours => 'Указать часы';
+
+  @override
+  String get growthActionShare => 'Поделиться ссылкой';
+
+  @override
+  String get growthActionInvite => 'Пригласить';
+
+  @override
+  String get growthActionReply => 'Открыть запросы';
+
+  @override
+  String get growthActionDescription => 'Написать описание';
+
+  @override
+  String get growthActionReviews => 'Открыть сделки';
+
+  @override
+  String get growthActionCalendar => 'Открыть календарь';
+
+  @override
+  String get growthActionTools => 'Открыть инструменты';
+
+  @override
+  String get growthActionCertificates => 'Добавить документ';
+
+  @override
+  String get growthActionMoreServices => 'Добавить услугу';
+
+  @override
+  String get growthActionMyServices => 'Мои услуги';
+
+  @override
+  String get appointmentPhaseNow => 'Сейчас';
+
+  @override
+  String get appointmentPhaseToday => 'Сегодня';
+
+  @override
+  String get appointmentPhasePlanned => 'Запланировано';
+
+  @override
+  String get appointmentPhasePast => 'Ожидает завершения';
+
+  @override
+  String get appointmentPhaseDone => 'Выполнено';
+
+  @override
+  String get appointmentPhaseCancelled => 'Отменено';
+
+  @override
+  String get appointmentRoleProvider => 'Я оказываю';
+
+  @override
+  String get appointmentRoleClient => 'Я получаю';
+
+  @override
+  String get appointmentPartyClient => 'Клиент';
+
+  @override
+  String get appointmentPartyProvider => 'Исполнитель';
+
+  @override
+  String get appointmentCall => 'Позвонить';
+
+  @override
+  String get actionChat => 'Написать';
+
+  @override
+  String get actionKeep => 'Оставить';
+
+  @override
+  String get appointmentCancel => 'Отменить';
+
+  @override
+  String get appointmentCancelTitle => 'Отменить встречу?';
+
+  @override
+  String get appointmentCancelBody =>
+      'Это действие нельзя отменить. Другая сторона будет уведомлена.';
+
+  @override
+  String get appointmentCancelConfirm => 'Да, отменить';
+
+  @override
+  String get appointmentSaveClient => 'Сохранить в список клиентов';
+
+  @override
+  String get appointmentFactPrice => 'ЦЕНА';
+
+  @override
+  String get appointmentFactDuration => 'ПРОДОЛЖИТ.';
+
+  @override
+  String appointmentDuration(int minutes) {
+    return '$minutes мин';
+  }
+
+  @override
+  String get availabilitySheetCaption => 'Что увидят клиенты прямо сейчас?';
+
+  @override
+  String get availabilityTileNowHint => 'Принимаю заказы сейчас';
+
+  @override
+  String get availabilityTileBusyHint => 'Занят, скоро вернусь';
+
+  @override
+  String get availabilityTileBookingHint => 'Бронируйте заранее';
+
+  @override
+  String get availabilityTileHidden => 'Скрыто';
+
+  @override
+  String get availabilityTileHiddenHint => 'Услуга не видна';
+
+  @override
+  String get availabilityUntilTitle => 'До когда?';
+
+  @override
+  String get availabilityUntilHour => '1 час';
+
+  @override
+  String get availabilityUntilToday => 'До конца дня';
+
+  @override
+  String get availabilityUntilForever => 'Бессрочно';
+
+  @override
+  String get availabilityHoursTitle => 'Рабочее время';
+
+  @override
+  String get availabilityHoursOwn => 'Мой график';
+
+  @override
+  String get availabilityHoursShared => 'Общее время';
+
+  @override
+  String get availabilityBusyToggle => 'Показывать занятые часы клиентам';
+
+  @override
+  String get availabilityBusyToggleHint =>
+      'Клиенты видят двухнедельную сетку с вашими свободными и занятыми слотами';
+
+  @override
+  String get availabilityPreview => 'Как видят клиенты';
+
+  @override
+  String get availabilityHiddenPreview => 'Скрыто из поиска';
+
+  @override
+  String get availabilitySaved => 'Статус сохранён';
+
+  @override
+  String get businessEmptyTitle => 'Начните зарабатывать на YordamBor';
+
+  @override
+  String get businessEmptyBody =>
+      'Тысячи людей рядом прямо сейчас ищут помощи. Добавьте первую услугу — это займёт всего 2 минуты.';
+
+  @override
+  String get calendarTabTitle => 'Расписание';
+
+  @override
+  String get calendarNoAppointments => 'Встреч пока нет';
+
+  @override
+  String get calendarNoAppointmentsHint =>
+      'Согласованные сделки появятся здесь как встречи';
+
+  @override
+  String get calendarSectionToday => 'Сегодня';
+
+  @override
+  String get calendarSectionUpcoming => 'Предстоящие';
+
+  @override
+  String get calendarSectionPast => 'Прошедшие';
+
+  @override
+  String get calendarBusyTitle => 'Моя занятость';
+
+  @override
+  String get calendarBusyAllDay => 'Занят весь день';
+
+  @override
+  String get calendarBusyHours => 'Занятые часы';
+
+  @override
+  String get calendarServicesStrip => 'Мои услуги';
+
+  @override
+  String get calendarReminders => 'Напоминания';
+
+  @override
+  String get reminderLeadDay => 'За 1 день';
+
+  @override
+  String get reminderLead3Hours => 'За 3 часа';
+
+  @override
+  String get reminderLeadHour => 'За 1 час';
+
+  @override
+  String get reminderLead15Min => 'За 15 минут';
+
+  @override
+  String get saveClientPromptTitle => 'Сохранить клиента?';
+
+  @override
+  String saveClientPromptBody(String name) {
+    return 'Хотите добавить $name в список клиентов?';
+  }
+
+  @override
+  String get saveClientConfirm => 'Сохранить';
+
+  @override
+  String get saveClientSkip => 'Не сейчас';
+
+  @override
+  String get saveClientDone => 'Клиент сохранён';
+
+  @override
+  String get notifSectionSoon => 'Ближайшие встречи';
+
+  @override
+  String get notifAppointmentCancelledTitle => 'Встреча отменена';
+
+  @override
+  String get notifSubsectorHelpTitle => 'В вашей области нужна помощь';
 }

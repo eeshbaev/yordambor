@@ -77,6 +77,7 @@ class CategoryLabelResolver {
       authorName: item.authorName,
       message: item.message,
       price: item.price,
+      pricingModel: item.pricingModel,
       currency: item.currency,
       startDate: item.startDate,
       durationMinutes: item.durationMinutes,

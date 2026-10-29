@@ -567,8 +567,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get postShowPhoneLabel => 'Telefon raqamini koʻrsatish';
 
   @override
-  String get postShowPhoneSubtitle =>
-      'Bu eʼlonda telefon raqamingiz koʻrinadi';
+  String get postShowPhoneSubtitle => 'Bu eʼlonda telefon raqamingiz koʻrinadi';
 
   @override
   String get postShowProfileLabel => 'Profilni koʻrsatish';
@@ -1789,7 +1788,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get xizmatPricingSectionSubtitle =>
-      'Kelishiladi, belgilangan yoki soatlik — oʻzingiz tanlang.';
+      'Narx koʻrinib tursa, mijozlar tezroq yozadi.';
 
   @override
   String get xizmatPricingNegotiable => 'Kelishiladi';
@@ -1817,8 +1816,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get xizmatPricingMinDurationHint => 'Masalan: 120';
 
   @override
-  String get xizmatPricingRequiredError =>
-      'Belgilangan yoki soatlik uchun narx kiriting';
+  String get xizmatPricingRequiredError => 'Summani kiriting';
 
   @override
   String get xizmatPriceNegotiable => 'Narx kelishiladi';
@@ -1918,8 +1916,7 @@ class AppLocalizationsUz extends AppLocalizations {
       'YordamBor kafolat bermaydi. Bu xizmat koʻrsatuvchining oʻz soʻzi.';
 
   @override
-  String get xizmatPromiseRequiredError =>
-      'Vaʼdangizni yozing yoki oʻchiring';
+  String get xizmatPromiseRequiredError => 'Vaʼdangizni yozing yoki oʻchiring';
 
   @override
   String get xizmatPromiseTooLongError => 'Vaʼda juda uzun';
@@ -2611,18 +2608,6 @@ class AppLocalizationsUz extends AppLocalizations {
       'Telegramda yuboring — doʻstlaringiz sizni tavsiya qiladi';
 
   @override
-  String get businessStartTitle => 'Mahoratingizni daromadga aylantiring';
-
-  @override
-  String get businessStartStep1 => 'Xizmat va narxni yozing';
-
-  @override
-  String get businessStartStep2 => 'Rasmlar va shaharni qoʻshing';
-
-  @override
-  String get businessStartStep3 => 'Soʻrovlar oling va kelishing';
-
-  @override
   String businessServicesCount(int count, int max) {
     return 'Xizmatlarim · $max tadan $count';
   }
@@ -2900,13 +2885,15 @@ class AppLocalizationsUz extends AppLocalizations {
   String get onbIntro1Title => 'Xizmatlar yoningizda';
 
   @override
-  String get onbIntro1Body => 'Butun Oʻzbekiston boʻylab mutaxassislar va tashkilotlar.';
+  String get onbIntro1Body =>
+      'Butun Oʻzbekiston boʻylab mutaxassislar va tashkilotlar.';
 
   @override
   String get onbIntro2Title => 'Yordam kerakmi? Soʻrang';
 
   @override
-  String get onbIntro2Body => 'Vazifani yozing — ijrochilar oʻzlari javob beradi.';
+  String get onbIntro2Body =>
+      'Vazifani yozing — ijrochilar oʻzlari javob beradi.';
 
   @override
   String get onbIntro3Title => 'Xizmatingizni taklif qiling';
@@ -3174,4 +3161,518 @@ class AppLocalizationsUz extends AppLocalizations {
   @override
   String get xizmatAboutHint =>
       'Nima qilasiz, qanday ishlaysiz, mijozga nimani vaʼda qilasiz';
+
+  @override
+  String xizmatPricePerDay(String amount) {
+    return '$amount/kun';
+  }
+
+  @override
+  String xizmatPricePerMonth(String amount) {
+    return '$amount/oy';
+  }
+
+  @override
+  String xizmatPricePerUnit(String amount) {
+    return '$amount/dona';
+  }
+
+  @override
+  String get xizmatStatPerDay => 'kuniga';
+
+  @override
+  String get xizmatStatPerMonth => 'oyiga';
+
+  @override
+  String get xizmatStatPerUnit => 'donasiga';
+
+  @override
+  String get priceChoiceTitle => 'Narx';
+
+  @override
+  String get priceChoiceServiceHint =>
+      'Narx koʻrinib tursa, mijozlar tezroq yozadi.';
+
+  @override
+  String get priceChoiceRequestHint => 'Qancha toʻlashga tayyorsiz?';
+
+  @override
+  String get priceChoiceNegotiable => 'Kelishiladi';
+
+  @override
+  String get priceChoiceNegotiableHint => 'Suhbatda kelishasiz';
+
+  @override
+  String get priceChoiceAmount => 'Aniq narx';
+
+  @override
+  String get priceChoiceAmountHint => 'Summa va birlik';
+
+  @override
+  String get priceAmountLabel => 'Summa (soʻm)';
+
+  @override
+  String get priceAmountHint => 'Masalan: 150000';
+
+  @override
+  String get priceUnitFixed => 'Ish uchun';
+
+  @override
+  String get priceUnitHour => 'Soatiga';
+
+  @override
+  String get priceUnitDay => 'Kuniga';
+
+  @override
+  String get priceUnitMonth => 'Oyiga';
+
+  @override
+  String get priceUnitUnit => 'Donasiga';
+
+  @override
+  String get priceChoiceRequired =>
+      'Narxni tanlang: kelishiladi yoki aniq summa';
+
+  @override
+  String get growthI00Title => 'Xizmatingiz YordamBorʼda!';
+
+  @override
+  String get growthI00Body =>
+      'Tabriklaymiz! 30 kun davomida koʻproq mijoz topishga yordam beradigan qisqa maslahatlar yuboramiz.';
+
+  @override
+  String get growthI01Title => 'Rasmlar ishonch uygʻotadi';
+
+  @override
+  String get growthI01Body =>
+      'Ishingizdan kamida 3 ta rasm qoʻshing — «oldin va keyin» suratlari ayniqsa yaxshi ishlaydi.';
+
+  @override
+  String get growthI02Title => 'Narxni koʻrsating';
+
+  @override
+  String get growthI02Body =>
+      'Aniq narx — kamroq savol va tezroq kelishuv. Soat, kun yoki ish uchun narx qoʻying.';
+
+  @override
+  String get growthI03Title => 'Qachon boʻshsiz?';
+
+  @override
+  String get growthI03Body =>
+      'Holatingizni «Hozir mavjud» qiling: mijozlar tez kela oladigan ustaga birinchi yozadi.';
+
+  @override
+  String get growthI04Title => 'Mijozlaringizni YordamBorʼga taklif qiling';
+
+  @override
+  String get growthI04Body =>
+      'Doimiy mijozlaringizga xizmatingiz havolasini yuboring: keyingi safar sizni bir bosishda topishadi.';
+
+  @override
+  String get growthI05Title => 'Tez javob — koʻproq ish';
+
+  @override
+  String get growthI05Body =>
+      'Soʻrovlarga bir soat ichida javob bering: mijozlar odatda birinchi javob berganni tanlaydi.';
+
+  @override
+  String get growthI06Title => 'Oʻzingiz haqingizda yozing';
+
+  @override
+  String get growthI06Body =>
+      'Tajribangiz va ish uslubingizni 3–4 gapda yozing: mijoz kim bilan ishlashini bilishni xohlaydi.';
+
+  @override
+  String get growthI07Title => 'Sharh — eng yaxshi reklama';
+
+  @override
+  String get growthI07Body =>
+      'Ish tugagach, mijozdan YordamBorʼda sharh qoldirishni soʻrang: har bir baho yangi mijoz olib keladi.';
+
+  @override
+  String get growthI08Title => 'YordamBor doʻstlaringizga ham kerak';
+
+  @override
+  String get growthI08Body =>
+      'Doʻst va qoʻshnilaringizga YordamBor haqida aytib bering: mijozlar koʻpaysa, buyurtmalar ham koʻpayadi.';
+
+  @override
+  String get growthI09Title => 'Kalendaringizni yangilang';
+
+  @override
+  String get growthI09Body =>
+      'Band kunlaringizni belgilang: mijozlar boʻsh vaqtingizni koʻrib, aniq kunga yozilishadi.';
+
+  @override
+  String get growthI10Title => 'Daromadingizni kuzating';
+
+  @override
+  String get growthI10Body =>
+      '«Instrumentlar»da daromad, mijozlar daftari va chek bor: hammasi bir joyda.';
+
+  @override
+  String get growthI11Title => '30 kun — zoʻr boshlanish!';
+
+  @override
+  String get growthI11Body =>
+      'Xizmatingiz havolasini ijtimoiy tarmoqlarda ulashing va YordamBorʼda oʻsishda davom eting.';
+
+  @override
+  String get growthO00Title => 'Tashkilotingiz YordamBorʼda!';
+
+  @override
+  String get growthO00Body =>
+      'Tabriklaymiz! 30 kun davomida mijozlar oqimini oshirish uchun qisqa maslahatlar yuboramiz.';
+
+  @override
+  String get growthO01Title => 'Joyingizni koʻrsating';
+
+  @override
+  String get growthO01Body =>
+      'Bino, jamoa va ishlaringizdan kamida 3 ta rasm qoʻshing: mijoz qayerga kelishini oldindan koʻradi.';
+
+  @override
+  String get growthO02Title => 'Narxlarni oching';
+
+  @override
+  String get growthO02Body =>
+      'Asosiy xizmat narxini koʻrsating: mijozlar narxi aniq tashkilotlarga koʻproq yozadi.';
+
+  @override
+  String get growthO03Title => 'Ish vaqtini belgilang';
+
+  @override
+  String get growthO03Body =>
+      'Ish kunlari va soatlaringizni kiriting: mijozlar qachon kelish mumkinligini darhol koʻradi.';
+
+  @override
+  String get growthO04Title => 'Mijozlaringizni YordamBorʼga taklif qiling';
+
+  @override
+  String get growthO04Body =>
+      'Havolani Telegram kanalingizda, kassada yoki SMSʼda ulashing: mijozlar sizni bir bosishda topadi.';
+
+  @override
+  String get growthO05Title => 'Litsenziya va sertifikatlar';
+
+  @override
+  String get growthO05Body =>
+      'Hujjatlaringizni profilga qoʻshing: rasmiy tasdiq tashkilotga ishonchni oshiradi.';
+
+  @override
+  String get growthO06Title => 'Har bir yoʻnalish — alohida xizmat';
+
+  @override
+  String get growthO06Body =>
+      'Xizmatlaringizni alohida qoʻshing (5 tagacha): mijoz aynan keraklisini tezroq topadi.';
+
+  @override
+  String get growthO07Title => 'Soʻrovlarga tez javob bering';
+
+  @override
+  String get growthO07Body =>
+      'Javob berish uchun masʼul xodimni belgilang: tez javob — koʻproq kelishuv.';
+
+  @override
+  String get growthO08Title => 'Har bir mijozdan sharh soʻrang';
+
+  @override
+  String get growthO08Body =>
+      'Mamnun mijozlar sharhi reytingingizni oshiradi va yangi mijozlarni olib keladi.';
+
+  @override
+  String get growthO09Title => 'Havolani vizitkaga joylang';
+
+  @override
+  String get growthO09Body =>
+      'YordamBor havolangizni vizitka, menyu yoki vitrinaga qoʻying: yozilish bir bosishda.';
+
+  @override
+  String get growthO10Title => 'Hisob-kitob bir joyda';
+
+  @override
+  String get growthO10Body =>
+      'Chek, daromad va mijozlar daftari «Instrumentlar»da: tashkilotingizni tartibli boshqaring.';
+
+  @override
+  String get growthO11Title => 'Birinchi oy yakunlandi!';
+
+  @override
+  String get growthO11Body =>
+      'Natijalarni xizmat kartangizda koʻring va YordamBorʼda mijozlaringizni koʻpaytirishda davom eting.';
+
+  @override
+  String get growthProgramTitle => 'Biznesingizni oʻstiring';
+
+  @override
+  String growthProgramDay(int day) {
+    return '$day-kun · 30 kunlik dastur';
+  }
+
+  @override
+  String get growthTipDone => 'Bajarildi';
+
+  @override
+  String get growthEarlierTips => 'Oldingi maslahatlar';
+
+  @override
+  String get growthTipsOff => 'Maslahatlarni oʻchirish';
+
+  @override
+  String get growthTipsOffDone =>
+      'Maslahatlar oʻchirildi. Eslatma sozlamalarida qayta yoqasiz.';
+
+  @override
+  String get growthTipsSetting => 'Biznes maslahatlari';
+
+  @override
+  String get growthTipsSettingSub =>
+      'Xizmat qoʻshganingizdan keyin 30 kun davomida';
+
+  @override
+  String growthInviteShareText(String link) {
+    return 'YordamBor — ishonchli ustalar va xizmatlar bir joyda. Yuklab oling: $link';
+  }
+
+  @override
+  String get growthActionPhotos => 'Rasm qoʻshish';
+
+  @override
+  String get growthActionPrice => 'Narxni qoʻyish';
+
+  @override
+  String get growthActionAvailability => 'Holatni belgilash';
+
+  @override
+  String get growthActionHours => 'Ish vaqtini kiritish';
+
+  @override
+  String get growthActionShare => 'Havolani ulashish';
+
+  @override
+  String get growthActionInvite => 'Taklif qilish';
+
+  @override
+  String get growthActionReply => 'Soʻrovlarni ochish';
+
+  @override
+  String get growthActionDescription => 'Tavsifni yozish';
+
+  @override
+  String get growthActionReviews => 'Kelishuvlarni ochish';
+
+  @override
+  String get growthActionCalendar => 'Kalendarni ochish';
+
+  @override
+  String get growthActionTools => 'Instrumentlarni ochish';
+
+  @override
+  String get growthActionCertificates => 'Hujjat qoʻshish';
+
+  @override
+  String get growthActionMoreServices => 'Xizmat qoʻshish';
+
+  @override
+  String get growthActionMyServices => 'Xizmatlarimni koʻrish';
+
+  @override
+  String get appointmentPhaseNow => 'Hozir';
+
+  @override
+  String get appointmentPhaseToday => 'Bugun';
+
+  @override
+  String get appointmentPhasePlanned => 'Rejada';
+
+  @override
+  String get appointmentPhasePast => 'Yakunlash kutilmoqda';
+
+  @override
+  String get appointmentPhaseDone => 'Bajarildi';
+
+  @override
+  String get appointmentPhaseCancelled => 'Bekor qilingan';
+
+  @override
+  String get appointmentRoleProvider => 'Men xizmat beraman';
+
+  @override
+  String get appointmentRoleClient => 'Men olaman';
+
+  @override
+  String get appointmentPartyClient => 'Mijoz';
+
+  @override
+  String get appointmentPartyProvider => 'Xizmat beruvchi';
+
+  @override
+  String get appointmentCall => 'Qoʻngʻiroq';
+
+  @override
+  String get actionChat => 'Yozish';
+
+  @override
+  String get actionKeep => 'Qoldirish';
+
+  @override
+  String get appointmentCancel => 'Bekor qilish';
+
+  @override
+  String get appointmentCancelTitle => 'Uchrashuvni bekor qilasizmi?';
+
+  @override
+  String get appointmentCancelBody =>
+      'Bu amalni qaytarib boʻlmaydi. Ikkinchi tomon xabardor qilinadi.';
+
+  @override
+  String get appointmentCancelConfirm => 'Ha, bekor qilish';
+
+  @override
+  String get appointmentSaveClient => 'Mijozlar roʻyxatiga saqlash';
+
+  @override
+  String get appointmentFactPrice => 'NARX';
+
+  @override
+  String get appointmentFactDuration => 'DAVOMIYLIGI';
+
+  @override
+  String appointmentDuration(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get availabilitySheetCaption => 'Mijozlar hozir nima koʻradi?';
+
+  @override
+  String get availabilityTileNowHint => 'Hozir buyurtma qabul qilyapman';
+
+  @override
+  String get availabilityTileBusyHint => 'Band, tez qaytaman';
+
+  @override
+  String get availabilityTileBookingHint => 'Oldindan band qiling';
+
+  @override
+  String get availabilityTileHidden => 'Yashirilgan';
+
+  @override
+  String get availabilityTileHiddenHint => 'Xizmat koʻrinmaydi';
+
+  @override
+  String get availabilityUntilTitle => 'Qachongacha?';
+
+  @override
+  String get availabilityUntilHour => '1 soat';
+
+  @override
+  String get availabilityUntilToday => 'Bugun';
+
+  @override
+  String get availabilityUntilForever => 'Muddatsiz';
+
+  @override
+  String get availabilityHoursTitle => 'Ish vaqti';
+
+  @override
+  String get availabilityHoursOwn => 'Mening jadvalim';
+
+  @override
+  String get availabilityHoursShared => 'Umumiy vaqt';
+
+  @override
+  String get availabilityBusyToggle => 'Mijozlarga band vaqtni koʻrsat';
+
+  @override
+  String get availabilityBusyToggleHint =>
+      'Mijozlar ikki haftalik jadvalda boʻsh va band vaqtingizni koʻradi';
+
+  @override
+  String get availabilityPreview => 'Koʻrinish';
+
+  @override
+  String get availabilityHiddenPreview => 'Qidirishda yashirilgan';
+
+  @override
+  String get availabilitySaved => 'Status saqlandi';
+
+  @override
+  String get businessEmptyTitle => 'YordamBorda pul ishlashni boshlang';
+
+  @override
+  String get businessEmptyBody =>
+      'Yaqin atrofda minglab odamlar hozir yordam qidirmoqda. Birinchi xizmatingizni qoʻshing — bu atigi 2 daqiqa oladi.';
+
+  @override
+  String get calendarTabTitle => 'Jadval';
+
+  @override
+  String get calendarNoAppointments => 'Hali uchrashuvlar yoʻq';
+
+  @override
+  String get calendarNoAppointmentsHint =>
+      'Kelishilgan bitimlar uchrashuvlar sifatida bu yerda koʻrinadi';
+
+  @override
+  String get calendarSectionToday => 'Bugun';
+
+  @override
+  String get calendarSectionUpcoming => 'Rejalashtirilgan';
+
+  @override
+  String get calendarSectionPast => 'Oʻtgan';
+
+  @override
+  String get calendarBusyTitle => 'Mening bandligim';
+
+  @override
+  String get calendarBusyAllDay => 'Butun kun band';
+
+  @override
+  String get calendarBusyHours => 'Band vaqt';
+
+  @override
+  String get calendarServicesStrip => 'Xizmatlarim';
+
+  @override
+  String get calendarReminders => 'Eslatmalar';
+
+  @override
+  String get reminderLeadDay => '1 kun oldin';
+
+  @override
+  String get reminderLead3Hours => '3 soat oldin';
+
+  @override
+  String get reminderLeadHour => '1 soat oldin';
+
+  @override
+  String get reminderLead15Min => '15 daqiqa oldin';
+
+  @override
+  String get saveClientPromptTitle => 'Mijozni saqlaysizmi?';
+
+  @override
+  String saveClientPromptBody(String name) {
+    return '${name}ni mijozlar roʻyxatiga qoʻshmoqchimisiz?';
+  }
+
+  @override
+  String get saveClientConfirm => 'Saqlash';
+
+  @override
+  String get saveClientSkip => 'Keyinroq';
+
+  @override
+  String get saveClientDone => 'Mijoz saqlandi';
+
+  @override
+  String get notifSectionSoon => 'Yaqin uchrashuvlar';
+
+  @override
+  String get notifAppointmentCancelledTitle => 'Uchrashuv bekor qilindi';
+
+  @override
+  String get notifSubsectorHelpTitle => 'Sizning sochangizda yordam kerak';
 }

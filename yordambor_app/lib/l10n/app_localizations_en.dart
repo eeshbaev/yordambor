@@ -1781,7 +1781,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get xizmatPricingSectionSubtitle =>
-      'Choose negotiable, fixed, or hourly — it’s up to you.';
+      'Clients write sooner when they can see the price.';
 
   @override
   String get xizmatPricingNegotiable => 'Negotiable';
@@ -1809,8 +1809,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get xizmatPricingMinDurationHint => 'e.g. 120';
 
   @override
-  String get xizmatPricingRequiredError =>
-      'Enter a price for fixed or hourly pricing';
+  String get xizmatPricingRequiredError => 'Enter the amount';
 
   @override
   String get xizmatPriceNegotiable => 'Price negotiable';
@@ -2619,18 +2618,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Send it on Telegram so friends can recommend you';
 
   @override
-  String get businessStartTitle => 'Turn your skills into income';
-
-  @override
-  String get businessStartStep1 => 'Describe your service and price';
-
-  @override
-  String get businessStartStep2 => 'Add photos and your city';
-
-  @override
-  String get businessStartStep3 => 'Get requests and agree on the deal';
-
-  @override
   String businessServicesCount(int count, int max) {
     return 'My services · $count of $max';
   }
@@ -2908,13 +2895,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onbIntro1Title => 'Services near you';
 
   @override
-  String get onbIntro1Body => 'Specialists and organizations across Uzbekistan.';
+  String get onbIntro1Body =>
+      'Specialists and organizations across Uzbekistan.';
 
   @override
   String get onbIntro2Title => 'Need help? Just ask';
 
   @override
-  String get onbIntro2Body => 'Describe the task, and providers will reach out.';
+  String get onbIntro2Body =>
+      'Describe the task, and providers will reach out.';
 
   @override
   String get onbIntro3Title => 'Offer your services';
@@ -3184,4 +3173,516 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get xizmatAboutHint =>
       'What you do, how you work, what you promise clients';
+
+  @override
+  String xizmatPricePerDay(String amount) {
+    return '$amount/day';
+  }
+
+  @override
+  String xizmatPricePerMonth(String amount) {
+    return '$amount/month';
+  }
+
+  @override
+  String xizmatPricePerUnit(String amount) {
+    return '$amount/unit';
+  }
+
+  @override
+  String get xizmatStatPerDay => 'per day';
+
+  @override
+  String get xizmatStatPerMonth => 'per month';
+
+  @override
+  String get xizmatStatPerUnit => 'per unit';
+
+  @override
+  String get priceChoiceTitle => 'Price';
+
+  @override
+  String get priceChoiceServiceHint =>
+      'Clients write sooner when they can see the price.';
+
+  @override
+  String get priceChoiceRequestHint => 'How much are you ready to pay?';
+
+  @override
+  String get priceChoiceNegotiable => 'Negotiable';
+
+  @override
+  String get priceChoiceNegotiableHint => 'Agree on it in the chat';
+
+  @override
+  String get priceChoiceAmount => 'Set price';
+
+  @override
+  String get priceChoiceAmountHint => 'Amount and unit';
+
+  @override
+  String get priceAmountLabel => 'Amount (UZS)';
+
+  @override
+  String get priceAmountHint => 'For example: 150000';
+
+  @override
+  String get priceUnitFixed => 'Per job';
+
+  @override
+  String get priceUnitHour => 'Per hour';
+
+  @override
+  String get priceUnitDay => 'Per day';
+
+  @override
+  String get priceUnitMonth => 'Per month';
+
+  @override
+  String get priceUnitUnit => 'Per unit';
+
+  @override
+  String get priceChoiceRequired => 'Choose the price: negotiable or an amount';
+
+  @override
+  String get growthI00Title => 'Your service is live on YordamBor!';
+
+  @override
+  String get growthI00Body =>
+      'Congratulations! For the next 30 days we\'ll send short tips to help you find more clients.';
+
+  @override
+  String get growthI01Title => 'Photos build trust';
+
+  @override
+  String get growthI01Body =>
+      'Add at least 3 photos of your work — before-and-after shots work especially well.';
+
+  @override
+  String get growthI02Title => 'Show your price';
+
+  @override
+  String get growthI02Body =>
+      'A clear price means fewer questions and faster deals. Set a price per hour, day or job.';
+
+  @override
+  String get growthI03Title => 'When are you free?';
+
+  @override
+  String get growthI03Body =>
+      'Set your status to “Available now”: clients write first to those who can come soon.';
+
+  @override
+  String get growthI04Title => 'Invite your clients to YordamBor';
+
+  @override
+  String get growthI04Body =>
+      'Send your regular clients a link to your service: next time they\'ll find you in one tap.';
+
+  @override
+  String get growthI05Title => 'Fast replies win work';
+
+  @override
+  String get growthI05Body =>
+      'Reply to requests within an hour: clients usually pick whoever answers first.';
+
+  @override
+  String get growthI06Title => 'Tell clients about yourself';
+
+  @override
+  String get growthI06Body =>
+      'Describe your experience and the way you work in 3–4 sentences: clients want to know who they\'ll work with.';
+
+  @override
+  String get growthI07Title => 'Reviews are the best ad';
+
+  @override
+  String get growthI07Body =>
+      'When a job is done, ask the client for a review on YordamBor: every rating brings new clients.';
+
+  @override
+  String get growthI08Title => 'Your friends need YordamBor too';
+
+  @override
+  String get growthI08Body =>
+      'Tell friends and neighbours about YordamBor: more clients here means more orders for you.';
+
+  @override
+  String get growthI09Title => 'Keep your calendar current';
+
+  @override
+  String get growthI09Body =>
+      'Mark your busy days: clients see when you\'re free and book a specific day.';
+
+  @override
+  String get growthI10Title => 'Track your income';
+
+  @override
+  String get growthI10Body =>
+      'Tools has your income, client book and receipts — all in one place.';
+
+  @override
+  String get growthI11Title => '30 days — a great start!';
+
+  @override
+  String get growthI11Body =>
+      'Share your service link on social media and keep growing on YordamBor.';
+
+  @override
+  String get growthO00Title => 'Your organisation is live on YordamBor!';
+
+  @override
+  String get growthO00Body =>
+      'Congratulations! For the next 30 days we\'ll send short tips to grow your flow of clients.';
+
+  @override
+  String get growthO01Title => 'Show your place';
+
+  @override
+  String get growthO01Body =>
+      'Add at least 3 photos of your premises, team and work: clients see in advance where they\'re going.';
+
+  @override
+  String get growthO02Title => 'Make your prices clear';
+
+  @override
+  String get growthO02Body =>
+      'Show the price of your main service: clients write more to organisations with clear prices.';
+
+  @override
+  String get growthO03Title => 'Set your opening hours';
+
+  @override
+  String get growthO03Body =>
+      'Add your working days and hours: clients see right away when they can come.';
+
+  @override
+  String get growthO04Title => 'Invite your clients to YordamBor';
+
+  @override
+  String get growthO04Body =>
+      'Share your link in your Telegram channel, at the till or by SMS: clients find you in one tap.';
+
+  @override
+  String get growthO05Title => 'Licences and certificates';
+
+  @override
+  String get growthO05Body =>
+      'Add your documents to your profile: official proof makes clients trust you more.';
+
+  @override
+  String get growthO06Title => 'One service per line of work';
+
+  @override
+  String get growthO06Body =>
+      'Add your services one by one (up to 5): clients find exactly what they need faster.';
+
+  @override
+  String get growthO07Title => 'Answer requests quickly';
+
+  @override
+  String get growthO07Body =>
+      'Put someone in charge of replies: fast answers mean more deals.';
+
+  @override
+  String get growthO08Title => 'Ask every client for a review';
+
+  @override
+  String get growthO08Body =>
+      'Reviews from happy clients raise your rating and bring in new clients.';
+
+  @override
+  String get growthO09Title => 'Put your link on your business card';
+
+  @override
+  String get growthO09Body =>
+      'Put your YordamBor link on your card, menu or shop window: booking takes one tap.';
+
+  @override
+  String get growthO10Title => 'Your books in one place';
+
+  @override
+  String get growthO10Body =>
+      'Receipts, income and the client book are in Tools: keep your organisation in order.';
+
+  @override
+  String get growthO11Title => 'Your first month is done!';
+
+  @override
+  String get growthO11Body =>
+      'See your results on your service card and keep growing your clients on YordamBor.';
+
+  @override
+  String get growthProgramTitle => 'Grow your business';
+
+  @override
+  String growthProgramDay(int day) {
+    return 'Day $day of 30';
+  }
+
+  @override
+  String get growthTipDone => 'Done';
+
+  @override
+  String get growthEarlierTips => 'Earlier tips';
+
+  @override
+  String get growthTipsOff => 'Turn off tips';
+
+  @override
+  String get growthTipsOffDone =>
+      'Tips are off. You can turn them back on in reminder settings.';
+
+  @override
+  String get growthTipsSetting => 'Business tips';
+
+  @override
+  String get growthTipsSettingSub => 'For 30 days after you add a service';
+
+  @override
+  String growthInviteShareText(String link) {
+    return 'YordamBor — trusted pros and services in one place. Get the app: $link';
+  }
+
+  @override
+  String get growthActionPhotos => 'Add photos';
+
+  @override
+  String get growthActionPrice => 'Set the price';
+
+  @override
+  String get growthActionAvailability => 'Set your status';
+
+  @override
+  String get growthActionHours => 'Set your hours';
+
+  @override
+  String get growthActionShare => 'Share the link';
+
+  @override
+  String get growthActionInvite => 'Invite';
+
+  @override
+  String get growthActionReply => 'Open requests';
+
+  @override
+  String get growthActionDescription => 'Write the description';
+
+  @override
+  String get growthActionReviews => 'Open deals';
+
+  @override
+  String get growthActionCalendar => 'Open the calendar';
+
+  @override
+  String get growthActionTools => 'Open tools';
+
+  @override
+  String get growthActionCertificates => 'Add a document';
+
+  @override
+  String get growthActionMoreServices => 'Add a service';
+
+  @override
+  String get growthActionMyServices => 'See my services';
+
+  @override
+  String get appointmentPhaseNow => 'Now';
+
+  @override
+  String get appointmentPhaseToday => 'Today';
+
+  @override
+  String get appointmentPhasePlanned => 'Planned';
+
+  @override
+  String get appointmentPhasePast => 'Awaiting completion';
+
+  @override
+  String get appointmentPhaseDone => 'Done';
+
+  @override
+  String get appointmentPhaseCancelled => 'Cancelled';
+
+  @override
+  String get appointmentRoleProvider => 'I provide';
+
+  @override
+  String get appointmentRoleClient => 'I receive';
+
+  @override
+  String get appointmentPartyClient => 'Client';
+
+  @override
+  String get appointmentPartyProvider => 'Service provider';
+
+  @override
+  String get appointmentCall => 'Call';
+
+  @override
+  String get actionChat => 'Chat';
+
+  @override
+  String get actionKeep => 'Keep';
+
+  @override
+  String get appointmentCancel => 'Cancel';
+
+  @override
+  String get appointmentCancelTitle => 'Cancel appointment?';
+
+  @override
+  String get appointmentCancelBody =>
+      'This action cannot be undone. The other party will be notified.';
+
+  @override
+  String get appointmentCancelConfirm => 'Yes, cancel';
+
+  @override
+  String get appointmentSaveClient => 'Save to client list';
+
+  @override
+  String get appointmentFactPrice => 'PRICE';
+
+  @override
+  String get appointmentFactDuration => 'DURATION';
+
+  @override
+  String appointmentDuration(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get availabilitySheetCaption => 'What will clients see right now?';
+
+  @override
+  String get availabilityTileNowHint => 'Taking orders now';
+
+  @override
+  String get availabilityTileBusyHint => 'Busy, back soon';
+
+  @override
+  String get availabilityTileBookingHint => 'Book in advance';
+
+  @override
+  String get availabilityTileHidden => 'Hidden';
+
+  @override
+  String get availabilityTileHiddenHint => 'Service not visible';
+
+  @override
+  String get availabilityUntilTitle => 'Until when?';
+
+  @override
+  String get availabilityUntilHour => '1 hour';
+
+  @override
+  String get availabilityUntilToday => 'Today';
+
+  @override
+  String get availabilityUntilForever => 'Open-ended';
+
+  @override
+  String get availabilityHoursTitle => 'Working hours';
+
+  @override
+  String get availabilityHoursOwn => 'My schedule';
+
+  @override
+  String get availabilityHoursShared => 'Shared hours';
+
+  @override
+  String get availabilityBusyToggle => 'Show busy hours to clients';
+
+  @override
+  String get availabilityBusyToggleHint =>
+      'Clients see a two-week strip with your free and busy slots';
+
+  @override
+  String get availabilityPreview => 'Preview';
+
+  @override
+  String get availabilityHiddenPreview => 'Hidden from search';
+
+  @override
+  String get availabilitySaved => 'Status saved';
+
+  @override
+  String get businessEmptyTitle => 'Start earning on YordamBor';
+
+  @override
+  String get businessEmptyBody =>
+      'Thousands of people nearby are looking for help right now. Add your first service — it takes just 2 minutes.';
+
+  @override
+  String get calendarTabTitle => 'Schedule';
+
+  @override
+  String get calendarNoAppointments => 'No appointments yet';
+
+  @override
+  String get calendarNoAppointmentsHint =>
+      'Agreed deals appear here as appointments';
+
+  @override
+  String get calendarSectionToday => 'Today';
+
+  @override
+  String get calendarSectionUpcoming => 'Upcoming';
+
+  @override
+  String get calendarSectionPast => 'Past';
+
+  @override
+  String get calendarBusyTitle => 'My availability';
+
+  @override
+  String get calendarBusyAllDay => 'Busy all day';
+
+  @override
+  String get calendarBusyHours => 'Busy hours';
+
+  @override
+  String get calendarServicesStrip => 'My services';
+
+  @override
+  String get calendarReminders => 'Reminders';
+
+  @override
+  String get reminderLeadDay => '1 day before';
+
+  @override
+  String get reminderLead3Hours => '3 hours before';
+
+  @override
+  String get reminderLeadHour => '1 hour before';
+
+  @override
+  String get reminderLead15Min => '15 minutes before';
+
+  @override
+  String get saveClientPromptTitle => 'Save client?';
+
+  @override
+  String saveClientPromptBody(String name) {
+    return 'Would you like to add $name to your client list?';
+  }
+
+  @override
+  String get saveClientConfirm => 'Save';
+
+  @override
+  String get saveClientSkip => 'Not now';
+
+  @override
+  String get saveClientDone => 'Client saved';
+
+  @override
+  String get notifSectionSoon => 'Upcoming appointments';
+
+  @override
+  String get notifAppointmentCancelledTitle => 'Appointment cancelled';
+
+  @override
+  String get notifSubsectorHelpTitle => 'Help needed in your area';
 }

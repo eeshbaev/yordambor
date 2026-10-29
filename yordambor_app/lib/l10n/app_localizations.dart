@@ -747,7 +747,7 @@ abstract class AppLocalizations {
   /// No description provided for @invalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number (+998...)'**
+  /// **'Enter a valid phone number (+998…)'**
   String get invalidPhone;
 
   /// No description provided for @invalidNumber.
@@ -885,7 +885,7 @@ abstract class AppLocalizations {
   /// No description provided for @verifyEmailBodyMissing.
   ///
   /// In en, this message translates to:
-  /// **'We sent a confirmation link to your email. After opening it, tap \"I confirmed\".'**
+  /// **'We sent a confirmation link to your email. After opening it, tap “I confirmed”.'**
   String get verifyEmailBodyMissing;
 
   /// No description provided for @verifyEmailCheck.
@@ -939,7 +939,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeNewBody.
   ///
   /// In en, this message translates to:
-  /// **'We\'re so glad you joined YordamBor. Find services, offer help, or post a job — we\'re here for you every step of the way.'**
+  /// **'We’re so glad you joined YordamBor. Find services, offer help, or post a job — we’re here for you every step of the way.'**
   String get welcomeNewBody;
 
   /// No description provided for @welcomeLoginTitle.
@@ -1323,7 +1323,7 @@ abstract class AppLocalizations {
   /// No description provided for @languageUz.
   ///
   /// In en, this message translates to:
-  /// **'O\'zbek'**
+  /// **'Oʻzbek'**
   String get languageUz;
 
   /// No description provided for @languageRu.
@@ -1503,7 +1503,7 @@ abstract class AppLocalizations {
   /// No description provided for @kelishuvMessageHint.
   ///
   /// In en, this message translates to:
-  /// **'Write a message...'**
+  /// **'Write a message…'**
   String get kelishuvMessageHint;
 
   /// No description provided for @kelishuvIncoming.
@@ -2739,7 +2739,7 @@ abstract class AppLocalizations {
   /// No description provided for @cannotRequestOwnXizmat.
   ///
   /// In en, this message translates to:
-  /// **'You can\'t send a request to your own service'**
+  /// **'You can’t send a request to your own service'**
   String get cannotRequestOwnXizmat;
 
   /// No description provided for @xizmatNotFound.
@@ -3429,7 +3429,7 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatPricingSectionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose negotiable, fixed, or hourly — it\'s up to you.'**
+  /// **'Clients write sooner when they can see the price.'**
   String get xizmatPricingSectionSubtitle;
 
   /// No description provided for @xizmatPricingNegotiable.
@@ -3483,7 +3483,7 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatPricingRequiredError.
   ///
   /// In en, this message translates to:
-  /// **'Enter a price for fixed or hourly pricing'**
+  /// **'Enter the amount'**
   String get xizmatPricingRequiredError;
 
   /// No description provided for @xizmatPriceNegotiable.
@@ -3507,7 +3507,7 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatAvailabilitySectionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Optional — let clients know if you\'re free. Client Book does not change this.'**
+  /// **'Optional — let clients know if you’re free. Client Book does not change this.'**
   String get xizmatAvailabilitySectionSubtitle;
 
   /// No description provided for @xizmatAvailabilityShowLabel.
@@ -3627,13 +3627,13 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatPromisePreset1.
   ///
   /// In en, this message translates to:
-  /// **'If you\'re not satisfied, I\'ll redo the work'**
+  /// **'If you’re not satisfied, I’ll redo the work'**
   String get xizmatPromisePreset1;
 
   /// No description provided for @xizmatPromisePreset2.
   ///
   /// In en, this message translates to:
-  /// **'Quality guaranteed — if there\'s a problem, I\'ll refund you'**
+  /// **'Quality guaranteed — if there’s a problem, I’ll refund you'**
   String get xizmatPromisePreset2;
 
   /// No description provided for @xizmatPromisePreset3.
@@ -3645,7 +3645,7 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatPromiseDisclaimer.
   ///
   /// In en, this message translates to:
-  /// **'YordamBor does not provide warranties. This is the provider\'s own statement.'**
+  /// **'YordamBor does not provide warranties. This is the provider’s own statement.'**
   String get xizmatPromiseDisclaimer;
 
   /// No description provided for @xizmatPromiseRequiredError.
@@ -3993,7 +3993,7 @@ abstract class AppLocalizations {
   /// No description provided for @achievementBodyJobs10.
   ///
   /// In en, this message translates to:
-  /// **'Ten completed jobs. You\'re building a real reputation.'**
+  /// **'Ten completed jobs. You’re building a real reputation.'**
   String get achievementBodyJobs10;
 
   /// No description provided for @achievementBodyJobs25.
@@ -4877,30 +4877,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send it on Telegram so friends can recommend you'**
   String get businessStepShareWhy;
-
-  /// No description provided for @businessStartTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn your skills into income'**
-  String get businessStartTitle;
-
-  /// No description provided for @businessStartStep1.
-  ///
-  /// In en, this message translates to:
-  /// **'Describe your service and price'**
-  String get businessStartStep1;
-
-  /// No description provided for @businessStartStep2.
-  ///
-  /// In en, this message translates to:
-  /// **'Add photos and your city'**
-  String get businessStartStep2;
-
-  /// No description provided for @businessStartStep3.
-  ///
-  /// In en, this message translates to:
-  /// **'Get requests and agree on the deal'**
-  String get businessStartStep3;
 
   /// No description provided for @businessServicesCount.
   ///
@@ -5867,6 +5843,942 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What you do, how you work, what you promise clients'**
   String get xizmatAboutHint;
+
+  /// No description provided for @xizmatPricePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/day'**
+  String xizmatPricePerDay(String amount);
+
+  /// No description provided for @xizmatPricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/month'**
+  String xizmatPricePerMonth(String amount);
+
+  /// No description provided for @xizmatPricePerUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/unit'**
+  String xizmatPricePerUnit(String amount);
+
+  /// No description provided for @xizmatStatPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'per day'**
+  String get xizmatStatPerDay;
+
+  /// No description provided for @xizmatStatPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'per month'**
+  String get xizmatStatPerMonth;
+
+  /// No description provided for @xizmatStatPerUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'per unit'**
+  String get xizmatStatPerUnit;
+
+  /// No description provided for @priceChoiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get priceChoiceTitle;
+
+  /// No description provided for @priceChoiceServiceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients write sooner when they can see the price.'**
+  String get priceChoiceServiceHint;
+
+  /// No description provided for @priceChoiceRequestHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How much are you ready to pay?'**
+  String get priceChoiceRequestHint;
+
+  /// No description provided for @priceChoiceNegotiable.
+  ///
+  /// In en, this message translates to:
+  /// **'Negotiable'**
+  String get priceChoiceNegotiable;
+
+  /// No description provided for @priceChoiceNegotiableHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Agree on it in the chat'**
+  String get priceChoiceNegotiableHint;
+
+  /// No description provided for @priceChoiceAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Set price'**
+  String get priceChoiceAmount;
+
+  /// No description provided for @priceChoiceAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount and unit'**
+  String get priceChoiceAmountHint;
+
+  /// No description provided for @priceAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (UZS)'**
+  String get priceAmountLabel;
+
+  /// No description provided for @priceAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: 150000'**
+  String get priceAmountHint;
+
+  /// No description provided for @priceUnitFixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Per job'**
+  String get priceUnitFixed;
+
+  /// No description provided for @priceUnitHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Per hour'**
+  String get priceUnitHour;
+
+  /// No description provided for @priceUnitDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Per day'**
+  String get priceUnitDay;
+
+  /// No description provided for @priceUnitMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Per month'**
+  String get priceUnitMonth;
+
+  /// No description provided for @priceUnitUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Per unit'**
+  String get priceUnitUnit;
+
+  /// No description provided for @priceChoiceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the price: negotiable or an amount'**
+  String get priceChoiceRequired;
+
+  /// No description provided for @growthI00Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your service is live on YordamBor!'**
+  String get growthI00Title;
+
+  /// No description provided for @growthI00Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! For the next 30 days we\'ll send short tips to help you find more clients.'**
+  String get growthI00Body;
+
+  /// No description provided for @growthI01Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos build trust'**
+  String get growthI01Title;
+
+  /// No description provided for @growthI01Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least 3 photos of your work — before-and-after shots work especially well.'**
+  String get growthI01Body;
+
+  /// No description provided for @growthI02Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Show your price'**
+  String get growthI02Title;
+
+  /// No description provided for @growthI02Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A clear price means fewer questions and faster deals. Set a price per hour, day or job.'**
+  String get growthI02Body;
+
+  /// No description provided for @growthI03Title.
+  ///
+  /// In en, this message translates to:
+  /// **'When are you free?'**
+  String get growthI03Title;
+
+  /// No description provided for @growthI03Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your status to “Available now”: clients write first to those who can come soon.'**
+  String get growthI03Body;
+
+  /// No description provided for @growthI04Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite your clients to YordamBor'**
+  String get growthI04Title;
+
+  /// No description provided for @growthI04Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Send your regular clients a link to your service: next time they\'ll find you in one tap.'**
+  String get growthI04Body;
+
+  /// No description provided for @growthI05Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast replies win work'**
+  String get growthI05Title;
+
+  /// No description provided for @growthI05Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to requests within an hour: clients usually pick whoever answers first.'**
+  String get growthI05Body;
+
+  /// No description provided for @growthI06Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell clients about yourself'**
+  String get growthI06Title;
+
+  /// No description provided for @growthI06Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your experience and the way you work in 3–4 sentences: clients want to know who they\'ll work with.'**
+  String get growthI06Body;
+
+  /// No description provided for @growthI07Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews are the best ad'**
+  String get growthI07Title;
+
+  /// No description provided for @growthI07Body.
+  ///
+  /// In en, this message translates to:
+  /// **'When a job is done, ask the client for a review on YordamBor: every rating brings new clients.'**
+  String get growthI07Body;
+
+  /// No description provided for @growthI08Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your friends need YordamBor too'**
+  String get growthI08Title;
+
+  /// No description provided for @growthI08Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell friends and neighbours about YordamBor: more clients here means more orders for you.'**
+  String get growthI08Body;
+
+  /// No description provided for @growthI09Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your calendar current'**
+  String get growthI09Title;
+
+  /// No description provided for @growthI09Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark your busy days: clients see when you\'re free and book a specific day.'**
+  String get growthI09Body;
+
+  /// No description provided for @growthI10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your income'**
+  String get growthI10Title;
+
+  /// No description provided for @growthI10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools has your income, client book and receipts — all in one place.'**
+  String get growthI10Body;
+
+  /// No description provided for @growthI11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days — a great start!'**
+  String get growthI11Title;
+
+  /// No description provided for @growthI11Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your service link on social media and keep growing on YordamBor.'**
+  String get growthI11Body;
+
+  /// No description provided for @growthO00Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your organisation is live on YordamBor!'**
+  String get growthO00Title;
+
+  /// No description provided for @growthO00Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! For the next 30 days we\'ll send short tips to grow your flow of clients.'**
+  String get growthO00Body;
+
+  /// No description provided for @growthO01Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Show your place'**
+  String get growthO01Title;
+
+  /// No description provided for @growthO01Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least 3 photos of your premises, team and work: clients see in advance where they\'re going.'**
+  String get growthO01Body;
+
+  /// No description provided for @growthO02Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your prices clear'**
+  String get growthO02Title;
+
+  /// No description provided for @growthO02Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the price of your main service: clients write more to organisations with clear prices.'**
+  String get growthO02Body;
+
+  /// No description provided for @growthO03Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your opening hours'**
+  String get growthO03Title;
+
+  /// No description provided for @growthO03Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your working days and hours: clients see right away when they can come.'**
+  String get growthO03Body;
+
+  /// No description provided for @growthO04Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite your clients to YordamBor'**
+  String get growthO04Title;
+
+  /// No description provided for @growthO04Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your link in your Telegram channel, at the till or by SMS: clients find you in one tap.'**
+  String get growthO04Body;
+
+  /// No description provided for @growthO05Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Licences and certificates'**
+  String get growthO05Title;
+
+  /// No description provided for @growthO05Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your documents to your profile: official proof makes clients trust you more.'**
+  String get growthO05Body;
+
+  /// No description provided for @growthO06Title.
+  ///
+  /// In en, this message translates to:
+  /// **'One service per line of work'**
+  String get growthO06Title;
+
+  /// No description provided for @growthO06Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your services one by one (up to 5): clients find exactly what they need faster.'**
+  String get growthO06Body;
+
+  /// No description provided for @growthO07Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer requests quickly'**
+  String get growthO07Title;
+
+  /// No description provided for @growthO07Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Put someone in charge of replies: fast answers mean more deals.'**
+  String get growthO07Body;
+
+  /// No description provided for @growthO08Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask every client for a review'**
+  String get growthO08Title;
+
+  /// No description provided for @growthO08Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews from happy clients raise your rating and bring in new clients.'**
+  String get growthO08Body;
+
+  /// No description provided for @growthO09Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Put your link on your business card'**
+  String get growthO09Title;
+
+  /// No description provided for @growthO09Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Put your YordamBor link on your card, menu or shop window: booking takes one tap.'**
+  String get growthO09Body;
+
+  /// No description provided for @growthO10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your books in one place'**
+  String get growthO10Title;
+
+  /// No description provided for @growthO10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipts, income and the client book are in Tools: keep your organisation in order.'**
+  String get growthO10Body;
+
+  /// No description provided for @growthO11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first month is done!'**
+  String get growthO11Title;
+
+  /// No description provided for @growthO11Body.
+  ///
+  /// In en, this message translates to:
+  /// **'See your results on your service card and keep growing your clients on YordamBor.'**
+  String get growthO11Body;
+
+  /// No description provided for @growthProgramTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow your business'**
+  String get growthProgramTitle;
+
+  /// No description provided for @growthProgramDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} of 30'**
+  String growthProgramDay(int day);
+
+  /// No description provided for @growthTipDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get growthTipDone;
+
+  /// No description provided for @growthEarlierTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier tips'**
+  String get growthEarlierTips;
+
+  /// No description provided for @growthTipsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off tips'**
+  String get growthTipsOff;
+
+  /// No description provided for @growthTipsOffDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips are off. You can turn them back on in reminder settings.'**
+  String get growthTipsOffDone;
+
+  /// No description provided for @growthTipsSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Business tips'**
+  String get growthTipsSetting;
+
+  /// No description provided for @growthTipsSettingSub.
+  ///
+  /// In en, this message translates to:
+  /// **'For 30 days after you add a service'**
+  String get growthTipsSettingSub;
+
+  /// No description provided for @growthInviteShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'YordamBor — trusted pros and services in one place. Get the app: {link}'**
+  String growthInviteShareText(String link);
+
+  /// No description provided for @growthActionPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get growthActionPhotos;
+
+  /// No description provided for @growthActionPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the price'**
+  String get growthActionPrice;
+
+  /// No description provided for @growthActionAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your status'**
+  String get growthActionAvailability;
+
+  /// No description provided for @growthActionHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your hours'**
+  String get growthActionHours;
+
+  /// No description provided for @growthActionShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the link'**
+  String get growthActionShare;
+
+  /// No description provided for @growthActionInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get growthActionInvite;
+
+  /// No description provided for @growthActionReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Open requests'**
+  String get growthActionReply;
+
+  /// No description provided for @growthActionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the description'**
+  String get growthActionDescription;
+
+  /// No description provided for @growthActionReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Open deals'**
+  String get growthActionReviews;
+
+  /// No description provided for @growthActionCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the calendar'**
+  String get growthActionCalendar;
+
+  /// No description provided for @growthActionTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Open tools'**
+  String get growthActionTools;
+
+  /// No description provided for @growthActionCertificates.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a document'**
+  String get growthActionCertificates;
+
+  /// No description provided for @growthActionMoreServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a service'**
+  String get growthActionMoreServices;
+
+  /// No description provided for @growthActionMyServices.
+  ///
+  /// In en, this message translates to:
+  /// **'See my services'**
+  String get growthActionMyServices;
+
+  /// No description provided for @appointmentPhaseNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get appointmentPhaseNow;
+
+  /// No description provided for @appointmentPhaseToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get appointmentPhaseToday;
+
+  /// No description provided for @appointmentPhasePlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get appointmentPhasePlanned;
+
+  /// No description provided for @appointmentPhasePast.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting completion'**
+  String get appointmentPhasePast;
+
+  /// No description provided for @appointmentPhaseDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get appointmentPhaseDone;
+
+  /// No description provided for @appointmentPhaseCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get appointmentPhaseCancelled;
+
+  /// No description provided for @appointmentRoleProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'I provide'**
+  String get appointmentRoleProvider;
+
+  /// No description provided for @appointmentRoleClient.
+  ///
+  /// In en, this message translates to:
+  /// **'I receive'**
+  String get appointmentRoleClient;
+
+  /// No description provided for @appointmentPartyClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Client'**
+  String get appointmentPartyClient;
+
+  /// No description provided for @appointmentPartyProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Service provider'**
+  String get appointmentPartyProvider;
+
+  /// No description provided for @appointmentCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get appointmentCall;
+
+  /// No description provided for @actionChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get actionChat;
+
+  /// No description provided for @actionKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep'**
+  String get actionKeep;
+
+  /// No description provided for @appointmentCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get appointmentCancel;
+
+  /// No description provided for @appointmentCancelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel appointment?'**
+  String get appointmentCancelTitle;
+
+  /// No description provided for @appointmentCancelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone. The other party will be notified.'**
+  String get appointmentCancelBody;
+
+  /// No description provided for @appointmentCancelConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, cancel'**
+  String get appointmentCancelConfirm;
+
+  /// No description provided for @appointmentSaveClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to client list'**
+  String get appointmentSaveClient;
+
+  /// No description provided for @appointmentFactPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'PRICE'**
+  String get appointmentFactPrice;
+
+  /// No description provided for @appointmentFactDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'DURATION'**
+  String get appointmentFactDuration;
+
+  /// No description provided for @appointmentDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String appointmentDuration(int minutes);
+
+  /// No description provided for @availabilitySheetCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'What will clients see right now?'**
+  String get availabilitySheetCaption;
+
+  /// No description provided for @availabilityTileNowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Taking orders now'**
+  String get availabilityTileNowHint;
+
+  /// No description provided for @availabilityTileBusyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy, back soon'**
+  String get availabilityTileBusyHint;
+
+  /// No description provided for @availabilityTileBookingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Book in advance'**
+  String get availabilityTileBookingHint;
+
+  /// No description provided for @availabilityTileHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get availabilityTileHidden;
+
+  /// No description provided for @availabilityTileHiddenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Service not visible'**
+  String get availabilityTileHiddenHint;
+
+  /// No description provided for @availabilityUntilTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Until when?'**
+  String get availabilityUntilTitle;
+
+  /// No description provided for @availabilityUntilHour.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour'**
+  String get availabilityUntilHour;
+
+  /// No description provided for @availabilityUntilToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get availabilityUntilToday;
+
+  /// No description provided for @availabilityUntilForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-ended'**
+  String get availabilityUntilForever;
+
+  /// No description provided for @availabilityHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get availabilityHoursTitle;
+
+  /// No description provided for @availabilityHoursOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'My schedule'**
+  String get availabilityHoursOwn;
+
+  /// No description provided for @availabilityHoursShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared hours'**
+  String get availabilityHoursShared;
+
+  /// No description provided for @availabilityBusyToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show busy hours to clients'**
+  String get availabilityBusyToggle;
+
+  /// No description provided for @availabilityBusyToggleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients see a two-week strip with your free and busy slots'**
+  String get availabilityBusyToggleHint;
+
+  /// No description provided for @availabilityPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get availabilityPreview;
+
+  /// No description provided for @availabilityHiddenPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden from search'**
+  String get availabilityHiddenPreview;
+
+  /// No description provided for @availabilitySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Status saved'**
+  String get availabilitySaved;
+
+  /// No description provided for @businessEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start earning on YordamBor'**
+  String get businessEmptyTitle;
+
+  /// No description provided for @businessEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Thousands of people nearby are looking for help right now. Add your first service — it takes just 2 minutes.'**
+  String get businessEmptyBody;
+
+  /// No description provided for @calendarTabTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get calendarTabTitle;
+
+  /// No description provided for @calendarNoAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'No appointments yet'**
+  String get calendarNoAppointments;
+
+  /// No description provided for @calendarNoAppointmentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Agreed deals appear here as appointments'**
+  String get calendarNoAppointmentsHint;
+
+  /// No description provided for @calendarSectionToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get calendarSectionToday;
+
+  /// No description provided for @calendarSectionUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get calendarSectionUpcoming;
+
+  /// No description provided for @calendarSectionPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get calendarSectionPast;
+
+  /// No description provided for @calendarBusyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My availability'**
+  String get calendarBusyTitle;
+
+  /// No description provided for @calendarBusyAllDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy all day'**
+  String get calendarBusyAllDay;
+
+  /// No description provided for @calendarBusyHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy hours'**
+  String get calendarBusyHours;
+
+  /// No description provided for @calendarServicesStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'My services'**
+  String get calendarServicesStrip;
+
+  /// No description provided for @calendarReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get calendarReminders;
+
+  /// No description provided for @reminderLeadDay.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day before'**
+  String get reminderLeadDay;
+
+  /// No description provided for @reminderLead3Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'3 hours before'**
+  String get reminderLead3Hours;
+
+  /// No description provided for @reminderLeadHour.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour before'**
+  String get reminderLeadHour;
+
+  /// No description provided for @reminderLead15Min.
+  ///
+  /// In en, this message translates to:
+  /// **'15 minutes before'**
+  String get reminderLead15Min;
+
+  /// No description provided for @saveClientPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save client?'**
+  String get saveClientPromptTitle;
+
+  /// No description provided for @saveClientPromptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to add {name} to your client list?'**
+  String saveClientPromptBody(String name);
+
+  /// No description provided for @saveClientConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveClientConfirm;
+
+  /// No description provided for @saveClientSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get saveClientSkip;
+
+  /// No description provided for @saveClientDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Client saved'**
+  String get saveClientDone;
+
+  /// No description provided for @notifSectionSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming appointments'**
+  String get notifSectionSoon;
+
+  /// No description provided for @notifAppointmentCancelledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment cancelled'**
+  String get notifAppointmentCancelledTitle;
+
+  /// No description provided for @notifSubsectorHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help needed in your area'**
+  String get notifSubsectorHelpTitle;
 }
 
 class _AppLocalizationsDelegate

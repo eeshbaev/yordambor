@@ -388,8 +388,8 @@ class _StepRow extends StatelessWidget {
   }
 }
 
-/// No services yet: what selling here looks like, in three steps, and the
-/// one button to start.
+/// No services yet: one card that says why it is worth it, and the one
+/// button to start (the services list and its add button come later).
 class BusinessStartSelling extends ConsumerWidget {
   const BusinessStartSelling({super.key, required this.onCreate});
 
@@ -400,145 +400,61 @@ class BusinessStartSelling extends ConsumerWidget {
     final strings = ref.watch(appStringsProvider);
     final colors = context.ybColors;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.card),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                colors.tealSoft,
-                Color.lerp(colors.tealSoft, colors.teal, 0.15)!,
-              ],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: colors.teal,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(AppSpacing.sm + 2),
-                        child: Icon(
-                          YbIcons.handshake,
-                          color: Colors.white,
-                          size: 26,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Text(
-                        strings.businessEmptyTitle,
-                        style: AppTypography.title.copyWith(
-                          color: colors.tealInk,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  strings.businessEmptyBody,
-                  style: AppTypography.bodyRegular.copyWith(
-                    color: colors.tealInk.withValues(alpha: 0.8),
-                    height: 1.45,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        _StartStep(
-          number: 1,
-          icon: YbIcons.editNote,
-          label: strings.businessStartStep1,
-          colors: colors,
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        _StartStep(
-          number: 2,
-          icon: YbIcons.addPhotoAlternate,
-          label: strings.businessStartStep2,
-          colors: colors,
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        _StartStep(
-          number: 3,
-          icon: YbIcons.handshake,
-          label: strings.businessStartStep3,
-          colors: colors,
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        YbPrimaryButton(
-          label: strings.createXizmat,
-          icon: YbIcons.addFilled,
-          onPressed: onCreate,
-        ),
-      ],
-    );
-  }
-}
-
-class _StartStep extends StatelessWidget {
-  const _StartStep({
-    required this.number,
-    required this.icon,
-    required this.label,
-    required this.colors,
-  });
-
-  final int number;
-  final IconData icon;
-  final String label;
-  final YbThemeColors colors;
-
-  @override
-  Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.card,
-        borderRadius: BorderRadius.circular(AppRadius.sm + 2),
-        border: Border.all(color: colors.line),
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colors.tealSoft,
+            Color.lerp(colors.tealSoft, colors.teal, 0.15)!,
+          ],
+        ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.sm + 2,
-        ),
-        child: Row(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CircleAvatar(
-              radius: 13,
-              backgroundColor: colors.teal,
-              child: Text(
-                '$number',
-                style: AppTypography.label.copyWith(
-                  color: Colors.white,
-                  fontSize: 13,
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: colors.teal,
+                  shape: BoxShape.circle,
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(AppSpacing.md),
+                  child: Icon(
+                    YbIcons.storefrontFilled,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
-            Icon(icon, size: 20, color: colors.ink2),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                label,
-                style: AppTypography.body.copyWith(color: colors.ink),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              strings.businessEmptyTitle,
+              style: AppTypography.title.copyWith(
+                color: colors.tealInk,
+                fontWeight: FontWeight.w700,
               ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              strings.businessEmptyBody,
+              style: AppTypography.bodyRegular.copyWith(
+                color: colors.tealInk.withValues(alpha: 0.8),
+                height: 1.45,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            YbPrimaryButton(
+              label: strings.createXizmat,
+              icon: YbIcons.addFilled,
+              onPressed: onCreate,
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:yordambor/core/utils/money_format.dart';
+import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 
 class YordamKerakFeedItem {
   const YordamKerakFeedItem({
@@ -11,6 +12,7 @@ class YordamKerakFeedItem {
     required this.authorName,
     this.message,
     this.price,
+    this.pricingModel = XizmatPricingModel.negotiable,
     this.currency,
     this.startDate,
     this.durationMinutes,
@@ -32,6 +34,10 @@ class YordamKerakFeedItem {
   final String authorName;
   final String? message;
   final double? price;
+
+  /// How [price] is meant: for the whole job, per hour, day... (migration
+  /// 024).
+  final XizmatPricingModel pricingModel;
   final String? currency;
   final DateTime? startDate;
   final int? durationMinutes;
@@ -56,6 +62,7 @@ class YordamKerakFeedItem {
         authorName: authorName,
         message: message,
         price: price,
+        pricingModel: pricingModel,
         currency: currency,
         startDate: startDate,
         durationMinutes: durationMinutes,

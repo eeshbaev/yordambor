@@ -4,6 +4,7 @@ import 'package:yordambor/core/constants/feed_constants.dart';
 import 'package:yordambor/core/constants/service_cities.dart';
 import 'package:yordambor/data/categories/category_repository.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
+import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 import 'package:yordambor/domain/entities/yordam_kerak_post.dart';
 
 class YordamKerakFailure implements Exception {
@@ -18,6 +19,7 @@ class CreateYordamKerakInput {
     required this.title,
     this.message,
     this.price,
+    this.pricingModel = XizmatPricingModel.negotiable,
     this.currency,
     this.categoryId,
     this.subcategoryId,
@@ -31,6 +33,9 @@ class CreateYordamKerakInput {
   final String title;
   final String? message;
   final double? price;
+
+  /// How [price] is meant; negotiable requests have none.
+  final XizmatPricingModel pricingModel;
   final String? currency;
   final String? categoryId;
   final String? subcategoryId;
@@ -83,7 +88,7 @@ class YordamKerakRepository {
       return const FeedPage(items: [], hasMore: false, nextOffset: 0);
     }
 
-    final rows = await _withCityFallback(() {
+    final rows = await _withColumnFallback(() {
       var query = client
           .from('yordam_kerak_posts')
           .select(_columns())
@@ -148,15 +153,20 @@ class YordamKerakRepository {
       throw YordamKerakFailure('Shaharni tanlang');
     }
 
-    final inserted = await _withCityFallback(
+    final price = input.pricingModel.hasAmount ? input.price : null;
+    final inserted = await _withColumnFallback(
       () => client
           .from('yordam_kerak_posts')
           .insert({
             'author_id': userId,
             'title': input.title.trim(),
             'message': message,
-            'price': input.price,
-            'currency': input.price != null ? (input.currency ?? 'UZS') : null,
+            'price': price,
+            'currency': price != null ? (input.currency ?? 'UZS') : null,
+            if (!_pricingColumnMissing)
+              'pricing_model': price != null
+                  ? input.pricingModel.toDb()
+                  : XizmatPricingModel.negotiable.toDb(),
             'category_id': input.categoryId,
             'subcategory_id': input.subcategoryId,
             'start_date': input.startDate?.toIso8601String().split('T').first,
@@ -175,9 +185,10 @@ class YordamKerakRepository {
     final map = Map<String, dynamic>.from(inserted);
     final profile = map['profiles'] as Map<String, dynamic>?;
     final categories = await _categoryRepository.loadCategories();
-    // Until the server keeps the city, the new post still shows the one
-    // the person chose.
+    // Until the server keeps the city and price unit, the new post still
+    // shows the ones the person chose.
     map['service_city'] ??= serviceCity;
+    if (price != null) map['pricing_model'] ??= input.pricingModel.toDb();
     return _mapRow(map, profile, categories, 'uz');
   }
 
@@ -188,7 +199,7 @@ class YordamKerakRepository {
     final client = _client;
     if (client == null) return null;
 
-    final rows = await _withCityFallback(
+    final rows = await _withColumnFallback(
       () => client
           .from('yordam_kerak_posts')
           .select(_columns())
@@ -211,7 +222,7 @@ class YordamKerakRepository {
     final client = _client;
     if (client == null) return [];
 
-    final rows = await _withCityFallback(
+    final rows = await _withColumnFallback(
       () => client
           .from('yordam_kerak_posts')
           .select(_columns())
@@ -244,6 +255,7 @@ class YordamKerakRepository {
       title: map['title'] as String,
       message: map['message'] as String?,
       price: (map['price'] as num?)?.toDouble(),
+      pricingModel: XizmatPricingModel.fromDb(map['pricing_model'] as String?),
       currency: map['currency'] as String?,
       startDate: startDateRaw != null ? DateTime.tryParse(startDateRaw) : null,
       durationMinutes: (map['duration_minutes'] as num?)?.toInt(),
@@ -266,7 +278,8 @@ class YordamKerakRepository {
     );
   }
 
-  /// The post columns, with the city while the server has it.
+  /// The post columns, with the city and price unit while the server has
+  /// them.
   /// What a request shows. Its contact phone is not readable (migration
   /// 023).
   static String _columns() => '''
@@ -275,6 +288,7 @@ class YordamKerakRepository {
           title,
           message,
           price,
+          ${_pricingColumnMissing ? '' : 'pricing_model,'}
           currency,
           start_date,
           duration_minutes,
@@ -293,17 +307,25 @@ class YordamKerakRepository {
   /// (migration 020 not applied), so later calls stop asking for it.
   static bool _cityColumnMissing = false;
 
-  /// Runs [run]; if the server lacks the city column, notes that and runs
-  /// it once more without the city, so posts still load and save.
-  Future<T> _withCityFallback<T>(Future<T> Function() run) async {
-    try {
-      return await run();
-    } on PostgrestException catch (error) {
-      if (_cityColumnMissing || !error.message.contains('service_city')) {
-        rethrow;
+  /// The same for `pricing_model` (migration 024).
+  static bool _pricingColumnMissing = false;
+
+  /// Runs [run]; each time the server lacks the city or price-unit column,
+  /// notes that and runs it again without it, so posts still load and save.
+  Future<T> _withColumnFallback<T>(Future<T> Function() run) async {
+    while (true) {
+      try {
+        return await run();
+      } on PostgrestException catch (error) {
+        if (!_cityColumnMissing && error.message.contains('service_city')) {
+          _cityColumnMissing = true;
+        } else if (!_pricingColumnMissing &&
+            error.message.contains('pricing_model')) {
+          _pricingColumnMissing = true;
+        } else {
+          rethrow;
+        }
       }
-      _cityColumnMissing = true;
-      return run();
     }
   }
 

@@ -1728,7 +1728,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get xizmatPricingSectionTitle => '定价';
 
   @override
-  String get xizmatPricingSectionSubtitle => '可协商、固定或按小时——由您自行选择。';
+  String get xizmatPricingSectionSubtitle => '价格清楚时，客户会更快联系你。';
 
   @override
   String get xizmatPricingNegotiable => '可协商';
@@ -1755,7 +1755,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get xizmatPricingMinDurationHint => '例如：120';
 
   @override
-  String get xizmatPricingRequiredError => '固定价或按小时定价需填写价格';
+  String get xizmatPricingRequiredError => '请输入金额';
 
   @override
   String get xizmatPriceNegotiable => '价格可协商';
@@ -2506,18 +2506,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get businessStepShareWhy => '通过 Telegram 发送，让朋友推荐您';
 
   @override
-  String get businessStartTitle => '把技能变成收入';
-
-  @override
-  String get businessStartStep1 => '描述服务和价格';
-
-  @override
-  String get businessStartStep2 => '添加照片和城市';
-
-  @override
-  String get businessStartStep3 => '接收请求并达成交易';
-
-  @override
   String businessServicesCount(int count, int max) {
     return '我的服务 · $count/$max';
   }
@@ -3047,4 +3035,486 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get xizmatAboutHint => '您做什么、如何工作、向客户承诺什么';
+
+  @override
+  String xizmatPricePerDay(String amount) {
+    return '$amount/天';
+  }
+
+  @override
+  String xizmatPricePerMonth(String amount) {
+    return '$amount/月';
+  }
+
+  @override
+  String xizmatPricePerUnit(String amount) {
+    return '$amount/件';
+  }
+
+  @override
+  String get xizmatStatPerDay => '每天';
+
+  @override
+  String get xizmatStatPerMonth => '每月';
+
+  @override
+  String get xizmatStatPerUnit => '每件';
+
+  @override
+  String get priceChoiceTitle => '价格';
+
+  @override
+  String get priceChoiceServiceHint => '价格清楚时，客户会更快联系你。';
+
+  @override
+  String get priceChoiceRequestHint => '你愿意支付多少？';
+
+  @override
+  String get priceChoiceNegotiable => '面议';
+
+  @override
+  String get priceChoiceNegotiableHint => '在聊天中商定';
+
+  @override
+  String get priceChoiceAmount => '明确价格';
+
+  @override
+  String get priceChoiceAmountHint => '金额和单位';
+
+  @override
+  String get priceAmountLabel => '金额（苏姆）';
+
+  @override
+  String get priceAmountHint => '例如：150000';
+
+  @override
+  String get priceUnitFixed => '按项目';
+
+  @override
+  String get priceUnitHour => '每小时';
+
+  @override
+  String get priceUnitDay => '每天';
+
+  @override
+  String get priceUnitMonth => '每月';
+
+  @override
+  String get priceUnitUnit => '每件';
+
+  @override
+  String get priceChoiceRequired => '请选择价格：面议或明确金额';
+
+  @override
+  String get growthI00Title => '你的服务已在 YordamBor 上线！';
+
+  @override
+  String get growthI00Body => '恭喜！接下来 30 天，我们会发送简短的建议，帮你找到更多客户。';
+
+  @override
+  String get growthI01Title => '照片建立信任';
+
+  @override
+  String get growthI01Body => '至少添加 3 张作品照片——“前后对比”效果尤其好。';
+
+  @override
+  String get growthI02Title => '标明价格';
+
+  @override
+  String get growthI02Body => '价格清楚，问题更少，成交更快。可按小时、按天或按项目定价。';
+
+  @override
+  String get growthI03Title => '你什么时候有空？';
+
+  @override
+  String get growthI03Body => '把状态设为“现在可接单”：客户会优先联系能尽快上门的人。';
+
+  @override
+  String get growthI04Title => '邀请你的客户加入 YordamBor';
+
+  @override
+  String get growthI04Body => '把服务链接发给老客户：下次他们一点就能找到你。';
+
+  @override
+  String get growthI05Title => '回复越快，订单越多';
+
+  @override
+  String get growthI05Body => '一小时内回复请求：客户通常会选择最先回复的人。';
+
+  @override
+  String get growthI06Title => '介绍一下你自己';
+
+  @override
+  String get growthI06Body => '用 3–4 句话介绍你的经验和工作方式：客户想知道和谁合作。';
+
+  @override
+  String get growthI07Title => '好评就是最好的广告';
+
+  @override
+  String get growthI07Body => '完工后，请客户在 YordamBor 留下评价：每个评分都会带来新客户。';
+
+  @override
+  String get growthI08Title => '你的朋友也需要 YordamBor';
+
+  @override
+  String get growthI08Body => '告诉朋友和邻居 YordamBor：客户越多，订单越多。';
+
+  @override
+  String get growthI09Title => '更新你的日历';
+
+  @override
+  String get growthI09Body => '标出忙碌的日子：客户能看到你的空闲时间并预约具体日期。';
+
+  @override
+  String get growthI10Title => '跟踪你的收入';
+
+  @override
+  String get growthI10Body => '“工具”里有收入、客户簿和收据——一应俱全。';
+
+  @override
+  String get growthI11Title => '30 天——良好的开端！';
+
+  @override
+  String get growthI11Body => '在社交媒体上分享你的服务链接，继续在 YordamBor 上成长。';
+
+  @override
+  String get growthO00Title => '你的机构已在 YordamBor 上线！';
+
+  @override
+  String get growthO00Body => '恭喜！接下来 30 天，我们会发送简短建议，帮你增加客流。';
+
+  @override
+  String get growthO01Title => '展示你的场所';
+
+  @override
+  String get growthO01Body => '至少添加 3 张场所、团队和作品的照片：客户能提前看到要去的地方。';
+
+  @override
+  String get growthO02Title => '公开你的价格';
+
+  @override
+  String get growthO02Body => '标明主要服务的价格：客户更愿意联系价格清晰的机构。';
+
+  @override
+  String get growthO03Title => '设置营业时间';
+
+  @override
+  String get growthO03Body => '填写工作日和营业时间：客户一眼就能看到何时可以前来。';
+
+  @override
+  String get growthO04Title => '邀请你的客户加入 YordamBor';
+
+  @override
+  String get growthO04Body => '在你的 Telegram 频道、收银台或短信中分享链接：客户一点就能找到你。';
+
+  @override
+  String get growthO05Title => '执照和证书';
+
+  @override
+  String get growthO05Body => '把证件添加到个人资料：官方证明能增加客户信任。';
+
+  @override
+  String get growthO06Title => '每个方向一个服务';
+
+  @override
+  String get growthO06Body => '分别添加你的服务（最多 5 个）：客户能更快找到所需。';
+
+  @override
+  String get growthO07Title => '快速回复请求';
+
+  @override
+  String get growthO07Body => '指定专人负责回复：回复越快，成交越多。';
+
+  @override
+  String get growthO08Title => '请每位客户留下评价';
+
+  @override
+  String get growthO08Body => '满意客户的评价会提升评分，带来新客户。';
+
+  @override
+  String get growthO09Title => '把链接印在名片上';
+
+  @override
+  String get growthO09Body => '把 YordamBor 链接放在名片、菜单或橱窗上：一点即可预约。';
+
+  @override
+  String get growthO10Title => '账目一处管理';
+
+  @override
+  String get growthO10Body => '收据、收入和客户簿都在“工具”里：让机构井井有条。';
+
+  @override
+  String get growthO11Title => '第一个月完成了！';
+
+  @override
+  String get growthO11Body => '在服务卡片上查看成果，继续在 YordamBor 上扩大客户群。';
+
+  @override
+  String get growthProgramTitle => '发展你的业务';
+
+  @override
+  String growthProgramDay(int day) {
+    return '第 $day 天 · 共 30 天';
+  }
+
+  @override
+  String get growthTipDone => '已完成';
+
+  @override
+  String get growthEarlierTips => '之前的建议';
+
+  @override
+  String get growthTipsOff => '关闭建议';
+
+  @override
+  String get growthTipsOffDone => '已关闭建议。可在提醒设置中重新开启。';
+
+  @override
+  String get growthTipsSetting => '业务建议';
+
+  @override
+  String get growthTipsSettingSub => '添加服务后的 30 天内';
+
+  @override
+  String growthInviteShareText(String link) {
+    return 'YordamBor——可靠的师傅和服务尽在一处。下载：$link';
+  }
+
+  @override
+  String get growthActionPhotos => '添加照片';
+
+  @override
+  String get growthActionPrice => '设置价格';
+
+  @override
+  String get growthActionAvailability => '设置状态';
+
+  @override
+  String get growthActionHours => '设置营业时间';
+
+  @override
+  String get growthActionShare => '分享链接';
+
+  @override
+  String get growthActionInvite => '邀请';
+
+  @override
+  String get growthActionReply => '查看请求';
+
+  @override
+  String get growthActionDescription => '填写介绍';
+
+  @override
+  String get growthActionReviews => '查看交易';
+
+  @override
+  String get growthActionCalendar => '打开日历';
+
+  @override
+  String get growthActionTools => '打开工具';
+
+  @override
+  String get growthActionCertificates => '添加证件';
+
+  @override
+  String get growthActionMoreServices => '添加服务';
+
+  @override
+  String get growthActionMyServices => '查看我的服务';
+
+  @override
+  String get appointmentPhaseNow => '进行中';
+
+  @override
+  String get appointmentPhaseToday => '今天';
+
+  @override
+  String get appointmentPhasePlanned => '已计划';
+
+  @override
+  String get appointmentPhasePast => '等待完成';
+
+  @override
+  String get appointmentPhaseDone => '已完成';
+
+  @override
+  String get appointmentPhaseCancelled => '已取消';
+
+  @override
+  String get appointmentRoleProvider => '我提供';
+
+  @override
+  String get appointmentRoleClient => '我接受';
+
+  @override
+  String get appointmentPartyClient => '客户';
+
+  @override
+  String get appointmentPartyProvider => '服务商';
+
+  @override
+  String get appointmentCall => '拨打';
+
+  @override
+  String get actionChat => '聊天';
+
+  @override
+  String get actionKeep => '保留';
+
+  @override
+  String get appointmentCancel => '取消';
+
+  @override
+  String get appointmentCancelTitle => '取消预约？';
+
+  @override
+  String get appointmentCancelBody => '此操作无法撤销，对方将收到通知。';
+
+  @override
+  String get appointmentCancelConfirm => '是，取消';
+
+  @override
+  String get appointmentSaveClient => '保存到客户列表';
+
+  @override
+  String get appointmentFactPrice => '价格';
+
+  @override
+  String get appointmentFactDuration => '时长';
+
+  @override
+  String appointmentDuration(int minutes) {
+    return '$minutes мин';
+  }
+
+  @override
+  String get availabilitySheetCaption => '客户现在会看到什么？';
+
+  @override
+  String get availabilityTileNowHint => '现在接受订单';
+
+  @override
+  String get availabilityTileBusyHint => '忙碌中，快回来';
+
+  @override
+  String get availabilityTileBookingHint => '提前预约';
+
+  @override
+  String get availabilityTileHidden => '已隐藏';
+
+  @override
+  String get availabilityTileHiddenHint => '服务已隐藏';
+
+  @override
+  String get availabilityUntilTitle => '到什么时候？';
+
+  @override
+  String get availabilityUntilHour => '1小时';
+
+  @override
+  String get availabilityUntilToday => '今天';
+
+  @override
+  String get availabilityUntilForever => '无限期';
+
+  @override
+  String get availabilityHoursTitle => '工作时间';
+
+  @override
+  String get availabilityHoursOwn => '我的时间表';
+
+  @override
+  String get availabilityHoursShared => '共享时间';
+
+  @override
+  String get availabilityBusyToggle => '向客户显示忙碌时间';
+
+  @override
+  String get availabilityBusyToggleHint => '客户可看到您两周内的空闲和忙碌时段';
+
+  @override
+  String get availabilityPreview => '预览';
+
+  @override
+  String get availabilityHiddenPreview => '从搜索中隐藏';
+
+  @override
+  String get availabilitySaved => '状态已保存';
+
+  @override
+  String get businessEmptyTitle => '开始在YordamBor赚钱';
+
+  @override
+  String get businessEmptyBody => '附近有数千人正在寻求帮助。添加您的第一项服务——只需2分钟。';
+
+  @override
+  String get calendarTabTitle => '日程';
+
+  @override
+  String get calendarNoAppointments => '暂无预约';
+
+  @override
+  String get calendarNoAppointmentsHint => '已达成的交易将作为预约显示在这里';
+
+  @override
+  String get calendarSectionToday => '今天';
+
+  @override
+  String get calendarSectionUpcoming => '即将到来';
+
+  @override
+  String get calendarSectionPast => '过去';
+
+  @override
+  String get calendarBusyTitle => '我的日程';
+
+  @override
+  String get calendarBusyAllDay => '全天忙碌';
+
+  @override
+  String get calendarBusyHours => '忙碌时间';
+
+  @override
+  String get calendarServicesStrip => '我的服务';
+
+  @override
+  String get calendarReminders => '提醒';
+
+  @override
+  String get reminderLeadDay => '提前1天';
+
+  @override
+  String get reminderLead3Hours => '提前3小时';
+
+  @override
+  String get reminderLeadHour => '提前1час';
+
+  @override
+  String get reminderLead15Min => '提前15分钟';
+
+  @override
+  String get saveClientPromptTitle => '保存客户？';
+
+  @override
+  String saveClientPromptBody(String name) {
+    return '是否将$name添加到客户列表？';
+  }
+
+  @override
+  String get saveClientConfirm => '保存';
+
+  @override
+  String get saveClientSkip => '暂不';
+
+  @override
+  String get saveClientDone => '客户已保存';
+
+  @override
+  String get notifSectionSoon => '即将到来的预约';
+
+  @override
+  String get notifAppointmentCancelledTitle => '预约已取消';
+
+  @override
+  String get notifSubsectorHelpTitle => '您的领域需要帮助';
 }

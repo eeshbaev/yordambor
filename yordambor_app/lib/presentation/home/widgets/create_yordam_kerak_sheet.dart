@@ -25,9 +25,11 @@ import 'package:yordambor/core/utils/phone_validation.dart';
 import 'package:yordambor/data/yordam_kerak/yordam_kerak_repository.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
 import 'package:yordambor/domain/entities/request_draft.dart';
+import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 import 'package:yordambor/presentation/shared/alert_subscriptions.dart';
 import 'package:yordambor/presentation/shared/busy_slot_confirm.dart';
 import 'package:yordambor/presentation/shared/post_contact_preferences_section.dart';
+import 'package:yordambor/presentation/shared/xizmat_pricing_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_service_city_field.dart';
 
 /// Where a new request starts when it comes from somewhere specific (a
@@ -104,6 +106,11 @@ class _CreateYordamKerakSheetState
   String? _cityId;
   String? _cityError;
 
+  /// Every request states its price; null until the person picks one.
+  XizmatPricingModel? _pricingModel;
+  String? _pricingError;
+  int _pricingShake = 0;
+
   /// Hear when a provider joins in this trade (asked from a sample).
   bool _alertNewServices = true;
 
@@ -172,12 +179,16 @@ class _CreateYordamKerakSheetState
     _titleController.text = draft.title;
     _messageController.text = draft.message;
     _priceController.text = draft.price;
+    final draftPricing = draft.pricingModel;
     _durationController.text = draft.duration;
     _restoring = false;
     setState(() {
       _category = category;
       _subcategory = subcategory;
       _startDate = draft.startDate;
+      _pricingModel = draftPricing == null
+          ? null
+          : XizmatPricingModel.fromDb(draftPricing);
       if (ServiceCities.isValidId(draft.serviceCity)) {
         _cityId = draft.serviceCity;
       }
@@ -192,6 +203,7 @@ class _CreateYordamKerakSheetState
         title: _titleController.text,
         message: _messageController.text,
         price: _priceController.text,
+        pricingModel: _pricingModel?.toDb(),
         duration: _durationController.text,
         categoryId: _category?.id,
         subcategoryId: _subcategory?.id,
@@ -221,6 +233,8 @@ class _CreateYordamKerakSheetState
       _category = null;
       _subcategory = null;
       _startDate = null;
+      _pricingModel = null;
+      _pricingError = null;
       _restoredDraft = false;
       _autovalidate = false;
       _categoryError = null;
@@ -348,12 +362,19 @@ class _CreateYordamKerakSheetState
 
     final formValid = _formKey.currentState?.validate() ?? false;
     final categoriesValid = _validateCategories(strings);
-    if (!formValid || !categoriesValid) {
+    final pricingError = validateXizmatPricing(
+      model: _pricingModel,
+      priceText: _priceController.text,
+      strings: strings,
+    );
+    setState(() => _pricingError = pricingError);
+    if (!formValid || !categoriesValid || pricingError != null) {
       AppHaptics.error();
       setState(() {
         if (_titleField.currentState?.hasError ?? false) _titleShake++;
         if (_messageField.currentState?.hasError ?? false) _messageShake++;
         if (!categoriesValid) _categoryShake++;
+        if (pricingError != null) _pricingShake++;
       });
       return;
     }
@@ -377,8 +398,10 @@ class _CreateYordamKerakSheetState
       }
     }
 
-    final priceText = _priceController.text.trim();
-    final price = priceText.isEmpty ? null : double.tryParse(priceText);
+    final pricingModel = _pricingModel!;
+    final price = pricingModel.hasAmount
+        ? parseOptionalPrice(_priceController.text)
+        : null;
     final durationText = _durationController.text.trim();
     final contactPhone = normalizeOptionalContactPhone(_phoneController.text);
 
@@ -396,6 +419,7 @@ class _CreateYordamKerakSheetState
               title: _titleController.text.trim(),
               message: _messageController.text.trim(),
               price: price,
+              pricingModel: pricingModel,
               categoryId: _category!.id,
               subcategoryId: _subcategory!.id,
               startDate: _startDate,
@@ -510,12 +534,22 @@ class _CreateYordamKerakSheetState
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          TextField(
-            controller: _priceController,
-            decoration: InputDecoration(
-              labelText: strings.yordamKerakBudgetLabel,
+          YbShake(
+            trigger: _pricingShake,
+            child: XizmatPricingSection(
+              strings: strings,
+              forRequest: true,
+              pricingModel: _pricingModel,
+              onPricingModelChanged: (model) {
+                setState(() {
+                  _pricingModel = model;
+                  _pricingError = null;
+                });
+                _scheduleSave();
+              },
+              priceController: _priceController,
+              errorText: _pricingError,
             ),
-            keyboardType: TextInputType.number,
           ),
           const SizedBox(height: AppSpacing.lg),
           YbSecondaryButton(

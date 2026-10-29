@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 import 'package:yordambor/application/providers/experience_providers.dart';
 import 'package:yordambor/application/providers/feed_filter_provider.dart';
 import 'package:yordambor/application/providers/feed_provider.dart';
@@ -404,6 +405,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   item.subcategoryLabel,
                 ),
                 cityLabel: strings.serviceCityDisplayLabel(item.serviceCity),
+                priceLabel: yordamKerakPriceLabel(item, strings),
                 yordamBorLabel: strings.filterYordamBor,
                 selected: DetailPane.selectedOf(context) ==
                     (kind: DetailKind.post, id: item.id),

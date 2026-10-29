@@ -964,10 +964,6 @@ class AppStrings {
   String get businessStepAvailabilityWhy => _l10n.businessStepAvailabilityWhy;
   String get businessStepShare => _l10n.businessStepShare;
   String get businessStepShareWhy => _l10n.businessStepShareWhy;
-  String get businessStartTitle => _l10n.businessStartTitle;
-  String get businessStartStep1 => _l10n.businessStartStep1;
-  String get businessStartStep2 => _l10n.businessStartStep2;
-  String get businessStartStep3 => _l10n.businessStartStep3;
   String businessServicesCount(int count, int max) =>
       _l10n.businessServicesCount(count, max);
   String xizmatLimitReached(int max) => _l10n.xizmatLimitReached(max);

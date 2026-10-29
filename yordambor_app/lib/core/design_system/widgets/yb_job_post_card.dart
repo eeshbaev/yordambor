@@ -28,6 +28,7 @@ class YbJobPostCard extends StatelessWidget {
     this.selected = false,
     this.cityLabel,
     this.sampleLabel,
+    this.priceLabel,
   });
 
   final YordamKerakFeedItem item;
@@ -55,6 +56,10 @@ class YbJobPostCard extends StatelessWidget {
   /// the trade and city.
   final String? sampleLabel;
 
+  /// The price with its unit ("50 000 soʻm/day"); defaults to the bare
+  /// amount.
+  final String? priceLabel;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.ybColors;
@@ -71,6 +76,7 @@ class YbJobPostCard extends StatelessWidget {
         : durationLabel != null
             ? durationLabel!(item.durationMinutes!)
             : '${item.durationMinutes} min';
+    final price = priceLabel ?? item.priceLabel;
     final authorIsLink = onAuthorTap != null;
     final sentence = ybSentence([
       sectorLine,
@@ -79,7 +85,7 @@ class YbJobPostCard extends StatelessWidget {
       item.title,
       message,
       if (showsPhoneNote) phoneHiddenLabel,
-      item.priceLabel,
+      price,
       dateLabel,
       durationText,
       if (!authorIsLink) item.authorName,
@@ -142,7 +148,7 @@ class YbJobPostCard extends StatelessWidget {
             style: AppTypography.caption.copyWith(color: colors.textSecondary),
           ),
         ],
-        if (item.priceLabel != null ||
+        if (price != null ||
             dateLabel != null ||
             durationText != null) ...[
           const SizedBox(height: AppSpacing.md),
@@ -150,10 +156,10 @@ class YbJobPostCard extends StatelessWidget {
             spacing: 6,
             runSpacing: 6,
             children: [
-              if (item.priceLabel != null)
+              if (price != null)
                 YbInfoTag(
                   icon: YbIcons.paymentsFilled,
-                  label: item.priceLabel!,
+                  label: price,
                   tone: YbInfoTone.money,
                   strong: true,
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/yordam_kerak_provider.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
@@ -63,6 +64,7 @@ class YordamKerakPostScreen extends ConsumerWidget {
                 ),
                 cityLabel: strings.serviceCityDisplayLabel(item.serviceCity),
                 sampleLabel: item.isDemo ? strings.sampleTag : null,
+                priceLabel: yordamKerakPriceLabel(item, strings),
                 yordamBorLabel: strings.filterYordamBor,
                 compact: false,
                 onTap: () {},
