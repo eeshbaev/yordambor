@@ -4,7 +4,13 @@
     "details": [
       {
         "appID": "REPLACE_WITH_APPLE_TEAM_ID.uz.yordambor.yordambor",
-        "paths": ["/xizmat/*", "/kelishuv/*"]
+        "paths": [
+          "/xizmat/*",
+          "/kelishuv/*",
+          "/post/*",
+          "/join",
+          "/join/*"
+        ]
       }
     ]
   }

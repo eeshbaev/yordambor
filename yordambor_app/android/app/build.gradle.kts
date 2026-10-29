@@ -55,7 +55,8 @@ android {
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
-                // Fallback for local release builds until key.properties is configured.
+                // Only for local release builds with -PallowDebugSigning;
+                // see the check below.
                 signingConfigs.getByName("debug")
             }
         }
@@ -74,4 +75,21 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+}
+
+// Play rejects debug-signed uploads: a release build without the upload key
+// stops here, unless asked for on purpose (-PallowDebugSigning).
+gradle.taskGraph.whenReady {
+    val releaseTask = allTasks.any { it.name.contains("Release") }
+    if (releaseTask &&
+        !keystorePropertiesFile.exists() &&
+        !project.hasProperty("allowDebugSigning")
+    ) {
+        throw GradleException(
+            "Release builds need android/key.properties " +
+                "(see key.properties.example). For a local test build, " +
+                "pass -PallowDebugSigning or put allowDebugSigning=true in " +
+                "android/gradle.properties.",
+        )
+    }
 }

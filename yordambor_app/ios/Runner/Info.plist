@@ -47,6 +47,10 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>YordamBor uses your photos for your service listings, profile picture and certificates.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>YordamBor uses the camera to take photos for your service listings, profile picture and certificates.</string>
 	<key>FlutterDeepLinkingEnabled</key>
 	<true/>
 	<key>CFBundleURLTypes</key>
