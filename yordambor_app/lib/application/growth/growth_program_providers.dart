@@ -146,7 +146,11 @@ final growthProgramProvider = FutureProvider<GrowthProgramState?>((ref) async {
   final userId = ref.watch(sessionProvider.select((s) => s.user?.id));
   final enabled = ref.watch(growthTipsEnabledProvider);
   final strings = ref.watch(appStringsProvider);
-  if (userId == null) return null;
+  if (userId == null) {
+    // Signed out: the last account's tips must not keep arriving.
+    unawaited(_schedule(null, strings, enabled: enabled));
+    return null;
+  }
 
   final mine = await ref.watch(myXizmatlarProvider.future);
   final services = mine.where((item) => !item.isDemo).toList();

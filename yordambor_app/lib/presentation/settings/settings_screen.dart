@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yordambor/application/growth/growth_program_providers.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/onboarding_providers.dart';
@@ -110,6 +111,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               subtitle: Text(strings.settingsShowPhoneSubtitle),
               value: session.profile?.showPhone ?? false,
               onChanged: _isUpdatingShowPhone ? null : _toggleShowPhone,
+            ),
+            // The 30-day tips after a first service, back on after "turn
+            // off" on a tip.
+            SwitchListTile(
+              secondary: const Icon(YbIcons.tipsAndUpdatesFilled),
+              title: Text(strings.growthTipsSetting),
+              subtitle: Text(strings.growthTipsSettingSub),
+              value: ref.watch(growthTipsEnabledProvider),
+              onChanged: (value) =>
+                  ref.read(growthTipsEnabledProvider.notifier).set(value),
             ),
           ],
           ListTile(
