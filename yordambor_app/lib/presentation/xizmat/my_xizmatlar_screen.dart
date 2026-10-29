@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yordambor/application/providers/analytics_providers.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/feed_provider.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
@@ -162,6 +163,7 @@ class _BusinessServicesTab extends ConsumerWidget {
         ref.invalidate(myXizmatlarProvider);
         ref.invalidate(feedProvider);
         ref.invalidate(providerGrowthProvider);
+        ref.invalidate(xizmatAnalyticsProvider);
       },
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),

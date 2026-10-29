@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yordambor/application/providers/analytics_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_elevation.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
@@ -10,6 +11,7 @@ import 'package:yordambor/core/design_system/widgets/yb_network_image.dart';
 import 'package:yordambor/core/design_system/widgets/yb_provider_type_mark.dart';
 import 'package:yordambor/core/design_system/widgets/yb_status_badge.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
+import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/core/utils/category_icons.dart';
 import 'package:yordambor/core/utils/founding_providers.dart';
 import 'package:yordambor/core/utils/xizmat_availability_display.dart';
@@ -43,6 +45,49 @@ class BusinessServiceCard extends ConsumerWidget {
     final cityLabel = item.hasServiceCity
         ? strings.serviceCityLabel(item.serviceCity!)
         : null;
+
+    final stackButtons = MediaQuery.textScalerOf(context).scale(14) / 14 > 1.3;
+    final availabilityButton = OutlinedButton.icon(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: availability != null
+            ? _toneColor(context, availability.tone)
+            : context.ybColors.teal,
+        side: BorderSide(color: colors.border),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.sm,
+        ),
+        minimumSize: const Size(0, AppTouch.minTarget),
+      ),
+      onPressed: () => showServiceAvailabilitySheet(context, ref, item: item),
+      icon: Icon(
+        availability != null ? YbIcons.boltFilled : YbIcons.scheduleFilled,
+        size: 18,
+      ),
+      label: Text(
+        availability?.label ?? strings.profileSetAvailability,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+    final editButton = OutlinedButton.icon(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: context.ybColors.teal,
+        side: BorderSide(color: colors.border),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
+        minimumSize: const Size(0, AppTouch.minTarget),
+      ),
+      onPressed: () => context.push('/xizmat/${item.id}/manage'),
+      icon: const Icon(YbIcons.tuneFilled, size: 18),
+      label: Text(
+        strings.xizmatEditTitle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
@@ -149,31 +194,21 @@ class BusinessServiceCard extends ConsumerWidget {
                               ),
                             ),
                             const SizedBox(width: AppSpacing.md),
-                            Icon(
-                              YbIcons.checkCircle,
-                              size: 16,
-                              color: colors.textTertiary,
-                            ),
-                            const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                strings.xizmatCompletedCount(item.completedCount),
-                                style: AppTypography.caption.copyWith(
-                                  color: colors.textSecondary,
+                                priceLabel,
+                                textAlign: TextAlign.end,
+                                style: AppTypography.headline.copyWith(
+                                  color: context.ybColors.teal,
+                                  fontWeight: FontWeight.w700,
                                 ),
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: AppSpacing.sm),
-                        Text(
-                          priceLabel,
-                          style: AppTypography.headline.copyWith(
-                            color: context.ybColors.teal,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        // How the service is doing, right on its card.
+                        _ServiceStats(xizmatId: item.id, strings: strings),
                       ],
                     ),
                   ),
@@ -206,60 +241,23 @@ class BusinessServiceCard extends ConsumerWidget {
                     AppSpacing.lg,
                     AppSpacing.lg,
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: availability != null
-                                ? _toneColor(
-                                    context,
-                                    availability.tone,
-                                  )
-                                : context.ybColors.teal,
-                            side: BorderSide(color: colors.border),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.sm,
-                              vertical: AppSpacing.sm,
-                            ),
-                            minimumSize: const Size(0, AppTouch.minTarget),
-                          ),
-                          onPressed: () => showServiceAvailabilitySheet(
-                            context,
-                            ref,
-                            item: item,
-                          ),
-                          icon: Icon(
-                            availability != null
-                                ? YbIcons.boltFilled
-                                : YbIcons.scheduleFilled,
-                            size: 18,
-                          ),
-                          label: Text(
-                            availability?.label ?? strings.profileSetAvailability,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                  // With large text the two buttons stack, full width.
+                  child: stackButtons
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            availabilityButton,
+                            const SizedBox(height: AppSpacing.sm),
+                            editButton,
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Expanded(child: availabilityButton),
+                            const SizedBox(width: AppSpacing.sm),
+                            Flexible(child: editButton),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: context.ybColors.teal,
-                          side: BorderSide(color: colors.border),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md,
-                            vertical: AppSpacing.sm,
-                          ),
-                          minimumSize: const Size(0, AppTouch.minTarget),
-                        ),
-                        onPressed: () =>
-                            context.push('/xizmat/${item.id}/manage'),
-                        icon: const Icon(YbIcons.tuneFilled, size: 18),
-                        label: Text(strings.xizmatEditTitle),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
@@ -348,6 +346,88 @@ class _Hero extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Views, saves, active and completed deals of one service, in a tinted
+/// strip; dashes while they load or when they cannot be read.
+class _ServiceStats extends ConsumerWidget {
+  const _ServiceStats({required this.xizmatId, required this.strings});
+
+  final String xizmatId;
+  final AppStrings strings;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colors = context.ybColors;
+    final stats = ref.watch(xizmatAnalyticsProvider(xizmatId)).valueOrNull;
+    String value(int? n) => n == null ? '—' : '$n';
+
+    final cells = [
+      (YbIcons.visibility, value(stats?.viewCount), strings.analyticsViews),
+      (
+        YbIcons.favorite,
+        value(stats?.favoriteCount),
+        strings.analyticsFavorites,
+      ),
+      (
+        YbIcons.handshake,
+        value(stats?.incomingDeals),
+        strings.analyticsActiveDeals,
+      ),
+      (
+        YbIcons.checkCircle,
+        value(stats?.completedDeals),
+        strings.analyticsCompletedDeals,
+      ),
+    ];
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surface2,
+        borderRadius: BorderRadius.circular(AppRadius.sm + 2),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xs,
+          vertical: AppSpacing.sm,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (final (icon, figure, label) in cells)
+              Expanded(
+                child: Semantics(
+                  label: '$label: $figure',
+                  excludeSemantics: true,
+                  child: Column(
+                    children: [
+                      Icon(icon, size: 16, color: colors.ink3),
+                      const SizedBox(height: 2),
+                      Text(
+                        figure,
+                        style: AppTypography.tabular(
+                          AppTypography.headline.copyWith(color: colors.ink),
+                        ),
+                      ),
+                      Text(
+                        label,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.caption.copyWith(
+                          color: colors.textSecondary,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

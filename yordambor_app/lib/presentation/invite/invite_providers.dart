@@ -52,67 +52,6 @@ Future<void> shareProviderInvite(AppStrings strings) {
   );
 }
 
-/// On the Business tab: invite providers you know.
-class InviteProvidersCard extends ConsumerWidget {
-  const InviteProvidersCard({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final strings = ref.watch(appStringsProvider);
-    final colors = context.ybColors;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.card,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: colors.borderSubtle),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: colors.tealSoft,
-                    borderRadius: BorderRadius.circular(AppRadius.tile),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.sm + 2),
-                    child: Icon(
-                      YbIcons.personAddFilled,
-                      size: 22,
-                      color: colors.teal,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Text(
-                    strings.inviteTitle,
-                    style: AppTypography.headline.copyWith(color: colors.ink),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              strings.inviteBody,
-              style: AppTypography.body.copyWith(color: colors.ink2),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _FoundingLine(strings: strings),
-            const SizedBox(height: AppSpacing.lg),
-            _InviteActions(strings: strings),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 /// The same invitation as a sheet, from the samples on Home.
 Future<void> showInviteProvidersSheet(
   BuildContext context,
@@ -150,35 +89,6 @@ Future<void> showInviteProvidersSheet(
   );
   if (prepare == true && context.mounted) {
     await showPrepareServiceInviteSheet(context, ref);
-  }
-}
-
-class _InviteActions extends ConsumerWidget {
-  const _InviteActions({required this.strings});
-
-  final AppStrings strings;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        YbPrimaryButton(
-          label: strings.inviteShare,
-          icon: YbIcons.share,
-          tone: YbButtonTone.tonal,
-          height: 48,
-          onPressed: () => shareProviderInvite(strings),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        YbSecondaryButton(
-          label: strings.invitePrepare,
-          icon: YbIcons.personAdd,
-          height: 48,
-          onPressed: () => showPrepareServiceInviteSheet(context, ref),
-        ),
-      ],
-    );
   }
 }
 
