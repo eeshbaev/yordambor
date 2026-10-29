@@ -68,6 +68,8 @@ from (
     ('023 phone numbers and emails hidden',
       not has_column_privilege('anon', 'public.profiles', 'phone', 'select')),
     ('024 appointments, prices and help-request alerts',
-      to_regprocedure('public.get_xizmat_busy_hours(uuid, date, date)') is not null)
+      to_regprocedure('public.get_xizmat_busy_hours(uuid, date, date)') is not null),
+    ('025 deal and review rules kept by the server',
+      exists (select 1 from pg_trigger where tgname = 'trg_guard_kelishuv'))
 ) as t(migration, present)
 order by migration;
