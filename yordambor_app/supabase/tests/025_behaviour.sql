@@ -177,6 +177,22 @@ select pg_temp.should_fail('C swaps the other side', $q$
 select pg_temp.should_work('C cancels the offer', $q$
   update kelishuvlar set status = 'bekor' where id = '00000000-0000-0000-0000-0000000000e2' $q$);
 
+-- Badges: only when earned.
+select pg_temp.should_fail('C gives themselves the 25-jobs badge', $q$
+  insert into profile_achievements (profile_id, achievement_id)
+  values ('00000000-0000-0000-0000-00000000000c', 'jobs_25') $q$);
+select pg_temp.act_as('00000000-0000-0000-0000-00000000000b');
+select pg_temp.should_work('B gets the first-service badge', $q$
+  insert into profile_achievements (profile_id, achievement_id)
+  values ('00000000-0000-0000-0000-00000000000b', 'first_xizmat') $q$);
+select pg_temp.should_work('B gets the first-job badge after the done deal', $q$
+  insert into profile_achievements (profile_id, achievement_id)
+  values ('00000000-0000-0000-0000-00000000000b', 'first_deal') $q$);
+select pg_temp.should_fail('B claims five jobs', $q$
+  insert into profile_achievements (profile_id, achievement_id)
+  values ('00000000-0000-0000-0000-00000000000b', 'jobs_5') $q$);
+select pg_temp.act_as('00000000-0000-0000-0000-00000000000c');
+
 -- Views: once a day, never by the owner.
 select pg_temp.should_work('a view', $q$
   insert into analytics_events (xizmat_id, event_type) values ('00000000-0000-0000-0000-0000000000f1', 'view') $q$);

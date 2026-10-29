@@ -7,6 +7,7 @@ drop trigger if exists trg_guard_review on public.reviews;
 drop trigger if exists trg_review_changed on public.reviews;
 drop trigger if exists trg_guard_xizmat_counts on public.xizmatlar;
 drop trigger if exists trg_dedupe_view on public.analytics_events;
+drop trigger if exists trg_guard_achievement on public.profile_achievements;
 drop function if exists public.guard_kelishuv();
 drop function if exists public.on_kelishuv_done();
 drop function if exists public.guard_review();
@@ -14,6 +15,7 @@ drop function if exists public.on_review_changed();
 drop function if exists public.refresh_xizmat_rating(uuid);
 drop function if exists public.guard_xizmat_counts();
 drop function if exists public.dedupe_view();
+drop function if exists public.guard_achievement();
 
 drop policy if exists "kelishuv_msg_insert" on public.kelishuv_messages;
 create policy "kelishuv_msg_insert" on public.kelishuv_messages for insert

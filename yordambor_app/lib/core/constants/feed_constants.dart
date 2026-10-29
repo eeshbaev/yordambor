@@ -5,7 +5,10 @@ abstract final class FeedConstants {
   /// They stay until this is set to false.
   static const bool showSamples = true;
   static const Duration networkTimeout = Duration(seconds: 6);
-  static const Duration feedFetchTimeout = Duration(seconds: 3);
+  /// How long a feed page may take before the samples stand in. Slow
+  /// mobile networks need more than a few seconds; placeholders show
+  /// meanwhile.
+  static const Duration feedFetchTimeout = Duration(seconds: 8);
   static const Duration blockedUsersTimeout = Duration(seconds: 2);
   static const Duration filterDebounce = Duration(milliseconds: 250);
 }

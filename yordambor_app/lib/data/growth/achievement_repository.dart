@@ -38,11 +38,16 @@ class AchievementRepository {
 
     for (final id in computedIds) {
       if (existingIds.contains(id)) continue;
-      await client.from('profile_achievements').insert({
-        'profile_id': profileId,
-        'achievement_id': id,
-      });
-      newlyUnlocked.add(id);
+      try {
+        await client.from('profile_achievements').insert({
+          'profile_id': profileId,
+          'achievement_id': id,
+        });
+        newlyUnlocked.add(id);
+      } on PostgrestException {
+        // The server gives a badge only once it sees it earned (migration
+        // 025); this one waits for the next check.
+      }
     }
 
     return newlyUnlocked;

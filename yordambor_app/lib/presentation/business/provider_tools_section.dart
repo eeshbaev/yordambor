@@ -8,6 +8,7 @@ import 'package:yordambor/core/design_system/app_elevation.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
+import 'package:yordambor/presentation/invite/invite_providers.dart';
 
 /// Provider tools as picture cards: client book, receipts, earnings and
 /// margin two to a row, the business guides wide at the end. Each tool has
@@ -82,6 +83,14 @@ class ProviderToolsSection extends ConsumerWidget {
       subtitle: strings.guidesSubtitle,
       onTap: () => context.push('/guides'),
     );
+    // Bring in providers they know: more real services bring more clients.
+    final invite = _Tool(
+      icon: YbIcons.personAddFilled,
+      tint: colors.tealSoft,
+      title: strings.inviteTitle,
+      subtitle: strings.inviteBody,
+      onTap: () => showInviteProvidersSheet(context, ref),
+    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -92,7 +101,7 @@ class ProviderToolsSection extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (final tool in [...tools, guides]) ...[
+              for (final tool in [...tools, guides, invite]) ...[
                 _ToolCard(tool: tool, wide: true),
                 const SizedBox(height: AppSpacing.md),
               ],
@@ -120,6 +129,8 @@ class ProviderToolsSection extends ConsumerWidget {
               const SizedBox(height: AppSpacing.md),
             ],
             _ToolCard(tool: guides, wide: true),
+            const SizedBox(height: AppSpacing.md),
+            _ToolCard(tool: invite, wide: true),
           ],
         );
       },
@@ -129,7 +140,7 @@ class ProviderToolsSection extends ConsumerWidget {
 
 class _Tool {
   const _Tool({
-    required this.image,
+    this.image,
     required this.icon,
     required this.tint,
     required this.title,
@@ -137,9 +148,9 @@ class _Tool {
     required this.onTap,
   });
 
-  final String image;
+  final String? image;
 
-  /// Shown if the picture cannot load.
+  /// Shown without a picture, or if it cannot load.
   final IconData icon;
   final Color tint;
   final String title;
@@ -164,14 +175,16 @@ class _ToolCard extends StatelessWidget {
       color: tool.tint,
       child: AspectRatio(
         aspectRatio: 1.6,
-        child: Image.asset(
-          tool.image,
-          fit: BoxFit.contain,
-          cacheWidth: 640,
-          excludeFromSemantics: true,
-          errorBuilder: (_, _, _) =>
-              Icon(tool.icon, size: 40, color: colors.ink2),
-        ),
+        child: tool.image == null
+            ? Icon(tool.icon, size: 40, color: colors.teal)
+            : Image.asset(
+                tool.image!,
+                fit: BoxFit.contain,
+                cacheWidth: 640,
+                excludeFromSemantics: true,
+                errorBuilder: (_, _, _) =>
+                    Icon(tool.icon, size: 40, color: colors.ink2),
+              ),
       ),
     );
     final words = Column(

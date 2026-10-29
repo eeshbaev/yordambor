@@ -27,6 +27,9 @@
 --   7. Deal chats and deal changes are sent live (realtime).
 --   8. A service's view counts once per person per day, and not when its
 --      owner opens it.
+--   9. Badges (achievements) are given only when the server sees them
+--      earned: a service, finished jobs, a five-star review, a
+--      certificate, a client back three times.
 --
 -- A call without a signed-in user (the dashboard, scheduled jobs) is
 -- trusted, as before. Safe to run twice. Undo: supabase/undo/025_undo.sql.
@@ -561,5 +564,59 @@ drop trigger if exists trg_dedupe_view on public.analytics_events;
 create trigger trg_dedupe_view
   before insert on public.analytics_events
   for each row execute function public.dedupe_view();
+
+-- 9. Badges only when earned -------------------------------------------------
+
+create or replace function public.guard_achievement()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  uid uuid := new.profile_id;
+  jobs integer;
+  earned boolean;
+begin
+  if public._is_trusted() then
+    return new;
+  end if;
+
+  select coalesce(sum(completed_count), 0) into jobs
+  from xizmatlar where owner_id = uid;
+
+  earned := case new.achievement_id
+    when 'first_xizmat' then exists (select 1 from xizmatlar where owner_id = uid)
+    when 'first_deal' then jobs >= 1
+    when 'jobs_5' then jobs >= 5
+    when 'jobs_10' then jobs >= 10
+    when 'jobs_25' then jobs >= 25
+    when 'first_five_star' then exists (
+      select 1 from reviews r join xizmatlar x on x.id = r.xizmat_id
+      where x.owner_id = uid and r.rating = 5)
+    when 'certificate_added' then exists (
+      select 1 from profile_certificates where profile_id = uid)
+    when 'repeat_client_3' then exists (
+      select 1
+      from kelishuvlar k join xizmatlar x on x.id = k.xizmat_id
+      where x.owner_id = uid
+        and (k.status = 'bajarildi' or k.bajarildi_at is not null)
+      group by case when k.party_a_id = uid then k.party_b_id else k.party_a_id end
+      having count(*) >= 3)
+    else false
+  end;
+
+  if not earned then
+    raise exception 'Not earned yet' using errcode = '42501';
+  end if;
+  new.unlocked_at := now();
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_guard_achievement on public.profile_achievements;
+create trigger trg_guard_achievement
+  before insert on public.profile_achievements
+  for each row execute function public.guard_achievement();
 
 notify pgrst, 'reload schema';

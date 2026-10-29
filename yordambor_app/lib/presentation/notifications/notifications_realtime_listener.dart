@@ -23,6 +23,16 @@ class _NotificationsRealtimeListenerState
     extends ConsumerState<NotificationsRealtimeListener> {
   RealtimeChannel? _channel;
   String? _subscribedUserId;
+  bool _askedPermission = false;
+
+  /// Asks for notifications once per launch, when someone is signed in:
+  /// deal alerts, reminders and tips need it (Android 13+). It used to be
+  /// asked on every rebuild.
+  void _askPermissionOnce() {
+    if (_askedPermission || ref.read(sessionProvider).user == null) return;
+    _askedPermission = true;
+    unawaited(LocalNotificationService.instance.requestPermission());
+  }
 
   @override
   void dispose() {
@@ -97,12 +107,15 @@ class _NotificationsRealtimeListenerState
   @override
   Widget build(BuildContext context) {
     ref.listen(sessionProvider.select((s) => s.user?.id), (_, _) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _syncSubscription());
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _syncSubscription();
+        _askPermissionOnce();
+      });
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _syncSubscription();
-      unawaited(LocalNotificationService.instance.requestPermission());
+      _askPermissionOnce();
     });
 
     return widget.child;

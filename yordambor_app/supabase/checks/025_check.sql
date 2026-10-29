@@ -35,6 +35,8 @@ from (
         and exists (select 1 from pg_publication_tables
                     where pubname = 'supabase_realtime' and tablename = 'kelishuvlar'), true),
     (10, 'A view counts once a day',
-        exists (select 1 from pg_trigger where tgname = 'trg_dedupe_view'), true)
+        exists (select 1 from pg_trigger where tgname = 'trg_dedupe_view'), true),
+    (11, 'Badges only when earned',
+        exists (select 1 from pg_trigger where tgname = 'trg_guard_achievement'), true)
 ) as t(n, check_name, actual, expected)
 order by n;
