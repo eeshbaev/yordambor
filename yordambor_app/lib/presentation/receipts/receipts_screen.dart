@@ -68,7 +68,7 @@ class ReceiptsScreen extends ConsumerWidget {
                   bottom: AppShell.scrollBottomPadding(context) + 72,
                 ),
                 itemCount: receipts.length,
-                separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+                separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
                 itemBuilder: (context, index) {
                   final receipt = receipts[index];
                   return YbSurfaceCard(

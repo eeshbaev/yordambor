@@ -27,6 +27,7 @@ class Kelishuv {
     this.price,
     this.currency,
     this.startDate,
+    this.startHasTime = false,
     this.durationMinutes,
     this.acceptA = false,
     this.acceptB = false,
@@ -35,6 +36,8 @@ class Kelishuv {
     this.otherPartyName,
     this.partyAName,
     this.partyBName,
+    this.partyAAvatarUrl,
+    this.partyBAvatarUrl,
     this.xizmatName,
     this.postTitle,
     this.createdAt,
@@ -43,6 +46,8 @@ class Kelishuv {
     this.jarayondaAt,
     this.offeredAt,
     this.contact,
+    this.serviceCategoryId,
+    this.serviceSubcategoryId,
   });
 
   final String id;
@@ -55,7 +60,11 @@ class Kelishuv {
   final String? message;
   final double? price;
   final String? currency;
+  /// The agreed day, with its time of day when [startHasTime].
   final DateTime? startDate;
+
+  /// A time of day was agreed (`start_time`), not only the day.
+  final bool startHasTime;
   final int? durationMinutes;
   final bool acceptA;
   final bool acceptB;
@@ -64,6 +73,8 @@ class Kelishuv {
   final String? otherPartyName;
   final String? partyAName;
   final String? partyBName;
+  final String? partyAAvatarUrl;
+  final String? partyBAvatarUrl;
   final String? xizmatName;
   final String? postTitle;
   final DateTime? createdAt;
@@ -78,6 +89,10 @@ class Kelishuv {
   /// The card the person who started the deal sent with it: their name and
   /// phone, for the other side to reach them.
   final DealContact? contact;
+
+  /// The trade of the service or help request, for its icon.
+  final String? serviceCategoryId;
+  final String? serviceSubcategoryId;
 
   /// While terms wait for an answer: the moment they lapse.
   DateTime? get respondBy {
@@ -130,6 +145,17 @@ class Kelishuv {
     }
     return otherPartyName ?? 'Foydalanuvchi';
   }
+
+  /// The other side of the deal for [userId].
+  String otherPartyIdFor(String userId) =>
+      userId == partyAId ? partyBId : partyAId;
+
+  String? otherPartyAvatarFor(String userId) =>
+      userId == partyAId ? partyBAvatarUrl : partyAAvatarUrl;
+
+  /// The card the other side sent with the deal, when they started it.
+  DealContact? otherPartyContactFor(String userId) =>
+      initiatorId != userId ? contact : null;
 
   bool isParty(String userId) => userId == partyAId || userId == partyBId;
 

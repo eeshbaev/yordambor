@@ -13,3 +13,6 @@ key.properties
 signing-backup.local.md
 **/*.keystore
 **/*.jks
+
+# Gradle build output (reports, intermediates).
+/build/

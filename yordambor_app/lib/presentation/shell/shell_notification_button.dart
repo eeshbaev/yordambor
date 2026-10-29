@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yordambor/application/growth/growth_program_providers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
@@ -16,8 +17,8 @@ class ShellNotificationButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = ref.watch(appStringsProvider);
     final unreadAsync = ref.watch(unreadNotificationsCountProvider);
-    // Unread news plus every deal waiting on this person's reply: the bell
-    // counts what needs them.
+    // Unread news, every deal waiting on this person's reply and new growth
+    // tips: the bell counts what needs them.
     final yourTurn = ref.watch(
       dealActivityProvider.select(
         (activity) => activity
@@ -27,7 +28,8 @@ class ShellNotificationButton extends ConsumerWidget {
     );
     final unreadCount =
         unreadAsync.maybeWhen(data: (count) => count, orElse: () => 0) +
-            yourTurn;
+            yourTurn +
+            ref.watch(growthUnreadCountProvider);
 
     return IconButton(
       tooltip: strings.notificationsTooltip,

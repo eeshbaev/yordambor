@@ -188,7 +188,7 @@ class KelishuvRepository {
       'message': message.isEmpty ? null : message,
       'price': input.price,
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
-      'start_date': input.startDate?.toIso8601String().split('T').first,
+      ..._startColumns(input.startDate),
       'duration_minutes': input.durationMinutes,
       'status': 'muzokarada',
       if (contact != null && !_contactColumnsMissing) ...{
@@ -297,7 +297,7 @@ class KelishuvRepository {
         'message': input.message!.trim().isEmpty ? null : input.message!.trim(),
       'price': input.price,
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
-      'start_date': input.startDate?.toIso8601String().split('T').first,
+      ..._startColumns(input.startDate),
       'duration_minutes': input.durationMinutes,
       // New terms are the editor's offer: they accept them, and the other
       // side has a fresh window to answer.
@@ -793,6 +793,82 @@ class KelishuvRepository {
     );
   }
 
+  /// A whole deal: its row, the service or request it is about, and both
+  /// people.
+  static const _detailSelect = '''
+          *,
+          xizmatlar ( name, owner_id, category_id, subcategory_id ),
+          yordam_kerak_posts ( title, category_id, subcategory_id ),
+          party_a:profiles!kelishuvlar_party_a_id_fkey ( full_name, avatar_url ),
+          party_b:profiles!kelishuvlar_party_b_id_fkey ( full_name, avatar_url )
+        ''';
+
+  /// The person's appointments: agreed, done and cancelled-after-agreeing
+  /// deals that have a day, from a week ago on, soonest first.
+  Future<List<Kelishuv>> fetchAppointments(String userId) async {
+    final client = _client;
+    if (client == null) return const [];
+
+    final now = DateTime.now();
+    final weekAgo = DateTime(now.year, now.month, now.day)
+        .subtract(const Duration(days: 7));
+    final rows = await client
+        .from('kelishuvlar')
+        .select(_detailSelect)
+        .or('party_a_id.eq.$userId,party_b_id.eq.$userId')
+        .inFilter('status', ['jarayonda', 'bajarildi', 'bekor'])
+        .not('start_date', 'is', null)
+        .gte('start_date', _dateOnly(weekAgo))
+        .order('start_date')
+        .order('start_time', nullsFirst: true);
+
+    return [
+      for (final raw in rows as List<dynamic>)
+        _mapRow(Map<String, dynamic>.from(raw as Map)),
+    ]
+        // A deal cancelled while still being agreed was never an
+        // appointment.
+        .where(
+          (deal) =>
+              deal.status != KelishuvStatus.bekor || deal.jarayondaAt != null,
+        )
+        .toList(growable: false);
+  }
+
+  static String _dateOnly(DateTime day) =>
+      '${day.year.toString().padLeft(4, '0')}-'
+      '${day.month.toString().padLeft(2, '0')}-'
+      '${day.day.toString().padLeft(2, '0')}';
+
+  /// `start_date`, and `start_time` when [start] has a time of day
+  /// (midnight means the day alone).
+  static Map<String, dynamic> _startColumns(DateTime? start) {
+    final hasTime = start != null && (start.hour != 0 || start.minute != 0);
+    return {
+      'start_date': start == null ? null : _dateOnly(start),
+      'start_time': hasTime
+          ? '${start.hour.toString().padLeft(2, '0')}:'
+              '${start.minute.toString().padLeft(2, '0')}:00'
+          : null,
+    };
+  }
+
+  /// The agreed day with its `start_time`, if any.
+  static ({DateTime? start, bool hasTime}) _readStart(
+    Map<String, dynamic> map,
+  ) {
+    final day = DateTime.tryParse(map['start_date'] as String? ?? '');
+    if (day == null) return (start: null, hasTime: false);
+    final parts = (map['start_time'] as String? ?? '').split(':');
+    final hour = parts.isNotEmpty ? int.tryParse(parts[0]) : null;
+    final minute = parts.length > 1 ? int.tryParse(parts[1]) : null;
+    if (hour == null || minute == null) return (start: day, hasTime: false);
+    return (
+      start: DateTime(day.year, day.month, day.day, hour, minute),
+      hasTime: true,
+    );
+  }
+
   Future<Kelishuv?> fetchById(String id) async {
     if (isSimulatedKelishuvId(id)) {
       return DemoKelishuvSimulator.kelishuv(id);
@@ -801,13 +877,7 @@ class KelishuvRepository {
     final client = _client;
     if (client == null) return null;
 
-    final row = await client.from('kelishuvlar').select('''
-          *,
-          xizmatlar ( name, owner_id ),
-          yordam_kerak_posts ( title ),
-          party_a:profiles!kelishuvlar_party_a_id_fkey ( full_name ),
-          party_b:profiles!kelishuvlar_party_b_id_fkey ( full_name )
-        ''').eq('id', id).maybeSingle();
+    final row = await client.from('kelishuvlar').select(_detailSelect).eq('id', id).maybeSingle();
 
     if (row == null) return null;
     final map = Map<String, dynamic>.from(row);
@@ -815,13 +885,7 @@ class KelishuvRepository {
 
     // Nobody answered in time: the offer is cancelled.
     await _cancelLapsedOffers(client, [id]);
-    final fresh = await client.from('kelishuvlar').select('''
-          *,
-          xizmatlar ( name, owner_id ),
-          yordam_kerak_posts ( title ),
-          party_a:profiles!kelishuvlar_party_a_id_fkey ( full_name ),
-          party_b:profiles!kelishuvlar_party_b_id_fkey ( full_name )
-        ''').eq('id', id).maybeSingle();
+    final fresh = await client.from('kelishuvlar').select(_detailSelect).eq('id', id).maybeSingle();
     return _mapRow(Map<String, dynamic>.from(fresh ?? map));
   }
 
@@ -915,7 +979,7 @@ class KelishuvRepository {
     final post = map['yordam_kerak_posts'] as Map<String, dynamic>?;
     final partyAProfile = map['party_a'] as Map<String, dynamic>?;
     final partyBProfile = map['party_b'] as Map<String, dynamic>?;
-    final startDateRaw = map['start_date'] as String?;
+    final start = _readStart(map);
     final createdAtRaw = map['created_at'] as String?;
     final updatedAtRaw = map['updated_at'] as String?;
     final jarayondaAtRaw = map['jarayonda_at'] as String?;
@@ -931,7 +995,8 @@ class KelishuvRepository {
       message: map['message'] as String?,
       price: (map['price'] as num?)?.toDouble(),
       currency: map['currency'] as String?,
-      startDate: startDateRaw != null ? DateTime.tryParse(startDateRaw) : null,
+      startDate: start.start,
+      startHasTime: start.hasTime,
       durationMinutes: (map['duration_minutes'] as num?)?.toInt(),
       acceptA: map['accept_a'] as bool? ?? false,
       acceptB: map['accept_b'] as bool? ?? false,
@@ -941,6 +1006,8 @@ class KelishuvRepository {
       postTitle: post?['title'] as String?,
       partyAName: partyAProfile?['full_name'] as String?,
       partyBName: partyBProfile?['full_name'] as String?,
+      partyAAvatarUrl: partyAProfile?['avatar_url'] as String?,
+      partyBAvatarUrl: partyBProfile?['avatar_url'] as String?,
       createdAt:
           createdAtRaw != null ? DateTime.tryParse(createdAtRaw) : null,
       updatedAt:
@@ -950,6 +1017,9 @@ class KelishuvRepository {
           jarayondaAtRaw != null ? DateTime.tryParse(jarayondaAtRaw) : null,
       offeredAt: _offeredAtOf(map),
       contact: DealContact.fromRow(map),
+      serviceCategoryId: (xizmat?['category_id'] ?? post?['category_id']) as String?,
+      serviceSubcategoryId:
+          (xizmat?['subcategory_id'] ?? post?['subcategory_id']) as String?,
     );
   }
 

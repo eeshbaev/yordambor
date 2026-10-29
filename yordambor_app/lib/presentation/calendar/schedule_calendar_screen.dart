@@ -18,7 +18,6 @@ import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
-import 'package:yordambor/core/design_system/widgets/yb_scale_tap.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
@@ -838,11 +837,19 @@ class _BusyDayControlState extends State<_BusyDayControl> {
         if (_busyAllDay) ...[
           const SizedBox(height: AppSpacing.xs),
           OutlinedButton.icon(
-            onPressed: () => showWorkingHoursSheet(
-              context: context,
-              hours: widget.workingHours,
-              strings: strings,
-            ),
+            // Busy for part of the day only: pick those hours, starting
+            // from the usual working day.
+            onPressed: () async {
+              final picked = await showWorkingHoursSheet(
+                context,
+                strings: strings,
+                initial: _slots.isEmpty
+                    ? widget.workingHours
+                    : WorkingHours(_slots),
+                title: strings.calendarBusyHours,
+              );
+              if (picked != null && mounted) _setSlots(picked.ranges);
+            },
             icon: const Icon(YbIcons.scheduleFilled, size: 18),
             label: Text(strings.availabilityHoursTitle),
           ),
@@ -898,7 +905,7 @@ class _ServicesStrip extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               itemCount: items.length,
-              separatorBuilder: (_, __) =>
+              separatorBuilder: (_, _) =>
                   const SizedBox(width: AppSpacing.sm),
               itemBuilder: (context, i) =>
                   _ServiceChip(item: items[i], strings: strings),
@@ -961,7 +968,6 @@ class _ServiceChip extends ConsumerWidget {
 /// person picks hours. Every valid change is saved at once.
 class _DayStatusEditor extends StatefulWidget {
   const _DayStatusEditor({
-    super.key,
     required this.mark,
     required this.strings,
     required this.workingHours,

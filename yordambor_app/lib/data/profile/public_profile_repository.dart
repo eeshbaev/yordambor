@@ -68,4 +68,32 @@ class PublicProfileRepository {
       language: language,
     );
   }
+
+  /// The phone [userId] lets signed-in people see, else null (migration
+  /// 024: hidden between people who blocked each other).
+  Future<String?> fetchPublicPhone(String userId) async {
+    if (userId.startsWith('demo-user-')) {
+      final profile = DemoUserProfiles.byId(userId);
+      return profile != null && profile.hasVisiblePhone ? profile.phone : null;
+    }
+    return _rpcPhone('get_public_phone', {'p_user': userId});
+  }
+
+  /// The phone shown on a service: the listing's own, else its owner's,
+  /// when they chose to show it.
+  Future<String?> fetchServicePublicPhone(String xizmatId) =>
+      _rpcPhone('get_xizmat_public_phone', {'p_xizmat': xizmatId});
+
+  Future<String?> _rpcPhone(String function, Map<String, dynamic> params) async {
+    final client = _client;
+    if (client == null || client.auth.currentUser == null) return null;
+    try {
+      final result = await client.rpc<dynamic>(function, params: params);
+      final phone = result is String ? result.trim() : '';
+      return phone.isEmpty ? null : phone;
+    } on PostgrestException {
+      // Not on the server yet (before migration 024): no phone to show.
+      return null;
+    }
+  }
 }

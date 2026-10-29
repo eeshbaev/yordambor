@@ -341,6 +341,54 @@ class ProviderToolsService {
     return const KelishuvSyncResult(synced: true);
   }
 
+  /// Brings the bookings and reminders made from [deals] up to date: an
+  /// agreed deal gets (or moves) its booking, a done one is marked done
+  /// with its price as earnings, a cancelled one is cancelled.
+  Future<void> syncAppointments(List<Kelishuv> deals, String userId) async {
+    await ensureReady();
+    for (final deal in deals) {
+      if (deal.startDate == null || !deal.isParty(userId)) continue;
+      switch (deal.status) {
+        case KelishuvStatus.jarayonda:
+          final booking = await findBookingByKelishuvId(deal.id);
+          if (booking == null || booking.slotStart != deal.startDate) {
+            await syncFromKelishuv(deal, userId);
+          }
+        case KelishuvStatus.bajarildi:
+          await _closeKelishuvBooking(
+            deal,
+            AppointmentStatus.completed,
+            amount: deal.isProvider(userId) ? deal.price : null,
+          );
+        case KelishuvStatus.bekor:
+        case KelishuvStatus.rad:
+          await _closeKelishuvBooking(deal, AppointmentStatus.cancelled);
+        case KelishuvStatus.muzokarada:
+        case KelishuvStatus.archived:
+          break;
+      }
+    }
+  }
+
+  /// Marks the deal's booking [status] once; a booking already in it (or
+  /// none at all) is left alone.
+  Future<void> _closeKelishuvBooking(
+    Kelishuv deal,
+    AppointmentStatus status, {
+    double? amount,
+  }) async {
+    final booking = await findBookingByKelishuvId(deal.id);
+    if (booking == null) return;
+    final reminder = await _reminders.fetchByBookingId(booking.id);
+    if (reminder?.status == status) return;
+    await setAppointmentStatus(
+      bookingId: booking.id,
+      status: status,
+      amount: booking.isReceiverSide ? null : amount,
+      currency: deal.currency ?? 'UZS',
+    );
+  }
+
   Future<void> setKelishuvAppointment({
     required Kelishuv kelishuv,
     required String userId,
@@ -494,14 +542,14 @@ class ProviderToolsService {
           createdAt: DateTime.now(),
         );
 
-    if (existing != null) {
-      await _bookings.save(booking.copyWith(slotStart: appointmentTime));
-    } else {
-      await _bookings.save(booking);
-    }
+    // A known booking moves to the agreed time; its reminder follows.
+    final saved = existing != null
+        ? booking.copyWith(slotStart: appointmentTime)
+        : booking;
+    await _bookings.save(saved);
 
     await _reminders.syncForBooking(
-      booking: booking,
+      booking: saved,
       client: placeholderClient,
       status: AppointmentStatus.upcoming,
     );

@@ -7,6 +7,7 @@ import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/notification_providers.dart';
 import 'package:yordambor/application/providers/subsector_alert_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
@@ -15,15 +16,35 @@ import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/notifications/notification_repository.dart';
+import 'package:yordambor/presentation/growth/growth_tips_section.dart';
 import 'package:yordambor/presentation/notifications/widgets/deal_activity_section.dart';
 import 'package:yordambor/presentation/notifications/widgets/subsector_alerts_section.dart';
 import 'package:yordambor/presentation/profile/widgets/profile_certificates_section.dart';
 
-class NotificationsScreen extends ConsumerWidget {
+class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotificationsScreen> createState() =>
+      _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
+  /// The certificates, which a growth tip scrolls to.
+  final _certificatesKey = GlobalKey();
+
+  void _showCertificates() {
+    final target = _certificatesKey.currentContext;
+    if (target == null) return;
+    Scrollable.ensureVisible(
+      target,
+      duration: AppMotion.reduced(context) ? Duration.zero : AppMotion.normal,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final strings = ref.watch(appStringsProvider);
     final session = ref.watch(sessionProvider);
     final notificationsAsync = ref.watch(notificationsProvider);
@@ -81,7 +102,11 @@ class NotificationsScreen extends ConsumerWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
             children: [
-              if (userId != null) const DealActivitySection(),
+              if (userId != null) ...[
+                const DealActivitySection(),
+                // The 30-day growth tips, while the program runs.
+                GrowthTipsSection(onCertificates: _showCertificates),
+              ],
               Padding(
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.lg,
@@ -105,6 +130,7 @@ class NotificationsScreen extends ConsumerWidget {
                 const SubsectorAlertsSection(),
                 const SizedBox(height: AppSpacing.lg),
                 ProfileCertificatesSection(
+                  key: _certificatesKey,
                   profileId: userId,
                   embedded: true,
                 ),

@@ -196,7 +196,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     // Set before the status changes: the celebration may end (or be skipped
     // with reduced motion) before this method resumes.
     _storePromptPending =
-        wasWaitingForOther && detail != null && !detail.isClient(userId);
+        wasWaitingForOther && !detail.isClient(userId);
     try {
       await ref
           .read(kelishuvRepositoryProvider)

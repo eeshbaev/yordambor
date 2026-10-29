@@ -23,39 +23,45 @@ class YbEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.ybColors;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.xxl),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 96,
-            height: 96,
-            decoration: BoxDecoration(
-              color: colors.tealSoft,
-              borderRadius: BorderRadius.circular(AppRadius.sheet),
+    // Centred in the space it has; when large text makes it taller than
+    // that, it scrolls instead of overflowing. Inside a list it simply takes
+    // its height, and the list scrolls.
+    return Center(
+      child: SingleChildScrollView(
+        primary: false,
+        padding: const EdgeInsets.all(AppSpacing.xxl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 96,
+              height: 96,
+              decoration: BoxDecoration(
+                color: colors.tealSoft,
+                borderRadius: BorderRadius.circular(AppRadius.sheet),
+              ),
+              child: Icon(icon, size: 44, color: colors.teal),
             ),
-            child: Icon(icon, size: 44, color: colors.teal),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: AppTypography.title.copyWith(color: colors.textPrimary),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: AppTypography.bodyRegular.copyWith(
-              color: colors.textSecondary,
-            ),
-          ),
-          if (actionLabel != null && onAction != null) ...[
             const SizedBox(height: AppSpacing.xl),
-            YbPrimaryButton(label: actionLabel!, onPressed: onAction),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: AppTypography.title.copyWith(color: colors.textPrimary),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: AppTypography.bodyRegular.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+            if (actionLabel != null && onAction != null) ...[
+              const SizedBox(height: AppSpacing.xl),
+              YbPrimaryButton(label: actionLabel!, onPressed: onAction),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

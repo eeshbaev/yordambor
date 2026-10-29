@@ -180,9 +180,21 @@ class LocalNotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: await _reminderScheduleMode(),
       payload: '$_payloadPrefix$reminderId',
     );
+  }
+
+  /// Exact when the system allows it. From Android 14 exact alarms are off
+  /// for most apps until the person allows them, and asking for one then
+  /// fails; a reminder a few minutes late beats none.
+  Future<AndroidScheduleMode> _reminderScheduleMode() async {
+    final android = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    final exact = await android?.canScheduleExactNotifications() ?? true;
+    return exact
+        ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
   }
 
   Future<void> cancel(String reminderId) async {
@@ -205,6 +217,51 @@ class LocalNotificationService {
     }
     for (var i = 0; i < 24; i++) {
       await _plugin.cancel(id: _notificationId(reminderId, suffix: '_x_$i'));
+    }
+  }
+
+  static const _tipPayload = '${_appPayloadPrefix}growth_tip';
+
+  /// One tip of the 30-day program at [at] (local time). Tapping it opens
+  /// the notifications, where the tips are. A time already past is skipped.
+  Future<void> scheduleTip({
+    required String key,
+    required String title,
+    required String body,
+    required DateTime at,
+  }) async {
+    if (!_initialized) await initialize();
+    if (at.isBefore(DateTime.now())) return;
+
+    await _plugin.zonedSchedule(
+      id: _notificationId('growth_tip_$key'),
+      title: title,
+      body: body,
+      scheduledDate: tz.TZDateTime.from(at, tz.local),
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'yordambor_tips',
+          'Maslahatlar',
+          channelDescription: 'Biznesingizni oʻstirish boʻyicha maslahatlar',
+          importance: Importance.defaultImportance,
+          priority: Priority.defaultPriority,
+        ),
+        iOS: DarwinNotificationDetails(),
+      ),
+      // A tip may come a few minutes late; it needs no exact alarm.
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      payload: '$_tipPayload|tip_id|$key',
+    );
+  }
+
+  /// Every tip still waiting to be sent.
+  Future<void> cancelTips() async {
+    if (!_initialized) await initialize();
+    final pending = await _plugin.pendingNotificationRequests();
+    for (final request in pending) {
+      if (request.payload?.startsWith(_tipPayload) ?? false) {
+        await _plugin.cancel(id: request.id);
+      }
     }
   }
 }

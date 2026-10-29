@@ -10,6 +10,7 @@ import 'package:yordambor/domain/entities/portfolio_item.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
 import 'package:yordambor/domain/entities/xizmat_availability_mode.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
+import 'package:yordambor/domain/entities/working_hours.dart';
 
 class XizmatFailure implements Exception {
   XizmatFailure(this.message);
@@ -630,6 +631,99 @@ class XizmatRepository {
       ),
       ..._cityPayload(input.serviceCity),
     }).eq('id', xizmatId);
+  }
+
+  /// Sets only when the service shows as free or busy: [until] is when the
+  /// status ends (null: open-ended), starting now.
+  Future<void> updateAvailability(
+    String xizmatId, {
+    required bool visible,
+    XizmatAvailabilityMode? mode,
+    DateTime? until,
+  }) async {
+    await _assertOwner(xizmatId);
+    await _client!.from('xizmatlar').update(
+      _availabilityPayload(
+        visible: visible,
+        mode: mode,
+        from: DateTime.now(),
+        until: until,
+      ),
+    ).eq('id', xizmatId);
+  }
+
+  /// Whether clients see the hours the owner's appointments take
+  /// (migration 024). False on a server without it.
+  Future<bool> fetchShowBusyHours(String xizmatId) async {
+    final client = _client;
+    if (client == null) return false;
+    try {
+      final row = await client
+          .from('xizmatlar')
+          .select('show_busy_hours')
+          .eq('id', xizmatId)
+          .maybeSingle();
+      return row?['show_busy_hours'] as bool? ?? false;
+    } on PostgrestException {
+      return false;
+    }
+  }
+
+  Future<void> setShowBusyHours(String xizmatId, bool show) async {
+    await _assertOwner(xizmatId);
+    await _client!
+        .from('xizmatlar')
+        .update({'show_busy_hours': show})
+        .eq('id', xizmatId);
+  }
+
+  /// The hours the service's provider is taken by agreed appointments,
+  /// day by day from [from] to [to]; empty unless they chose to show them.
+  /// Only the times come back, nothing else about the deals.
+  Future<Map<DateTime, List<TimeRange>>> fetchBusyHours({
+    required String xizmatId,
+    required DateTime from,
+    required DateTime to,
+  }) async {
+    final client = _client;
+    if (client == null || xizmatId.startsWith('demo-')) return const {};
+    String day(DateTime value) => value.toIso8601String().split('T').first;
+    int? minutes(Object? raw) {
+      final parts = '${raw ?? ''}'.split(':');
+      if (parts.length < 2) return null;
+      final hour = int.tryParse(parts[0]);
+      final minute = int.tryParse(parts[1]);
+      if (hour == null || minute == null) return null;
+      return hour * 60 + minute;
+    }
+
+    final List<dynamic> rows;
+    try {
+      rows = await client.rpc<List<dynamic>>(
+        'get_xizmat_busy_hours',
+        params: {'p_xizmat': xizmatId, 'p_from': day(from), 'p_to': day(to)},
+      );
+    } on PostgrestException catch (error) {
+      if (isMissingRpc(error)) return const {};
+      rethrow;
+    }
+
+    final byDay = <DateTime, List<TimeRange>>{};
+    for (final raw in rows) {
+      final row = Map<String, dynamic>.from(raw as Map);
+      final date = DateTime.tryParse('${row['day']}');
+      final start = minutes(row['starts']);
+      var end = minutes(row['ends']);
+      if (date == null || start == null || end == null) continue;
+      // The server caps a range at 23:59; it means the end of the day.
+      if (end == 23 * 60 + 59) end = 24 * 60;
+      final range = TimeRange(start, end);
+      if (!range.isValid) continue;
+      byDay
+          .putIfAbsent(DateTime(date.year, date.month, date.day), () => [])
+          .add(range);
+    }
+    return byDay;
   }
 
   /// The contact phone on one of your own listings, for editing it. Only
