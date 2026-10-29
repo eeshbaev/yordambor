@@ -1,15 +1,26 @@
-/// Supabase credentials — replace with your project values or use dart-define:
-/// flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...
-class Env {
-  static const supabaseUrl = String.fromEnvironment(
-    'SUPABASE_URL',
-    defaultValue: 'https://YOUR_PROJECT.supabase.co',
-  );
+// Supabase credentials loaded in priority order:
+//   1. --dart-define / --dart-define-from-file (CI, release, run_dev.sh)
+//   2. env_local.g.dart fallback (Xcode / Android Studio direct launch)
+//
+// env_local.g.dart is not committed. Create it (again after changing
+// .env.json) with:
+//   dart run tool/gen_env_dart.dart
+// ignore: uri_does_not_exist
+import 'env_local.g.dart'
+    // If env_local.g.dart doesn't exist yet the stub provides empty strings.
+    if (dart.library.html) 'env_local_stub.dart';
 
-  static const supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
-    defaultValue: 'YOUR_ANON_KEY',
-  );
+class Env {
+  static const _definedUrl = String.fromEnvironment('SUPABASE_URL');
+  static const _definedKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+
+  /// The active Supabase project URL.
+  static String get supabaseUrl =>
+      _definedUrl.isNotEmpty ? _definedUrl : kLocalSupabaseUrl;
+
+  /// The active Supabase anon key.
+  static String get supabaseAnonKey =>
+      _definedKey.isNotEmpty ? _definedKey : kLocalSupabaseAnonKey;
 
   static bool get isConfigured =>
       supabaseUrl.isNotEmpty &&

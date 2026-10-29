@@ -14,4 +14,5 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
+dart run tool/gen_env_dart.dart
 exec flutter run --dart-define-from-file=.env.json "$@"

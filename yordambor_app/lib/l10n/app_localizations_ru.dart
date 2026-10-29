@@ -3756,6 +3756,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get errServerNotSetUp => 'Сервер не настроен';
 
   @override
+  String get errGoogleSignInFailed =>
+      'Не удалось войти через Google. Попробуйте ещё раз.';
+
+  @override
+  String get errTelegramOpenFailed =>
+      'Не удалось открыть Telegram. Попробуйте ещё раз.';
+
+  @override
   String get errNoPermission => 'Нет доступа';
 
   @override
@@ -3984,4 +3992,40 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get errPhoneTaken => 'Этот номер телефона уже зарегистрирован';
+
+  @override
+  String get socialOrEmail => 'или по email';
+
+  @override
+  String get socialContinueGoogle => 'Продолжить с Google';
+
+  @override
+  String get socialContinueTelegram => 'Продолжить с Telegram';
+
+  @override
+  String get profileSetupTitle => 'Заполните профиль';
+
+  @override
+  String get profileSetupNameHint => 'Ваше имя и фамилия';
+
+  @override
+  String get profileSetupNameRequired => 'Введите имя';
+
+  @override
+  String get profileSetupNameFull => 'Введите имя и фамилию';
+
+  @override
+  String get profileSetupPhoneRequired => 'Введите номер телефона';
+
+  @override
+  String get profileSetupPhoneIncomplete => 'Номер неполный';
+
+  @override
+  String get profileSetupPhoneOnce =>
+      'Один номер можно использовать только для одного аккаунта.';
+
+  @override
+  String profileSetupSignedInWith(String provider) {
+    return 'Вы вошли через $provider';
+  }
 }

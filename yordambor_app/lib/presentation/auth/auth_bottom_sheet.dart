@@ -13,6 +13,7 @@ import 'package:yordambor/data/auth/auth_repository.dart';
 import 'package:yordambor/presentation/auth/forgot_password_form.dart';
 import 'package:yordambor/presentation/auth/login_form.dart';
 import 'package:yordambor/presentation/auth/register_form.dart';
+import 'package:yordambor/presentation/auth/social_auth_buttons.dart';
 
 enum AuthSheetTab { login, register }
 
@@ -96,93 +97,126 @@ class _AuthBottomSheetState extends ConsumerState<AuthBottomSheet>
   }
 
   void _handleAuthError(AuthFailure error) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(error.message)),
     );
+  }
+
+  void _handleSocialError(String message) {
+    _handleAuthError(AuthFailure(message));
   }
 
   @override
   Widget build(BuildContext context) {
     final strings = ref.watch(appStringsProvider);
     final colors = context.ybColors;
+    // Keyboard inset so content shifts up when keyboard is open
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
-    final sheetHeight = MediaQuery.sizeOf(context).height * 0.88;
 
     return Padding(
       padding: EdgeInsets.only(bottom: bottomInset),
-      child: SizedBox(
-        height: sheetHeight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: ListView(
+      child: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.92,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        builder: (context, scrollController) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ── Header: title + social buttons + tab bar ──────────────
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  0,
+                  AppSpacing.lg,
+                  0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      strings.authContextSubtitle(widget.authContext),
+                      style: AppTypography.title.copyWith(
+                        color: colors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    if (_showForgotPassword)
+                      ForgotPasswordForm(
+                        onBack: () =>
+                            setState(() => _showForgotPassword = false),
+                      )
+                    else
+                      SocialAuthButtons(
+                        dividerLabel: strings.socialOrEmail,
+                        onSuccess: () => _onAuthSuccess(isRegister: false),
+                        onError: _handleSocialError,
+                      ),
+                  ],
+                ),
+              ),
+              if (!_showForgotPassword) ...[
+                // ── Tab bar ───────────────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: context.ybColors.teal,
+                    unselectedLabelColor: colors.textTertiary,
+                    indicatorColor: context.ybColors.teal,
+                    tabs: [
+                      Tab(text: strings.login),
+                      Tab(text: strings.register),
+                    ],
+                  ),
+                ),
+                // ── Tab forms — fill remaining space and scroll internally ─
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpacing.lg,
+                          AppSpacing.lg,
+                          AppSpacing.lg,
+                          AppSpacing.lg,
+                        ),
+                        child: LoginForm(
+                          onSuccess: () => _onAuthSuccess(isRegister: false),
+                          onError: _handleAuthError,
+                          onForgotPassword: () =>
+                              setState(() => _showForgotPassword = true),
+                        ),
+                      ),
+                      RegisterForm(
+                        onSuccess: () => _onAuthSuccess(isRegister: true),
+                        onError: _handleAuthError,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              // ── "Keyinroq" footer ─────────────────────────────────────
+              Padding(
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.lg,
                   0,
                   AppSpacing.lg,
                   AppSpacing.lg,
                 ),
-                children: [
-                  Text(
-                    strings.authContextSubtitle(widget.authContext),
-                    style: AppTypography.title.copyWith(
-                      color: colors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  if (_showForgotPassword)
-                    ForgotPasswordForm(
-                      onBack: () => setState(() => _showForgotPassword = false),
-                    )
-                  else ...[
-                    TabBar(
-                      controller: _tabController,
-                      labelColor: context.ybColors.teal,
-                      unselectedLabelColor: colors.textTertiary,
-                      indicatorColor: context.ybColors.teal,
-                      tabs: [
-                        Tab(text: strings.login),
-                        Tab(text: strings.register),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    SizedBox(
-                      height: 440,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          LoginForm(
-                            onSuccess: () => _onAuthSuccess(isRegister: false),
-                            onError: _handleAuthError,
-                            onForgotPassword: () =>
-                                setState(() => _showForgotPassword = true),
-                          ),
-                          RegisterForm(
-                            onSuccess: () => _onAuthSuccess(isRegister: true),
-                            onError: _handleAuthError,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
+                child: TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(strings.later),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                0,
-                AppSpacing.lg,
-                AppSpacing.lg,
-              ),
-              child: TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(strings.later),
-              ),
-            ),
-          ],
-        ),
+            ],
+          );
+        },
       ),
     );
   }

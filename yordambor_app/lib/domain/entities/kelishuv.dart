@@ -16,6 +16,26 @@ enum KelishuvStatus {
   archived,
 }
 
+
+/// How often a recurring appointment repeats.
+enum RecurRule {
+  /// Every 7 days.
+  weekly,
+
+  /// Every 14 days (fortnightly).
+  biweekly,
+
+  /// Same day of month, next calendar month.
+  monthly;
+
+  /// Converts a DB string to a [RecurRule], or null if unrecognised.
+  static RecurRule? tryParse(String? raw) => switch (raw) {
+        'weekly' => RecurRule.weekly,
+        'biweekly' => RecurRule.biweekly,
+        'monthly' => RecurRule.monthly,
+        _ => null,
+      };
+}
 class Kelishuv {
   const Kelishuv({
     required this.id,
@@ -50,6 +70,8 @@ class Kelishuv {
     this.contact,
     this.serviceCategoryId,
     this.serviceSubcategoryId,
+    this.recurRule,
+    this.recurUntil,
   });
 
   final String id;
@@ -95,6 +117,12 @@ class Kelishuv {
   /// The trade of the service or help request, for its icon.
   final String? serviceCategoryId;
   final String? serviceSubcategoryId;
+
+  /// If set the appointment repeats on this cadence until [recurUntil].
+  final RecurRule? recurRule;
+
+  /// The last date (inclusive) an occurrence may start on. Null means open-ended.
+  final DateTime? recurUntil;
 
   /// While terms wait for an answer: the moment they lapse.
   DateTime? get respondBy {
@@ -206,6 +234,41 @@ class Kelishuv {
     }
     return false;
   }
+
+  // ── Recurrence helpers ──────────────────────────────────────────
+  /// Returns every occurrence start-time within [from..to] (inclusive).
+  /// The base [startDate] is always the first item when it falls in range.
+  /// Returns an empty list when [recurRule] is null or [startDate] is null.
+  List<DateTime> expandOccurrences(DateTime from, DateTime to) {
+    final base = startDate;
+    final rule = recurRule;
+    if (base == null || rule == null) return base != null && !base.isBefore(from) && !base.isAfter(to) ? [base] : [];
+
+    final results = <DateTime>[];
+    var current = base;
+    final until = recurUntil;
+
+    while (!current.isAfter(to)) {
+      final effectiveTo = until != null && until.isBefore(to) ? until : to;
+      if (current.isAfter(effectiveTo)) break;
+      if (!current.isBefore(from)) results.add(current);
+      current = switch (rule) {
+        RecurRule.weekly => current.add(const Duration(days: 7)),
+        RecurRule.biweekly => current.add(const Duration(days: 14)),
+        RecurRule.monthly => _addMonth(current),
+      };
+    }
+    return results;
+  }
+
+  static DateTime _addMonth(DateTime dt) {
+    final month = dt.month == 12 ? 1 : dt.month + 1;
+    final year = dt.month == 12 ? dt.year + 1 : dt.year;
+    // Clamp the day to the last day of the new month.
+    final lastDay = DateTime(year, month + 1, 0).day;
+    final day = dt.day > lastDay ? lastDay : dt.day;
+    return DateTime(year, month, day, dt.hour, dt.minute, dt.second);
+  }
 }
 
 class TaklifInput {
@@ -216,6 +279,8 @@ class TaklifInput {
     this.startDate,
     this.durationMinutes,
     this.contact,
+    this.recurRule,
+    this.recurUntil,
   });
 
   final String? message;
@@ -226,6 +291,12 @@ class TaklifInput {
 
   /// The sender's card, prefilled from their profile.
   final DealContact? contact;
+
+  /// Recurrence cadence for this appointment (optional).
+  final RecurRule? recurRule;
+
+  /// Last date an occurrence may start on (optional, requires [recurRule]).
+  final DateTime? recurUntil;
 }
 
 /// Who sent a request and how to reach them.

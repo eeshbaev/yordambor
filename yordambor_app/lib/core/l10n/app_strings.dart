@@ -1294,6 +1294,20 @@ class AppStrings {
   String get errPhoneTaken => _l10n.errPhoneTaken;
   String get errSignInRequired => _l10n.errSignInRequired;
   String get errServerNotSetUp => _l10n.errServerNotSetUp;
+  String get errGoogleSignInFailed => _l10n.errGoogleSignInFailed;
+  String get errTelegramOpenFailed => _l10n.errTelegramOpenFailed;
+  String get socialOrEmail => _l10n.socialOrEmail;
+  String get socialContinueGoogle => _l10n.socialContinueGoogle;
+  String get socialContinueTelegram => _l10n.socialContinueTelegram;
+  String get profileSetupTitle => _l10n.profileSetupTitle;
+  String get profileSetupNameHint => _l10n.profileSetupNameHint;
+  String get profileSetupNameRequired => _l10n.profileSetupNameRequired;
+  String get profileSetupNameFull => _l10n.profileSetupNameFull;
+  String get profileSetupPhoneRequired => _l10n.profileSetupPhoneRequired;
+  String get profileSetupPhoneIncomplete => _l10n.profileSetupPhoneIncomplete;
+  String get profileSetupPhoneOnce => _l10n.profileSetupPhoneOnce;
+  String profileSetupSignedInWith(String provider) =>
+      _l10n.profileSetupSignedInWith(provider);
   String get errNoPermission => _l10n.errNoPermission;
   String get errDealNotFound => _l10n.errDealNotFound;
   String get errServiceNotFound => _l10n.errServiceNotFound;

@@ -191,6 +191,8 @@ class KelishuvRepository {
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
       ..._startColumns(input.startDate),
       'duration_minutes': input.durationMinutes,
+      'recur_rule': input.recurRule?.name,
+      'recur_until': input.recurUntil?.toIso8601String().split('T').first,
       'status': 'muzokarada',
       if (contact != null && !_contactColumnsMissing) ...{
         'contact_first_name': contact.firstName,
@@ -300,6 +302,8 @@ class KelishuvRepository {
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
       ..._startColumns(input.startDate),
       'duration_minutes': input.durationMinutes,
+      'recur_rule': input.recurRule?.name,
+      'recur_until': input.recurUntil?.toIso8601String().split('T').first,
       // New terms are the editor's offer: they accept them, and the other
       // side has a fresh window to answer.
       'accept_a': userId == partyA,
@@ -963,6 +967,7 @@ class KelishuvRepository {
     final partyAProfile = map['party_a'] as Map<String, dynamic>?;
     final partyBProfile = map['party_b'] as Map<String, dynamic>?;
     final start = _readStart(map);
+    final recurUntilRaw = map['recur_until'] as String?;
     final createdAtRaw = map['created_at'] as String?;
     final updatedAtRaw = map['updated_at'] as String?;
     final jarayondaAtRaw = map['jarayonda_at'] as String?;
@@ -1003,6 +1008,8 @@ class KelishuvRepository {
       serviceCategoryId: (xizmat?['category_id'] ?? post?['category_id']) as String?,
       serviceSubcategoryId:
           (xizmat?['subcategory_id'] ?? post?['subcategory_id']) as String?,
+      recurRule: RecurRule.tryParse(map['recur_rule'] as String?),
+      recurUntil: recurUntilRaw != null ? DateTime.tryParse(recurUntilRaw) : null,
     );
   }
 
@@ -1016,6 +1023,7 @@ class KelishuvRepository {
     }
     return CurrentStrings.value.fallbackYou;
   }
+
 
   KelishuvStatus _parseStatus(String raw) => switch (raw) {
         'jarayonda' => KelishuvStatus.jarayonda,

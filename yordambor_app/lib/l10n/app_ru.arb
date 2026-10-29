@@ -1195,6 +1195,8 @@
   "alertAnyCity": "Любой город",
   "errSignInRequired": "Сначала войдите",
   "errServerNotSetUp": "Сервер не настроен",
+  "errGoogleSignInFailed": "Не удалось войти через Google. Попробуйте ещё раз.",
+  "errTelegramOpenFailed": "Не удалось открыть Telegram. Попробуйте ещё раз.",
   "errNoPermission": "Нет доступа",
   "errDealNotFound": "Сделка не найдена",
   "errServiceNotFound": "Услуга не найдена",
@@ -1264,5 +1266,16 @@
   "errWrongEmailOrPassword": "Неверный email или пароль",
   "errEmailNotConfirmed": "Email не подтверждён. Откройте ссылку из письма или отправьте её снова.",
   "errEmailTaken": "Аккаунт с этим email уже есть. Попробуйте войти.",
-  "errPhoneTaken": "Этот номер телефона уже зарегистрирован"
+  "errPhoneTaken": "Этот номер телефона уже зарегистрирован",
+  "socialOrEmail": "или по email",
+  "socialContinueGoogle": "Продолжить с Google",
+  "socialContinueTelegram": "Продолжить с Telegram",
+  "profileSetupTitle": "Заполните профиль",
+  "profileSetupNameHint": "Ваше имя и фамилия",
+  "profileSetupNameRequired": "Введите имя",
+  "profileSetupNameFull": "Введите имя и фамилию",
+  "profileSetupPhoneRequired": "Введите номер телефона",
+  "profileSetupPhoneIncomplete": "Номер неполный",
+  "profileSetupPhoneOnce": "Один номер можно использовать только для одного аккаунта.",
+  "profileSetupSignedInWith": "Вы вошли через {provider}"
 }

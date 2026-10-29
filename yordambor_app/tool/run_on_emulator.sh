@@ -98,6 +98,7 @@ echo "Using device: $DEVICE_ID"
 # 2. Install packages
 echo "Installing packages (flutter pub get)..."
 flutter pub get
+dart run tool/gen_env_dart.dart
 
 # 3. Build the stand-alone app, only for this emulator's processor
 #    (first time takes a few minutes)

@@ -50,6 +50,7 @@ fi
 
 echo "Building YordamBor $VERSION_NAME (version code $BUILD_NUMBER)..."
 flutter pub get
+dart run tool/gen_env_dart.dart
 flutter build appbundle --release \
   --build-name="$VERSION_NAME" \
   --build-number="$BUILD_NUMBER" \

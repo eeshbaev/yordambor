@@ -1414,6 +1414,8 @@
   "alertAnyCity": "Any city",
   "errSignInRequired": "Please sign in first",
   "errServerNotSetUp": "The server is not set up",
+  "errGoogleSignInFailed": "Couldn't sign in with Google. Please try again.",
+  "errTelegramOpenFailed": "Couldn't open Telegram. Please try again.",
   "errNoPermission": "You can't do that",
   "errDealNotFound": "Deal not found",
   "errServiceNotFound": "Service not found",
@@ -1486,5 +1488,17 @@
   "errWrongEmailOrPassword": "Wrong email or password",
   "errEmailNotConfirmed": "Your email isn't confirmed yet. Open the link we sent, or send it again.",
   "errEmailTaken": "An account with this email exists. Try signing in.",
-  "errPhoneTaken": "This phone number is already registered"
+  "errPhoneTaken": "This phone number is already registered",
+  "socialOrEmail": "or with email",
+  "socialContinueGoogle": "Continue with Google",
+  "socialContinueTelegram": "Continue with Telegram",
+  "profileSetupTitle": "Complete your profile",
+  "profileSetupNameHint": "Your first and last name",
+  "profileSetupNameRequired": "Please enter your name",
+  "profileSetupNameFull": "Enter your first and last name",
+  "profileSetupPhoneRequired": "Please enter your phone number",
+  "profileSetupPhoneIncomplete": "The number is incomplete",
+  "profileSetupPhoneOnce": "One phone number can be used for only one account.",
+  "profileSetupSignedInWith": "You signed in with {provider}",
+  "@profileSetupSignedInWith": {"placeholders": {"provider": {"type": "String"}}}
 }

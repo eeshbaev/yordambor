@@ -3556,6 +3556,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get errServerNotSetUp => '服务器未配置';
 
   @override
+  String get errGoogleSignInFailed => '无法通过 Google 登录，请重试。';
+
+  @override
+  String get errTelegramOpenFailed => '无法打开 Telegram，请重试。';
+
+  @override
   String get errNoPermission => '没有权限';
 
   @override
@@ -3770,4 +3776,39 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get errPhoneTaken => '此电话号码已注册';
+
+  @override
+  String get socialOrEmail => '或使用邮箱';
+
+  @override
+  String get socialContinueGoogle => '使用 Google 继续';
+
+  @override
+  String get socialContinueTelegram => '使用 Telegram 继续';
+
+  @override
+  String get profileSetupTitle => '完善您的资料';
+
+  @override
+  String get profileSetupNameHint => '您的名字和姓氏';
+
+  @override
+  String get profileSetupNameRequired => '请输入姓名';
+
+  @override
+  String get profileSetupNameFull => '请输入名字和姓氏';
+
+  @override
+  String get profileSetupPhoneRequired => '请输入电话号码';
+
+  @override
+  String get profileSetupPhoneIncomplete => '号码不完整';
+
+  @override
+  String get profileSetupPhoneOnce => '一个电话号码只能用于一个账户。';
+
+  @override
+  String profileSetupSignedInWith(String provider) {
+    return '您已通过 $provider 登录';
+  }
 }

@@ -70,6 +70,11 @@ from (
     ('024 appointments, prices and help-request alerts',
       to_regprocedure('public.get_xizmat_busy_hours(uuid, date, date)') is not null),
     ('025 deal and review rules kept by the server',
-      exists (select 1 from pg_trigger where tgname = 'trg_guard_kelishuv'))
+      exists (select 1 from pg_trigger where tgname = 'trg_guard_kelishuv')),
+    ('026 phone optional, unique when given',
+      to_regclass('public.profiles_phone_unique_idx') is not null),
+    ('027 repeating appointments',
+      exists (select 1 from information_schema.columns where table_schema = 'public'
+              and table_name = 'kelishuvlar' and column_name = 'recur_rule'))
 ) as t(migration, present)
 order by migration;

@@ -118,7 +118,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               child: Text(strings.forgotPassword),
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: AppSpacing.xl),
           YbPrimaryButton(
             label: strings.continueAction,
             isLoading: _isLoading,

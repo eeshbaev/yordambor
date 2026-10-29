@@ -58,6 +58,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Write env_local.g.dart
+        run: dart run tool/gen_env_dart.dart
+
       - name: Build AAB
         run: flutter build appbundle --release --dart-define-from-file=.env.json
 

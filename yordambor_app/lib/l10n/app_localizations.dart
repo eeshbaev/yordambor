@@ -6834,6 +6834,18 @@ abstract class AppLocalizations {
   /// **'The server is not set up'**
   String get errServerNotSetUp;
 
+  /// No description provided for @errGoogleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t sign in with Google. Please try again.'**
+  String get errGoogleSignInFailed;
+
+  /// No description provided for @errTelegramOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open Telegram. Please try again.'**
+  String get errTelegramOpenFailed;
+
   /// No description provided for @errNoPermission.
   ///
   /// In en, this message translates to:
@@ -7253,6 +7265,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This phone number is already registered'**
   String get errPhoneTaken;
+
+  /// No description provided for @socialOrEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'or with email'**
+  String get socialOrEmail;
+
+  /// No description provided for @socialContinueGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get socialContinueGoogle;
+
+  /// No description provided for @socialContinueTelegram.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Telegram'**
+  String get socialContinueTelegram;
+
+  /// No description provided for @profileSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your profile'**
+  String get profileSetupTitle;
+
+  /// No description provided for @profileSetupNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first and last name'**
+  String get profileSetupNameHint;
+
+  /// No description provided for @profileSetupNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get profileSetupNameRequired;
+
+  /// No description provided for @profileSetupNameFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your first and last name'**
+  String get profileSetupNameFull;
+
+  /// No description provided for @profileSetupPhoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get profileSetupPhoneRequired;
+
+  /// No description provided for @profileSetupPhoneIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'The number is incomplete'**
+  String get profileSetupPhoneIncomplete;
+
+  /// No description provided for @profileSetupPhoneOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'One phone number can be used for only one account.'**
+  String get profileSetupPhoneOnce;
+
+  /// No description provided for @profileSetupSignedInWith.
+  ///
+  /// In en, this message translates to:
+  /// **'You signed in with {provider}'**
+  String profileSetupSignedInWith(String provider);
 }
 
 class _AppLocalizationsDelegate

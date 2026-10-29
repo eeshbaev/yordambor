@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yordambor/core/constants/feed_constants.dart';
 import 'package:yordambor/core/config/auth_redirect.dart';
 import 'package:yordambor/core/config/env.dart';
@@ -195,7 +197,130 @@ class AuthRepository {
     await ensureProfile().timeout(FeedConstants.networkTimeout);
   }
 
+  // ──────────────────────────────────────────────────────────────
+  // Google Sign-In
+  // ──────────────────────────────────────────────────────────────
+
+  final _googleSignIn = GoogleSignIn(
+    scopes: ['email', 'profile'],
+  );
+
+  /// Signs in with Google using the native account picker.
+  /// Returns `true` if a session was created, `false` if the user cancelled.
+  Future<bool> signInWithGoogle() async {
+    final client = _client;
+    if (client == null) throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
+
+    try {
+      final account = await _googleSignIn.signIn();
+      if (account == null) return false; // user cancelled
+
+      final auth = await account.authentication;
+      final idToken = auth.idToken;
+      if (idToken == null) {
+        throw AuthFailure(CurrentStrings.value.errGoogleSignInFailed);
+      }
+
+      await client.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: auth.accessToken,
+      );
+
+      await ensureProfile();
+      return true;
+    } on AuthFailure {
+      rethrow;
+    } on AuthException catch (e) {
+      throw AuthFailure(_mapAuthError(e));
+    } catch (e) {
+      final msg = e.toString();
+      if (msg.contains('sign_in_canceled') ||
+          msg.contains('network_error') ||
+          msg.contains('PlatformException(sign_in_canceled')) {
+        return false; // user cancelled
+      }
+      throw AuthFailure(msg);
+    }
+  }
+
+  Future<void> _signOutGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+    } catch (_) {}
+  }
+
+  // ──────────────────────────────────────────────────────────────
+  // Telegram Login (browser → deep link flow)
+  // ──────────────────────────────────────────────────────────────
+
+  /// Opens the Telegram Login page hosted as a Supabase Edge Function.
+  ///
+  /// The function verifies the Telegram HMAC hash server-side, creates /
+  /// retrieves the Supabase account, then redirects to
+  /// `yordambor://auth/callback` with the session tokens.
+  /// `app_links` in the app intercepts that deep link and completes the flow.
+  ///
+  /// [projectRef] is the short Supabase project reference, e.g. `abcdefghijk`.
+  Future<void> signInWithTelegram(String projectRef) async {
+    final uri = Uri.parse(
+      'https://$projectRef.supabase.co/functions/v1/telegram-auth',
+    );
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw AuthFailure(CurrentStrings.value.errTelegramOpenFailed);
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────────
+  // Profile completion (after social auth)
+  // ──────────────────────────────────────────────────────────────
+
+  /// Saves full name and phone for a user who just signed in via
+  /// Google or Telegram and hasn't yet provided those details.
+  Future<void> completeProfile({
+    required String fullName,
+    required String phone,
+  }) async {
+    final client = _client;
+    final user = currentUser;
+    if (client == null || user == null) {
+      throw AuthFailure(CurrentStrings.value.errSignInRequired);
+    }
+
+    final normalizedPhone = normalizePhone(phone);
+
+    try {
+      await client.from('profiles').upsert(
+        {
+          'id': user.id,
+          'full_name': fullName.trim(),
+          'phone': normalizedPhone,
+        },
+        onConflict: 'id',
+      );
+
+      // Keep user metadata in sync so the in-memory profile is correct.
+      await client.auth.updateUser(
+        UserAttributes(
+          data: {
+            'full_name': fullName.trim(),
+            'phone': normalizedPhone,
+          },
+        ),
+      );
+    } on PostgrestException catch (e) {
+      throw AuthFailure(_mapPostgrestError(e));
+    } on AuthException catch (e) {
+      throw AuthFailure(_mapAuthError(e));
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────────
+  // Sign-out
+  // ──────────────────────────────────────────────────────────────
+
   Future<void> signOut() async {
+    await _signOutGoogle();
     await _client?.auth.signOut();
   }
 
@@ -318,7 +443,7 @@ class AuthRepository {
         'id': userId,
         'full_name': fullName,
         'email': email,
-        'phone': phone,
+        'phone': phone.isNotEmpty ? phone : null,
       },
       ignoreDuplicates: true,
     );

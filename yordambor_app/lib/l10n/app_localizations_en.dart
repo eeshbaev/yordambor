@@ -3749,6 +3749,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errServerNotSetUp => 'The server is not set up';
 
   @override
+  String get errGoogleSignInFailed =>
+      'Couldn\'t sign in with Google. Please try again.';
+
+  @override
+  String get errTelegramOpenFailed =>
+      'Couldn\'t open Telegram. Please try again.';
+
+  @override
   String get errNoPermission => 'You can\'t do that';
 
   @override
@@ -3979,4 +3987,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errPhoneTaken => 'This phone number is already registered';
+
+  @override
+  String get socialOrEmail => 'or with email';
+
+  @override
+  String get socialContinueGoogle => 'Continue with Google';
+
+  @override
+  String get socialContinueTelegram => 'Continue with Telegram';
+
+  @override
+  String get profileSetupTitle => 'Complete your profile';
+
+  @override
+  String get profileSetupNameHint => 'Your first and last name';
+
+  @override
+  String get profileSetupNameRequired => 'Please enter your name';
+
+  @override
+  String get profileSetupNameFull => 'Enter your first and last name';
+
+  @override
+  String get profileSetupPhoneRequired => 'Please enter your phone number';
+
+  @override
+  String get profileSetupPhoneIncomplete => 'The number is incomplete';
+
+  @override
+  String get profileSetupPhoneOnce =>
+      'One phone number can be used for only one account.';
+
+  @override
+  String profileSetupSignedInWith(String provider) {
+    return 'You signed in with $provider';
+  }
 }

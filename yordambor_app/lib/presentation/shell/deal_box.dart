@@ -61,7 +61,7 @@ class _DealBoxSheet extends ConsumerWidget {
     final colors = context.ybColors;
 
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -93,7 +93,6 @@ class _DealBoxSheet extends ConsumerWidget {
             tabs: [
               Tab(text: strings.kelishuvRequests),
               Tab(text: strings.kelishuvIncoming),
-              Tab(text: strings.kelishuvArchive),
             ],
           ),
           // ── Tab views ─────────────────────────────────────────────────────
@@ -115,11 +114,6 @@ class _DealBoxSheet extends ConsumerWidget {
                           .toList() ??
                       [],
                   emptyLabel: strings.kelishuvIncomingSub,
-                ),
-                _KelishuvTabBody(
-                  strings: strings,
-                  items: ref.watch(archivedKelishuvProvider).valueOrNull ?? [],
-                  emptyLabel: strings.kelishuvArchiveSub,
                 ),
               ],
             ),

@@ -3714,6 +3714,14 @@ class AppLocalizationsUz extends AppLocalizations {
   String get errServerNotSetUp => 'Supabase sozlanmagan';
 
   @override
+  String get errGoogleSignInFailed =>
+      'Google orqali kirib bo\'lmadi. Qaytadan urinib ko\'ring.';
+
+  @override
+  String get errTelegramOpenFailed =>
+      'Telegram sahifasini ochib bo\'lmadi. Qaytadan urinib ko\'ring.';
+
+  @override
   String get errNoPermission => 'Ruxsat yoʻq';
 
   @override
@@ -3950,4 +3958,40 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get errPhoneTaken => 'Bu telefon raqami allaqachon roʻyxatdan oʻtgan';
+
+  @override
+  String get socialOrEmail => 'yoki email bilan';
+
+  @override
+  String get socialContinueGoogle => 'Google bilan davom etish';
+
+  @override
+  String get socialContinueTelegram => 'Telegram bilan davom etish';
+
+  @override
+  String get profileSetupTitle => 'Profilingizni to\'ldiring';
+
+  @override
+  String get profileSetupNameHint => 'Ismingiz va familiyangiz';
+
+  @override
+  String get profileSetupNameRequired => 'Ism kiritish shart';
+
+  @override
+  String get profileSetupNameFull => 'Ism va familiyani kiriting';
+
+  @override
+  String get profileSetupPhoneRequired => 'Telefon raqami kiritish shart';
+
+  @override
+  String get profileSetupPhoneIncomplete => 'Raqam to\'liq emas';
+
+  @override
+  String get profileSetupPhoneOnce =>
+      'Bir telefon raqami faqat bitta hisob uchun ishlatilishi mumkin.';
+
+  @override
+  String profileSetupSignedInWith(String provider) {
+    return '$provider orqali kirdiniz';
+  }
 }

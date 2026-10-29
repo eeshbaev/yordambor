@@ -1192,6 +1192,8 @@
   "alertAnyCity": "Istalgan shahar",
   "errSignInRequired": "Kirish talab qilinadi",
   "errServerNotSetUp": "Supabase sozlanmagan",
+  "errGoogleSignInFailed": "Google orqali kirib bo'lmadi. Qaytadan urinib ko'ring.",
+  "errTelegramOpenFailed": "Telegram sahifasini ochib bo'lmadi. Qaytadan urinib ko'ring.",
   "errNoPermission": "Ruxsat yoʻq",
   "errDealNotFound": "Kelishuv topilmadi",
   "errServiceNotFound": "Xizmat topilmadi",
@@ -1261,5 +1263,16 @@
   "errWrongEmailOrPassword": "Email yoki parol notoʻgʻri",
   "errEmailNotConfirmed": "Email tasdiqlanmagan. Pochtangizdagi havolani bosing yoki qayta yuboring.",
   "errEmailTaken": "Bu email bilan hisob mavjud. Kirishni sinab koʻring.",
-  "errPhoneTaken": "Bu telefon raqami allaqachon roʻyxatdan oʻtgan"
+  "errPhoneTaken": "Bu telefon raqami allaqachon roʻyxatdan oʻtgan",
+  "socialOrEmail": "yoki email bilan",
+  "socialContinueGoogle": "Google bilan davom etish",
+  "socialContinueTelegram": "Telegram bilan davom etish",
+  "profileSetupTitle": "Profilingizni to'ldiring",
+  "profileSetupNameHint": "Ismingiz va familiyangiz",
+  "profileSetupNameRequired": "Ism kiritish shart",
+  "profileSetupNameFull": "Ism va familiyani kiriting",
+  "profileSetupPhoneRequired": "Telefon raqami kiritish shart",
+  "profileSetupPhoneIncomplete": "Raqam to'liq emas",
+  "profileSetupPhoneOnce": "Bir telefon raqami faqat bitta hisob uchun ishlatilishi mumkin.",
+  "profileSetupSignedInWith": "{provider} orqali kirdiniz"
 }

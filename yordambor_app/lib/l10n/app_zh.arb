@@ -1195,6 +1195,8 @@
   "alertAnyCity": "任何城市",
   "errSignInRequired": "请先登录",
   "errServerNotSetUp": "服务器未配置",
+  "errGoogleSignInFailed": "无法通过 Google 登录，请重试。",
+  "errTelegramOpenFailed": "无法打开 Telegram，请重试。",
   "errNoPermission": "没有权限",
   "errDealNotFound": "未找到交易",
   "errServiceNotFound": "未找到服务",
@@ -1264,5 +1266,16 @@
   "errWrongEmailOrPassword": "邮箱或密码错误",
   "errEmailNotConfirmed": "邮箱尚未验证。请点击邮件中的链接，或重新发送。",
   "errEmailTaken": "此邮箱已有账户，请尝试登录。",
-  "errPhoneTaken": "此电话号码已注册"
+  "errPhoneTaken": "此电话号码已注册",
+  "socialOrEmail": "或使用邮箱",
+  "socialContinueGoogle": "使用 Google 继续",
+  "socialContinueTelegram": "使用 Telegram 继续",
+  "profileSetupTitle": "完善您的资料",
+  "profileSetupNameHint": "您的名字和姓氏",
+  "profileSetupNameRequired": "请输入姓名",
+  "profileSetupNameFull": "请输入名字和姓氏",
+  "profileSetupPhoneRequired": "请输入电话号码",
+  "profileSetupPhoneIncomplete": "号码不完整",
+  "profileSetupPhoneOnce": "一个电话号码只能用于一个账户。",
+  "profileSetupSignedInWith": "您已通过 {provider} 登录"
 }
