@@ -231,17 +231,7 @@ class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen>
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             for (final appt in dayAppts)
-                              AppointmentPass(
-                                key: ValueKey('appt-${appt.id}'),
-                                appt: appt,
-                                strings: strings,
-                                onCancel: () => _cancelAppointment(appt.id),
-                                onSaveClient:
-                                    appt.iProvide && appt.isActive &&
-                                            !savedClients.contains(appt.otherPartyId)
-                                        ? () => _promptSaveClient(appt)
-                                        : null,
-                              ),
+                              _pass(appt, strings, savedClients),
                           ],
                           // "Band vaqt" busy control for providers.
                           if (snapshot.isProvider) ...[
@@ -317,12 +307,22 @@ class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen>
               },
             ),
           ),
+          const SizedBox(height: AppSpacing.xl),
+          _AppointmentsAgenda(
+            selectedDay: _selectedDay ?? DateTime.now(),
+            passFor: (appt, savedClients) => _pass(appt, strings, savedClients),
+            onDaySelected: (day) => setState(() => _selectedDay = day),
+          ),
           const SizedBox(height: AppSpacing.lg),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            child: Text(
-              strings.remindersTitle,
-              style: AppTypography.headline.copyWith(color: colors.textPrimary),
+            child: Semantics(
+              header: true,
+              child: Text(
+                strings.calendarReminders,
+                style:
+                    AppTypography.headline.copyWith(color: colors.textPrimary),
+              ),
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -333,6 +333,26 @@ class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen>
         ],
         ),
       ),
+    );
+  }
+
+  /// One appointment's card, with cancelling and (for a client not yet in
+  /// the client book) saving the client.
+  Widget _pass(
+    CalendarAppointment appt,
+    AppStrings strings,
+    Set<String> savedClients,
+  ) {
+    return AppointmentPass(
+      key: ValueKey('appt-${appt.id}'),
+      appt: appt,
+      strings: strings,
+      onCancel: () => _cancelAppointment(appt.id),
+      onSaveClient: appt.iProvide &&
+              appt.isActive &&
+              !savedClients.contains(appt.otherPartyId)
+          ? () => _promptSaveClient(appt)
+          : null,
     );
   }
 
@@ -436,6 +456,14 @@ class _CalendarHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final snapshotAsync = ref.watch(scheduleMonthSnapshotProvider);
     final weekdayLabels = strings.calendarWeekdayShortLabels;
+    final appointmentDays = ref.watch(
+      appointmentsByDayProvider.select(
+        (byDay) => {
+          for (final entry in byDay.entries)
+            if (entry.value.any((appt) => !appt.isCancelled)) entry.key,
+        },
+      ),
+    );
     final colors = context.ybColors;
 
     return Container(
@@ -492,6 +520,7 @@ class _CalendarHeader extends ConsumerWidget {
               selectedDay: selectedDay,
               weekdayLabels: weekdayLabels,
               onDaySelected: onDaySelected,
+              appointmentDays: appointmentDays,
             ),
           ),
         ],
@@ -555,12 +584,16 @@ class _Legend extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
         ],
-        Text(strings.remindersTitle, style: caption),
+        Text(strings.calendarReminders, style: caption),
         const SizedBox(height: AppSpacing.xs),
         Wrap(
           spacing: AppSpacing.md,
           runSpacing: AppSpacing.xs,
           children: [
+            _LegendItem(
+              swatch: ScheduleMonthGrid.appointmentMarker(colors),
+              label: strings.calendarLegendAppointment,
+            ),
             for (final role in ScheduleEventRole.values)
               _LegendItem(
                 swatch: Container(
@@ -1185,6 +1218,141 @@ class _StatusChoice extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Every appointment in one list: today's, the coming ones, then the past
+/// week's. The selected day's are in its card above, so they are left out
+/// here; tapping a date picks that day.
+class _AppointmentsAgenda extends ConsumerWidget {
+  const _AppointmentsAgenda({
+    required this.selectedDay,
+    required this.passFor,
+    required this.onDaySelected,
+  });
+
+  final Widget Function(CalendarAppointment appt, Set<String> savedClients)
+      passFor;
+  final ValueChanged<DateTime> onDaySelected;
+  final DateTime selectedDay;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final strings = ref.watch(appStringsProvider);
+    final colors = context.ybColors;
+    final appointmentsAsync = ref.watch(myAppointmentsProvider);
+    final savedClients = ref.watch(savedClientAccountsProvider);
+    final locale = strings.languageCode;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final all = appointmentsAsync.valueOrNull ?? const <CalendarAppointment>[];
+    final selected =
+        DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+    final items = [for (final a in all) if (a.day != selected) a];
+    // All of them are on the selected day, in its card above.
+    if (all.isNotEmpty && items.isEmpty) return const SizedBox.shrink();
+    final todays = [for (final a in items) if (a.day == today) a];
+    final upcoming = [for (final a in items) if (a.day.isAfter(today)) a];
+    // Most recent first.
+    final past = [for (final a in items) if (a.day.isBefore(today)) a]
+        .reversed
+        .toList();
+
+    Widget section(String title, List<CalendarAppointment> list) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            '$title · ${list.length}',
+            style: AppTypography.label.copyWith(color: colors.ink2),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          for (var i = 0; i < list.length; i++) ...[
+            // The date over the first card of each day (not for today's).
+            if (list[i].day != today &&
+                (i == 0 || list[i - 1].day != list[i].day))
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+                child: InkWell(
+                  onTap: () => onDaySelected(list[i].day),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      DateFormat.MMMEd(locale).format(list[i].day),
+                      style: AppTypography.caption.copyWith(
+                        color: colors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            passFor(list[i], savedClients),
+          ],
+        ],
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(
+              strings.calendarTabTitle,
+              style: AppTypography.headline.copyWith(color: colors.textPrimary),
+            ),
+          ),
+          if (appointmentsAsync.isLoading && all.isEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            const YbSkeletonBox(width: double.infinity, height: 96),
+          ] else if (all.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.md),
+              child: YbSurfaceCard(
+                child: Row(
+                  children: [
+                    Icon(YbIcons.calendarMonthFilled, color: colors.teal),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            strings.calendarNoAppointments,
+                            style: AppTypography.body.copyWith(
+                              color: colors.ink,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            strings.calendarNoAppointmentsHint,
+                            style: AppTypography.caption.copyWith(
+                              color: colors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else ...[
+            if (todays.isNotEmpty) section(strings.calendarSectionToday, todays),
+            if (upcoming.isNotEmpty)
+              section(strings.calendarSectionUpcoming, upcoming),
+            if (past.isNotEmpty) section(strings.calendarSectionPast, past),
+          ],
+        ],
       ),
     );
   }

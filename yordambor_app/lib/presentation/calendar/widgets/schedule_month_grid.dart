@@ -19,6 +19,7 @@ class ScheduleMonthGrid extends StatelessWidget {
     required this.selectedDay,
     required this.weekdayLabels,
     required this.onDaySelected,
+    this.appointmentDays = const {},
   });
 
   final DateTime month;
@@ -28,6 +29,9 @@ class ScheduleMonthGrid extends StatelessWidget {
   final List<String> weekdayLabels;
   final ValueChanged<DateTime> onDaySelected;
 
+  /// Days with an agreed appointment: a short bar under the number.
+  final Set<DateTime> appointmentDays;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.ybColors;
@@ -36,10 +40,11 @@ class ScheduleMonthGrid extends StatelessWidget {
     final lead = (first.weekday - DateTime.monday) % 7;
     final totalCells = lead + daysInMonth;
     final rows = (totalCells / 7).ceil();
-    // 44 dp, taller when large text needs room for the day and its dots.
+    // 44 dp, taller when large text needs room for the day, its
+    // appointment bar and its dots.
     final cellHeight = math.max(
       44.0,
-      MediaQuery.textScalerOf(context).scale(13) * 1.5 + 14,
+      MediaQuery.textScalerOf(context).scale(13) * 1.5 + 21,
     );
 
     return Column(
@@ -99,29 +104,32 @@ class ScheduleMonthGrid extends StatelessWidget {
     final mark = marks[DateTime(date.year, date.month, date.day)];
     final events = eventsByDay[DateTime(date.year, date.month, date.day)] ?? [];
     final isToday = _isSameDay(date, DateTime.now());
-    final isSelected =
-        selectedDay != null && _isSameDay(date, selectedDay!);
+    final isSelected = selectedDay != null && _isSameDay(date, selectedDay!);
 
     final status = mark?.status ?? ScheduleDayAvailability.unset;
     final partly = mark != null && !mark.wholeDay;
     // Busy all day: solid red. Busy some hours: light red with a red edge.
     // Free: green.
     final (Color fill, Color number, Color? edge) = switch (status) {
-      ScheduleDayAvailability.busy => partly
-          ? (colors.errorSoft, colors.error, colors.error)
-          : (colors.error, colors.onError, null),
+      ScheduleDayAvailability.busy =>
+        partly
+            ? (colors.errorSoft, colors.error, colors.error)
+            : (colors.error, colors.onError, null),
       ScheduleDayAvailability.available => (
-          colors.successSoft,
-          colors.success,
-          partly ? colors.success : null,
-        ),
+        colors.successSoft,
+        colors.success,
+        partly ? colors.success : null,
+      ),
       ScheduleDayAvailability.unset => (
-          colors.surface,
-          isToday ? colors.teal : colors.ink,
-          null,
-        ),
+        colors.surface,
+        isToday ? colors.teal : colors.ink,
+        null,
+      ),
     };
     final roles = {for (final event in events) event.role};
+    final hasAppointment = appointmentDays.contains(
+      DateTime(date.year, date.month, date.day),
+    );
 
     return Padding(
       padding: const EdgeInsets.all(2),
@@ -132,8 +140,8 @@ class ScheduleMonthGrid extends StatelessWidget {
           side: isSelected
               ? BorderSide(color: colors.teal, width: 2.5)
               : edge != null
-                  ? BorderSide(color: edge, width: 1.5)
-                  : BorderSide.none,
+              ? BorderSide(color: edge, width: 1.5)
+              : BorderSide.none,
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.chip),
@@ -143,22 +151,31 @@ class ScheduleMonthGrid extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '$dayNum',
-                  style: AppTypography.tabular(
-                    AppTypography.label.copyWith(
-                      fontSize: 13,
-                      color: number,
-                      fontWeight: isToday ||
-                              isSelected ||
-                              status != ScheduleDayAvailability.unset
-                          ? FontWeight.w700
-                          : FontWeight.w400,
-                      decoration: isToday ? TextDecoration.underline : null,
-                      decorationColor: number,
+                // One line always: in a narrow cell with large text the
+                // number shrinks rather than wrapping out of the cell.
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    '$dayNum',
+                    maxLines: 1,
+                    softWrap: false,
+                    style: AppTypography.tabular(
+                      AppTypography.label.copyWith(
+                        fontSize: 13,
+                        color: number,
+                        fontWeight:
+                            isToday ||
+                                isSelected ||
+                                status != ScheduleDayAvailability.unset
+                            ? FontWeight.w700
+                            : FontWeight.w400,
+                        decoration: isToday ? TextDecoration.underline : null,
+                        decorationColor: number,
+                      ),
                     ),
                   ),
                 ),
+                if (hasAppointment) appointmentMarker(colors),
                 if (roles.isNotEmpty)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -175,6 +192,20 @@ class ScheduleMonthGrid extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// The bar that marks an appointment, also used in the legend.
+  static Widget appointmentMarker(YbThemeColors colors) {
+    return Container(
+      width: 14,
+      height: 4,
+      margin: const EdgeInsets.symmetric(vertical: 1.5),
+      decoration: BoxDecoration(
+        color: colors.tealInk,
+        borderRadius: BorderRadius.circular(2),
+        border: Border.all(color: colors.card, width: 0.5),
       ),
     );
   }
