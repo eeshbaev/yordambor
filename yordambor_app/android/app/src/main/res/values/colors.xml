@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#0D9488</color>
+    <color name="ic_launcher_background">#048289</color>
+    <!-- Launch screen: the app's page colour, so the hand-off to Flutter shows no flash. -->
+    <color name="splash_background">#F2F6F6</color>
 </resources>

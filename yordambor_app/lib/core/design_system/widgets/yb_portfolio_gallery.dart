@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/widgets/yb_network_image.dart';
+import 'package:yordambor/core/design_system/widgets/yb_photo_hero.dart';
 import 'package:yordambor/core/utils/category_icons.dart';
 import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
@@ -11,11 +12,26 @@ class YbPortfolioGallery extends StatefulWidget {
     required this.imageUrls,
     this.height = 280,
     this.placeholderIcon = CategoryIcons.defaultIcon,
+    this.placeholderColor,
+    this.placeholderIconColor,
+    this.heroTag,
+    this.indicatorInset = AppSpacing.lg,
   });
 
   final List<String> imageUrls;
   final double height;
   final IconData placeholderIcon;
+
+  /// The frame photos fade into: the category tint the cards use.
+  final Color? placeholderColor;
+  final Color? placeholderIconColor;
+
+  /// The first photo lands here from its card (manual M-02).
+  final Object? heroTag;
+
+  /// How far above the bottom the page dots sit, so content that overlaps
+  /// the gallery's edge does not hide them.
+  final double indicatorInset;
 
   @override
   State<YbPortfolioGallery> createState() => _YbPortfolioGalleryState();
@@ -42,17 +58,20 @@ class _YbPortfolioGalleryState extends State<YbPortfolioGallery> {
     final colors = context.ybColors;
 
     if (widget.imageUrls.isEmpty) {
-      return SizedBox(
+      final placeholder = SizedBox(
         height: widget.height,
         child: ColoredBox(
-          color: colors.primaryMuted,
+          color: widget.placeholderColor ?? colors.primaryMuted,
           child: Icon(
             widget.placeholderIcon,
             size: 48,
-            color: AppColors.primary.withValues(alpha: 0.5),
+            color: widget.placeholderIconColor ??
+                context.ybColors.teal.withValues(alpha: 0.5),
           ),
         ),
       );
+      final tag = widget.heroTag;
+      return tag == null ? placeholder : YbPhotoHero(tag: tag, child: placeholder);
     }
 
     return SizedBox(
@@ -65,11 +84,16 @@ class _YbPortfolioGalleryState extends State<YbPortfolioGallery> {
             itemCount: widget.imageUrls.length,
             onPageChanged: (value) => setState(() => _index = value),
             itemBuilder: (context, index) {
-              return YbNetworkImage(
+              final image = YbNetworkImage(
                 url: widget.imageUrls[index],
                 placeholderIcon: widget.placeholderIcon,
                 errorIcon: widget.placeholderIcon,
+                placeholderColor: widget.placeholderColor,
+                placeholderIconColor: widget.placeholderIconColor,
               );
+              final tag = widget.heroTag;
+              if (index != 0 || tag == null) return image;
+              return YbPhotoHero(tag: tag, child: image);
             },
           ),
           Positioned(
@@ -92,15 +116,17 @@ class _YbPortfolioGalleryState extends State<YbPortfolioGallery> {
           ),
           if (widget.imageUrls.length > 1)
             Positioned(
-              bottom: AppSpacing.lg,
+              bottom: widget.indicatorInset,
               left: 0,
               right: 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(widget.imageUrls.length, (index) {
                   final active = index == _index;
+                  // The active dot stretches; with reduced motion it
+                  // simply changes.
                   return AnimatedContainer(
-                    duration: AppMotion.fast,
+                    duration: AppMotion.of(context, AppMotion.fast),
                     curve: AppMotion.standard,
                     width: active ? 20 : 8,
                     height: 8,

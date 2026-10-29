@@ -7,6 +7,7 @@ import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/safety/block_repository.dart';
 
@@ -34,9 +35,11 @@ class BlockedUsersScreen extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 YbEmptyState(
-                  icon: Icons.error_outline_rounded,
-                  title: strings.profileBlocked,
-                  subtitle: '$error',
+                  icon: YbIcons.cloudOff,
+                  title: strings.stateErrorTitle,
+                  subtitle: strings.stateErrorBody,
+                  actionLabel: strings.actionRetry,
+                  onAction: () => ref.invalidate(blockedUsersProvider),
                 ),
               ],
             ),
@@ -46,7 +49,7 @@ class BlockedUsersScreen extends ConsumerWidget {
                   physics: const AlwaysScrollableScrollPhysics(),
                   children: [
                     YbEmptyState(
-                      icon: Icons.block_outlined,
+                      icon: YbIcons.block,
                       title: strings.profileBlocked,
                       subtitle: strings.safetyHideUser,
                     ),

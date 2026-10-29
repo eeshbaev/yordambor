@@ -18,7 +18,9 @@ final xizmatRepositoryProvider = Provider<XizmatRepository>((ref) {
 });
 
 final myXizmatlarProvider = FutureProvider<List<XizmatFeedItem>>((ref) async {
-  final userId = ref.watch(sessionProvider.select((s) => s.user?.id));
+  final session = ref.watch(sessionProvider);
+  if (session.isLoading) return [];
+  final userId = session.user?.id;
   if (userId == null) return [];
 
   final language = ref.watch(onboardingPrefsProvider.select((p) => p.language));

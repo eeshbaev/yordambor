@@ -5,6 +5,7 @@ import 'package:yordambor/application/providers/auth_welcome_provider.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/favorites_provider.dart';
 import 'package:yordambor/application/providers/onboarding_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
@@ -22,6 +23,7 @@ Future<bool> showAuthBottomSheet(
   AuthContextType authContext = AuthContextType.generic,
 }) async {
   final result = await showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -136,9 +138,9 @@ class _AuthBottomSheetState extends ConsumerState<AuthBottomSheet>
                   else ...[
                     TabBar(
                       controller: _tabController,
-                      labelColor: AppColors.primary,
+                      labelColor: context.ybColors.teal,
                       unselectedLabelColor: colors.textTertiary,
-                      indicatorColor: AppColors.primary,
+                      indicatorColor: context.ybColors.teal,
                       tabs: [
                         Tab(text: strings.login),
                         Tab(text: strings.register),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 
 class PostContactPreferencesSection extends StatelessWidget {
   const PostContactPreferencesSection({
@@ -23,11 +24,11 @@ class PostContactPreferencesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(strings.postContactSectionTitle, style: AppTypography.headline),
+        Text(strings.postContactSectionTitle, style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary)),
         const SizedBox(height: AppSpacing.sm),
         Text(
           strings.postContactSectionSubtitle,
-          style: AppTypography.caption,
+          style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.lg),
         TextFormField(

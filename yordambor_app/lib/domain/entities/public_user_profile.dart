@@ -7,6 +7,7 @@ class PublicUserProfile {
     this.bio,
     this.isDemo = false,
     this.avatarUrl,
+    this.createdAt,
   });
 
   final String id;
@@ -16,6 +17,9 @@ class PublicUserProfile {
   final String? bio;
   final bool isDemo;
   final String? avatarUrl;
+
+  /// When they joined; unknown for samples.
+  final DateTime? createdAt;
 
   bool get hasVisiblePhone =>
       phone != null && phone!.trim().isNotEmpty && showPhone;

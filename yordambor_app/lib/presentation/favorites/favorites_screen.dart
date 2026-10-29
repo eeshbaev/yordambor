@@ -7,23 +7,30 @@ import 'package:yordambor/application/providers/xizmat_providers.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
-import 'package:yordambor/core/design_system/widgets/yb_xizmat_card.dart';
-import 'package:yordambor/core/utils/xizmat_availability_display.dart';
-import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
-import 'package:yordambor/core/share/feed_share.dart';
+import 'package:yordambor/core/design_system/widgets/yb_stagger_in.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
+import 'package:yordambor/presentation/shared/xizmat_feed_card.dart';
 
-class FavoritesScreen extends ConsumerWidget {
+class FavoritesScreen extends ConsumerStatefulWidget {
   const FavoritesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
+  /// When the saved list first appeared, so its rows rise in once.
+  DateTime? _listShownAt;
+
+  @override
+  Widget build(BuildContext context) {
     final strings = ref.watch(appStringsProvider);
     final favoriteIds = ref.watch(favoritesProvider);
     final itemsAsync = ref.watch(favoriteXizmatlarProvider);
 
     if (favoriteIds.isEmpty) {
       return YbEmptyState(
-        icon: Icons.favorite_outline,
+        icon: YbIcons.favorite,
         title: strings.favoritesEmptyTitle,
         subtitle: strings.favoritesEmptySubtitle,
         actionLabel: strings.tabHome,
@@ -33,15 +40,17 @@ class FavoritesScreen extends ConsumerWidget {
 
     return itemsAsync.when(
       loading: () => const YbSkeletonList(count: 2),
-      error: (error, _) => YbEmptyState(
-        icon: Icons.error_outline_rounded,
-        title: strings.tabFavorites,
-        subtitle: '$error',
+      error: (_, _) => YbEmptyState(
+        icon: YbIcons.cloudOff,
+        title: strings.stateErrorTitle,
+        subtitle: strings.stateErrorBody,
+        actionLabel: strings.actionRetry,
+        onAction: () => ref.invalidate(favoriteXizmatlarProvider),
       ),
       data: (items) {
         if (items.isEmpty) {
           return YbEmptyState(
-            icon: Icons.favorite_outline,
+            icon: YbIcons.favorite,
             title: strings.favoritesEmptyTitle,
             subtitle: strings.favoritesEmptySubtitle,
             actionLabel: strings.tabHome,
@@ -49,6 +58,7 @@ class FavoritesScreen extends ConsumerWidget {
           );
         }
 
+        final shownAt = _listShownAt ??= DateTime.now();
         return ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.only(
@@ -58,33 +68,11 @@ class FavoritesScreen extends ConsumerWidget {
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            final availability = xizmatAvailabilityDisplay(item, strings);
-            return YbXizmatCard(
-              item: item,
-              isFavorite: true,
-              providerTypeLabel: strings.providerTypeLabel(item.providerType),
-              sectorLine: strings.sectorLine(
-                item.categoryLabel,
-                item.subcategoryLabel,
-              ),
-              completedLabel:
-                  strings.xizmatCompletedCount(item.completedCount),
-              priceLabel: xizmatPricingLabel(item, strings),
-              availabilityLabel: availability?.label,
-              availabilityTone: availability?.tone,
-              servicePromise: item.visibleServicePromise,
-              onTap: () => context.push('/xizmat/${item.id}'),
-              onShare: () => FeedShare.shareXizmat(
-                strings: strings,
-                xizmatId: item.id,
-                xizmatName: item.name,
-              ),
-              shareTooltip: strings.shareXizmat,
-              onOwnerTap: item.ownerId != null
-                  ? () => context.push('/user/${item.ownerId}')
-                  : null,
-              onFavoriteToggle: () =>
-                  ref.read(favoritesProvider.notifier).toggle(item.id),
+            return YbStaggerIn(
+              key: ValueKey('saved-${item.id}'),
+              index: index,
+              listShownAt: shownAt,
+              child: XizmatFeedCard(item: item),
             );
           },
         );

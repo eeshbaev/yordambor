@@ -1,3 +1,5 @@
+import 'package:yordambor/domain/entities/create_xizmat_prefill.dart';
+
 /// Maps incoming URIs (HTTPS universal links or custom scheme) to app routes.
 abstract final class DeepLinkMapper {
   static const httpsHosts = {'yordambor.app', 'www.yordambor.app'};
@@ -9,7 +11,7 @@ abstract final class DeepLinkMapper {
     }
 
     if (uri.scheme == 'https' && httpsHosts.contains(uri.host)) {
-      return _routeFromHttpsPath(uri.path);
+      return _routeFromHttpsPath(uri);
     }
 
     return null;
@@ -17,6 +19,8 @@ abstract final class DeepLinkMapper {
 
   static String? _routeFromCustomScheme(Uri uri) {
     final host = uri.host;
+    if (host == 'join') return _joinRoute(uri);
+
     final id = uri.pathSegments.isNotEmpty ? uri.pathSegments.first : null;
     if (id == null || id.isEmpty) return null;
 
@@ -28,9 +32,12 @@ abstract final class DeepLinkMapper {
     };
   }
 
-  static String? _routeFromHttpsPath(String path) {
+  static String? _routeFromHttpsPath(Uri uri) {
     final segments =
-        path.split('/').where((segment) => segment.isNotEmpty).toList();
+        uri.path.split('/').where((segment) => segment.isNotEmpty).toList();
+    if (segments.length == 1 && segments.first == 'join') {
+      return _joinRoute(uri);
+    }
     if (segments.length < 2) return null;
 
     return switch (segments[0]) {
@@ -39,5 +46,16 @@ abstract final class DeepLinkMapper {
       'kelishuv' => '/kelishuv/${segments[1]}',
       _ => null,
     };
+  }
+
+  /// An invite to add a service, with only the parts of its query that
+  /// check out.
+  static String _joinRoute(Uri uri) {
+    final query =
+        CreateXizmatPrefill.fromQuery(uri.queryParameters).toQuery();
+    return Uri(
+      path: '/join',
+      queryParameters: query.isEmpty ? null : query,
+    ).toString();
   }
 }

@@ -5,11 +5,13 @@ import 'package:yordambor/application/providers/app_review_service.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
+import 'package:yordambor/core/utils/demo_ids.dart';
 import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 import 'package:yordambor/domain/growth/app_review_prompt.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_summary.dart';
 import 'package:yordambor/presentation/kelishuv/taklif_sheet.dart';
+import 'package:yordambor/presentation/shared/sample_listing_actions.dart';
 
 Future<void> openRepeatBookFlow(
   BuildContext context,
@@ -60,6 +62,12 @@ Future<void> _openRepeatBookWithPrefill(
   final strings = ref.read(appStringsProvider);
   final xizmat = await ref.read(xizmatDetailProvider(xizmatId).future);
   if (!context.mounted) return;
+
+  // A sample takes no deal: interest in it becomes a real request.
+  if (xizmat != null && (xizmat.isDemo || isDemoFeedId(xizmat.id))) {
+    await findProviderFromSample(context, ref, xizmat);
+    return;
+  }
 
   final userId = ref.read(sessionProvider).user?.id;
   if (userId != null && xizmat?.ownerId == userId) {

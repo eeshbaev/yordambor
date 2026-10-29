@@ -4,6 +4,7 @@ import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/auth/auth_repository.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
@@ -14,7 +15,7 @@ class LoginForm extends ConsumerStatefulWidget {
     required this.onForgotPassword,
   });
 
-  final VoidCallback onSuccess;
+  final Future<void> Function() onSuccess;
   final void Function(AuthFailure error) onError;
   final VoidCallback onForgotPassword;
 
@@ -47,9 +48,13 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             identifier: _identifierController.text,
             password: _passwordController.text,
           );
-      widget.onSuccess();
+      await widget.onSuccess();
     } on AuthFailure catch (e) {
       widget.onError(e);
+    } catch (_) {
+      widget.onError(
+        AuthFailure(ref.read(appStringsProvider).stateErrorBody),
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -90,8 +95,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             decoration: InputDecoration(
               labelText: '${strings.password} *',
               suffixIcon: IconButton(
+                tooltip: _obscurePassword
+                    ? strings.a11yShowPassword
+                    : strings.a11yHidePassword,
                 icon: Icon(
-                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                  _obscurePassword ? YbIcons.visibilityOffFilled : YbIcons.visibilityFilled,
                 ),
                 onPressed: () =>
                     setState(() => _obscurePassword = !_obscurePassword),

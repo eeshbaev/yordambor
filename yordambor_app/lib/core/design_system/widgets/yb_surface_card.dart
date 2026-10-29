@@ -4,6 +4,7 @@ import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 /// Elevated surface used for profile sections, provider cards, and list rows.
 class YbSurfaceCard extends StatelessWidget {
@@ -24,6 +25,8 @@ class YbSurfaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.ybColors;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     final card = AnimatedContainer(
       duration: AppMotion.fast,
       curve: AppMotion.standard,
@@ -31,8 +34,9 @@ class YbSurfaceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.card,
         borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: colors.borderSubtle),
-        boxShadow: AppElevation.card(context),
+        // Light cards lift with a soft shadow; dark cards get a hairline.
+        border: isDark ? Border.all(color: colors.borderSubtle) : null,
+        boxShadow: isDark ? null : AppElevation.card(context),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -108,7 +112,7 @@ class YbCompactListTile extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             trailing!,
           ],
-          Icon(Icons.chevron_right_rounded, color: colors.textTertiary),
+          Icon(YbIcons.chevronRightFilled, color: colors.textTertiary),
         ],
       ),
     );
@@ -130,9 +134,9 @@ class YbStickyActionBar extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.surfaceElevated.withValues(alpha: 0.96),
-        border: Border(top: BorderSide(color: colors.borderSubtle)),
-        boxShadow: AppElevation.navBar(context),
+        color: colors.surfaceElevated,
+        border: Border(top: BorderSide(color: colors.line)),
+        boxShadow: AppElevation.sheet(context),
       ),
       child: SafeArea(
         top: false,

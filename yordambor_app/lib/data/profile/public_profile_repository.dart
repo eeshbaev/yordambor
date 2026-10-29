@@ -28,9 +28,10 @@ class PublicProfileRepository {
     final client = _client;
     if (client == null) return null;
 
+    // Someone else's phone and email are not readable (migration 023).
     final row = await client
         .from('profiles')
-        .select('id, full_name, phone, show_phone, avatar_url')
+        .select('id, full_name, show_phone, avatar_url, created_at')
         .eq('id', userId)
         .maybeSingle();
 
@@ -39,9 +40,9 @@ class PublicProfileRepository {
     return PublicUserProfile(
       id: row['id'] as String,
       fullName: row['full_name'] as String? ?? '',
-      phone: row['phone'] as String?,
       showPhone: row['show_phone'] as bool? ?? false,
       avatarUrl: row['avatar_url'] as String?,
+      createdAt: DateTime.tryParse(row['created_at'] as String? ?? ''),
     );
   }
 

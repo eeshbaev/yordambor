@@ -34,8 +34,8 @@ class _ReminderTapListenerState extends ConsumerState<ReminderTapListener> {
     ref.read(pendingReminderTapProvider.notifier).state = reminderId;
     final router = ref.read(routerProvider);
     final path = router.routerDelegate.currentConfiguration.uri.path;
-    if (path != '/reminders') {
-      router.push('/reminders');
+    if (path != '/calendar') {
+      router.go('/calendar');
     }
   }
 

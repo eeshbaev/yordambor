@@ -9,11 +9,15 @@ class AppReviewPrefs {
     this.lastPromptAt,
     this.snoozeUntil,
     this.completedKelishuvCount = 0,
+    this.firstOpenAt,
   });
 
   final DateTime? lastPromptAt;
   final DateTime? snoozeUntil;
   final int completedKelishuvCount;
+
+  /// The first launch on this phone, when known.
+  final DateTime? firstOpenAt;
 }
 
 class AppReviewEligibility {
@@ -46,11 +50,18 @@ AppReviewEligibility checkAppReviewEligibility({
     );
   }
 
-  final triggerOk = switch (trigger) {
-    AppReviewTrigger.completedDeal => prefs.completedKelishuvCount >= 3,
-    AppReviewTrigger.fiveStarReview => true,
-    AppReviewTrigger.repeatBooking => true,
-  };
+  // Manual FB-05: at least 7 days and 3 finished deals after install.
+  if (prefs.firstOpenAt != null &&
+      now.difference(prefs.firstOpenAt!).inDays < 7) {
+    return const AppReviewEligibility(
+      canPrompt: false,
+      reason: 'too_soon',
+    );
+  }
+
+  // Every trigger is already a good moment; three finished deals make it a
+  // habit rather than a fluke.
+  final triggerOk = prefs.completedKelishuvCount >= 3;
 
   return AppReviewEligibility(
     canPrompt: triggerOk,

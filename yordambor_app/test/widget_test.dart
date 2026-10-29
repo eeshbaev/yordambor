@@ -1,26 +1,25 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yordambor/app.dart';
-import 'package:yordambor/data/onboarding/onboarding_prefs_repository.dart';
+
+import 'helpers/app_harness.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
-    SharedPreferences.setMockInitialValues({
-      OnboardingPrefsRepository.welcomeSeenKey: true,
-    });
-  });
+  setUpAll(setUpPluginFakes);
+  setUp(mockReturningGuestPrefs);
 
   testWidgets('App reaches home after splash', (tester) async {
-    await tester.pumpWidget(const ProviderScope(child: YordamBorApp()));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 1300));
-    await tester.pump(const Duration(milliseconds: 600));
+    await pumpAppToHome(tester);
 
     expect(find.text('YordamBor'), findsOneWidget);
     expect(find.text('Asosiy'), findsOneWidget);
-    expect(find.text('Sanjar — Santexnika'), findsOneWidget);
+    // One way to start floats over each feed: over the services, offering
+    // one.
+    expect(find.text('Xizmat qoʻshish'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('xizmat-card-demo-sanjar-plumber')),
+      findsOneWidget,
+    );
   });
 }

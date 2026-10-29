@@ -13,13 +13,88 @@ class AppLocalizationsUz extends AppLocalizations {
   String get appName => 'YordamBor';
 
   @override
-  String get splashTagline => 'YordamBor\'da yordam bor!';
+  String get splashTagline => 'YordamBor’da yordam bor!';
 
   @override
   String get tabHome => 'Asosiy';
 
   @override
+  String get tabCalendar => 'Kalendar';
+
+  @override
+  String get calendarGuestSubtitle =>
+      'Jadvalingiz va bandlikni belgilash uchun kiring.';
+
+  @override
+  String get calendarProviderHint =>
+      'Kalendar kuniga bosing, keyin boʻsh yoki band deb belgilang.';
+
+  @override
+  String get calendarClientHint =>
+      'Uchrashuvlar va eslatmalar kalendarda koʻrinadi. Batafsil uchun kunni bosing.';
+
+  @override
+  String get calendarLegendAvailable => 'Boʻsh';
+
+  @override
+  String get calendarLegendBusy => 'Band';
+
+  @override
+  String get calendarLegendAppointment => 'Uchrashuv';
+
+  @override
+  String get calendarMarkAvailable =>
+      'Belgi: boʻsh — oʻzgartirish uchun bosing';
+
+  @override
+  String get calendarMarkBusy => 'Belgi: band — oʻzgartirish uchun bosing';
+
+  @override
+  String get calendarMarkUnset => 'Kunni belgilang: boʻsh / band';
+
+  @override
+  String get calendarNoEventsDay => 'Bu kunda uchrashuv yoʻq.';
+
+  @override
+  String get calendarWeekdayMon => 'Du';
+
+  @override
+  String get calendarWeekdayTue => 'Se';
+
+  @override
+  String get calendarWeekdayWed => 'Ch';
+
+  @override
+  String get calendarWeekdayThu => 'Pa';
+
+  @override
+  String get calendarWeekdayFri => 'Ju';
+
+  @override
+  String get calendarWeekdaySat => 'Sh';
+
+  @override
+  String get calendarWeekdaySun => 'Ya';
+
+  @override
   String get tabFavorites => 'Saqlangan';
+
+  @override
+  String get tabBusiness => 'Biznes';
+
+  @override
+  String get businessTabServices => 'Xizmatlar';
+
+  @override
+  String get businessTabTools => 'Instrumentlar';
+
+  @override
+  String get businessToolsSubtitle =>
+      'Mijoz kitobi, kvitansiya, daromad va boshqa provayder asboblari.';
+
+  @override
+  String get myXizmatlarGuestSubtitle =>
+      'Xizmatlar va provayder asboblarini boshqarish uchun kiring.';
 
   @override
   String get tabProfile => 'Profil';
@@ -46,7 +121,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get filterProviderAll => 'Barchasi';
 
   @override
-  String get filterProviderTypeHint => 'Xizmat ko\'rsatuvchi turini tanlang';
+  String get filterProviderTypeHint => 'Xizmat koʻrsatuvchi turini tanlang';
 
   @override
   String get filterProviderAllHint => 'Jismoniy shaxs va tashkilotlar';
@@ -65,18 +140,82 @@ class AppLocalizationsUz extends AppLocalizations {
   String get filterAllSubcategories => 'Barcha subsohalar';
 
   @override
-  String get filterCategoryHint => 'Qaysi soha bo\'yicha qidiryapsiz?';
+  String get filterCategoryHint => 'Qaysi soha boʻyicha qidiryapsiz?';
 
   @override
   String get filterAllCategoriesHint => 'Barcha sohalardagi xizmatlar';
 
   @override
   String get filterAllSubcategoriesHint =>
-      'Tanlangan sohadagi barcha yo\'nalishlar';
+      'Tanlangan sohadagi barcha yoʻnalishlar';
+
+  @override
+  String get filterCity => 'Shahar';
+
+  @override
+  String get filterAllCities => 'Barcha shaharlar';
+
+  @override
+  String get filterCityHint => 'Qaysi shaharda xizmat kerak?';
+
+  @override
+  String get filterAllCitiesHint => 'Barcha shaharlardagi eʼlonlar';
+
+  @override
+  String get xizmatServiceCityRequired =>
+      'Xizmat koʻrsatadigan shaharni tanlang';
+
+  @override
+  String get serviceCityToshkent => 'Toshkent';
+
+  @override
+  String get serviceCityToshkentViloyati => 'Toshkent viloyati';
+
+  @override
+  String get serviceCitySamarqand => 'Samarqand';
+
+  @override
+  String get serviceCityBuxoro => 'Buxoro';
+
+  @override
+  String get serviceCityNukus => 'Nukus';
+
+  @override
+  String get serviceCityNamangan => 'Namangan';
+
+  @override
+  String get serviceCityAndijon => 'Andijon';
+
+  @override
+  String get serviceCityFargona => 'Fargʻona';
+
+  @override
+  String get serviceCityQarshi => 'Qarshi';
+
+  @override
+  String get serviceCityUrganch => 'Urganch';
+
+  @override
+  String get serviceCityTermiz => 'Termiz';
+
+  @override
+  String get serviceCityJizzax => 'Jizzax';
+
+  @override
+  String get serviceCityNavoiy => 'Navoiy';
+
+  @override
+  String get serviceCityQoqon => 'Qoʻqon';
+
+  @override
+  String get serviceCityGuliston => 'Guliston';
+
+  @override
+  String get serviceCityBoshqa => 'Boshqa';
 
   @override
   String homeFeedShowing(String summary) {
-    return 'Ko\'rsatilmoqda: $summary';
+    return 'Koʻrsatilmoqda: $summary';
   }
 
   @override
@@ -84,24 +223,24 @@ class AppLocalizationsUz extends AppLocalizations {
       'Avval jismoniy shaxs yoki tashkilotni tanlang';
 
   @override
-  String get homeEmptyTitle => 'Tez orada xizmatlar paydo bo\'ladi';
+  String get homeEmptyTitle => 'Tez orada xizmatlar paydo boʻladi';
 
   @override
   String get homeEmptySubtitle =>
-      'Turli sohalardagi xizmatlar portfolio bilan qo\'shiladi';
+      'Turli sohalardagi xizmatlar portfolio bilan qoʻshiladi';
 
   @override
-  String get homeDemoXizmat => 'Demo xizmatlar namuna sifatida ko\'rsatilmoqda';
+  String get homeDemoXizmat => 'Demo xizmatlar namuna sifatida koʻrsatilmoqda';
 
   @override
-  String get homeDemoPosts => 'Demo e\'lonlar namuna sifatida ko\'rsatilmoqda';
+  String get homeDemoPosts => 'Demo eʼlonlar namuna sifatida koʻrsatilmoqda';
 
   @override
-  String get homeJobsEmptyTitle => 'Yordam Kerak e\'lonlari';
+  String get homeJobsEmptyTitle => 'Yordam Kerak eʼlonlari';
 
   @override
   String get homeJobsEmptySubtitle =>
-      'Birinchi e\'lonni yuboring yoki filtrlarni o\'zgartiring';
+      'Birinchi eʼlonni yuboring yoki filtrlarni oʻzgartiring';
 
   @override
   String get favoritesEmptyTitle => 'Yoqtirgan xizmatlaringizni saqlang';
@@ -110,54 +249,54 @@ class AppLocalizationsUz extends AppLocalizations {
   String get favoritesEmptySubtitle => 'Kartadagi ♥ tugmasini bosing';
 
   @override
-  String get profileGuestTitle => 'YordamBor\'ga xush kelibsiz';
+  String get profileGuestTitle => 'YordamBor’ga xush kelibsiz';
 
   @override
   String get profileGuestSubtitle =>
-      'Kelishuvlar va e\'lonlar uchun ro\'yxatdan o\'ting. Sevimlilar hisobsiz saqlanadi.';
+      'Kelishuvlar va eʼlonlar uchun roʻyxatdan oʻting. Sevimlilar hisobsiz saqlanadi.';
 
   @override
   String get profilePhone => 'Telefon';
 
   @override
-  String get profileChangePhoto => 'Rasmni o\'zgartirish';
+  String get profileChangePhoto => 'Rasmni oʻzgartirish';
 
   @override
   String get profilePhotoUpdated => 'Profil rasmi yangilandi';
 
   @override
-  String get profilePhotoFailed => 'Rasmni yuklab bo\'lmadi';
+  String get profilePhotoFailed => 'Rasmni yuklab boʻlmadi';
 
   @override
   String get login => 'Kirish';
 
   @override
-  String get register => 'Ro\'yxatdan o\'tish';
+  String get register => 'Roʻyxatdan oʻtish';
 
   @override
   String get notificationsTitle => 'Bildirishnomalar';
 
   @override
-  String get notificationsEmpty => 'Hali bildirishnomalar yo\'q';
+  String get notificationsEmpty => 'Hali bildirishnomalar yoʻq';
 
   @override
-  String get fabPostYordamKerak => 'E\'lon qoldirish';
+  String get fabPostYordamKerak => 'Eʼlon qoldirish';
 
   @override
-  String get welcomeTitle => 'YordamBor\'da Yordam bor!';
+  String get welcomeTitle => 'YordamBor’da Yordam bor!';
 
   @override
   String get welcomeBrand => 'YordamBor.';
 
   @override
   String get welcomeBody =>
-      'Turli xizmatlarni toping. Yordam bering yoki yordam so\'rang.';
+      'Turli xizmatlarni toping. Yordam bering yoki yordam soʻrang.';
 
   @override
   String get startBrowsing => 'Boshlash';
 
   @override
-  String get createAccount => 'Ro\'yxatdan o\'tish';
+  String get createAccount => 'Roʻyxatdan oʻtish';
 
   @override
   String get alreadyHaveAccount => 'Allaqachon hisobingiz bormi?';
@@ -172,13 +311,13 @@ class AppLocalizationsUz extends AppLocalizations {
   String get authContextFavorite => 'Sevimlilarga saqlash uchun kiring';
 
   @override
-  String get authContextYordamKerak => 'Ustaga so\'rov yuborish uchun kiring';
+  String get authContextYordamKerak => 'Ustaga soʻrov yuborish uchun kiring';
 
   @override
   String get authContextYordamBor => 'Taklif yuborish uchun kiring';
 
   @override
-  String get authContextPostJob => 'E\'lon qoldirish uchun kiring';
+  String get authContextPostJob => 'Eʼlon qoldirish uchun kiring';
 
   @override
   String get authContextDeal => 'Kelishuv boshlash uchun kiring';
@@ -187,7 +326,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get later => 'Keyinroq';
 
   @override
-  String get fullName => 'To\'liq ism';
+  String get fullName => 'Toʻliq ism';
 
   @override
   String get email => 'Email';
@@ -202,23 +341,23 @@ class AppLocalizationsUz extends AppLocalizations {
   String get confirmPassword => 'Parol takror';
 
   @override
-  String get fieldRequired => 'Bu maydon to\'ldirilishi shart';
+  String get fieldRequired => 'Bu maydon toʻldirilishi shart';
 
   @override
-  String get invalidEmail => 'Email manzilini to\'g\'ri kiriting';
+  String get invalidEmail => 'Email manzilini toʻgʻri kiriting';
 
   @override
-  String get invalidPhone => 'Telefon raqamini to\'g\'ri kiriting (+998...)';
+  String get invalidPhone => 'Telefon raqamini toʻgʻri kiriting (+998…)';
 
   @override
-  String get invalidNumber => 'Raqamni to\'g\'ri kiriting';
+  String get invalidNumber => 'Raqamni toʻgʻri kiriting';
 
   @override
-  String get invalidMinutes => 'Daqiqalarni to\'g\'ri kiriting';
+  String get invalidMinutes => 'Daqiqalarni toʻgʻri kiriting';
 
   @override
   String get passwordTooShort =>
-      'Parol kamida 8 belgidan iborat bo\'lishi kerak';
+      'Parol kamida 8 belgidan iborat boʻlishi kerak';
 
   @override
   String get passwordsDoNotMatch => 'Parollar mos kelmadi';
@@ -263,14 +402,14 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get resetPasswordEmailHint =>
-      'Havolani telefoningizda oching. Ilova ochilgach yangi parol o\'rnatishingiz mumkin.';
+      'Havolani telefoningizda oching. Ilova ochilgach yangi parol oʻrnatishingiz mumkin.';
 
   @override
   String get resetPasswordExpiredTitle => 'Havola muddati tugagan';
 
   @override
   String get resetPasswordExpiredBody =>
-      'Parolni tiklash havolasini qayta so\'rang.';
+      'Parolni tiklash havolasini qayta soʻrang.';
 
   @override
   String get continueAction => 'Davom etish';
@@ -285,7 +424,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get verifyEmailBodyMissing =>
-      'Emailingizga tasdiqlash havolasi yubordik. Havolani ochgandan keyin \"Tasdiqladim\" tugmasini bosing.';
+      'Emailingizga tasdiqlash havolasi yubordik. Havolani ochgandan keyin “Tasdiqladim” tugmasini bosing.';
 
   @override
   String get verifyEmailCheck => 'Tasdiqladim';
@@ -301,7 +440,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get resendEmail => 'Qayta yuborish';
 
   @override
-  String get continueBrowsing => 'Ko\'rib chiqishni davom eting';
+  String get continueBrowsing => 'Koʻrib chiqishni davom eting';
 
   @override
   String welcomeBack(String name) {
@@ -309,7 +448,7 @@ class AppLocalizationsUz extends AppLocalizations {
   }
 
   @override
-  String get welcomeGuestName => 'do\'stim';
+  String get welcomeGuestName => 'doʻstim';
 
   @override
   String welcomeNewTitle(String name) {
@@ -318,7 +457,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get welcomeNewBody =>
-      'YordamBor oilasiga qo\'shilganingiz bilan tabriklaymiz! Xizmat toping, yordam bering yoki e\'lon qoldiring — biz har qadamda siz bilan birgamiz.';
+      'YordamBor oilasiga qoʻshilganingiz bilan tabriklaymiz! Xizmat toping, yordam bering yoki eʼlon qoldiring — biz har qadamda siz bilan birgamiz.';
 
   @override
   String welcomeLoginTitle(String name) {
@@ -327,7 +466,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get welcomeLoginBody =>
-      'Sizni yana ko\'rganimizdan xursandmiz. Bugun qanday yordam kerak?';
+      'Sizni yana koʻrganimizdan xursandmiz. Bugun qanday yordam kerak?';
 
   @override
   String welcomeReturnTitle(String name) {
@@ -353,11 +492,11 @@ class AppLocalizationsUz extends AppLocalizations {
   String get homeGreetingYordamKerak => 'Bugun yordam bera olasizmi?';
 
   @override
-  String get providerPromptTitle => 'Xizmat ko\'rsatasizmi?';
+  String get providerPromptTitle => 'Xizmat koʻrsatasizmi?';
 
   @override
   String get providerPromptBody =>
-      'Portfolio qo\'shing — mijozlar xizmatingizni topa oladi.';
+      'Portfolio qoʻshing — mijozlar xizmatingizni topa oladi.';
 
   @override
   String get createXizmat => 'Xizmat yaratish';
@@ -372,7 +511,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get settingsSubtitle => 'Til, maxfiylik, hisob';
 
   @override
-  String get settingsAppearance => 'Ko\'rinish';
+  String get settingsAppearance => 'Koʻrinish';
 
   @override
   String get settingsDarkMode => 'Mavzu';
@@ -381,10 +520,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get settingsThemeSystem => 'Tizim';
 
   @override
-  String get settingsThemeLight => 'Yorug\'';
+  String get settingsThemeLight => 'Yorugʻ';
 
   @override
-  String get settingsThemeDark => 'Qorong\'u';
+  String get settingsThemeDark => 'Qorongʻu';
 
   @override
   String get settingsLanguage => 'Til';
@@ -402,18 +541,18 @@ class AppLocalizationsUz extends AppLocalizations {
   String get settingsPrivacySection => 'Maxfiylik';
 
   @override
-  String get settingsShowPhoneLabel => 'Profilimda telefon ko\'rsatilsin';
+  String get settingsShowPhoneLabel => 'Profilimda telefon koʻrsatilsin';
 
   @override
   String get settingsShowPhoneSubtitle =>
-      'Ochiq profilingizda telefon raqamingiz ko\'rinadi';
+      'Ochiq profilingizda telefon raqamingiz koʻrinadi';
 
   @override
   String get postContactSectionTitle => 'Aloqa';
 
   @override
   String get postContactSectionSubtitle =>
-      'Profil har doim ochiq. Telefon raqamini ko\'rsatish ixtiyoriy.';
+      'Profil har doim ochiq. Telefon raqamini koʻrsatish ixtiyoriy.';
 
   @override
   String get postContactPhoneLabel => 'Telefon raqami';
@@ -425,18 +564,18 @@ class AppLocalizationsUz extends AppLocalizations {
   String get postContactPhoneOptional => 'Ixtiyoriy';
 
   @override
-  String get postShowPhoneLabel => 'Telefon raqamini ko\'rsatish';
+  String get postShowPhoneLabel => 'Telefon raqamini koʻrsatish';
 
   @override
   String get postShowPhoneSubtitle =>
-      'Bu e\'londa telefon raqamingiz ko\'rinadi';
+      'Bu eʼlonda telefon raqamingiz koʻrinadi';
 
   @override
-  String get postShowProfileLabel => 'Profilni ko\'rsatish';
+  String get postShowProfileLabel => 'Profilni koʻrsatish';
 
   @override
   String get postShowProfileSubtitle =>
-      'Foydalanuvchilar profilingizni ko\'ra oladi';
+      'Foydalanuvchilar profilingizni koʻra oladi';
 
   @override
   String get postAuthorHidden => 'Muallif yashirin';
@@ -445,29 +584,29 @@ class AppLocalizationsUz extends AppLocalizations {
   String get settingsTerms => 'Foydalanish shartlari';
 
   @override
-  String get settingsDeleteAccount => 'Hisobni o\'chirish';
+  String get settingsDeleteAccount => 'Hisobni oʻchirish';
 
   @override
   String get settingsDeleteAccountHint => 'Barcha kelishuvlar bekor qilinadi';
 
   @override
   String get settingsDeleteAccountConfirm =>
-      'Barcha ma\'lumotlaringiz, xizmatlar va faol kelishuvlar o\'chiriladi. Bu amalni qaytarib bo\'lmaydi.';
+      'Barcha maʼlumotlaringiz, xizmatlar va faol kelishuvlar oʻchiriladi. Bu amalni qaytarib boʻlmaydi.';
 
   @override
-  String get settingsDeleteAccountAction => 'Hisobni o\'chirish';
+  String get settingsDeleteAccountAction => 'Hisobni oʻchirish';
 
   @override
-  String get settingsDeleteAccountDone => 'Hisobingiz o\'chirildi';
+  String get settingsDeleteAccountDone => 'Hisobingiz oʻchirildi';
 
   @override
   String get remindersTitle => 'Eslatmalar';
 
   @override
-  String get remindersAdd => 'Eslatma qo\'shish';
+  String get remindersAdd => 'Eslatma qoʻshish';
 
   @override
-  String get remindersEmptyTitle => 'Eslatmalar yo\'q';
+  String get remindersEmptyTitle => 'Eslatmalar yoʻq';
 
   @override
   String get remindersEmptySubtitle =>
@@ -480,7 +619,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get remindersUpcoming => 'Kelgusi';
 
   @override
-  String get remindersPast => 'O\'tgan';
+  String get remindersPast => 'Oʻtgan';
 
   @override
   String get remindersFieldTitle => 'Sarlavha';
@@ -502,22 +641,22 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get legalPrivacyBody =>
-      'YordamBor shaxsiy ma\'lumotlaringizni faqat xizmat ko\'rsatish, kelishuvlar va xavfsizlik uchun ishlatadi.\n\n1. Qanday ma\'lumotlar to\'planadi\n\nIsm, email, telefon, xizmat portfolio rasmlari, kelishuv xabarlari va bildirishnomalar.\n\n2. Qayerda saqlanadi\n\nMa\'lumotlar Supabase serverlarida shifrlangan holda saqlanadi.\n\n3. Uchinchi tomonlar\n\nMa\'lumotlaringiz sotilmaydi. Faqat xizmat ko\'rsatish uchun zarur bo\'lgan texnik hamkorlar (hosting, email) bilan cheklangan.\n\n4. Sizning huquqlaringiz\n\nMa\'lumotlaringizni ko\'rish, yangilash yoki hisobni o\'chirish huquqiga egasiz.\n\n5. Aloqa\n\nSavollar bo\'yicha ilova ichidagi Sozlamalar bo\'limidan murojaat qiling.';
+      'YordamBor shaxsiy maʼlumotlaringizni faqat xizmat koʻrsatish, kelishuvlar va xavfsizlik uchun ishlatadi.\n\n1. Qanday maʼlumotlar toʻplanadi\n\nIsm, email, telefon, xizmat portfolio rasmlari, kelishuv xabarlari va bildirishnomalar.\n\n2. Qayerda saqlanadi\n\nMaʼlumotlar Supabase serverlarida shifrlangan holda saqlanadi.\n\n3. Uchinchi tomonlar\n\nMaʼlumotlaringiz sotilmaydi. Faqat xizmat koʻrsatish uchun zarur boʻlgan texnik hamkorlar (hosting, email) bilan cheklangan.\n\n4. Sizning huquqlaringiz\n\nMaʼlumotlaringizni koʻrish, yangilash yoki hisobni oʻchirish huquqiga egasiz.\n\n5. Aloqa\n\nSavollar boʻyicha ilova ichidagi Sozlamalar boʻlimidan murojaat qiling.';
 
   @override
   String get legalTermsBody =>
-      'YordamBor — turli sohalardagi xizmat ko\'rsatuvchilar va mijozlarni bog\'lovchi mobil platforma. Platformadan foydalanish ushbu shartlarga rozilik bildirish hisoblanadi.\n\n1. Umumiy qoidalar\n\nYordamBor xizmatlarni taqdim etmaydi; u faqat tomonlarni bog\'laydi. Platforma to\'lov vositachisi emas.\n\n2. Hisob va ro\'yxatdan o\'tish\n\nTo\'g\'ri va yangilangan ma\'lumotlarni taqdim etishingiz kerak. Email manzilingizni tasdiqlashingiz lozim.\n\n3. Xizmatlar va portfolio\n\nXizmat e\'lonida kamida bitta haqiqiy portfolio rasmi bo\'lishi shart. Yolg\'on, chalg\'ituvchi yoki noqonuniy e\'lonlar o\'chirilishi mumkin.\n\n4. Kelishuvlar (Yordam Bor / Yordam Kerak)\n\nNarx, muddat va ish tavsifi tomonlar o\'rtasida kelishiladi. YordamBor kelishuv jarayonini saqlaydi, lekin to\'lovni qabul qilmaydi.\n\n5. Taqiqlangan harakatlar\n\nFiribgarlik, haqorat, spam, noqonuniy xizmatlar yoki platforma qoidalarini ataylab buzish taqiqlanadi.\n\n6. Hisobni bloklash\n\nQoidalar buzilganda YordamBor hisobni vaqtincha yoki doimiy to\'xtatish huquqiga ega.\n\n7. O\'zgarishlar\n\nShartlar yangilanishi mumkin. Davom etish yangilangan shartlarga rozilik hisoblanadi.\n\n8. Aloqa\n\nSavollar bo\'yicha ilova ichidagi Sozlamalar bo\'limidan murojaat qiling.';
+      'YordamBor — turli sohalardagi xizmat koʻrsatuvchilar va mijozlarni bogʻlovchi mobil platforma. Platformadan foydalanish ushbu shartlarga rozilik bildirish hisoblanadi.\n\n1. Umumiy qoidalar\n\nYordamBor xizmatlarni taqdim etmaydi; u faqat tomonlarni bogʻlaydi. Platforma toʻlov vositachisi emas.\n\n2. Hisob va roʻyxatdan oʻtish\n\nToʻgʻri va yangilangan maʼlumotlarni taqdim etishingiz kerak. Email manzilingizni tasdiqlashingiz lozim.\n\n3. Xizmatlar va portfolio\n\nXizmat eʼlonida kamida bitta haqiqiy portfolio rasmi boʻlishi shart. Yolgʻon, chalgʻituvchi yoki noqonuniy eʼlonlar oʻchirilishi mumkin.\n\n4. Kelishuvlar (Yordam Bor / Yordam Kerak)\n\nNarx, muddat va ish tavsifi tomonlar oʻrtasida kelishiladi. YordamBor kelishuv jarayonini saqlaydi, lekin toʻlovni qabul qilmaydi.\n\n5. Taqiqlangan harakatlar\n\nFiribgarlik, haqorat, spam, noqonuniy xizmatlar yoki platforma qoidalarini ataylab buzish taqiqlanadi.\n\n6. Hisobni bloklash\n\nQoidalar buzilganda YordamBor hisobni vaqtincha yoki doimiy toʻxtatish huquqiga ega.\n\n7. Oʻzgarishlar\n\nShartlar yangilanishi mumkin. Davom etish yangilangan shartlarga rozilik hisoblanadi.\n\n8. Aloqa\n\nSavollar boʻyicha ilova ichidagi Sozlamalar boʻlimidan murojaat qiling.';
 
   @override
   String get shareXizmat => 'Ulashish';
 
   @override
   String shareXizmatMessage(String name) {
-    return 'YordamBor\'da $name xizmatini ko\'ring';
+    return 'YordamBor’da $name xizmatini koʻring';
   }
 
   @override
-  String get shareYordamKerak => 'E\'lonni ulashish';
+  String get shareYordamKerak => 'Eʼlonni ulashish';
 
   @override
   String shareYordamKerakMessage(String title) {
@@ -525,13 +664,13 @@ class AppLocalizationsUz extends AppLocalizations {
   }
 
   @override
-  String get postNotFound => 'E\'lon topilmadi';
+  String get postNotFound => 'Eʼlon topilmadi';
 
   @override
   String get shareCopied => 'Havola nusxalandi';
 
   @override
-  String get languageUz => 'O\'zbek';
+  String get languageUz => 'Oʻzbek';
 
   @override
   String get languageRu => 'Русский';
@@ -552,10 +691,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get actionEdit => 'Tahrirlash';
 
   @override
-  String get actionDelete => 'O\'chirish';
+  String get actionDelete => 'Oʻchirish';
 
   @override
-  String get actionView => 'Ko\'rish';
+  String get actionView => 'Koʻrish';
 
   @override
   String get actionUnblock => 'Blokdan chiqarish';
@@ -573,10 +712,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get kelishuvMessages => 'Xabarlar';
 
   @override
-  String get kelishuvNoMessages => 'Hali xabar yo\'q';
+  String get kelishuvNoMessages => 'Hali xabar yoʻq';
 
   @override
-  String get kelishuvOpeningOffer => 'Boshlang\'ich taklif';
+  String get kelishuvOpeningOffer => 'Boshlangʻich taklif';
 
   @override
   String get kelishuvReject => 'Rad etish';
@@ -595,7 +734,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get kelishuvTermsChanged =>
-      'Shartlar o\'zgardi — ikkala tomon ham qayta tasdiqlashi kerak';
+      'Shartlar oʻzgardi — ikkala tomon ham qayta tasdiqlashi kerak';
 
   @override
   String get kelishuvAwaitingComplete =>
@@ -618,7 +757,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get kelishuvCompleteTooEarly =>
-      'Ishni tugatish jarayon boshlanganidan 3 kun o\'tgach mumkin';
+      'Ishni tugatish jarayon boshlanganidan 3 kun oʻtgach mumkin';
 
   @override
   String kelishuvCompleteDaysLeft(int days) {
@@ -626,16 +765,16 @@ class AppLocalizationsUz extends AppLocalizations {
   }
 
   @override
-  String get kelishuvMessageHint => 'Xabar yozing...';
+  String get kelishuvMessageHint => 'Xabar yozing…';
 
   @override
   String get kelishuvIncoming => 'Menga kelgan';
 
   @override
-  String get kelishuvIncomingSub => 'Xizmatlaringizga kelgan so\'rovlar';
+  String get kelishuvIncomingSub => 'Xizmatlaringizga kelgan soʻrovlar';
 
   @override
-  String get kelishuvRequests => 'Mening so\'rovlarim';
+  String get kelishuvRequests => 'Mening soʻrovlarim';
 
   @override
   String get kelishuvRequestsSub => 'Yuborgan kelishuvlaringiz';
@@ -659,13 +798,268 @@ class AppLocalizationsUz extends AppLocalizations {
   String get profileClientBook => 'Mijoz kitobi';
 
   @override
-  String get profileClientBookSub => 'Mahalliy mijozlar ro\'yxati';
+  String get profileClientBookSub => 'Mahalliy mijozlar roʻyxati';
 
   @override
   String get profileEarnings => 'Mening daromadim';
 
   @override
-  String get profileEarningsSub => 'E\'lon qilingan daromad';
+  String get profileEarningsSub => 'Eʼlon qilingan daromad';
+
+  @override
+  String get profileMargin => 'Foyda';
+
+  @override
+  String get profileMarginSub => 'Asl narx va foyda';
+
+  @override
+  String get profilePaymentReceipt => 'Toʻlov kvitansiyasi';
+
+  @override
+  String get profilePaymentReceiptSub => 'Xizmatlar uchun PDF kvitansiya';
+
+  @override
+  String get receiptTitle => 'Toʻlov kvitansiyalari';
+
+  @override
+  String get receiptNew => 'Yangi kvitansiya';
+
+  @override
+  String get receiptEmptyTitle => 'Kvitansiyalar yoʻq';
+
+  @override
+  String get receiptEmptySubtitle =>
+      'Mijoz uchun toʻlov kvitansiyasi yarating va PDF sifatida ulashing.';
+
+  @override
+  String get receiptDocumentTitle => 'TOʻLOV KVITANSIYASI';
+
+  @override
+  String get receiptNumber => 'Raqam';
+
+  @override
+  String get receiptDate => 'Sana';
+
+  @override
+  String get receiptSeller => 'Kimdan';
+
+  @override
+  String get receiptBuyer => 'Kimga';
+
+  @override
+  String get receiptBuyerName => 'Mijoz ismi';
+
+  @override
+  String get receiptBuyerPhone => 'Mijoz telefoni';
+
+  @override
+  String get receiptPickClient => 'Mijoz kitobidan tanlash';
+
+  @override
+  String get receiptXizmat => 'Xizmat';
+
+  @override
+  String get receiptLines => 'Pozitsiyalar';
+
+  @override
+  String get receiptLineTitle => 'Tavsif';
+
+  @override
+  String get receiptQuantity => 'Miqdor';
+
+  @override
+  String get receiptUnitPrice => 'Narx';
+
+  @override
+  String get receiptLineTotal => 'Summa';
+
+  @override
+  String get receiptAddLine => 'Qoʻshish';
+
+  @override
+  String get receiptDiscount => 'Chegirma';
+
+  @override
+  String get receiptTaxEnable => 'Soliq qoʻshish';
+
+  @override
+  String get receiptTaxRate => 'Soliq stavkasi (%)';
+
+  @override
+  String get receiptTaxLabel => 'Soliq nomi';
+
+  @override
+  String get receiptTaxDisclaimer =>
+      'Soliq stavkasini oʻzingiz tanlaysiz. YordamBor soliq maslahati bermaydi.';
+
+  @override
+  String get receiptSubtotal => 'Oraliq summa';
+
+  @override
+  String get receiptTotal => 'Jami';
+
+  @override
+  String get receiptNote => 'Izoh';
+
+  @override
+  String get receiptDueDate => 'Toʻlov muddati';
+
+  @override
+  String get receiptCurrency => 'Valyuta';
+
+  @override
+  String get receiptCurrencyUzs => 'UZS';
+
+  @override
+  String get receiptCurrencyUsd => 'USD';
+
+  @override
+  String get receiptSharePdf => 'PDF ulashish';
+
+  @override
+  String get receiptPreview => 'PDF koʻrish';
+
+  @override
+  String get receiptSaved => 'Kvitansiya saqlandi';
+
+  @override
+  String get receiptValidationBuyer => 'Mijoz ismini kiriting';
+
+  @override
+  String get receiptValidationXizmat => 'Xizmatni tanlang';
+
+  @override
+  String get receiptValidationLines =>
+      'Kamida bitta pozitsiya va narx kiriting';
+
+  @override
+  String get receiptFooterBranding => 'YordamBor orqali yaratildi';
+
+  @override
+  String get receiptDeleteConfirm => 'Ushbu kvitansiya oʻchirilsinmi?';
+
+  @override
+  String get receiptTaxPresetCustom => 'Boshqa';
+
+  @override
+  String get marginTitle => 'Foyda';
+
+  @override
+  String get marginUnitsTitle => 'Birliklar kitobxonasi';
+
+  @override
+  String get marginUnitsSubtitle =>
+      'Tez hisob uchun narx bilan qayta ishlatiladigan birliklar';
+
+  @override
+  String get marginOpenUnits => 'Birliklar';
+
+  @override
+  String get marginAddUnit => 'Birlik qoʻshish';
+
+  @override
+  String get marginEditUnit => 'Birlikni tahrirlash';
+
+  @override
+  String get marginUnitName => 'Birlik nomi';
+
+  @override
+  String get marginUnitCost => 'Birlik narxi (UZS)';
+
+  @override
+  String get marginUnitBasis => 'Narx asosi (ixtiyoriy)';
+
+  @override
+  String get marginUnitBasisHint => 'masalan: soat, kg, dona';
+
+  @override
+  String get marginUnitsEmptyTitle => 'Hali birlik yoʻq';
+
+  @override
+  String get marginUnitsEmptySub =>
+      'Tez-tez ishlatadigan birliklaringizni saqlang — mehnat, material, qadoq.';
+
+  @override
+  String get marginAddProduct => 'Mahsulot qoʻshish';
+
+  @override
+  String get marginEditProduct => 'Mahsulotni tahrirlash';
+
+  @override
+  String get marginProductName => 'Mahsulot nomi';
+
+  @override
+  String get marginSalePrice => 'Sotuv narxi (UZS)';
+
+  @override
+  String get marginCostTotal => 'Umumiy xarajat';
+
+  @override
+  String get marginProfit => 'Foyda';
+
+  @override
+  String get marginMarginPercent => 'Marja';
+
+  @override
+  String get marginCostBreakdown => 'Xarajat tarkibi';
+
+  @override
+  String get marginAddLine => 'Birlik qatorini qoʻshish';
+
+  @override
+  String get marginEditLine => 'Qatorni tahrirlash';
+
+  @override
+  String get marginLineName => 'Birlik / element nomi';
+
+  @override
+  String get marginLineQuantity => 'Miqdor';
+
+  @override
+  String get marginLineUnitCost => 'Birlik narxi (UZS)';
+
+  @override
+  String get marginLineQuantityLabel => 'Miqdor belgisi (ixtiyoriy)';
+
+  @override
+  String get marginLineQuantityLabelHint => 'masalan: soat, kg, dona';
+
+  @override
+  String get marginSelectUnit => 'Kitobxonadan tanlash';
+
+  @override
+  String get marginCustomLine => 'Qoʻlda qator';
+
+  @override
+  String get marginProductsEmptyTitle => 'Hali mahsulot yoʻq';
+
+  @override
+  String get marginProductsEmptySub =>
+      'Xarajat, foyda va marjani koʻrish uchun mahsulot yoki xizmat qoʻshing.';
+
+  @override
+  String get marginNameRequired => 'Nom kiriting';
+
+  @override
+  String get marginPriceRequired => 'Sotuv narxini kiriting';
+
+  @override
+  String get marginCostRequired => 'Narx kiriting';
+
+  @override
+  String get marginQuantityRequired => 'Miqdor kiriting';
+
+  @override
+  String get marginAvgMargin => 'Oʻrtacha marja';
+
+  @override
+  String get marginPerProduct => 'mahsulot uchun';
+
+  @override
+  String get marginDeleteProduct => 'Mahsulotni oʻchirish';
+
+  @override
+  String get marginDeleteUnit => 'Birlikni oʻchirish';
 
   @override
   String get profileMyXizmatlar => 'Mening xizmatlarim';
@@ -675,7 +1069,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get profileSectionLoadFailed =>
-      'Yuklab bo\'lmadi. Internet aloqasini tekshiring.';
+      'Yuklab boʻlmadi. Internet aloqasini tekshiring.';
 
   @override
   String get actionRetry => 'Qayta urinish';
@@ -684,7 +1078,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get clientBookTitle => 'Mijoz kitobi';
 
   @override
-  String get clientBookList => 'Ro\'yxat';
+  String get clientBookList => 'Roʻyxat';
 
   @override
   String get clientBookCalendar => 'Kalendar';
@@ -696,7 +1090,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get clientBookEditClient => 'Mijozni tahrirlash';
 
   @override
-  String get clientBookAdd => 'Mijoz qo\'shish';
+  String get clientBookAdd => 'Mijoz qoʻshish';
 
   @override
   String get clientBookBookClient => 'Mijozni yozish';
@@ -714,11 +1108,11 @@ class AppLocalizationsUz extends AppLocalizations {
   String get clientBookNoteLabel => 'Eslatma';
 
   @override
-  String get clientBookEmptyTitle => 'Mijozlar kitobi bo\'sh';
+  String get clientBookEmptyTitle => 'Mijozlar kitobi boʻsh';
 
   @override
   String get clientBookEmptySub =>
-      'Kalendarda mijoz yozing yoki kelishuv boshlanganda qo\'shiladi';
+      'Kalendarda mijoz yozing yoki kelishuv boshlanganda qoʻshiladi';
 
   @override
   String get clientBookDateLabel => 'Uchrashuv sanasi';
@@ -771,10 +1165,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get appointmentStatusCancelled => 'Bekor qilindi';
 
   @override
-  String get appointmentStatusPostponed => 'Ko\'chirildi';
+  String get appointmentStatusPostponed => 'Koʻchirildi';
 
   @override
-  String get appointmentStatusIncomplete => 'Bo\'lmadi';
+  String get appointmentStatusIncomplete => 'Boʻlmadi';
 
   @override
   String get appointmentStatusCompleted => 'Yakunlandi';
@@ -784,14 +1178,14 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get kelishuvAppointmentRequiredBody =>
-      'Ikkala tom kelishuvni qabul qildi. Xizmat qachon bo\'lishini tanlang.';
+      'Ikkala tom kelishuvni qabul qildi. Xizmat qachon boʻlishini tanlang.';
 
   @override
   String get remindersSettingsFollowUpLabel =>
       'Uchrashuvdan keyin tekshirish (soat)';
 
   @override
-  String get remindersFollowUpPrompt => 'Uchrashuv muvaffaqiyatli bo\'ldimi?';
+  String get remindersFollowUpPrompt => 'Uchrashuv muvaffaqiyatli boʻldimi?';
 
   @override
   String get clientBookAppointmentHistory => 'Uchrashuv tarixi';
@@ -803,10 +1197,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get clientBookPhotosLabel => 'Rasmlar';
 
   @override
-  String get clientBookPhotosEmpty => 'Hali rasm yo\'q';
+  String get clientBookPhotosEmpty => 'Hali rasm yoʻq';
 
   @override
-  String get clientBookAddPhoto => 'Rasm qo\'shish';
+  String get clientBookAddPhoto => 'Rasm qoʻshish';
 
   @override
   String clientBookClientStats(int completed, int cancelled, int upcoming) {
@@ -830,13 +1224,13 @@ class AppLocalizationsUz extends AppLocalizations {
   String get earningsTitle => 'Mening daromadim';
 
   @override
-  String get earningsTotal => 'Jami (e\'lon qilingan)';
+  String get earningsTotal => 'Jami (eʼlon qilingan)';
 
   @override
   String get earningsEdit => 'Daromadni tahrirlash';
 
   @override
-  String get earningsAdd => 'Daromad qo\'shish';
+  String get earningsAdd => 'Daromad qoʻshish';
 
   @override
   String get earningsAmountLabel => 'Summa (UZS)';
@@ -848,19 +1242,19 @@ class AppLocalizationsUz extends AppLocalizations {
   String get earningsAmountRequired => 'Summani kiriting';
 
   @override
-  String get earningsEmptyTitle => 'Daromad yozuvlari yo\'q';
+  String get earningsEmptyTitle => 'Daromad yozuvlari yoʻq';
 
   @override
   String get earningsEmptySub =>
-      'Narxli kelishuvlar jarayonga o\'tganda avtomatik qo\'shiladi';
+      'Narxli kelishuvlar jarayonga oʻtganda avtomatik qoʻshiladi';
 
   @override
   String get earningsDisclaimer =>
-      'Bu ma\'lumot faqat sizning shaxsiy hisobingiz. Soliq yoki rasmiy hisobot emas.';
+      'Bu maʼlumot faqat sizning shaxsiy hisobingiz. Soliq yoki rasmiy hisobot emas.';
 
   @override
   String get notificationsEmptySub =>
-      'Kelishuv yangiliklari shu yerda paydo bo\'ladi';
+      'Kelishuv yangiliklari shu yerda paydo boʻladi';
 
   @override
   String get notificationKelishuvAccept => 'Kelishuv qabul qilindi';
@@ -870,6 +1264,50 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get notificationKelishuvComplete => 'Ish yakunlandi';
+
+  @override
+  String get notificationSubsectorNewService => 'Subsohada yangi xizmat';
+
+  @override
+  String get notificationSubsectorDiscount => 'Subsohada narx pasaydi';
+
+  @override
+  String get notificationSubsectorHelpPost => 'Subsohada yordam kerak';
+
+  @override
+  String get notificationAlertsTitle => 'Subsoha bildirishnomalari';
+
+  @override
+  String get notificationAlertsSubtitle =>
+      'Xizmat paydo boʻlganda, narx tushganda yoki yordam soʻralganda xabar oling.';
+
+  @override
+  String get notificationAlertsAdd => 'Bildirishnoma qoʻshish';
+
+  @override
+  String get notificationAlertsEmpty => 'Hali subsoha bildirishnomalari yoʻq';
+
+  @override
+  String get notificationAlertNewService => 'Yangi xizmatlar';
+
+  @override
+  String get notificationAlertDiscount => 'Narx pasayishi';
+
+  @override
+  String get notificationAlertHelpPost => 'Yordam kerak postlari';
+
+  @override
+  String get notificationAlertSeekerHint => 'Xizmat qidiryotgan boʻlsangiz';
+
+  @override
+  String get notificationAlertProviderHint =>
+      'Provayder sifatida yordam bera olsangiz';
+
+  @override
+  String get notificationAlertsSaved => 'Sozlama saqlandi';
+
+  @override
+  String get notificationAlertsRemoved => 'Sozlama oʻchirildi';
 
   @override
   String get notificationGeneric => 'Bildirishnoma';
@@ -893,10 +1331,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get reviewsTitle => 'Sharhlar';
 
   @override
-  String get reviewProviderReplyLabel => 'Xizmat ko\'rsatuvchi javobi';
+  String get reviewProviderReplyLabel => 'Xizmat koʻrsatuvchi javobi';
 
   @override
-  String get reviewsEmpty => 'Hali sharh yo\'q';
+  String get reviewsEmpty => 'Hali sharh yoʻq';
 
   @override
   String get reviewsRate => 'Baholash';
@@ -907,7 +1345,11 @@ class AppLocalizationsUz extends AppLocalizations {
   }
 
   @override
-  String get demoKelishuvBlocked => 'Demo rejimida kelishuv yaratib bo\'lmaydi';
+  String get demoKelishuvBlocked => 'Demo rejimida kelishuv yaratib boʻlmaydi';
+
+  @override
+  String get demoKelishuvSimulatedNote =>
+      'Demo kelishuv — serverga saqlanmaydi. Demo provayder taklifni olgan deb koʻrsatiladi.';
 
   @override
   String get genericUser => 'Foydalanuvchi';
@@ -937,17 +1379,17 @@ class AppLocalizationsUz extends AppLocalizations {
   String get xizmatDescriptionFull => 'Tavsif';
 
   @override
-  String get xizmatServiceCityLabel => 'Xizmat ko\'rsatiladigan shahar';
+  String get xizmatServiceCityLabel => 'Xizmat koʻrsatiladigan shahar';
 
   @override
-  String get xizmatServiceCityHint => 'Masalan: Toshkent (ixtiyoriy)';
+  String get xizmatServiceCityHint => 'Xizmat koʻrsatadigan shaharni tanlang';
 
   @override
   String get xizmatContinue => 'Davom etish';
 
   @override
   String get xizmatPortfolioHint =>
-      'Kamida 1 ta rasm majburiy. Birinchi rasm asosiy ko\'rinish bo\'ladi.';
+      'Kamida 1 ta rasm majburiy. Birinchi rasm asosiy koʻrinish boʻladi.';
 
   @override
   String get xizmatHeroLabel => 'Asosiy';
@@ -973,26 +1415,26 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get cannotRequestOwnXizmat =>
-      'O\'z xizmatingizga so\'rov yuborib bo\'lmaydi';
+      'Oʻz xizmatingizga soʻrov yuborib boʻlmaydi';
 
   @override
   String get xizmatNotFound => 'Xizmat topilmadi';
 
   @override
-  String get xizmatNoPermission => 'Ruxsat yo\'q';
+  String get xizmatNoPermission => 'Ruxsat yoʻq';
 
   @override
-  String get xizmatBasicInfo => 'Asosiy ma\'lumot';
+  String get xizmatBasicInfo => 'Asosiy maʼlumot';
 
   @override
   String get xizmatPortfolio => 'Portfolio';
 
   @override
   String get xizmatPortfolioEmpty =>
-      'Portfolio bo\'sh. Kamida bitta rasm kerak.';
+      'Portfolio boʻsh. Kamida bitta rasm kerak.';
 
   @override
-  String get xizmatAddPhoto => 'Rasm qo\'shish';
+  String get xizmatAddPhoto => 'Rasm qoʻshish';
 
   @override
   String get xizmatSetHero => 'Asosiy qilish';
@@ -1013,7 +1455,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get xizmatPickCategoryError => 'Soha va subsohani tanlang';
 
   @override
-  String get yordamKerakPostTitle => 'Yordam Kerak e\'lon';
+  String get yordamKerakPostTitle => 'Yordam Kerak eʼlon';
 
   @override
   String get yordamKerakTitleLabel => 'Sarlavha';
@@ -1037,15 +1479,15 @@ class AppLocalizationsUz extends AppLocalizations {
   String get yordamKerakDurationLabel => 'Davomiylik (daqiqa, ixtiyoriy)';
 
   @override
-  String get yordamKerakPublish => 'E\'lon qilish';
+  String get yordamKerakPublish => 'Eʼlon qilish';
 
   @override
   String get yordamKerakTitleTooShort =>
-      'Sarlavha kamida 3 ta belgidan iborat bo\'lsin';
+      'Sarlavha kamida 3 ta belgidan iborat boʻlsin';
 
   @override
   String get yordamKerakMessageTooShort =>
-      'Loyiha tavsifi kamida 10 ta belgidan iborat bo\'lsin';
+      'Loyiha tavsifi kamida 10 ta belgidan iborat boʻlsin';
 
   @override
   String get yordamKerakCategoryRequired => 'Sohani tanlang';
@@ -1063,13 +1505,13 @@ class AppLocalizationsUz extends AppLocalizations {
   String get userProfileServices => 'Xizmatlar';
 
   @override
-  String get userProfileServicesEmpty => 'Hali xizmat yo\'q';
+  String get userProfileServicesEmpty => 'Hali xizmat yoʻq';
 
   @override
-  String get userProfileRequests => 'Yordam Kerak e\'lonlari';
+  String get userProfileRequests => 'Yordam Kerak eʼlonlari';
 
   @override
-  String get userProfileRequestsEmpty => 'Ochiq e\'lon yo\'q';
+  String get userProfileRequestsEmpty => 'Ochiq eʼlon yoʻq';
 
   @override
   String get userProfileAvailable => 'Mavjud';
@@ -1081,16 +1523,16 @@ class AppLocalizationsUz extends AppLocalizations {
   String get userProfilePartiallyBusy => 'Qisman band';
 
   @override
-  String get userProfileCall => 'Qo\'ng\'iroq qilish';
+  String get userProfileCall => 'Qoʻngʻiroq qilish';
 
   @override
   String get userProfilePhoneHidden => 'Telefon raqam yashirilgan';
 
   @override
-  String get userProfileViewProfile => 'Profilni ko\'rish';
+  String get userProfileViewProfile => 'Profilni koʻrish';
 
   @override
-  String get xizmatProviderSection => 'Xizmat ko\'rsatuvchi';
+  String get xizmatProviderSection => 'Xizmat koʻrsatuvchi';
 
   @override
   String get profileViewPublic => 'Ochiq profilim';
@@ -1100,14 +1542,14 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get profileCertificatesSubtitle =>
-      'Malaka hujjatlaringizni yuklang — mijozlar ko\'rib chiqadi';
+      'Malaka hujjatlaringizni yuklang — mijozlar koʻrib chiqadi';
 
   @override
   String get profileCertificatesDisclaimer =>
-      'YordamBor yuklangan hujjatlarni tasdiqlamaydi. Mijozlar hujjatlarni o\'zlari tekshirishi kerak.';
+      'YordamBor yuklangan hujjatlarni tasdiqlamaydi. Mijozlar hujjatlarni oʻzlari tekshirishi kerak.';
 
   @override
-  String get profileCertificatesAdd => 'Sertifikat qo\'shish';
+  String get profileCertificatesAdd => 'Sertifikat qoʻshish';
 
   @override
   String get profileCertificatesTitleLabel => 'Sarlavha';
@@ -1120,7 +1562,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get profileCertificatesIssuerLabel => 'Kim bergan (ixtiyoriy)';
 
   @override
-  String get profileCertificatesIssuerHint => 'Masalan: O\'quv markazi nomi';
+  String get profileCertificatesIssuerHint => 'Masalan: Oʻquv markazi nomi';
 
   @override
   String get profileCertificatesEmpty => 'Hali sertifikat yuklanmagan';
@@ -1129,19 +1571,19 @@ class AppLocalizationsUz extends AppLocalizations {
   String get profileCertificatesMaxReached => 'Maksimal 8 ta sertifikat';
 
   @override
-  String get profileCertificatesAdded => 'Sertifikat qo\'shildi';
+  String get profileCertificatesAdded => 'Sertifikat qoʻshildi';
 
   @override
-  String get profileCertificatesRemoved => 'Sertifikat o\'chirildi';
+  String get profileCertificatesRemoved => 'Sertifikat oʻchirildi';
 
   @override
-  String get profileCertificatesRemoveTitle => 'Sertifikatni o\'chirasizmi?';
+  String get profileCertificatesRemoveTitle => 'Sertifikatni oʻchirasizmi?';
 
   @override
   String get xizmatOtherServices => 'Boshqa xizmatlar';
 
   @override
-  String get xizmatViewAllServices => 'Barcha xizmatlarni ko\'rish';
+  String get xizmatViewAllServices => 'Barcha xizmatlarni koʻrish';
 
   @override
   String get xizmatStatusAvailable => 'Mavjud';
@@ -1157,7 +1599,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String safetyBlockConfirmMessage(String name) {
-    return '$name bloklaysizmi? Uning kontenti ko\'rinmaydi.';
+    return '$name bloklaysizmi? Uning kontenti koʻrinmaydi.';
   }
 
   @override
@@ -1170,7 +1612,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get safetyReportReason => 'Shikoyat sababi (ixtiyoriy)';
 
   @override
-  String get safetyReportHint => 'Nima bo\'ldi?';
+  String get safetyReportHint => 'Nima boʻldi?';
 
   @override
   String get safetyReportSubmit => 'Shikoyat yuborish';
@@ -1190,7 +1632,7 @@ class AppLocalizationsUz extends AppLocalizations {
   }
 
   @override
-  String get demoPostPickReal => 'Demo e\'lon — haqiqiy e\'lon tanlang';
+  String get demoPostPickReal => 'Demo eʼlon — haqiqiy eʼlon tanlang';
 
   @override
   String get createXizmatFirst => 'Avval xizmat profilingizni yarating';
@@ -1208,7 +1650,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get subcategoryAll => 'Barcha subsohalar';
 
   @override
-  String get analyticsViews => 'Ko\'rishlar';
+  String get analyticsViews => 'Koʻrishlar';
 
   @override
   String get analyticsFavorites => 'Saqlangan';
@@ -1225,7 +1667,7 @@ class AppLocalizationsUz extends AppLocalizations {
   }
 
   @override
-  String get kelishuvArchiveEmptyTitle => 'Arxiv bo\'sh';
+  String get kelishuvArchiveEmptyTitle => 'Arxiv boʻsh';
 
   @override
   String get kelishuvArchiveEmptySub =>
@@ -1302,7 +1744,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get reviewCommentLabel => 'Izoh (ixtiyoriy)';
 
   @override
-  String get reviewCommentHint => 'Tajribangiz qanday bo\'ldi?';
+  String get reviewCommentHint => 'Tajribangiz qanday boʻldi?';
 
   @override
   String get xizmatReplyLabel => 'Javobingiz';
@@ -1324,7 +1766,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String kelishuvDetailPost(String title) {
-    return 'E\'lon: $title';
+    return 'Eʼlon: $title';
   }
 
   @override
@@ -1347,7 +1789,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get xizmatPricingSectionSubtitle =>
-      'Kelishiladi, belgilangan yoki soatlik — o\'zingiz tanlang.';
+      'Kelishiladi, belgilangan yoki soatlik — oʻzingiz tanlang.';
 
   @override
   String get xizmatPricingNegotiable => 'Kelishiladi';
@@ -1391,14 +1833,14 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get xizmatAvailabilitySectionSubtitle =>
-      'Ixtiyoriy — mijozlar band/emassizligingizni ko\'radi. Mijozlar kitobi buni o\'zgartirmaydi.';
+      'Ixtiyoriy — mijozlar band/emassizligingizni koʻradi. Mijozlar kitobi buni oʻzgartirmaydi.';
 
   @override
-  String get xizmatAvailabilityShowLabel => 'Mavjudlikni ko\'rsatish';
+  String get xizmatAvailabilityShowLabel => 'Mavjudlikni koʻrsatish';
 
   @override
   String get xizmatAvailabilityShowSubtitle =>
-      'O\'chirilgan bo\'lsa, hech qanday belgi ko\'rinmaydi';
+      'Oʻchirilgan boʻlsa, hech qanday belgi koʻrinmaydi';
 
   @override
   String get xizmatAvailabilityAvailableNow => 'Hozir mavjud';
@@ -1407,7 +1849,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get xizmatAvailabilityBusy => 'Band';
 
   @override
-  String get xizmatAvailabilityCallMe => 'Qo\'ng\'iroq qiling';
+  String get xizmatAvailabilityCallMe => 'Oldindan yozilish';
 
   @override
   String get xizmatAvailabilityFromLabel => 'Dan (ixtiyoriy)';
@@ -1435,61 +1877,61 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get xizmatAvailabilityWindowInvalidError =>
-      'Tugash vaqti boshlanishdan keyin bo\'lishi kerak';
+      'Tugash vaqti boshlanishdan keyin boʻlishi kerak';
 
   @override
-  String get xizmatPromiseSectionTitle => 'Va\'dam';
+  String get xizmatPromiseSectionTitle => 'Vaʼdam';
 
   @override
   String get xizmatPromiseSectionSubtitle =>
-      'Mijozlarga nima va\'da qilishingizni yozing. Bu sizning shioringiz — YordamBor kafolati emas.';
+      'Mijozlarga nima vaʼda qilishingizni yozing. Bu sizning shioringiz — YordamBor kafolati emas.';
 
   @override
-  String get xizmatPromiseShowLabel => 'Va\'damni ko\'rsatish';
+  String get xizmatPromiseShowLabel => 'Vaʼdamni koʻrsatish';
 
   @override
-  String get xizmatPromiseShowSubtitle => 'E\'londa mijozlar ko\'radi';
+  String get xizmatPromiseShowSubtitle => 'Eʼlonda mijozlar koʻradi';
 
   @override
   String get xizmatPromisePresetsLabel =>
       'Tezkor shablonlar (tahrirlash mumkin)';
 
   @override
-  String get xizmatPromiseFieldLabel => 'Va\'dangiz';
+  String get xizmatPromiseFieldLabel => 'Vaʼdangiz';
 
   @override
   String get xizmatPromiseFieldHint =>
-      'O\'zingiz yozing yoki shablonni tahrirlang';
+      'Oʻzingiz yozing yoki shablonni tahrirlang';
 
   @override
   String get xizmatPromisePreset1 => 'Mamnun qolmasangiz, qayta bajaraman';
 
   @override
   String get xizmatPromisePreset2 =>
-      'Sifatga kafolat — muammo bo\'lsa, pulingizni qaytaraman';
+      'Sifatga kafolat — muammo boʻlsa, pulingizni qaytaraman';
 
   @override
   String get xizmatPromisePreset3 => 'Vaqtida va kelishilgan narxda';
 
   @override
   String get xizmatPromiseDisclaimer =>
-      'YordamBor kafolat bermaydi. Bu xizmat ko\'rsatuvchining o\'z so\'zi.';
+      'YordamBor kafolat bermaydi. Bu xizmat koʻrsatuvchining oʻz soʻzi.';
 
   @override
   String get xizmatPromiseRequiredError =>
-      'Va\'dangizni yozing yoki o\'chiring';
+      'Vaʼdangizni yozing yoki oʻchiring';
 
   @override
-  String get xizmatPromiseTooLongError => 'Va\'da juda uzun';
+  String get xizmatPromiseTooLongError => 'Vaʼda juda uzun';
 
   @override
-  String get settingsHelp => 'Yordam va qo\'llab-quvvatlash';
+  String get settingsHelp => 'Yordam va qoʻllab-quvvatlash';
 
   @override
   String get supportReportTitle => 'Muammo haqida xabar';
 
   @override
-  String get supportReportSubtitle => 'Xato, hisob yoki to\'lov muammosi';
+  String get supportReportSubtitle => 'Xato, hisob yoki toʻlov muammosi';
 
   @override
   String get supportCategoryLabelField => 'Kategoriya';
@@ -1501,7 +1943,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get supportCategoryAccount => 'Hisob';
 
   @override
-  String get supportCategoryPayment => 'To\'lov muammosi';
+  String get supportCategoryPayment => 'Toʻlov muammosi';
 
   @override
   String get supportCategoryOther => 'Boshqa';
@@ -1510,7 +1952,7 @@ class AppLocalizationsUz extends AppLocalizations {
   String get supportDescriptionLabel => 'Tavsif';
 
   @override
-  String get supportDescriptionHint => 'Nima bo\'lganini yozing…';
+  String get supportDescriptionHint => 'Nima boʻlganini yozing…';
 
   @override
   String get supportSubmit => 'Yuborish';
@@ -1522,16 +1964,16 @@ class AppLocalizationsUz extends AppLocalizations {
   String get supportLoginRequired => 'Xabar yuborish uchun kiring';
 
   @override
-  String get supportContactHint => 'Qo\'llab-quvvatlash: eeshbaev@outlook.com';
+  String get supportContactHint => 'Qoʻllab-quvvatlash: eeshbaev@outlook.com';
 
   @override
-  String get supportMailtoFailed => 'Email ilovasini ochib bo\'lmadi';
+  String get supportMailtoFailed => 'Email ilovasini ochib boʻlmadi';
 
   @override
   String get feedbackTitle => 'Fikr-mulohaza';
 
   @override
-  String get feedbackSubtitle => 'YordamBor\'ni yaxshilashga yordam bering';
+  String get feedbackSubtitle => 'YordamBor’ni yaxshilashga yordam bering';
 
   @override
   String get feedbackMessageLabel => 'Fikringiz';
@@ -1547,7 +1989,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get feedbackOpenFromSheet =>
-      'Fikr yuborish uchun Yordam bo\'limidan foydalaning.';
+      'Fikr yuborish uchun Yordam boʻlimidan foydalaning.';
 
   @override
   String get appReviewTitle => 'YordamBor yoqayaptimi?';
@@ -1570,7 +2012,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get providerProgressSubtitle =>
-      'Obro\'ingizni bosqichma-bosqich quring';
+      'Obroʻingizni bosqichma-bosqich quring';
 
   @override
   String get providerTierNew => 'Yangi';
@@ -1598,30 +2040,30 @@ class AppLocalizationsUz extends AppLocalizations {
   String get providerTipsTitle => 'Keyingi qadamlar';
 
   @override
-  String get progressTipAddCertificate => 'Ishonch uchun sertifikat qo\'shing';
+  String get progressTipAddCertificate => 'Ishonch uchun sertifikat qoʻshing';
 
   @override
-  String get progressTipSetAvailability => 'E\'londa mavjudlikni ko\'rsating';
+  String get progressTipSetAvailability => 'Eʼlonda mavjudlikni koʻrsating';
 
   @override
   String get progressTipReplyReviews => 'Sharhlarga javob bering';
 
   @override
-  String get progressTipAddPortfolio => 'Portfolio rasmlarini ko\'paytiring';
+  String get progressTipAddPortfolio => 'Portfolio rasmlarini koʻpaytiring';
 
   @override
-  String get progressTipSetPricing => 'Qat\'iy yoki soatbay narx belgilang';
+  String get progressTipSetPricing => 'Qatʼiy yoki soatbay narx belgilang';
 
   @override
   String get progressTipRepeatClients =>
-      'Mamnun mijozlardan qayta buyurtma so\'rang';
+      'Mamnun mijozlardan qayta buyurtma soʻrang';
 
   @override
   String get achievementsTitle => 'Yutuqlar';
 
   @override
   String get achievementsEmptySub =>
-      'Hali yutuq yo\'q. Ishlarni bajaring va profilni rivojlantiring.';
+      'Hali yutuq yoʻq. Ishlarni bajaring va profilni rivojlantiring.';
 
   @override
   String get achievementFirstXizmat => 'Birinchi xizmat';
@@ -1649,7 +2091,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get achievementBodyFirstXizmat =>
-      'YordamBor\'da birinchi xizmatingizni yaratdingiz.';
+      'YordamBor’da birinchi xizmatingizni yaratdingiz.';
 
   @override
   String get achievementBodyFirstDeal =>
@@ -1660,7 +2102,7 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get achievementBodyJobs10 =>
-      'O\'n bajarilgan ish. Haqiqiy obro\' quryapsiz.';
+      'Oʻn bajarilgan ish. Haqiqiy obroʻ quryapsiz.';
 
   @override
   String get achievementBodyJobs25 =>
@@ -1672,11 +2114,11 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get achievementBodyCertificate =>
-      'Guvohnomalaringiz profilda ko\'rinadi.';
+      'Guvohnomalaringiz profilda koʻrinadi.';
 
   @override
   String get achievementBodyRepeatClient =>
-      'Bir mijoz sizni uch marta yoki undan ko\'p chaqirdi.';
+      'Bir mijoz sizni uch marta yoki undan koʻp chaqirdi.';
 
   @override
   String get actionContinue => 'Davom etish';
@@ -1685,13 +2127,13 @@ class AppLocalizationsUz extends AppLocalizations {
   String get guidesTitle => 'Biznes maslahatlari';
 
   @override
-  String get guidesSubtitle => 'Xizmatingizni bosqichma-bosqich o\'stiring';
+  String get guidesSubtitle => 'Xizmatingizni bosqichma-bosqich oʻstiring';
 
   @override
-  String get guideXizmatConvertsTitle => 'Sotadigan e\'lon yarating';
+  String get guideXizmatConvertsTitle => 'Sotadigan eʼlon yarating';
 
   @override
-  String get guidePricingTitle => 'Narx: qat\'iy yoki soatbay';
+  String get guidePricingTitle => 'Narx: qatʼiy yoki soatbay';
 
   @override
   String get guideRepeatClientsTitle => 'Qayta buyurtma oling';
@@ -1704,11 +2146,11 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get guideXizmatConvertsBody =>
-      'Aniq sarlavha, haqiqiy portfolio va subsoha tanlang. Narx yoki kelishuvchan deb yozing. Mavjudlikni ko\'rsating.';
+      'Aniq sarlavha, haqiqiy portfolio va subsoha tanlang. Narx yoki kelishuvchan deb yozing. Mavjudlikni koʻrsating.';
 
   @override
   String get guidePricingBody =>
-      'Qat\'iy narx aniq ishlar uchun. Soatbay tozalash, repetitorlik uchun mos. Kelishuvchan ham bo\'ladi — boshlang\'ich narx ko\'proq murojaat oladi.';
+      'Qatʼiy narx aniq ishlar uchun. Soatbay tozalash, repetitorlik uchun mos. Kelishuvchan ham boʻladi — boshlangʻich narx koʻproq murojaat oladi.';
 
   @override
   String get guideRepeatClientsBody =>
@@ -1716,23 +2158,1020 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get guideCertificatesBody =>
-      'Mijozlar ko\'radigan malaka hujjatlarini yuklang. YordamBor hujjatlarni tasdiqlamaydi — ular ishonch uchun yordam beradi.';
+      'Mijozlar koʻradigan malaka hujjatlarini yuklang. YordamBor hujjatlarni tasdiqlamaydi — ular ishonch uchun yordam beradi.';
 
   @override
   String get guideReviewRepliesBody =>
-      'Har bir sharhga muloyim javob bering. 5★ uchun rahmat ayting. Tanqidga professional javob bering — kelajakdagi mijozlar o\'qiydi.';
+      'Har bir sharhga muloyim javob bering. 5★ uchun rahmat ayting. Tanqidga professional javob bering — kelajakdagi mijozlar oʻqiydi.';
 
   @override
   String get safetyPaymentsBanner =>
-      'Faqat kelishilgan tartibda to\'lang. YordamBor pul o\'tkazmaydi va platformadan tashqari to\'lovlar uchun javobgar emas.';
+      'Faqat kelishilgan tartibda toʻlang. YordamBor pul oʻtkazmaydi va platformadan tashqari toʻlovlar uchun javobgar emas.';
 
   @override
-  String get settingsSafety => 'Xavfsizlik va to\'lovlar';
+  String get settingsSafety => 'Xavfsizlik va toʻlovlar';
 
   @override
-  String get legalSafetyTitle => 'Xavfsizlik va to\'lovlar';
+  String get legalSafetyTitle => 'Xavfsizlik va toʻlovlar';
 
   @override
   String get legalSafetyBody =>
-      'YordamBor mijoz va ustani bog\'laydi. Xizmat ko\'rsatmaydi, pul saqlamaydi va natijaga kafolat bermaydi.\n\nTo\'lovlar\n\nTo\'lovlar to\'g\'ridan-to\'g\'ri siz va boshqa tomom o\'rtasida kelishiladi. Ishonchsiz odamga oldindan to\'liq pul yubormang. YordamBor firibgarlik yoki nizo uchun javobgar emas.\n\nSizning mas\'uliyatingiz\n\nGuvohnoma, sharh va sertifikatlarni o\'zingiz tekshiring.\n\nXabar berish\n\nHaqorat uchun ilovadan shikoyat qiling. Texnik muammo uchun Yordam bo\'limidan foydalaning.';
+      'YordamBor mijoz va ustani bogʻlaydi. Xizmat koʻrsatmaydi, pul saqlamaydi va natijaga kafolat bermaydi.\n\nToʻlovlar\n\nToʻlovlar toʻgʻridan-toʻgʻri siz va boshqa tomon oʻrtasida kelishiladi. Ishonchsiz odamga oldindan toʻliq pul yubormang. YordamBor firibgarlik yoki nizo uchun javobgar emas.\n\nSizning masʼuliyatingiz\n\nGuvohnoma, sharh va sertifikatlarni oʻzingiz tekshiring.\n\nXabar berish\n\nHaqorat uchun ilovadan shikoyat qiling. Texnik muammo uchun Yordam boʻlimidan foydalaning.';
+
+  @override
+  String get greetingMorning => 'Xayrli tong';
+
+  @override
+  String get greetingAfternoon => 'Xayrli kun';
+
+  @override
+  String get greetingEvening => 'Xayrli kech';
+
+  @override
+  String get greetingNight => 'Salom';
+
+  @override
+  String get greetingWelcomeBack => 'Qaytganingiz bilan';
+
+  @override
+  String get greetingWelcomeNew => 'Xush kelibsiz';
+
+  @override
+  String greetingWithName(String greeting, String name) {
+    return '$greeting, $name';
+  }
+
+  @override
+  String homeFactAwaitingReply(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ta kelishuv javobingizni kutmoqda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeFactInProgress(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ta kelishuv jarayonda',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeFactNewMember =>
+      'Boshlash uchun yordam soʻrang yoki xizmat qoʻshing';
+
+  @override
+  String get continueYourTurn => 'Sizning navbatingiz';
+
+  @override
+  String get continueReplyToDeal => 'Shartlarni koʻrib, javob bering';
+
+  @override
+  String get continueInProgress => 'Jarayonda';
+
+  @override
+  String get continueMarkDone => 'Ish bitgach, tasdiqlang';
+
+  @override
+  String get continueDraftTitle => 'Tugallanmagan soʻrov';
+
+  @override
+  String get continueDraftUntitled => 'Sarlavhasiz soʻrov';
+
+  @override
+  String get continueDraftHint => 'Toʻxtagan joyingizdan davom eting';
+
+  @override
+  String get draftDelete => 'Qoralamani oʻchirish';
+
+  @override
+  String get draftDeleted => 'Qoralama oʻchirildi';
+
+  @override
+  String get draftRestored => 'Qoralama tiklandi';
+
+  @override
+  String get draftStartOver => 'Boshidan boshlash';
+
+  @override
+  String get actionUndo => 'Qaytarish';
+
+  @override
+  String get quickAskHelp => 'Yordam soʻrash';
+
+  @override
+  String get quickOfferService => 'Xizmat qoʻshish';
+
+  @override
+  String get feedEndTitle => 'Hammasi koʻrildi';
+
+  @override
+  String get feedEndAskPrompt => 'Kerakli usta topilmadimi?';
+
+  @override
+  String get feedEndJobsHint => 'Yangi soʻrovlar shu yerda birinchi chiqadi';
+
+  @override
+  String get whatsNewTitle => 'Yangiliklar';
+
+  @override
+  String get whatsNewLookTitle => 'Yangi, toza koʻrinish';
+
+  @override
+  String get whatsNewLookBody =>
+      'Oʻqishga qulay yangi shrift, ranglar va belgilar.';
+
+  @override
+  String get whatsNewNextStepTitle => 'Keyingi qadamingiz bosh sahifada';
+
+  @override
+  String get whatsNewNextStepBody =>
+      'Sizni kutayotgan kelishuvlar va tugallanmagan soʻrovlar endi birinchi chiqadi.';
+
+  @override
+  String get whatsNewDraftsTitle => 'Qoralamalar oʻz-oʻzidan saqlanadi';
+
+  @override
+  String get whatsNewDraftsBody =>
+      'Soʻrovni yarim yoʻlda yopsangiz ham, keyinroq davom ettirasiz.';
+
+  @override
+  String get whatsNewDone => 'Tushunarli';
+
+  @override
+  String get xizmatCardNew => 'Yangi';
+
+  @override
+  String get favoriteAdd => 'Saqlash';
+
+  @override
+  String get favoriteRemove => 'Saqlanganlardan olib tashlash';
+
+  @override
+  String statJobsDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'bajarilgan ish',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statRating => 'reyting';
+
+  @override
+  String get dealBondYou => 'Siz';
+
+  @override
+  String get dealBondYourTurn =>
+      'Sizning navbatingiz: shartlarni koʻrib, qabul qiling';
+
+  @override
+  String dealBondWaiting(String name) {
+    return '$name javobini kutyapmiz';
+  }
+
+  @override
+  String get dealBondAgreed => 'Kelishildi · ish jarayonda';
+
+  @override
+  String get dealBondDone => 'Ish bajarildi · rahmat';
+
+  @override
+  String get dealBondClosed => 'Bu kelishuv yopilgan';
+
+  @override
+  String get undoDeleted => 'Oʻchirildi';
+
+  @override
+  String get savedRemoved => 'Saqlanganlardan olib tashlandi';
+
+  @override
+  String get yordamKerakTitleRequired => 'Qisqa sarlavha yozing';
+
+  @override
+  String get yordamKerakMessageRequired => 'Nima kerakligini yozing';
+
+  @override
+  String get stateErrorTitle => 'Yuklab boʻlmadi';
+
+  @override
+  String get stateErrorBody => 'Internetni tekshirib, qayta urinib koʻring.';
+
+  @override
+  String get stateOfflineBanner =>
+      'Internet yoʻq. Saqlangan maʼlumot koʻrsatilmoqda';
+
+  @override
+  String get disabledHintServiceName => 'Kamida 2 harfdan iborat nom yozing';
+
+  @override
+  String get disabledHintServiceCity => 'Ishlaydigan shahringizni tanlang';
+
+  @override
+  String get disabledHintServicePhoto =>
+      'Eʼlon qilish uchun kamida bitta rasm qoʻshing';
+
+  @override
+  String get disabledHintPickSubcategory => 'Avval subsohani tanlang';
+
+  @override
+  String get disabledHintOneAlert => 'Kamida bitta bildirishnomani yoqing';
+
+  @override
+  String get milestoneOverline => 'Yangi yutuq';
+
+  @override
+  String get milestoneDismiss => 'Yopish';
+
+  @override
+  String get notificationsTooltip => 'Bildirishnomalar';
+
+  @override
+  String a11yRating(String rating) {
+    return 'reyting $rating';
+  }
+
+  @override
+  String get a11yNewProvider => 'YordamBor’da yangi';
+
+  @override
+  String get filtersClear => 'Filtrlarni tozalash';
+
+  @override
+  String get actionClose => 'Yopish';
+
+  @override
+  String get actionMore => 'Boshqa amallar';
+
+  @override
+  String get actionSend => 'Yuborish';
+
+  @override
+  String get actionPreviousMonth => 'Oldingi oy';
+
+  @override
+  String get actionNextMonth => 'Keyingi oy';
+
+  @override
+  String get a11yShowPassword => 'Parolni koʻrsatish';
+
+  @override
+  String get a11yHidePassword => 'Parolni yashirish';
+
+  @override
+  String a11yStarRating(int count) {
+    return '$count yulduz';
+  }
+
+  @override
+  String get detailPaneEmptyTitle => 'Kartani tanlang';
+
+  @override
+  String get detailPaneEmptyBody => 'U shu yerda, roʻyxat yonida ochiladi.';
+
+  @override
+  String get taklifAskHint => 'Sizga qanday yordam kerak?';
+
+  @override
+  String get taklifAskSubtitle =>
+      'Ishni tasvirlab bering, xohlasangiz byudjetni ham yozing. Ikkalangiz kelishgach, ish boshlanadi.';
+
+  @override
+  String get taklifAskSubmit => 'Soʻrov yuborish';
+
+  @override
+  String dealOfferAutoCancel(int days) {
+    return 'Javob boʻlmasa, $days kundan keyin avtomatik bekor qilinadi';
+  }
+
+  @override
+  String dealOfferReplyWithin(int days) {
+    return '$days kun ichida javob bering, aks holda taklif bekor qilinadi';
+  }
+
+  @override
+  String get dealAcceptedRow => 'Shartlarni qabul qildi';
+
+  @override
+  String get dealCompletedRow => 'Ish bajarilganini tasdiqladi';
+
+  @override
+  String get dealWithdrawOffer => 'Taklifni qaytarib olish';
+
+  @override
+  String get dealWithdrawTitle => 'Taklifni qaytarib olasizmi?';
+
+  @override
+  String get dealWithdrawBody =>
+      'Kelishuv bekor qilinadi. Keyin yangi taklif yuborishingiz mumkin.';
+
+  @override
+  String get dealChatOpensOnReply => 'Javob kelgach, suhbat ochiladi.';
+
+  @override
+  String get dealRejectTitle => 'Taklifni rad etasizmi?';
+
+  @override
+  String get dealRejectBody =>
+      'Xohlasangiz, sababini yozing — u kelishuvda koʻrinib turadi.';
+
+  @override
+  String get dealRejectCommentLabel => 'Izoh (ixtiyoriy)';
+
+  @override
+  String get dealSendNewOffer => 'Yangi taklif yuborish';
+
+  @override
+  String get dealClosedNewOfferHint =>
+      'Xizmat hali ham kerakmi? Yangi taklif yuboring — suhbat yangidan boshlanadi.';
+
+  @override
+  String get archiveTabNeeded => 'Yordam kerak edi';
+
+  @override
+  String get archiveTabProvided => 'Yordam koʻrsatildi';
+
+  @override
+  String get archiveNeededEmpty =>
+      'Yordam soʻragan kelishuvlaringiz shu yerda chiqadi.';
+
+  @override
+  String get archiveProvidedEmpty =>
+      'Yordam bergan kelishuvlaringiz shu yerda chiqadi.';
+
+  @override
+  String achievementsProgress(int unlocked, int total) {
+    return '$total tadan $unlocked tasi ochildi';
+  }
+
+  @override
+  String get achievementsShow => 'Hammasini koʻrish';
+
+  @override
+  String get achievementsHide => 'Yashirish';
+
+  @override
+  String get yordamKerakCityRequired => 'Shaharni tanlang';
+
+  @override
+  String get taklifContactTitle => 'Kontaktlaringiz';
+
+  @override
+  String get taklifContactNote =>
+      'Ikkinchi tomon ularni kelishuvda koʻradi va siz bilan bogʻlanadi.';
+
+  @override
+  String get taklifFirstNameLabel => 'Ism';
+
+  @override
+  String get taklifLastNameLabel => 'Familiya';
+
+  @override
+  String get taklifFirstNameRequired => 'Ismingizni kiriting';
+
+  @override
+  String get taklifPhoneRequired => 'Telefon raqamingizni kiriting';
+
+  @override
+  String get taklifMessageOptionalLabel => 'Xabar (ixtiyoriy)';
+
+  @override
+  String get dealContactTitle => 'Bogʻlanish uchun';
+
+  @override
+  String get dealContactSent => 'Kontaktlaringizni yubordingiz';
+
+  @override
+  String get dealsSectionTitle => 'Kelishuvlaringiz';
+
+  @override
+  String get dealStateYourTurn => 'Muhokamada · navbat sizda';
+
+  @override
+  String get dealStateSent => 'Yuborildi · javob kutilmoqda';
+
+  @override
+  String get dealStateInProgress => 'Qabul qilindi · ish jarayonida';
+
+  @override
+  String get dealStateAwaitingConfirm =>
+      'Siz tasdiqladingiz · ikkinchi tomon kutilmoqda';
+
+  @override
+  String get actionAdd => 'Qoʻshish';
+
+  @override
+  String get businessEarningsTitle => 'Shu oydagi daromad';
+
+  @override
+  String get businessEarningsSee => 'Daromadni koʻrish';
+
+  @override
+  String get businessStatWaitingLabel => 'javobingizni kutmoqda';
+
+  @override
+  String get businessNextStepsTitle => 'Koʻproq mijoz uchun';
+
+  @override
+  String businessNextStepsProgress(int done, int total) {
+    return '$total tadan $done';
+  }
+
+  @override
+  String get businessStepPhotos => '3 yoki undan koʻp rasm qoʻshing';
+
+  @override
+  String get businessStepPhotosWhy => 'Rasmli xizmatlar koʻproq tanlanadi';
+
+  @override
+  String get businessStepPrice => 'Narxni koʻrsating';
+
+  @override
+  String get businessStepPriceWhy => 'Aniq narx — kelishuvgacha kamroq savol';
+
+  @override
+  String get businessStepAvailability => 'Qachon boʻsh ekaningizni koʻrsating';
+
+  @override
+  String get businessStepAvailabilityWhy =>
+      'Mijozlar tez kela oladiganlarga yozadi';
+
+  @override
+  String get businessStepShare => 'Xizmat havolasini ulashing';
+
+  @override
+  String get businessStepShareWhy =>
+      'Telegramda yuboring — doʻstlaringiz sizni tavsiya qiladi';
+
+  @override
+  String get businessStartTitle => 'Mahoratingizni daromadga aylantiring';
+
+  @override
+  String get businessStartStep1 => 'Xizmat va narxni yozing';
+
+  @override
+  String get businessStartStep2 => 'Rasmlar va shaharni qoʻshing';
+
+  @override
+  String get businessStartStep3 => 'Soʻrovlar oling va kelishing';
+
+  @override
+  String businessServicesCount(int count, int max) {
+    return 'Xizmatlarim · $max tadan $count';
+  }
+
+  @override
+  String xizmatLimitReached(int max) {
+    return '$max tagacha xizmat joylash mumkin. Yangisini qoʻshish uchun birini oʻzgartiring yoki oʻchiring.';
+  }
+
+  @override
+  String get calendarStatusCaption => 'Holatingiz · mijozlar koʻradi';
+
+  @override
+  String get calendarLegendNeedHelp => 'Menga yordam';
+
+  @override
+  String get calendarLegendGiveHelp => 'Men yordam beraman';
+
+  @override
+  String get calendarLegendPersonal => 'Shaxsiy';
+
+  @override
+  String get calendarHintMark =>
+      'Kunni bosing va boʻsh yoki band deb belgilang. Kunning bir qismi boʻlsa, soatlarni koʻrsating; aks holda butun ish kuni.';
+
+  @override
+  String get calendarHintClient =>
+      'Kelishuvlaringiz eslatmalari: sizga yordam va siz beradigan yordam. Batafsil uchun kunni bosing.';
+
+  @override
+  String get calendarDayNotMarked => 'Belgilanmagan';
+
+  @override
+  String get calendarWholeWorkingDay => 'Butun ish kuni';
+
+  @override
+  String get calendarAddHours => 'Vaqt qoʻshish';
+
+  @override
+  String get calendarRemoveHours => 'Bu vaqtni olib tashlash';
+
+  @override
+  String get calendarHoursFrom => 'Boshlanishi';
+
+  @override
+  String get calendarHoursTo => 'Tugashi';
+
+  @override
+  String get calendarDayEvents => 'Shu kungi eslatmalar';
+
+  @override
+  String get workingHoursTitle => 'Ish vaqti';
+
+  @override
+  String get workingHoursHint => 'Mijozlar ularni xizmatlaringizda koʻradi';
+
+  @override
+  String get workingHoursSheetHint =>
+      'Odatiy ish kuningiz. Standart: 9:00–13:00 va 14:00–18:00.';
+
+  @override
+  String get workingHoursReset => '9–13 va 14–18 ga qaytarish';
+
+  @override
+  String get workingHoursInvalid =>
+      'Vaqtni tekshiring: har biri tugashidan oldin boshlansin va ustma-ust tushmasin.';
+
+  @override
+  String get workingHoursSaved => 'Ish vaqti saqlandi';
+
+  @override
+  String get xizmatOwnHoursTitle => 'Bu xizmat uchun alohida vaqt';
+
+  @override
+  String xizmatOwnHoursOff(String hours) {
+    return 'Profildagidek: $hours';
+  }
+
+  @override
+  String get xizmatHoursInCalendar => 'Ish vaqtini kalendarda oʻzgartirasiz.';
+
+  @override
+  String get xizmatHoursOpenCalendar => 'Kalendarni ochish';
+
+  @override
+  String get xizmatScheduleTitle => 'Ish vaqti va bandlik';
+
+  @override
+  String get xizmatScheduleNextDays => 'Keyingi 2 hafta';
+
+  @override
+  String get xizmatTodayFree => 'Bugun boʻsh';
+
+  @override
+  String get xizmatTodayBusy => 'Bugun band';
+
+  @override
+  String xizmatTodayBusyAt(String hours) {
+    return 'Bugun band: $hours';
+  }
+
+  @override
+  String xizmatTodayFreeAt(String hours) {
+    return 'Bugun boʻsh: $hours';
+  }
+
+  @override
+  String get calendarNoRemindersDay => 'Bu kunga eslatmalar yoʻq.';
+
+  @override
+  String get sampleTag => 'Namuna';
+
+  @override
+  String get demoDealNote => 'Bu namuna: kelishuv haqiqiy odamga yuborilmaydi.';
+
+  @override
+  String get feedInviteProvidersTitle => 'Birinchi ijrochilardan biri boʻling';
+
+  @override
+  String get feedInviteProvidersBody =>
+      'Xizmatingizni qoʻshing — mijozlar uni birinchi koʻradi.';
+
+  @override
+  String get feedInviteAskTitle => 'Birinchi boʻlib yordam soʻrang';
+
+  @override
+  String get feedInviteAskBody =>
+      'Nima kerakligini yozing — ijrochilar soʻrovingizni koʻradi.';
+
+  @override
+  String get feedInviteProvidersAction => 'Oʻz xizmatingizni qoʻshing';
+
+  @override
+  String get feedInviteAskAction => 'Nima kerakligini yozing';
+
+  @override
+  String get sampleFindProvider => 'Ijrochi topish';
+
+  @override
+  String get sampleFindProviderHint =>
+      'Bu namuna. Vazifani yozing — uni haqiqiy ijrochilar koʻradi.';
+
+  @override
+  String get sampleAlertNewServices =>
+      'Bu sohada ijrochi paydo boʻlsa, xabar bering';
+
+  @override
+  String get sampleRequestPosted =>
+      'Soʻrov eʼlon qilindi — uni ijrochilar koʻradi.';
+
+  @override
+  String get sampleRequestTitle => 'Bu namuna soʻrov';
+
+  @override
+  String get sampleRequestBody =>
+      'Haqiqiy soʻrovlar shu yerda paydo boʻladi. Bildirishnomalarni yoqing — kimdir bu sohada yordam soʻrasa, xabar beramiz.';
+
+  @override
+  String get sampleAlertHelpPosts => 'Yangi soʻrovlar haqida xabar berish';
+
+  @override
+  String get sampleAlertOn =>
+      'Tayyor — bu sohadagi yangi soʻrovlar haqida xabar beramiz.';
+
+  @override
+  String get foundingBadge => 'YordamBor’da birinchi';
+
+  @override
+  String get foundingBadgeNote =>
+      'Birinchi ijrochilar «YordamBor’da birinchi» belgisini oladi.';
+
+  @override
+  String get inviteTitle => 'Ijrochilarni taklif qiling';
+
+  @override
+  String get inviteBody =>
+      'Yaxshi elektrik, repetitor yoki salonni bilasizmi? Taklif qiling: haqiqiy ijrochilar qancha koʻp boʻlsa, mijozlar shuncha koʻp keladi.';
+
+  @override
+  String get inviteShare => 'Taklifnoma yuborish';
+
+  @override
+  String get invitePrepare => 'Tanishingiz uchun xizmat tayyorlash';
+
+  @override
+  String get inviteMessage =>
+      'YordamBor’ga qoʻshiling: u yerda mijozlar butun Oʻzbekiston boʻylab ijrochi topadi. Xizmat qoʻshish bepul, birinchi ijrochilar «YordamBor’da birinchi» belgisini oladi.';
+
+  @override
+  String invitePersonalMessage(String name, String trade, String city) {
+    return '$name, salom! Men YordamBor’daman — u yerda mijozlar ijrochi topadi. «$trade» xizmatingizni ($city) qoʻshing: bepul, birinchi ijrochilar «YordamBor’da birinchi» belgisini oladi.';
+  }
+
+  @override
+  String inviteOpenLink(String link) {
+    return 'Boshlash uchun oching: $link';
+  }
+
+  @override
+  String inviteAppLink(String link) {
+    return 'Ilova: $link';
+  }
+
+  @override
+  String get invitePrepareTitle => 'Tanishingiz uchun xizmat';
+
+  @override
+  String get invitePrepareBody =>
+      'Kasbi va shahrini tanlang. U ushbular toʻldirilgan «Yangi xizmat»ni ochadigan havola oladi va xizmatni oʻzi eʼlon qiladi.';
+
+  @override
+  String get invitePersonName => 'Ismi (ixtiyoriy)';
+
+  @override
+  String get invitePersonPhone => 'Telefoni (ixtiyoriy)';
+
+  @override
+  String get invitePickTrade => 'Soha';
+
+  @override
+  String get inviteSendWhatsApp => 'WhatsApp orqali yuborish';
+
+  @override
+  String get inviteSendSms => 'SMS orqali yuborish';
+
+  @override
+  String get inviteSendOther => 'Boshqa ilova';
+
+  @override
+  String get inviteNeedTradeCity => 'Soha va shaharni tanlang';
+
+  @override
+  String get onbGoalTitle => 'YordamBor’ga nima uchun keldingiz?';
+
+  @override
+  String get onbGoalNeedHelp => 'Menga yordam kerak';
+
+  @override
+  String get onbGoalNeedHelpSub => 'Ijrochi topish yoki vazifani yozish';
+
+  @override
+  String get onbGoalOffer => 'Men xizmat koʻrsataman';
+
+  @override
+  String get onbGoalOfferSub => 'Mijoz topish va daromad qilish';
+
+  @override
+  String get onbGoalBoth => 'Ikkalasi ham';
+
+  @override
+  String get onbGoalBothSub =>
+      'Yordam beraman, baʼzan oʻzim ham yordam soʻrayman';
+
+  @override
+  String get onbCityTitle => 'Shahringiz';
+
+  @override
+  String get onbCitySub => 'Yaqiningizdagilarni koʻrsatamiz.';
+
+  @override
+  String get onbNext => 'Keyingisi';
+
+  @override
+  String get onbDone => 'Tayyor';
+
+  @override
+  String get onbSkip => 'Oʻtkazib yuborish';
+
+  @override
+  String onbStep(int current, int total) {
+    return '$total qadamdan $current';
+  }
+
+  @override
+  String get onbIntro1Title => 'Xizmatlar yoningizda';
+
+  @override
+  String get onbIntro1Body => 'Butun Oʻzbekiston boʻylab mutaxassislar va tashkilotlar.';
+
+  @override
+  String get onbIntro2Title => 'Yordam kerakmi? Soʻrang';
+
+  @override
+  String get onbIntro2Body => 'Vazifani yozing — ijrochilar oʻzlari javob beradi.';
+
+  @override
+  String get onbIntro3Title => 'Xizmatingizni taklif qiling';
+
+  @override
+  String get onbIntro3Body => 'Jismoniy shaxs yoki tashkilot sifatida. Bepul.';
+
+  @override
+  String get onbIntro4Title => 'Halol va xotirjam';
+
+  @override
+  String get onbIntro4Body =>
+      'Kelishuv ikki tomon rozi boʻlganda boshlanadi. Sharhlar faqat bajarilgan ishdan keyin. Toʻlov — kelishuvga koʻra.';
+
+  @override
+  String get onbTypeTitle => 'Qanday ishlaysiz?';
+
+  @override
+  String get onbTypeSub =>
+      'Mijozlar buni xizmatlaringizda koʻradi. Keyin oʻzgartirish mumkin.';
+
+  @override
+  String get onbTypeIndividualSub => 'Usta, repetitor yoki frilanser';
+
+  @override
+  String get onbTypeInstitutionSub =>
+      'Kompaniya, salon, klinika yoki oʻquv markazi';
+
+  @override
+  String onbReadyToOffer(String action) {
+    return 'Tayyor boʻlganingizda «$action»ni bosing.';
+  }
+
+  @override
+  String get inviteAction => 'Tanish ijrochini taklif qilish';
+
+  @override
+  String invitePersonalMessageNoName(String trade, String city) {
+    return 'Salom! Men YordamBor’daman — u yerda mijozlar ijrochi topadi. «$trade» xizmatingizni ($city) qoʻshing: bepul, birinchi ijrochilar «YordamBor’da birinchi» belgisini oladi.';
+  }
+
+  @override
+  String get joinTitle => 'Sizni YordamBor’ga taklif qilishdi';
+
+  @override
+  String get joinBody =>
+      'Xizmatingizni qoʻshing — bu bepul. Mijozlar bu yerda ijrochini soha va shahar boʻyicha topadi.';
+
+  @override
+  String get joinLookAround => 'Avval ilovani koʻrib chiqish';
+
+  @override
+  String get onbStart => 'Boshlash';
+
+  @override
+  String get welcomeFindHelp => 'Yordam toping';
+
+  @override
+  String get welcomeGiveHelp => 'Yordam bering';
+
+  @override
+  String get onbTileLawyer => 'Advokat';
+
+  @override
+  String get onbTileBeauty => 'Goʻzallik';
+
+  @override
+  String get onbTileCatering => 'Keytering';
+
+  @override
+  String get onbTileVet => 'Veterinar';
+
+  @override
+  String get onbTileCleaning => 'Tozalash';
+
+  @override
+  String get onbTileElectrician => 'Elektrik';
+
+  @override
+  String get onbTilePlumber => 'Santexnik';
+
+  @override
+  String get onbTileDental => 'Stomatologiya';
+
+  @override
+  String onbMoreServices(int count) {
+    return 'va yana $count dan ortiq xizmat turi';
+  }
+
+  @override
+  String get onbIllRequestTitle => 'Oshxonadagi kran oqyapti';
+
+  @override
+  String get onbIllToday => 'Bugun';
+
+  @override
+  String get onbIllNewOffers => '2 ta yangi taklif';
+
+  @override
+  String get onbIllName1 => 'Aziz';
+
+  @override
+  String get onbIllName2 => 'Dilnoza';
+
+  @override
+  String get onbIllOffer1 => 'Bugun 18:00 da kela olaman';
+
+  @override
+  String get onbIllOffer2 => 'Ertaga ertalab boʻshman';
+
+  @override
+  String get onbIllNewRequest => 'Yangi soʻrov';
+
+  @override
+  String get onbIllSocket => 'Rozetka almashtirish';
+
+  @override
+  String get onbTileTutor => 'Repetitor';
+
+  @override
+  String get onbTileAuto => 'Avto servis';
+
+  @override
+  String get searchTooltip => 'Qidirish';
+
+  @override
+  String get searchHint => 'Ism, tashkilot yoki xizmat';
+
+  @override
+  String get searchPrompt =>
+      'Ijrochi ismi, tashkilot nomi yoki xizmatni yozing, masalan, «santexnik».';
+
+  @override
+  String get searchNoResults => 'Hech narsa topilmadi';
+
+  @override
+  String get searchNoResultsHint =>
+      'Soʻrov joylang — ijrochilar oʻzlari javob beradi.';
+
+  @override
+  String get searchOffline =>
+      'Internet yoʻq: faqat telefondagilar koʻrsatilmoqda.';
+
+  @override
+  String get onbTileRenovation => 'Taʼmirlash';
+
+  @override
+  String get onbTileFitness => 'Fitnes';
+
+  @override
+  String get onbTileTranslator => 'Tarjimon';
+
+  @override
+  String get onbTileBarber => 'Sartarosh';
+
+  @override
+  String get onbTileMusic => 'Musiqa darslari';
+
+  @override
+  String get onbTileStylist => 'Stilist';
+
+  @override
+  String get onbTileKindergarten => 'Bogʻcha';
+
+  @override
+  String get onbIllTutorTitle => 'Ingliz tili va IELTS';
+
+  @override
+  String get onbIllStylistRequest => 'Toʻy uchun obraz';
+
+  @override
+  String onbKindsChip(int count) {
+    return '+$count xizmat turi';
+  }
+
+  @override
+  String get onbIllDentalRequestTitle => 'Tishim ogʻriyapti';
+
+  @override
+  String get onbTileDentist => 'Stomatolog';
+
+  @override
+  String get onbIllDentalOffer1 => 'Bugun 16:00 da qabul qilamiz';
+
+  @override
+  String get onbIllDentalOffer2 => 'Ertaga ertalab qabul qilaman';
+
+  @override
+  String get xizmatStatNoReviews => 'Sharh yoʻq';
+
+  @override
+  String get xizmatStatPrice => 'narx';
+
+  @override
+  String get xizmatStatPerHour => 'soatiga';
+
+  @override
+  String get xizmatStatNegotiable => 'Kelishiladi';
+
+  @override
+  String get xizmatPromiseOwnWords => 'Ijrochining oʻz soʻzi';
+
+  @override
+  String get xizmatAboutTitle => 'Xizmat haqida';
+
+  @override
+  String get actionReadMore => 'Batafsil';
+
+  @override
+  String get actionReadLess => 'Yigʻish';
+
+  @override
+  String reviewsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ta sharh',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reviewsSeeAll(int count) {
+    return 'Barcha sharhlar ($count)';
+  }
+
+  @override
+  String get reviewsFilterAll => 'Hammasi';
+
+  @override
+  String get reviewsFilterEmpty => 'Bunday baholi sharh hali yoʻq';
+
+  @override
+  String reviewsBarA11y(int stars, int count) {
+    return '$stars baho: $count ta';
+  }
+
+  @override
+  String get xizmatHowTitle => 'Qanday ishlaydi';
+
+  @override
+  String get xizmatHowAsk => 'Soʻrov yuboring';
+
+  @override
+  String get xizmatHowChat => 'Ilovada yozishing';
+
+  @override
+  String get xizmatHowAgree => 'Kelishib oling';
+
+  @override
+  String providerMemberSince(String year) {
+    return '$year-yildan aʼzo';
+  }
+
+  @override
+  String providerServicesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ta xizmat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xizmatAboutHint =>
+      'Nima qilasiz, qanday ishlaysiz, mijozga nimani vaʼda qilasiz';
 }

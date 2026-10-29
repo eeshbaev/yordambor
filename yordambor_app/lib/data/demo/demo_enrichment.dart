@@ -1,3 +1,5 @@
+import 'package:yordambor/core/constants/service_cities.dart';
+import 'package:yordambor/data/demo/demo_reviews.dart';
 import 'package:yordambor/data/demo/demo_user_profiles.dart';
 import 'package:yordambor/domain/entities/xizmat_availability_mode.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
@@ -24,7 +26,8 @@ abstract final class DemoEnrichment {
       heroImageUrl: item.heroImageUrl,
       portfolioImageUrls:
           meta?.portfolioImageUrls ?? item.portfolioImageUrls,
-      rating: item.rating,
+      // As for real services: the rating is what its reviews add up to.
+      rating: item.isDemo ? DemoReviews.averageFor(item.id) ?? 0 : item.rating,
       completedCount: item.completedCount,
       isDemo: item.isDemo,
       description: item.description,
@@ -47,7 +50,12 @@ abstract final class DemoEnrichment {
       showServicePromise:
           meta?.showServicePromise ?? item.showServicePromise,
       servicePromise: meta?.servicePromise ?? item.servicePromise,
-      serviceCity: item.serviceCity,
+      serviceCity: ServiceCities.resolveForFeed(
+        item.serviceCity,
+        isDemo: item.isDemo,
+        listingId: item.id,
+      ),
+      createdAt: item.createdAt,
     );
   }
 
@@ -77,6 +85,7 @@ abstract final class DemoEnrichment {
       contactPhone: showPhone ? profile!.phone : item.contactPhone,
       showContactPhone: showPhone || item.showContactPhone,
       showProfile: item.showProfile,
+      serviceCity: item.serviceCity,
     );
   }
 }
@@ -121,6 +130,8 @@ const _musicSchool = 'assets/demo/music_school.jpg';
 const _guitarLesson = 'assets/demo/guitar_lesson.jpg';
 const _bellaPasta = 'assets/demo/bella_pasta.jpg';
 const _bellaPizza = 'assets/demo/bella_pizza.jpg';
+const _rentCarFleet = 'assets/demo/rent_car_fleet.jpg';
+const _rentCarWedding = 'assets/demo/rent_car_wedding.jpg';
 
 const _xizmatMeta = <String, _XizmatMeta>{
   'demo-sanjar-plumber': _XizmatMeta(
@@ -131,7 +142,7 @@ const _xizmatMeta = <String, _XizmatMeta>{
     availabilityMode: XizmatAvailabilityMode.availableNow,
     showServicePromise: true,
     servicePromise:
-        'Chiqishdan oldin narxni aytaman — yashirin to\'lov yo\'q.',
+        'Chiqishdan oldin narxni aytaman — yashirin toʻlov yoʻq.',
   ),
   'demo-malika-cleaning': _XizmatMeta(
     pricingModel: XizmatPricingModel.fixed,
@@ -139,7 +150,7 @@ const _xizmatMeta = <String, _XizmatMeta>{
     availabilityVisible: true,
     availabilityMode: XizmatAvailabilityMode.availableNow,
     showServicePromise: true,
-    servicePromise: 'O\'z vositalarim bilan kelaman, kimyoviy hid qoldirmayman.',
+    servicePromise: 'Oʻz vositalarim bilan kelaman, kimyoviy hid qoldirmayman.',
   ),
   'demo-aziz-electric': _XizmatMeta(
     pricingModel: XizmatPricingModel.hourly,
@@ -148,7 +159,7 @@ const _xizmatMeta = <String, _XizmatMeta>{
     availabilityVisible: true,
     availabilityMode: XizmatAvailabilityMode.busy,
     showServicePromise: true,
-    servicePromise: 'Xavfsizlik qoidalariga qat\'iy rioya qilaman.',
+    servicePromise: 'Xavfsizlik qoidalariga qatʼiy rioya qilaman.',
   ),
   'demo-english-tutor': _XizmatMeta(
     pricingModel: XizmatPricingModel.hourly,
@@ -254,7 +265,7 @@ const _xizmatMeta = <String, _XizmatMeta>{
     availabilityMode: XizmatAvailabilityMode.availableNow,
     showServicePromise: true,
     servicePromise:
-        'Diagnostika bepul — ta\'mir kerak bo\'lmasa, to\'lov talab qilinmaydi.',
+        'Diagnostika bepul — taʼmir kerak boʻlmasa, toʻlov talab qilinmaydi.',
   ),
   'demo-saloma-massage': _XizmatMeta(
     pricingModel: XizmatPricingModel.fixed,
@@ -301,7 +312,7 @@ const _xizmatMeta = <String, _XizmatMeta>{
     availabilityVisible: true,
     availabilityMode: XizmatAvailabilityMode.availableNow,
     showServicePromise: true,
-    servicePromise: 'Deklaratsiya topshirishdan oldin tekshiruv o\'tkazaman.',
+    servicePromise: 'Deklaratsiya topshirishdan oldin tekshiruv oʻtkazaman.',
   ),
   'demo-stylist-sabina': _XizmatMeta(
     pricingModel: XizmatPricingModel.fixed,
@@ -386,7 +397,7 @@ const _xizmatMeta = <String, _XizmatMeta>{
     basePrice: 80000,
     availabilityVisible: true,
     availabilityMode: XizmatAvailabilityMode.availableNow,
-    portfolioImageUrls: [_ochiqSahna],
+    portfolioImageUrls: [_ochiqSahnaStage, _ochiqSahna],
     showServicePromise: true,
     servicePromise: 'Taom va spektakl bir joyda — stol band qiling',
   ),
@@ -416,5 +427,15 @@ const _xizmatMeta = <String, _XizmatMeta>{
     portfolioImageUrls: [_bellaPasta],
     showServicePromise: true,
     servicePromise: 'Пицца и паста от итальянского шефа — недавно открылись',
+  ),
+  'demo-toshkent-rent-car': _XizmatMeta(
+    pricingModel: XizmatPricingModel.fixed,
+    basePrice: 350000,
+    availabilityVisible: true,
+    availabilityMode: XizmatAvailabilityMode.availableNow,
+    portfolioImageUrls: [_rentCarFleet, _rentCarWedding],
+    showServicePromise: true,
+    servicePromise:
+        'Kunlik narx — toʻliq sugʻurta va 200 km/kun kiritilgan',
   ),
 };

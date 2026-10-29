@@ -120,11 +120,149 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get tabHome;
 
+  /// No description provided for @tabCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get tabCalendar;
+
+  /// No description provided for @calendarGuestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your schedule and mark availability.'**
+  String get calendarGuestSubtitle;
+
+  /// No description provided for @calendarProviderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a day on the calendar, then use the button below to mark available or busy.'**
+  String get calendarProviderHint;
+
+  /// No description provided for @calendarClientHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointments and reminders appear on the calendar. Tap a day for details.'**
+  String get calendarClientHint;
+
+  /// No description provided for @calendarLegendAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get calendarLegendAvailable;
+
+  /// No description provided for @calendarLegendBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy'**
+  String get calendarLegendBusy;
+
+  /// No description provided for @calendarLegendAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment'**
+  String get calendarLegendAppointment;
+
+  /// No description provided for @calendarMarkAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked: available — tap to change'**
+  String get calendarMarkAvailable;
+
+  /// No description provided for @calendarMarkBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked: busy — tap to change'**
+  String get calendarMarkBusy;
+
+  /// No description provided for @calendarMarkUnset.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark day: available / busy'**
+  String get calendarMarkUnset;
+
+  /// No description provided for @calendarNoEventsDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No appointments on this day.'**
+  String get calendarNoEventsDay;
+
+  /// No description provided for @calendarWeekdayMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get calendarWeekdayMon;
+
+  /// No description provided for @calendarWeekdayTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get calendarWeekdayTue;
+
+  /// No description provided for @calendarWeekdayWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get calendarWeekdayWed;
+
+  /// No description provided for @calendarWeekdayThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get calendarWeekdayThu;
+
+  /// No description provided for @calendarWeekdayFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get calendarWeekdayFri;
+
+  /// No description provided for @calendarWeekdaySat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get calendarWeekdaySat;
+
+  /// No description provided for @calendarWeekdaySun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get calendarWeekdaySun;
+
   /// No description provided for @tabFavorites.
   ///
   /// In en, this message translates to:
   /// **'Saved'**
   String get tabFavorites;
+
+  /// No description provided for @tabBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get tabBusiness;
+
+  /// No description provided for @businessTabServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get businessTabServices;
+
+  /// No description provided for @businessTabTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools'**
+  String get businessTabTools;
+
+  /// No description provided for @businessToolsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Client book, receipts, earnings, and other provider tools.'**
+  String get businessToolsSubtitle;
+
+  /// No description provided for @myXizmatlarGuestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to manage your services and provider tools.'**
+  String get myXizmatlarGuestSubtitle;
 
   /// No description provided for @tabProfile.
   ///
@@ -227,6 +365,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All specialties in the selected field'**
   String get filterAllSubcategoriesHint;
+
+  /// No description provided for @filterCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get filterCity;
+
+  /// No description provided for @filterAllCities.
+  ///
+  /// In en, this message translates to:
+  /// **'All cities'**
+  String get filterAllCities;
+
+  /// No description provided for @filterCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Where do you need the service?'**
+  String get filterCityHint;
+
+  /// No description provided for @filterAllCitiesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Listings in every city'**
+  String get filterAllCitiesHint;
+
+  /// No description provided for @xizmatServiceCityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the city where you provide this service'**
+  String get xizmatServiceCityRequired;
+
+  /// No description provided for @serviceCityToshkent.
+  ///
+  /// In en, this message translates to:
+  /// **'Tashkent'**
+  String get serviceCityToshkent;
+
+  /// No description provided for @serviceCityToshkentViloyati.
+  ///
+  /// In en, this message translates to:
+  /// **'Tashkent region'**
+  String get serviceCityToshkentViloyati;
+
+  /// No description provided for @serviceCitySamarqand.
+  ///
+  /// In en, this message translates to:
+  /// **'Samarkand'**
+  String get serviceCitySamarqand;
+
+  /// No description provided for @serviceCityBuxoro.
+  ///
+  /// In en, this message translates to:
+  /// **'Bukhara'**
+  String get serviceCityBuxoro;
+
+  /// No description provided for @serviceCityNukus.
+  ///
+  /// In en, this message translates to:
+  /// **'Nukus'**
+  String get serviceCityNukus;
+
+  /// No description provided for @serviceCityNamangan.
+  ///
+  /// In en, this message translates to:
+  /// **'Namangan'**
+  String get serviceCityNamangan;
+
+  /// No description provided for @serviceCityAndijon.
+  ///
+  /// In en, this message translates to:
+  /// **'Andijan'**
+  String get serviceCityAndijon;
+
+  /// No description provided for @serviceCityFargona.
+  ///
+  /// In en, this message translates to:
+  /// **'Fergana'**
+  String get serviceCityFargona;
+
+  /// No description provided for @serviceCityQarshi.
+  ///
+  /// In en, this message translates to:
+  /// **'Qarshi'**
+  String get serviceCityQarshi;
+
+  /// No description provided for @serviceCityUrganch.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgench'**
+  String get serviceCityUrganch;
+
+  /// No description provided for @serviceCityTermiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Termiz'**
+  String get serviceCityTermiz;
+
+  /// No description provided for @serviceCityJizzax.
+  ///
+  /// In en, this message translates to:
+  /// **'Jizzakh'**
+  String get serviceCityJizzax;
+
+  /// No description provided for @serviceCityNavoiy.
+  ///
+  /// In en, this message translates to:
+  /// **'Navoi'**
+  String get serviceCityNavoiy;
+
+  /// No description provided for @serviceCityQoqon.
+  ///
+  /// In en, this message translates to:
+  /// **'Kokand'**
+  String get serviceCityQoqon;
+
+  /// No description provided for @serviceCityGuliston.
+  ///
+  /// In en, this message translates to:
+  /// **'Gulistan'**
+  String get serviceCityGuliston;
+
+  /// No description provided for @serviceCityBoshqa.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get serviceCityBoshqa;
 
   /// No description provided for @homeFeedShowing.
   ///
@@ -1320,6 +1584,504 @@ abstract class AppLocalizations {
   /// **'Self-declared income'**
   String get profileEarningsSub;
 
+  /// No description provided for @profileMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin'**
+  String get profileMargin;
+
+  /// No description provided for @profileMarginSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost & profit'**
+  String get profileMarginSub;
+
+  /// No description provided for @profilePaymentReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment receipt'**
+  String get profilePaymentReceipt;
+
+  /// No description provided for @profilePaymentReceiptSub.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF receipts for your services'**
+  String get profilePaymentReceiptSub;
+
+  /// No description provided for @receiptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment receipts'**
+  String get receiptTitle;
+
+  /// No description provided for @receiptNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New receipt'**
+  String get receiptNew;
+
+  /// No description provided for @receiptEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No receipts yet'**
+  String get receiptEmptyTitle;
+
+  /// No description provided for @receiptEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a payment receipt for a client and share it as PDF.'**
+  String get receiptEmptySubtitle;
+
+  /// No description provided for @receiptDocumentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PAYMENT RECEIPT'**
+  String get receiptDocumentTitle;
+
+  /// No description provided for @receiptNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'No.'**
+  String get receiptNumber;
+
+  /// No description provided for @receiptDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get receiptDate;
+
+  /// No description provided for @receiptSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get receiptSeller;
+
+  /// No description provided for @receiptBuyer.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get receiptBuyer;
+
+  /// No description provided for @receiptBuyerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Client name'**
+  String get receiptBuyerName;
+
+  /// No description provided for @receiptBuyerPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Client phone'**
+  String get receiptBuyerPhone;
+
+  /// No description provided for @receiptPickClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from client book'**
+  String get receiptPickClient;
+
+  /// No description provided for @receiptXizmat.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get receiptXizmat;
+
+  /// No description provided for @receiptLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Line items'**
+  String get receiptLines;
+
+  /// No description provided for @receiptLineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get receiptLineTitle;
+
+  /// No description provided for @receiptQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Qty'**
+  String get receiptQuantity;
+
+  /// No description provided for @receiptUnitPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get receiptUnitPrice;
+
+  /// No description provided for @receiptLineTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get receiptLineTotal;
+
+  /// No description provided for @receiptAddLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add line'**
+  String get receiptAddLine;
+
+  /// No description provided for @receiptDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount'**
+  String get receiptDiscount;
+
+  /// No description provided for @receiptTaxEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tax'**
+  String get receiptTaxEnable;
+
+  /// No description provided for @receiptTaxRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax rate (%)'**
+  String get receiptTaxRate;
+
+  /// No description provided for @receiptTaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax label'**
+  String get receiptTaxLabel;
+
+  /// No description provided for @receiptTaxDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'You choose the tax rate. YordamBor does not provide tax advice.'**
+  String get receiptTaxDisclaimer;
+
+  /// No description provided for @receiptSubtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get receiptSubtotal;
+
+  /// No description provided for @receiptTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get receiptTotal;
+
+  /// No description provided for @receiptNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get receiptNote;
+
+  /// No description provided for @receiptDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment due'**
+  String get receiptDueDate;
+
+  /// No description provided for @receiptCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get receiptCurrency;
+
+  /// No description provided for @receiptCurrencyUzs.
+  ///
+  /// In en, this message translates to:
+  /// **'UZS'**
+  String get receiptCurrencyUzs;
+
+  /// No description provided for @receiptCurrencyUsd.
+  ///
+  /// In en, this message translates to:
+  /// **'USD'**
+  String get receiptCurrencyUsd;
+
+  /// No description provided for @receiptSharePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Share PDF'**
+  String get receiptSharePdf;
+
+  /// No description provided for @receiptPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview PDF'**
+  String get receiptPreview;
+
+  /// No description provided for @receiptSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt saved'**
+  String get receiptSaved;
+
+  /// No description provided for @receiptValidationBuyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter client name'**
+  String get receiptValidationBuyer;
+
+  /// No description provided for @receiptValidationXizmat.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a service'**
+  String get receiptValidationXizmat;
+
+  /// No description provided for @receiptValidationLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one line item with a price'**
+  String get receiptValidationLines;
+
+  /// No description provided for @receiptFooterBranding.
+  ///
+  /// In en, this message translates to:
+  /// **'Created with YordamBor'**
+  String get receiptFooterBranding;
+
+  /// No description provided for @receiptDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this receipt?'**
+  String get receiptDeleteConfirm;
+
+  /// No description provided for @receiptTaxPresetCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get receiptTaxPresetCustom;
+
+  /// No description provided for @marginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin'**
+  String get marginTitle;
+
+  /// No description provided for @marginUnitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit library'**
+  String get marginUnitsTitle;
+
+  /// No description provided for @marginUnitsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reusable units with a cost for quick product math'**
+  String get marginUnitsSubtitle;
+
+  /// No description provided for @marginOpenUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit library'**
+  String get marginOpenUnits;
+
+  /// No description provided for @marginAddUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add unit'**
+  String get marginAddUnit;
+
+  /// No description provided for @marginEditUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit unit'**
+  String get marginEditUnit;
+
+  /// No description provided for @marginUnitName.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit name'**
+  String get marginUnitName;
+
+  /// No description provided for @marginUnitCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per unit (UZS)'**
+  String get marginUnitCost;
+
+  /// No description provided for @marginUnitBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost basis (optional)'**
+  String get marginUnitBasis;
+
+  /// No description provided for @marginUnitBasisHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. per hour, per kg, per item'**
+  String get marginUnitBasisHint;
+
+  /// No description provided for @marginUnitsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No units yet'**
+  String get marginUnitsEmptyTitle;
+
+  /// No description provided for @marginUnitsEmptySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Save units you use often — labor, materials, packaging — with a cost.'**
+  String get marginUnitsEmptySub;
+
+  /// No description provided for @marginAddProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Add product'**
+  String get marginAddProduct;
+
+  /// No description provided for @marginEditProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit product'**
+  String get marginEditProduct;
+
+  /// No description provided for @marginProductName.
+  ///
+  /// In en, this message translates to:
+  /// **'Product name'**
+  String get marginProductName;
+
+  /// No description provided for @marginSalePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale price (UZS)'**
+  String get marginSalePrice;
+
+  /// No description provided for @marginCostTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total cost'**
+  String get marginCostTotal;
+
+  /// No description provided for @marginProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit'**
+  String get marginProfit;
+
+  /// No description provided for @marginMarginPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin'**
+  String get marginMarginPercent;
+
+  /// No description provided for @marginCostBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost breakdown'**
+  String get marginCostBreakdown;
+
+  /// No description provided for @marginAddLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add unit line'**
+  String get marginAddLine;
+
+  /// No description provided for @marginEditLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit unit line'**
+  String get marginEditLine;
+
+  /// No description provided for @marginLineName.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit / item name'**
+  String get marginLineName;
+
+  /// No description provided for @marginLineQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get marginLineQuantity;
+
+  /// No description provided for @marginLineUnitCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per unit (UZS)'**
+  String get marginLineUnitCost;
+
+  /// No description provided for @marginLineQuantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity label (optional)'**
+  String get marginLineQuantityLabel;
+
+  /// No description provided for @marginLineQuantityLabelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. hr, kg, pc'**
+  String get marginLineQuantityLabelHint;
+
+  /// No description provided for @marginSelectUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from library'**
+  String get marginSelectUnit;
+
+  /// No description provided for @marginCustomLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom line'**
+  String get marginCustomLine;
+
+  /// No description provided for @marginProductsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No products yet'**
+  String get marginProductsEmptyTitle;
+
+  /// No description provided for @marginProductsEmptySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a product or service to see cost, profit, and margin.'**
+  String get marginProductsEmptySub;
+
+  /// No description provided for @marginNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name'**
+  String get marginNameRequired;
+
+  /// No description provided for @marginPriceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a sale price'**
+  String get marginPriceRequired;
+
+  /// No description provided for @marginCostRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a cost'**
+  String get marginCostRequired;
+
+  /// No description provided for @marginQuantityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a quantity'**
+  String get marginQuantityRequired;
+
+  /// No description provided for @marginAvgMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Average margin'**
+  String get marginAvgMargin;
+
+  /// No description provided for @marginPerProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'per product'**
+  String get marginPerProduct;
+
+  /// No description provided for @marginDeleteProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete product'**
+  String get marginDeleteProduct;
+
+  /// No description provided for @marginDeleteUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete unit'**
+  String get marginDeleteUnit;
+
   /// No description provided for @profileMyXizmatlar.
   ///
   /// In en, this message translates to:
@@ -1704,6 +2466,90 @@ abstract class AppLocalizations {
   /// **'Job completed'**
   String get notificationKelishuvComplete;
 
+  /// No description provided for @notificationSubsectorNewService.
+  ///
+  /// In en, this message translates to:
+  /// **'New service in your sub-sector'**
+  String get notificationSubsectorNewService;
+
+  /// No description provided for @notificationSubsectorDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Price drop in your sub-sector'**
+  String get notificationSubsectorDiscount;
+
+  /// No description provided for @notificationSubsectorHelpPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Help needed in your sub-sector'**
+  String get notificationSubsectorHelpPost;
+
+  /// No description provided for @notificationAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-sector alerts'**
+  String get notificationAlertsTitle;
+
+  /// No description provided for @notificationAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified when services appear, prices drop, or someone needs help.'**
+  String get notificationAlertsSubtitle;
+
+  /// No description provided for @notificationAlertsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add alert'**
+  String get notificationAlertsAdd;
+
+  /// No description provided for @notificationAlertsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No sub-sector alerts yet'**
+  String get notificationAlertsEmpty;
+
+  /// No description provided for @notificationAlertNewService.
+  ///
+  /// In en, this message translates to:
+  /// **'New services'**
+  String get notificationAlertNewService;
+
+  /// No description provided for @notificationAlertDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Price drops'**
+  String get notificationAlertDiscount;
+
+  /// No description provided for @notificationAlertHelpPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Help requests (Yordam kerak)'**
+  String get notificationAlertHelpPost;
+
+  /// No description provided for @notificationAlertSeekerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When you are looking for a service'**
+  String get notificationAlertSeekerHint;
+
+  /// No description provided for @notificationAlertProviderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When you can offer help as a provider'**
+  String get notificationAlertProviderHint;
+
+  /// No description provided for @notificationAlertsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert saved'**
+  String get notificationAlertsSaved;
+
+  /// No description provided for @notificationAlertsRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert removed'**
+  String get notificationAlertsRemoved;
+
   /// No description provided for @notificationGeneric.
   ///
   /// In en, this message translates to:
@@ -1763,6 +2609,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cannot create deals in demo mode'**
   String get demoKelishuvBlocked;
+
+  /// No description provided for @demoKelishuvSimulatedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo deal — not saved on the server. The demo provider is shown as having received your offer.'**
+  String get demoKelishuvSimulatedNote;
 
   /// No description provided for @genericUser.
   ///
@@ -1827,7 +2679,7 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatServiceCityHint.
   ///
   /// In en, this message translates to:
-  /// **'e.g. Tashkent (optional)'**
+  /// **'Choose where you provide this service'**
   String get xizmatServiceCityHint;
 
   /// No description provided for @xizmatContinue.
@@ -2685,7 +3537,7 @@ abstract class AppLocalizations {
   /// No description provided for @xizmatAvailabilityCallMe.
   ///
   /// In en, this message translates to:
-  /// **'Call to book'**
+  /// **'By appointment'**
   String get xizmatAvailabilityCallMe;
 
   /// No description provided for @xizmatAvailabilityFromLabel.
@@ -3269,6 +4121,1752 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'YordamBor connects clients and providers. It does not perform services, hold money, or guarantee outcomes.\n\nPayments\n\nAll payments are agreed directly between you and the other party. Never send full payment upfront to someone you do not trust. Meet in person when possible. YordamBor is not responsible for fraud, poor service, or disputes about money paid outside the app.\n\nYour responsibility\n\nVerify credentials, reviews, and certificates yourself. Use completed deals and reviews to judge providers.\n\nReporting\n\nReport abuse in the app. For product issues, use Help & support.'**
   String get legalSafetyBody;
+
+  /// No description provided for @greetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get greetingMorning;
+
+  /// No description provided for @greetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get greetingAfternoon;
+
+  /// No description provided for @greetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get greetingEvening;
+
+  /// No description provided for @greetingNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello'**
+  String get greetingNight;
+
+  /// No description provided for @greetingWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get greetingWelcomeBack;
+
+  /// No description provided for @greetingWelcomeNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get greetingWelcomeNew;
+
+  /// No description provided for @greetingWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'{greeting}, {name}'**
+  String greetingWithName(String greeting, String name);
+
+  /// No description provided for @homeFactAwaitingReply.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} deal is waiting for your reply} other{{count} deals are waiting for your reply}}'**
+  String homeFactAwaitingReply(int count);
+
+  /// No description provided for @homeFactInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} deal in progress} other{{count} deals in progress}}'**
+  String homeFactInProgress(int count);
+
+  /// No description provided for @homeFactNewMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for help or offer a service to begin'**
+  String get homeFactNewMember;
+
+  /// No description provided for @continueYourTurn.
+  ///
+  /// In en, this message translates to:
+  /// **'Your turn'**
+  String get continueYourTurn;
+
+  /// No description provided for @continueReplyToDeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Review the terms and reply'**
+  String get continueReplyToDeal;
+
+  /// No description provided for @continueInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get continueInProgress;
+
+  /// No description provided for @continueMarkDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm when the job is done'**
+  String get continueMarkDone;
+
+  /// No description provided for @continueDraftTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfinished request'**
+  String get continueDraftTitle;
+
+  /// No description provided for @continueDraftUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled request'**
+  String get continueDraftUntitled;
+
+  /// No description provided for @continueDraftHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up where you left off'**
+  String get continueDraftHint;
+
+  /// No description provided for @draftDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete draft'**
+  String get draftDelete;
+
+  /// No description provided for @draftDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft deleted'**
+  String get draftDeleted;
+
+  /// No description provided for @draftRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft restored'**
+  String get draftRestored;
+
+  /// No description provided for @draftStartOver.
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get draftStartOver;
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get actionUndo;
+
+  /// No description provided for @quickAskHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for help'**
+  String get quickAskHelp;
+
+  /// No description provided for @quickOfferService.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer a service'**
+  String get quickOfferService;
+
+  /// No description provided for @feedEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re all caught up'**
+  String get feedEndTitle;
+
+  /// No description provided for @feedEndAskPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn’t find the right person?'**
+  String get feedEndAskPrompt;
+
+  /// No description provided for @feedEndJobsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New requests appear here first'**
+  String get feedEndJobsHint;
+
+  /// No description provided for @whatsNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What’s new'**
+  String get whatsNewTitle;
+
+  /// No description provided for @whatsNewLookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A cleaner, calmer look'**
+  String get whatsNewLookTitle;
+
+  /// No description provided for @whatsNewLookBody.
+  ///
+  /// In en, this message translates to:
+  /// **'New type, colors and icons that are easier to read.'**
+  String get whatsNewLookBody;
+
+  /// No description provided for @whatsNewNextStepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next step, on Home'**
+  String get whatsNewNextStepTitle;
+
+  /// No description provided for @whatsNewNextStepBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Deals waiting for you and unfinished requests now come first.'**
+  String get whatsNewNextStepBody;
+
+  /// No description provided for @whatsNewDraftsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafts save themselves'**
+  String get whatsNewDraftsTitle;
+
+  /// No description provided for @whatsNewDraftsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Close a request halfway and finish it later.'**
+  String get whatsNewDraftsBody;
+
+  /// No description provided for @whatsNewDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get whatsNewDone;
+
+  /// No description provided for @xizmatCardNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get xizmatCardNew;
+
+  /// No description provided for @favoriteAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get favoriteAdd;
+
+  /// No description provided for @favoriteRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from saved'**
+  String get favoriteRemove;
+
+  /// No description provided for @statJobsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{job done} other{jobs done}}'**
+  String statJobsDone(int count);
+
+  /// No description provided for @statRating.
+  ///
+  /// In en, this message translates to:
+  /// **'rating'**
+  String get statRating;
+
+  /// No description provided for @dealBondYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get dealBondYou;
+
+  /// No description provided for @dealBondYourTurn.
+  ///
+  /// In en, this message translates to:
+  /// **'Your turn: review the terms and accept'**
+  String get dealBondYourTurn;
+
+  /// No description provided for @dealBondWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for {name} to reply'**
+  String dealBondWaiting(String name);
+
+  /// No description provided for @dealBondAgreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Agreed · the work is under way'**
+  String get dealBondAgreed;
+
+  /// No description provided for @dealBondDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · thank you both'**
+  String get dealBondDone;
+
+  /// No description provided for @dealBondClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'This deal is closed'**
+  String get dealBondClosed;
+
+  /// No description provided for @undoDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get undoDeleted;
+
+  /// No description provided for @savedRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from saved'**
+  String get savedRemoved;
+
+  /// No description provided for @yordamKerakTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a short title'**
+  String get yordamKerakTitleRequired;
+
+  /// No description provided for @yordamKerakMessageRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe what you need'**
+  String get yordamKerakMessageRequired;
+
+  /// No description provided for @stateErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t load this'**
+  String get stateErrorTitle;
+
+  /// No description provided for @stateErrorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get stateErrorBody;
+
+  /// No description provided for @stateOfflineBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet. Showing saved results.'**
+  String get stateOfflineBanner;
+
+  /// No description provided for @disabledHintServiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a name of at least 2 letters'**
+  String get disabledHintServiceName;
+
+  /// No description provided for @disabledHintServiceCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the city you work in'**
+  String get disabledHintServiceCity;
+
+  /// No description provided for @disabledHintServicePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one photo to publish'**
+  String get disabledHintServicePhoto;
+
+  /// No description provided for @disabledHintPickSubcategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a speciality first'**
+  String get disabledHintPickSubcategory;
+
+  /// No description provided for @disabledHintOneAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on at least one alert'**
+  String get disabledHintOneAlert;
+
+  /// No description provided for @milestoneOverline.
+  ///
+  /// In en, this message translates to:
+  /// **'New milestone'**
+  String get milestoneOverline;
+
+  /// No description provided for @milestoneDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get milestoneDismiss;
+
+  /// No description provided for @notificationsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTooltip;
+
+  /// No description provided for @a11yRating.
+  ///
+  /// In en, this message translates to:
+  /// **'rated {rating}'**
+  String a11yRating(String rating);
+
+  /// No description provided for @a11yNewProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'new on YordamBor'**
+  String get a11yNewProvider;
+
+  /// No description provided for @filtersClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get filtersClear;
+
+  /// No description provided for @actionClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get actionClose;
+
+  /// No description provided for @actionMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get actionMore;
+
+  /// No description provided for @actionSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get actionSend;
+
+  /// No description provided for @actionPreviousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get actionPreviousMonth;
+
+  /// No description provided for @actionNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get actionNextMonth;
+
+  /// No description provided for @a11yShowPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get a11yShowPassword;
+
+  /// No description provided for @a11yHidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get a11yHidePassword;
+
+  /// No description provided for @a11yStarRating.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 star} other{{count} stars}}'**
+  String a11yStarRating(int count);
+
+  /// No description provided for @detailPaneEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a card'**
+  String get detailPaneEmptyTitle;
+
+  /// No description provided for @detailPaneEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It opens here, beside the list.'**
+  String get detailPaneEmptyBody;
+
+  /// No description provided for @taklifAskHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What help do you need?'**
+  String get taklifAskHint;
+
+  /// No description provided for @taklifAskSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the job and, if you like, your budget. Work starts once you both agree.'**
+  String get taklifAskSubtitle;
+
+  /// No description provided for @taklifAskSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get taklifAskSubmit;
+
+  /// No description provided for @dealOfferAutoCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled automatically if there’s no reply in {days, plural, =1{1 day} other{{days} days}}'**
+  String dealOfferAutoCancel(int days);
+
+  /// No description provided for @dealOfferReplyWithin.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply within {days, plural, =1{1 day} other{{days} days}}, or the offer is cancelled'**
+  String dealOfferReplyWithin(int days);
+
+  /// No description provided for @dealAcceptedRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted the terms'**
+  String get dealAcceptedRow;
+
+  /// No description provided for @dealCompletedRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed the work is done'**
+  String get dealCompletedRow;
+
+  /// No description provided for @dealWithdrawOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw offer'**
+  String get dealWithdrawOffer;
+
+  /// No description provided for @dealWithdrawTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw your offer?'**
+  String get dealWithdrawTitle;
+
+  /// No description provided for @dealWithdrawBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The deal is cancelled. You can send a new offer later.'**
+  String get dealWithdrawBody;
+
+  /// No description provided for @dealChatOpensOnReply.
+  ///
+  /// In en, this message translates to:
+  /// **'The chat opens once they reply.'**
+  String get dealChatOpensOnReply;
+
+  /// No description provided for @dealRejectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline this offer?'**
+  String get dealRejectTitle;
+
+  /// No description provided for @dealRejectBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a reason if you like — it stays visible in the deal.'**
+  String get dealRejectBody;
+
+  /// No description provided for @dealRejectCommentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment (optional)'**
+  String get dealRejectCommentLabel;
+
+  /// No description provided for @dealSendNewOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a new offer'**
+  String get dealSendNewOffer;
+
+  /// No description provided for @dealClosedNewOfferHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Still need this service? Send a new offer and the discussion starts afresh.'**
+  String get dealClosedNewOfferHint;
+
+  /// No description provided for @archiveTabNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Needed help'**
+  String get archiveTabNeeded;
+
+  /// No description provided for @archiveTabProvided.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided help'**
+  String get archiveTabProvided;
+
+  /// No description provided for @archiveNeededEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Deals where you asked for help will appear here.'**
+  String get archiveNeededEmpty;
+
+  /// No description provided for @archiveProvidedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Deals where you helped someone will appear here.'**
+  String get archiveProvidedEmpty;
+
+  /// No description provided for @achievementsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{unlocked} of {total} unlocked'**
+  String achievementsProgress(int unlocked, int total);
+
+  /// No description provided for @achievementsShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get achievementsShow;
+
+  /// No description provided for @achievementsHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get achievementsHide;
+
+  /// No description provided for @yordamKerakCityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a city'**
+  String get yordamKerakCityRequired;
+
+  /// No description provided for @taklifContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your contact details'**
+  String get taklifContactTitle;
+
+  /// No description provided for @taklifContactNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The other side sees these in the deal, to reach you.'**
+  String get taklifContactNote;
+
+  /// No description provided for @taklifFirstNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get taklifFirstNameLabel;
+
+  /// No description provided for @taklifLastNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Family name'**
+  String get taklifLastNameLabel;
+
+  /// No description provided for @taklifFirstNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your first name'**
+  String get taklifFirstNameRequired;
+
+  /// No description provided for @taklifPhoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number'**
+  String get taklifPhoneRequired;
+
+  /// No description provided for @taklifMessageOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Message (optional)'**
+  String get taklifMessageOptionalLabel;
+
+  /// No description provided for @dealContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details'**
+  String get dealContactTitle;
+
+  /// No description provided for @dealContactSent.
+  ///
+  /// In en, this message translates to:
+  /// **'You shared your contact details'**
+  String get dealContactSent;
+
+  /// No description provided for @dealsSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your deals'**
+  String get dealsSectionTitle;
+
+  /// No description provided for @dealStateYourTurn.
+  ///
+  /// In en, this message translates to:
+  /// **'In discussion · your turn'**
+  String get dealStateYourTurn;
+
+  /// No description provided for @dealStateSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent · waiting for a reply'**
+  String get dealStateSent;
+
+  /// No description provided for @dealStateInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted · under way'**
+  String get dealStateInProgress;
+
+  /// No description provided for @dealStateAwaitingConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Done on your side · waiting for confirmation'**
+  String get dealStateAwaitingConfirm;
+
+  /// No description provided for @actionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get actionAdd;
+
+  /// No description provided for @businessEarningsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned this month'**
+  String get businessEarningsTitle;
+
+  /// No description provided for @businessEarningsSee.
+  ///
+  /// In en, this message translates to:
+  /// **'See earnings'**
+  String get businessEarningsSee;
+
+  /// No description provided for @businessStatWaitingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'waiting for you'**
+  String get businessStatWaitingLabel;
+
+  /// No description provided for @businessNextStepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get more clients'**
+  String get businessNextStepsTitle;
+
+  /// No description provided for @businessNextStepsProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total}'**
+  String businessNextStepsProgress(int done, int total);
+
+  /// No description provided for @businessStepPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add 3 or more photos'**
+  String get businessStepPhotos;
+
+  /// No description provided for @businessStepPhotosWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Services with photos get chosen more often'**
+  String get businessStepPhotosWhy;
+
+  /// No description provided for @businessStepPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a price'**
+  String get businessStepPrice;
+
+  /// No description provided for @businessStepPriceWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'A clear price means fewer questions before the deal'**
+  String get businessStepPriceWhy;
+
+  /// No description provided for @businessStepAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Show when you’re free'**
+  String get businessStepAvailability;
+
+  /// No description provided for @businessStepAvailabilityWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients write to people who can come soon'**
+  String get businessStepAvailabilityWhy;
+
+  /// No description provided for @businessStepShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your service link'**
+  String get businessStepShare;
+
+  /// No description provided for @businessStepShareWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Send it on Telegram so friends can recommend you'**
+  String get businessStepShareWhy;
+
+  /// No description provided for @businessStartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn your skills into income'**
+  String get businessStartTitle;
+
+  /// No description provided for @businessStartStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your service and price'**
+  String get businessStartStep1;
+
+  /// No description provided for @businessStartStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos and your city'**
+  String get businessStartStep2;
+
+  /// No description provided for @businessStartStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Get requests and agree on the deal'**
+  String get businessStartStep3;
+
+  /// No description provided for @businessServicesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'My services · {count} of {max}'**
+  String businessServicesCount(int count, int max);
+
+  /// No description provided for @xizmatLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You can have up to {max} services. Edit or remove one to add another.'**
+  String xizmatLimitReached(int max);
+
+  /// No description provided for @calendarStatusCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Your status · clients see it'**
+  String get calendarStatusCaption;
+
+  /// No description provided for @calendarLegendNeedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help I get'**
+  String get calendarLegendNeedHelp;
+
+  /// No description provided for @calendarLegendGiveHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help I give'**
+  String get calendarLegendGiveHelp;
+
+  /// No description provided for @calendarLegendPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get calendarLegendPersonal;
+
+  /// No description provided for @calendarHintMark.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a day and mark it free or busy. Add hours if it’s only part of the day; otherwise it’s the whole working day.'**
+  String get calendarHintMark;
+
+  /// No description provided for @calendarHintClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders of your deals: help you get and help you give. Tap a day for details.'**
+  String get calendarHintClient;
+
+  /// No description provided for @calendarDayNotMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not marked'**
+  String get calendarDayNotMarked;
+
+  /// No description provided for @calendarWholeWorkingDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole working day'**
+  String get calendarWholeWorkingDay;
+
+  /// No description provided for @calendarAddHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Add hours'**
+  String get calendarAddHours;
+
+  /// No description provided for @calendarRemoveHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove these hours'**
+  String get calendarRemoveHours;
+
+  /// No description provided for @calendarHoursFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get calendarHoursFrom;
+
+  /// No description provided for @calendarHoursTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get calendarHoursTo;
+
+  /// No description provided for @calendarDayEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders this day'**
+  String get calendarDayEvents;
+
+  /// No description provided for @workingHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get workingHoursTitle;
+
+  /// No description provided for @workingHoursHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients see them on your services'**
+  String get workingHoursHint;
+
+  /// No description provided for @workingHoursSheetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your usual working day. By default 9:00–13:00 and 14:00–18:00.'**
+  String get workingHoursSheetHint;
+
+  /// No description provided for @workingHoursReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to 9–13 and 14–18'**
+  String get workingHoursReset;
+
+  /// No description provided for @workingHoursInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the hours: each one starts before it ends, and they don’t overlap.'**
+  String get workingHoursInvalid;
+
+  /// No description provided for @workingHoursSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours saved'**
+  String get workingHoursSaved;
+
+  /// No description provided for @xizmatOwnHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Own hours for this service'**
+  String get xizmatOwnHoursTitle;
+
+  /// No description provided for @xizmatOwnHoursOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as your profile: {hours}'**
+  String xizmatOwnHoursOff(String hours);
+
+  /// No description provided for @xizmatHoursInCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'You change working hours in the calendar.'**
+  String get xizmatHoursInCalendar;
+
+  /// No description provided for @xizmatHoursOpenCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Open calendar'**
+  String get xizmatHoursOpenCalendar;
+
+  /// No description provided for @xizmatScheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours and availability'**
+  String get xizmatScheduleTitle;
+
+  /// No description provided for @xizmatScheduleNextDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Next two weeks'**
+  String get xizmatScheduleNextDays;
+
+  /// No description provided for @xizmatTodayFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free today'**
+  String get xizmatTodayFree;
+
+  /// No description provided for @xizmatTodayBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy today'**
+  String get xizmatTodayBusy;
+
+  /// No description provided for @xizmatTodayBusyAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy today: {hours}'**
+  String xizmatTodayBusyAt(String hours);
+
+  /// No description provided for @xizmatTodayFreeAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Free today: {hours}'**
+  String xizmatTodayFreeAt(String hours);
+
+  /// No description provided for @calendarNoRemindersDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders on this day.'**
+  String get calendarNoRemindersDay;
+
+  /// No description provided for @sampleTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample'**
+  String get sampleTag;
+
+  /// No description provided for @demoDealNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a sample: the deal doesn’t go to a real person.'**
+  String get demoDealNote;
+
+  /// No description provided for @feedInviteProvidersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Be one of the first providers'**
+  String get feedInviteProvidersTitle;
+
+  /// No description provided for @feedInviteProvidersBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your service, and clients will see it first.'**
+  String get feedInviteProvidersBody;
+
+  /// No description provided for @feedInviteAskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to ask'**
+  String get feedInviteAskTitle;
+
+  /// No description provided for @feedInviteAskBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Say what you need, and providers will see your request.'**
+  String get feedInviteAskBody;
+
+  /// No description provided for @feedInviteProvidersAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your service'**
+  String get feedInviteProvidersAction;
+
+  /// No description provided for @feedInviteAskAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe what you need'**
+  String get feedInviteAskAction;
+
+  /// No description provided for @sampleFindProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a provider'**
+  String get sampleFindProvider;
+
+  /// No description provided for @sampleFindProviderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a sample. Describe the job, and real providers will see it.'**
+  String get sampleFindProviderHint;
+
+  /// No description provided for @sampleAlertNewServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell me when a provider joins in this field'**
+  String get sampleAlertNewServices;
+
+  /// No description provided for @sampleRequestPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Request posted — providers will see it.'**
+  String get sampleRequestPosted;
+
+  /// No description provided for @sampleRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a sample request'**
+  String get sampleRequestTitle;
+
+  /// No description provided for @sampleRequestBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Real requests will show up here. Turn on alerts and we’ll tell you when someone asks for help in this field.'**
+  String get sampleRequestBody;
+
+  /// No description provided for @sampleAlertHelpPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert me to new requests'**
+  String get sampleAlertHelpPosts;
+
+  /// No description provided for @sampleAlertOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Done — we’ll tell you about new requests in this field.'**
+  String get sampleAlertOn;
+
+  /// No description provided for @foundingBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'First on YordamBor'**
+  String get foundingBadge;
+
+  /// No description provided for @foundingBadgeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The first providers get the “First on YordamBor” badge.'**
+  String get foundingBadgeNote;
+
+  /// No description provided for @inviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite providers'**
+  String get inviteTitle;
+
+  /// No description provided for @inviteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Know a good electrician, tutor or salon? Invite them: the more real providers, the more clients come.'**
+  String get inviteBody;
+
+  /// No description provided for @inviteShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share an invite'**
+  String get inviteShare;
+
+  /// No description provided for @invitePrepare.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare a service for someone'**
+  String get invitePrepare;
+
+  /// No description provided for @inviteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Join me on YordamBor: clients there find providers across Uzbekistan. Adding your service is free, and the first providers get the “First on YordamBor” badge.'**
+  String get inviteMessage;
+
+  /// No description provided for @invitePersonalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, hello! I’m on YordamBor, where clients find providers. Add your service “{trade}” in {city}: it’s free, and the first providers get the “First on YordamBor” badge.'**
+  String invitePersonalMessage(String name, String trade, String city);
+
+  /// No description provided for @inviteOpenLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open to start: {link}'**
+  String inviteOpenLink(String link);
+
+  /// No description provided for @inviteAppLink.
+  ///
+  /// In en, this message translates to:
+  /// **'The app: {link}'**
+  String inviteAppLink(String link);
+
+  /// No description provided for @invitePrepareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A service for someone you know'**
+  String get invitePrepareTitle;
+
+  /// No description provided for @invitePrepareBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick their trade and city. They get a link that opens “New service” with these filled in; they publish it themselves.'**
+  String get invitePrepareBody;
+
+  /// No description provided for @invitePersonName.
+  ///
+  /// In en, this message translates to:
+  /// **'Their name (optional)'**
+  String get invitePersonName;
+
+  /// No description provided for @invitePersonPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Their phone (optional)'**
+  String get invitePersonPhone;
+
+  /// No description provided for @invitePickTrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade'**
+  String get invitePickTrade;
+
+  /// No description provided for @inviteSendWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Send on WhatsApp'**
+  String get inviteSendWhatsApp;
+
+  /// No description provided for @inviteSendSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Send by SMS'**
+  String get inviteSendSms;
+
+  /// No description provided for @inviteSendOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Another app'**
+  String get inviteSendOther;
+
+  /// No description provided for @inviteNeedTradeCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the trade and the city'**
+  String get inviteNeedTradeCity;
+
+  /// No description provided for @onbGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What brings you to YordamBor?'**
+  String get onbGoalTitle;
+
+  /// No description provided for @onbGoalNeedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'I need help'**
+  String get onbGoalNeedHelp;
+
+  /// No description provided for @onbGoalNeedHelpSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a provider or describe a job'**
+  String get onbGoalNeedHelpSub;
+
+  /// No description provided for @onbGoalOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'I offer services'**
+  String get onbGoalOffer;
+
+  /// No description provided for @onbGoalOfferSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Get clients and earn'**
+  String get onbGoalOfferSub;
+
+  /// No description provided for @onbGoalBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'Both'**
+  String get onbGoalBoth;
+
+  /// No description provided for @onbGoalBothSub.
+  ///
+  /// In en, this message translates to:
+  /// **'I help, and sometimes I need help'**
+  String get onbGoalBothSub;
+
+  /// No description provided for @onbCityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your city'**
+  String get onbCityTitle;
+
+  /// No description provided for @onbCitySub.
+  ///
+  /// In en, this message translates to:
+  /// **'We’ll show what’s near you.'**
+  String get onbCitySub;
+
+  /// No description provided for @onbNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onbNext;
+
+  /// No description provided for @onbDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get onbDone;
+
+  /// No description provided for @onbSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onbSkip;
+
+  /// No description provided for @onbStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onbStep(int current, int total);
+
+  /// No description provided for @onbIntro1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Services near you'**
+  String get onbIntro1Title;
+
+  /// No description provided for @onbIntro1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialists and organizations across Uzbekistan.'**
+  String get onbIntro1Body;
+
+  /// No description provided for @onbIntro2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Need help? Just ask'**
+  String get onbIntro2Title;
+
+  /// No description provided for @onbIntro2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the task, and providers will reach out.'**
+  String get onbIntro2Body;
+
+  /// No description provided for @onbIntro3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer your services'**
+  String get onbIntro3Title;
+
+  /// No description provided for @onbIntro3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'As an individual or an organization. Free.'**
+  String get onbIntro3Body;
+
+  /// No description provided for @onbIntro4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair and calm'**
+  String get onbIntro4Title;
+
+  /// No description provided for @onbIntro4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A deal starts when both sides agree. Reviews come only after finished work. You pay as agreed.'**
+  String get onbIntro4Body;
+
+  /// No description provided for @onbTypeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you work?'**
+  String get onbTypeTitle;
+
+  /// No description provided for @onbTypeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients see this on your services. You can change it later.'**
+  String get onbTypeSub;
+
+  /// No description provided for @onbTypeIndividualSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A tradesperson, tutor or freelancer'**
+  String get onbTypeIndividualSub;
+
+  /// No description provided for @onbTypeInstitutionSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A company, salon, clinic or training centre'**
+  String get onbTypeInstitutionSub;
+
+  /// No description provided for @onbReadyToOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Whenever you’re ready, tap “{action}”.'**
+  String onbReadyToOffer(String action);
+
+  /// No description provided for @inviteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a provider you know'**
+  String get inviteAction;
+
+  /// No description provided for @invitePersonalMessageNoName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello! I’m on YordamBor, where clients find providers. Add your service “{trade}” in {city}: it’s free, and the first providers get the “First on YordamBor” badge.'**
+  String invitePersonalMessageNoName(String trade, String city);
+
+  /// No description provided for @joinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re invited to YordamBor'**
+  String get joinTitle;
+
+  /// No description provided for @joinBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your service — it’s free. Clients find providers here by trade and city.'**
+  String get joinBody;
+
+  /// No description provided for @joinLookAround.
+  ///
+  /// In en, this message translates to:
+  /// **'Look around first'**
+  String get joinLookAround;
+
+  /// No description provided for @onbStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onbStart;
+
+  /// No description provided for @welcomeFindHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Find help'**
+  String get welcomeFindHelp;
+
+  /// No description provided for @welcomeGiveHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer help'**
+  String get welcomeGiveHelp;
+
+  /// No description provided for @onbTileLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Lawyer'**
+  String get onbTileLawyer;
+
+  /// No description provided for @onbTileBeauty.
+  ///
+  /// In en, this message translates to:
+  /// **'Beauty'**
+  String get onbTileBeauty;
+
+  /// No description provided for @onbTileCatering.
+  ///
+  /// In en, this message translates to:
+  /// **'Catering'**
+  String get onbTileCatering;
+
+  /// No description provided for @onbTileVet.
+  ///
+  /// In en, this message translates to:
+  /// **'Vet'**
+  String get onbTileVet;
+
+  /// No description provided for @onbTileCleaning.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleaning'**
+  String get onbTileCleaning;
+
+  /// No description provided for @onbTileElectrician.
+  ///
+  /// In en, this message translates to:
+  /// **'Electrician'**
+  String get onbTileElectrician;
+
+  /// No description provided for @onbTilePlumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Plumber'**
+  String get onbTilePlumber;
+
+  /// No description provided for @onbTileDental.
+  ///
+  /// In en, this message translates to:
+  /// **'Dental clinic'**
+  String get onbTileDental;
+
+  /// No description provided for @onbMoreServices.
+  ///
+  /// In en, this message translates to:
+  /// **'and {count}+ more kinds of service'**
+  String onbMoreServices(int count);
+
+  /// No description provided for @onbIllRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The kitchen tap is leaking'**
+  String get onbIllRequestTitle;
+
+  /// No description provided for @onbIllToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get onbIllToday;
+
+  /// No description provided for @onbIllNewOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'2 new offers'**
+  String get onbIllNewOffers;
+
+  /// No description provided for @onbIllName1.
+  ///
+  /// In en, this message translates to:
+  /// **'Aziz'**
+  String get onbIllName1;
+
+  /// No description provided for @onbIllName2.
+  ///
+  /// In en, this message translates to:
+  /// **'Dilnoza'**
+  String get onbIllName2;
+
+  /// No description provided for @onbIllOffer1.
+  ///
+  /// In en, this message translates to:
+  /// **'I can come today at 6 pm'**
+  String get onbIllOffer1;
+
+  /// No description provided for @onbIllOffer2.
+  ///
+  /// In en, this message translates to:
+  /// **'Free tomorrow morning'**
+  String get onbIllOffer2;
+
+  /// No description provided for @onbIllNewRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New request'**
+  String get onbIllNewRequest;
+
+  /// No description provided for @onbIllSocket.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace a socket'**
+  String get onbIllSocket;
+
+  /// No description provided for @onbTileTutor.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutor'**
+  String get onbTileTutor;
+
+  /// No description provided for @onbTileAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Car repair'**
+  String get onbTileAuto;
+
+  /// No description provided for @searchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTooltip;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, organization or service'**
+  String get searchHint;
+
+  /// No description provided for @searchPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a provider’s name, an organization or a service, such as “plumber”.'**
+  String get searchPrompt;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get searchNoResults;
+
+  /// No description provided for @searchNoResultsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a request, and providers will reach out.'**
+  String get searchNoResultsHint;
+
+  /// No description provided for @searchOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection: showing only what’s on your phone.'**
+  String get searchOffline;
+
+  /// No description provided for @onbTileRenovation.
+  ///
+  /// In en, this message translates to:
+  /// **'Renovation'**
+  String get onbTileRenovation;
+
+  /// No description provided for @onbTileFitness.
+  ///
+  /// In en, this message translates to:
+  /// **'Fitness'**
+  String get onbTileFitness;
+
+  /// No description provided for @onbTileTranslator.
+  ///
+  /// In en, this message translates to:
+  /// **'Translator'**
+  String get onbTileTranslator;
+
+  /// No description provided for @onbTileBarber.
+  ///
+  /// In en, this message translates to:
+  /// **'Barber'**
+  String get onbTileBarber;
+
+  /// No description provided for @onbTileMusic.
+  ///
+  /// In en, this message translates to:
+  /// **'Music lessons'**
+  String get onbTileMusic;
+
+  /// No description provided for @onbTileStylist.
+  ///
+  /// In en, this message translates to:
+  /// **'Stylist'**
+  String get onbTileStylist;
+
+  /// No description provided for @onbTileKindergarten.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindergarten'**
+  String get onbTileKindergarten;
+
+  /// No description provided for @onbIllTutorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'English and IELTS'**
+  String get onbIllTutorTitle;
+
+  /// No description provided for @onbIllStylistRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'A look for a wedding'**
+  String get onbIllStylistRequest;
+
+  /// No description provided for @onbKindsChip.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} kinds of service'**
+  String onbKindsChip(int count);
+
+  /// No description provided for @onbIllDentalRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I have a toothache'**
+  String get onbIllDentalRequestTitle;
+
+  /// No description provided for @onbTileDentist.
+  ///
+  /// In en, this message translates to:
+  /// **'Dentist'**
+  String get onbTileDentist;
+
+  /// No description provided for @onbIllDentalOffer1.
+  ///
+  /// In en, this message translates to:
+  /// **'We can see you today at 4 pm'**
+  String get onbIllDentalOffer1;
+
+  /// No description provided for @onbIllDentalOffer2.
+  ///
+  /// In en, this message translates to:
+  /// **'I can see you tomorrow morning'**
+  String get onbIllDentalOffer2;
+
+  /// No description provided for @xizmatStatNoReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews'**
+  String get xizmatStatNoReviews;
+
+  /// No description provided for @xizmatStatPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'price'**
+  String get xizmatStatPrice;
+
+  /// No description provided for @xizmatStatPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'per hour'**
+  String get xizmatStatPerHour;
+
+  /// No description provided for @xizmatStatNegotiable.
+  ///
+  /// In en, this message translates to:
+  /// **'Negotiable'**
+  String get xizmatStatNegotiable;
+
+  /// No description provided for @xizmatPromiseOwnWords.
+  ///
+  /// In en, this message translates to:
+  /// **'In the provider’s own words'**
+  String get xizmatPromiseOwnWords;
+
+  /// No description provided for @xizmatAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About this service'**
+  String get xizmatAboutTitle;
+
+  /// No description provided for @actionReadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Read more'**
+  String get actionReadMore;
+
+  /// No description provided for @actionReadLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get actionReadLess;
+
+  /// No description provided for @reviewsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} review} other{{count} reviews}}'**
+  String reviewsCount(int count);
+
+  /// No description provided for @reviewsSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All reviews ({count})'**
+  String reviewsSeeAll(int count);
+
+  /// No description provided for @reviewsFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get reviewsFilterAll;
+
+  /// No description provided for @reviewsFilterEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews with this rating yet'**
+  String get reviewsFilterEmpty;
+
+  /// No description provided for @reviewsBarA11y.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating {stars}: {count}'**
+  String reviewsBarA11y(int stars, int count);
+
+  /// No description provided for @xizmatHowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get xizmatHowTitle;
+
+  /// No description provided for @xizmatHowAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a request'**
+  String get xizmatHowAsk;
+
+  /// No description provided for @xizmatHowChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat in the app'**
+  String get xizmatHowChat;
+
+  /// No description provided for @xizmatHowAgree.
+  ///
+  /// In en, this message translates to:
+  /// **'Agree on the job'**
+  String get xizmatHowAgree;
+
+  /// No description provided for @providerMemberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since {year}'**
+  String providerMemberSince(String year);
+
+  /// No description provided for @providerServicesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} service} other{{count} services}}'**
+  String providerServicesCount(int count);
+
+  /// No description provided for @xizmatAboutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What you do, how you work, what you promise clients'**
+  String get xizmatAboutHint;
 }
 
 class _AppLocalizationsDelegate

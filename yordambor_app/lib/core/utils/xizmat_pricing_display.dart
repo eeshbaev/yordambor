@@ -1,13 +1,17 @@
 import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/utils/money_format.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_summary.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 
-String formatXizmatPriceAmount(double price, String currency) {
-  final formatted =
-      price % 1 == 0 ? price.toInt().toString() : price.toString();
-  return '$formatted $currency';
+/// "120 000 soʻm": grouped with no-break spaces, "soʻm" instead of UZS.
+String formatXizmatPriceAmount(
+  double price,
+  String currency, {
+  String languageCode = 'uz',
+}) {
+  return formatMoney(price, currency, languageCode: languageCode);
 }
 
 String xizmatPricingLabel(XizmatFeedItem item, AppStrings strings) {
@@ -20,12 +24,42 @@ String xizmatPricingLabel(XizmatFeedItem item, AppStrings strings) {
     return strings.xizmatPriceNegotiable;
   }
 
-  final formatted = formatXizmatPriceAmount(amount, item.currency);
+  final formatted = formatXizmatPriceAmount(
+    amount,
+    item.currency,
+    languageCode: strings.languageCode,
+  );
   return switch (item.pricingModel) {
     XizmatPricingModel.fixed => formatted,
     XizmatPricingModel.hourly => strings.xizmatPricePerHour(formatted),
     XizmatPricingModel.negotiable => strings.xizmatPriceNegotiable,
   };
+}
+
+/// The price in two parts, for a figure with a word under it: "120 000 soʻm"
+/// over "narx" (or "soatiga" when it is by the hour); "Kelishiladi" over
+/// "narx" when it is agreed case by case.
+({String value, String unit}) xizmatPriceParts(
+  XizmatFeedItem item,
+  AppStrings strings,
+) {
+  final amount = item.basePrice;
+  if (item.pricingModel == XizmatPricingModel.negotiable ||
+      amount == null ||
+      amount <= 0) {
+    return (value: strings.xizmatStatNegotiable, unit: strings.xizmatStatPrice);
+  }
+  final formatted = formatXizmatPriceAmount(
+    amount,
+    item.currency,
+    languageCode: strings.languageCode,
+  );
+  return (
+    value: formatted,
+    unit: item.pricingModel == XizmatPricingModel.hourly
+        ? strings.xizmatStatPerHour
+        : strings.xizmatStatPrice,
+  );
 }
 
 class TaklifPricingPrefill {

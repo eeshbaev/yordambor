@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/provider_tools_sync.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
@@ -20,6 +21,7 @@ Future<void> showClientRegistrySheet({
   final noteController = TextEditingController(text: client?.note ?? '');
 
   final saved = await showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,

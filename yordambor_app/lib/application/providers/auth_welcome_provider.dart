@@ -51,3 +51,15 @@ String sessionGreetingName(SessionState session, String guestFallback) {
   final first = firstNameFromFullName(sessionDisplayFullName(session));
   return first.isNotEmpty ? first : guestFallback;
 }
+
+/// First name for a greeting (manual WL-04): from the profile or the sign-up
+/// name only, never an email or a placeholder. Empty when unknown.
+String greetingFirstName(SessionState session) {
+  if (!session.isAuthenticated) return '';
+  final fromProfile = session.profile?.fullName.trim();
+  if (fromProfile != null && fromProfile.isNotEmpty) {
+    return firstNameFromFullName(fromProfile);
+  }
+  final metadata = session.user?.userMetadata ?? const {};
+  return firstNameFromFullName(metadata['full_name'] as String?);
+}

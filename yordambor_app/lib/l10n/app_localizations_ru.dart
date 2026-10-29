@@ -19,7 +19,82 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tabHome => 'Главная';
 
   @override
+  String get tabCalendar => 'Календарь';
+
+  @override
+  String get calendarGuestSubtitle =>
+      'Войдите, чтобы видеть расписание и отмечать занятость.';
+
+  @override
+  String get calendarProviderHint =>
+      'Нажмите на день, затем отметьте «свободен» или «занят».';
+
+  @override
+  String get calendarClientHint =>
+      'Встречи и напоминания отображаются в календаре. Нажмите на день для деталей.';
+
+  @override
+  String get calendarLegendAvailable => 'Свободен';
+
+  @override
+  String get calendarLegendBusy => 'Занят';
+
+  @override
+  String get calendarLegendAppointment => 'Встреча';
+
+  @override
+  String get calendarMarkAvailable =>
+      'Отмечено: свободен — нажмите, чтобы изменить';
+
+  @override
+  String get calendarMarkBusy => 'Отмечено: занят — нажмите, чтобы изменить';
+
+  @override
+  String get calendarMarkUnset => 'Отметить день: свободен / занят';
+
+  @override
+  String get calendarNoEventsDay => 'На этот день встреч нет.';
+
+  @override
+  String get calendarWeekdayMon => 'Пн';
+
+  @override
+  String get calendarWeekdayTue => 'Вт';
+
+  @override
+  String get calendarWeekdayWed => 'Ср';
+
+  @override
+  String get calendarWeekdayThu => 'Чт';
+
+  @override
+  String get calendarWeekdayFri => 'Пт';
+
+  @override
+  String get calendarWeekdaySat => 'Сб';
+
+  @override
+  String get calendarWeekdaySun => 'Вс';
+
+  @override
   String get tabFavorites => 'Избранное';
+
+  @override
+  String get tabBusiness => 'Бизнес';
+
+  @override
+  String get businessTabServices => 'Услуги';
+
+  @override
+  String get businessTabTools => 'Инструменты';
+
+  @override
+  String get businessToolsSubtitle =>
+      'Книга клиентов, квитанции, доход и другие инструменты.';
+
+  @override
+  String get myXizmatlarGuestSubtitle =>
+      'Войдите, чтобы управлять услугами и инструментами.';
 
   @override
   String get tabProfile => 'Профиль';
@@ -71,6 +146,69 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get filterAllSubcategoriesHint => 'Все направления выбранной сферы';
+
+  @override
+  String get filterCity => 'Город';
+
+  @override
+  String get filterAllCities => 'Все города';
+
+  @override
+  String get filterCityHint => 'В каком городе нужна услуга?';
+
+  @override
+  String get filterAllCitiesHint => 'Объявления во всех городах';
+
+  @override
+  String get xizmatServiceCityRequired => 'Выберите город обслуживания';
+
+  @override
+  String get serviceCityToshkent => 'Ташкент';
+
+  @override
+  String get serviceCityToshkentViloyati => 'Ташкентская область';
+
+  @override
+  String get serviceCitySamarqand => 'Самарканд';
+
+  @override
+  String get serviceCityBuxoro => 'Бухара';
+
+  @override
+  String get serviceCityNukus => 'Нукус';
+
+  @override
+  String get serviceCityNamangan => 'Наманган';
+
+  @override
+  String get serviceCityAndijon => 'Андижан';
+
+  @override
+  String get serviceCityFargona => 'Фергана';
+
+  @override
+  String get serviceCityQarshi => 'Карши';
+
+  @override
+  String get serviceCityUrganch => 'Ургенч';
+
+  @override
+  String get serviceCityTermiz => 'Термез';
+
+  @override
+  String get serviceCityJizzax => 'Джизак';
+
+  @override
+  String get serviceCityNavoiy => 'Навои';
+
+  @override
+  String get serviceCityQoqon => 'Коканд';
+
+  @override
+  String get serviceCityGuliston => 'Гулистан';
+
+  @override
+  String get serviceCityBoshqa => 'Другое';
 
   @override
   String homeFeedShowing(String summary) {
@@ -206,7 +344,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get invalidEmail => 'Введите корректный email';
 
   @override
-  String get invalidPhone => 'Введите корректный номер телефона (+998...)';
+  String get invalidPhone => 'Введите корректный номер телефона (+998…)';
 
   @override
   String get invalidNumber => 'Введите корректное число';
@@ -525,7 +663,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get shareCopied => 'Ссылка скопирована';
 
   @override
-  String get languageUz => 'O\'zbek';
+  String get languageUz => 'Oʻzbek';
 
   @override
   String get languageRu => 'Русский';
@@ -620,7 +758,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get kelishuvMessageHint => 'Напишите сообщение...';
+  String get kelishuvMessageHint => 'Напишите сообщение…';
 
   @override
   String get kelishuvIncoming => 'Входящие';
@@ -660,6 +798,260 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get profileEarningsSub => 'Заявленный доход';
+
+  @override
+  String get profileMargin => 'Маржа';
+
+  @override
+  String get profileMarginSub => 'Себестоимость и прибыль';
+
+  @override
+  String get profilePaymentReceipt => 'Квитанция об оплате';
+
+  @override
+  String get profilePaymentReceiptSub => 'PDF-квитанции для ваших услуг';
+
+  @override
+  String get receiptTitle => 'Квитанции';
+
+  @override
+  String get receiptNew => 'Новая квитанция';
+
+  @override
+  String get receiptEmptyTitle => 'Квитанций пока нет';
+
+  @override
+  String get receiptEmptySubtitle =>
+      'Создайте квитанцию для клиента и отправьте PDF.';
+
+  @override
+  String get receiptDocumentTitle => 'КВИТАНЦИЯ ОБ ОПЛАТЕ';
+
+  @override
+  String get receiptNumber => '№';
+
+  @override
+  String get receiptDate => 'Дата';
+
+  @override
+  String get receiptSeller => 'От';
+
+  @override
+  String get receiptBuyer => 'Кому';
+
+  @override
+  String get receiptBuyerName => 'Имя клиента';
+
+  @override
+  String get receiptBuyerPhone => 'Телефон клиента';
+
+  @override
+  String get receiptPickClient => 'Выбрать из книги клиентов';
+
+  @override
+  String get receiptXizmat => 'Услуга';
+
+  @override
+  String get receiptLines => 'Позиции';
+
+  @override
+  String get receiptLineTitle => 'Описание';
+
+  @override
+  String get receiptQuantity => 'Кол-во';
+
+  @override
+  String get receiptUnitPrice => 'Цена';
+
+  @override
+  String get receiptLineTotal => 'Сумма';
+
+  @override
+  String get receiptAddLine => 'Добавить';
+
+  @override
+  String get receiptDiscount => 'Скидка';
+
+  @override
+  String get receiptTaxEnable => 'Добавить налог';
+
+  @override
+  String get receiptTaxRate => 'Ставка (%)';
+
+  @override
+  String get receiptTaxLabel => 'Название налога';
+
+  @override
+  String get receiptTaxDisclaimer =>
+      'Ставку выбираете вы. YordamBor не даёт налоговых консультаций.';
+
+  @override
+  String get receiptSubtotal => 'Подытог';
+
+  @override
+  String get receiptTotal => 'Итого';
+
+  @override
+  String get receiptNote => 'Примечание';
+
+  @override
+  String get receiptDueDate => 'Срок оплаты';
+
+  @override
+  String get receiptCurrency => 'Валюта';
+
+  @override
+  String get receiptCurrencyUzs => 'UZS';
+
+  @override
+  String get receiptCurrencyUsd => 'USD';
+
+  @override
+  String get receiptSharePdf => 'Поделиться PDF';
+
+  @override
+  String get receiptPreview => 'Просмотр PDF';
+
+  @override
+  String get receiptSaved => 'Квитанция сохранена';
+
+  @override
+  String get receiptValidationBuyer => 'Введите имя клиента';
+
+  @override
+  String get receiptValidationXizmat => 'Выберите услугу';
+
+  @override
+  String get receiptValidationLines => 'Добавьте хотя бы одну позицию с ценой';
+
+  @override
+  String get receiptFooterBranding => 'Создано в YordamBor';
+
+  @override
+  String get receiptDeleteConfirm => 'Удалить эту квитанцию?';
+
+  @override
+  String get receiptTaxPresetCustom => 'Другая';
+
+  @override
+  String get marginTitle => 'Маржа';
+
+  @override
+  String get marginUnitsTitle => 'Справочник единиц';
+
+  @override
+  String get marginUnitsSubtitle =>
+      'Повторяемые единицы с ценой для быстрого расчёта';
+
+  @override
+  String get marginOpenUnits => 'Справочник единиц';
+
+  @override
+  String get marginAddUnit => 'Добавить единицу';
+
+  @override
+  String get marginEditUnit => 'Изменить единицу';
+
+  @override
+  String get marginUnitName => 'Название единицы';
+
+  @override
+  String get marginUnitCost => 'Стоимость за единицу (UZS)';
+
+  @override
+  String get marginUnitBasis => 'База стоимости (необязательно)';
+
+  @override
+  String get marginUnitBasisHint => 'напр. за час, за кг, за шт';
+
+  @override
+  String get marginUnitsEmptyTitle => 'Единиц пока нет';
+
+  @override
+  String get marginUnitsEmptySub =>
+      'Сохраните часто используемые единицы — труд, материалы, упаковку.';
+
+  @override
+  String get marginAddProduct => 'Добавить продукт';
+
+  @override
+  String get marginEditProduct => 'Изменить продукт';
+
+  @override
+  String get marginProductName => 'Название продукта';
+
+  @override
+  String get marginSalePrice => 'Цена продажи (UZS)';
+
+  @override
+  String get marginCostTotal => 'Общая себестоимость';
+
+  @override
+  String get marginProfit => 'Прибыль';
+
+  @override
+  String get marginMarginPercent => 'Маржа';
+
+  @override
+  String get marginCostBreakdown => 'Структура затрат';
+
+  @override
+  String get marginAddLine => 'Добавить строку';
+
+  @override
+  String get marginEditLine => 'Изменить строку';
+
+  @override
+  String get marginLineName => 'Единица / позиция';
+
+  @override
+  String get marginLineQuantity => 'Количество';
+
+  @override
+  String get marginLineUnitCost => 'Стоимость за единицу (UZS)';
+
+  @override
+  String get marginLineQuantityLabel => 'Подпись количества (необяз.)';
+
+  @override
+  String get marginLineQuantityLabelHint => 'напр. ч, кг, шт';
+
+  @override
+  String get marginSelectUnit => 'Из справочника';
+
+  @override
+  String get marginCustomLine => 'Своя строка';
+
+  @override
+  String get marginProductsEmptyTitle => 'Продуктов пока нет';
+
+  @override
+  String get marginProductsEmptySub =>
+      'Добавьте продукт или услугу, чтобы видеть себестоимость и прибыль.';
+
+  @override
+  String get marginNameRequired => 'Введите название';
+
+  @override
+  String get marginPriceRequired => 'Введите цену продажи';
+
+  @override
+  String get marginCostRequired => 'Введите стоимость';
+
+  @override
+  String get marginQuantityRequired => 'Введите количество';
+
+  @override
+  String get marginAvgMargin => 'Средняя маржа';
+
+  @override
+  String get marginPerProduct => 'на продукт';
+
+  @override
+  String get marginDeleteProduct => 'Удалить продукт';
+
+  @override
+  String get marginDeleteUnit => 'Удалить единицу';
 
   @override
   String get profileMyXizmatlar => 'Мои услуги';
@@ -864,6 +1256,51 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notificationKelishuvComplete => 'Работа завершена';
 
   @override
+  String get notificationSubsectorNewService =>
+      'Новая услуга в вашей подкатегории';
+
+  @override
+  String get notificationSubsectorDiscount => 'Снижение цены в подкатегории';
+
+  @override
+  String get notificationSubsectorHelpPost => 'Нужна помощь в подкатегории';
+
+  @override
+  String get notificationAlertsTitle => 'Оповещения по подкатегориям';
+
+  @override
+  String get notificationAlertsSubtitle =>
+      'Уведомления о новых услугах, скидках и запросах помощи.';
+
+  @override
+  String get notificationAlertsAdd => 'Добавить оповещение';
+
+  @override
+  String get notificationAlertsEmpty => 'Оповещений по подкатегориям пока нет';
+
+  @override
+  String get notificationAlertNewService => 'Новые услуги';
+
+  @override
+  String get notificationAlertDiscount => 'Снижение цен';
+
+  @override
+  String get notificationAlertHelpPost => 'Запросы «Нужна помощь»';
+
+  @override
+  String get notificationAlertSeekerHint => 'Если вы ищете услугу';
+
+  @override
+  String get notificationAlertProviderHint =>
+      'Если вы можете помочь как исполнитель';
+
+  @override
+  String get notificationAlertsSaved => 'Оповещение сохранено';
+
+  @override
+  String get notificationAlertsRemoved => 'Оповещение удалено';
+
+  @override
   String get notificationGeneric => 'Уведомление';
 
   @override
@@ -902,6 +1339,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get demoKelishuvBlocked => 'Нельзя создать сделку в демо-режиме';
 
   @override
+  String get demoKelishuvSimulatedNote =>
+      'Демо-сделка не сохраняется на сервере. Демо-исполнитель отображается как получивший предложение.';
+
+  @override
   String get genericUser => 'Пользователь';
 
   @override
@@ -932,7 +1373,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get xizmatServiceCityLabel => 'Город обслуживания';
 
   @override
-  String get xizmatServiceCityHint => 'Например: Ташкент (необязательно)';
+  String get xizmatServiceCityHint => 'Выберите город обслуживания';
 
   @override
   String get xizmatContinue => 'Продолжить';
@@ -1396,7 +1837,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get xizmatAvailabilityBusy => 'Недоступно';
 
   @override
-  String get xizmatAvailabilityCallMe => 'Позвоните';
+  String get xizmatAvailabilityCallMe => 'По записи';
 
   @override
   String get xizmatAvailabilityFromLabel => 'С (необязательно)';
@@ -1716,4 +2157,1035 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get legalSafetyBody =>
       'YordamBor соединяет клиентов и исполнителей. Не оказывает услуги и не хранит деньги.\n\nОплата\n\nОплата напрямую между сторонами. Не переводите полную сумму незнакомцам. YordamBor не отвечает за мошенничество.\n\nВаша ответственность\n\nПроверяйте отзывы и документы сами.\n\nЖалобы\n\nНа злоупотребления — через приложение. На ошибки — Помощь.';
+
+  @override
+  String get greetingMorning => 'Доброе утро';
+
+  @override
+  String get greetingAfternoon => 'Добрый день';
+
+  @override
+  String get greetingEvening => 'Добрый вечер';
+
+  @override
+  String get greetingNight => 'Доброй ночи';
+
+  @override
+  String get greetingWelcomeBack => 'С возвращением';
+
+  @override
+  String get greetingWelcomeNew => 'Добро пожаловать';
+
+  @override
+  String greetingWithName(String greeting, String name) {
+    return '$greeting, $name';
+  }
+
+  @override
+  String homeFactAwaitingReply(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count сделки ждут вашего ответа',
+      one: '$count сделка ждёт вашего ответа',
+      few: '$count сделки ждут вашего ответа',
+      many: '$count сделок ждут вашего ответа',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeFactInProgress(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count сделки в работе',
+      one: '$count сделка в работе',
+      few: '$count сделки в работе',
+      many: '$count сделок в работе',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeFactNewMember =>
+      'Для начала попросите помощи или предложите услугу';
+
+  @override
+  String get continueYourTurn => 'Ваша очередь';
+
+  @override
+  String get continueReplyToDeal => 'Проверьте условия и ответьте';
+
+  @override
+  String get continueInProgress => 'В работе';
+
+  @override
+  String get continueMarkDone => 'Подтвердите, когда работа выполнена';
+
+  @override
+  String get continueDraftTitle => 'Незавершённый запрос';
+
+  @override
+  String get continueDraftUntitled => 'Запрос без названия';
+
+  @override
+  String get continueDraftHint => 'Продолжите с того же места';
+
+  @override
+  String get draftDelete => 'Удалить черновик';
+
+  @override
+  String get draftDeleted => 'Черновик удалён';
+
+  @override
+  String get draftRestored => 'Черновик восстановлен';
+
+  @override
+  String get draftStartOver => 'Начать заново';
+
+  @override
+  String get actionUndo => 'Отменить';
+
+  @override
+  String get quickAskHelp => 'Попросить помощи';
+
+  @override
+  String get quickOfferService => 'Предложить услугу';
+
+  @override
+  String get feedEndTitle => 'Вы всё посмотрели';
+
+  @override
+  String get feedEndAskPrompt => 'Не нашли подходящего мастера?';
+
+  @override
+  String get feedEndJobsHint => 'Новые запросы появляются здесь первыми';
+
+  @override
+  String get whatsNewTitle => 'Что нового';
+
+  @override
+  String get whatsNewLookTitle => 'Обновлённый, чистый вид';
+
+  @override
+  String get whatsNewLookBody =>
+      'Новые шрифты, цвета и значки — читать стало легче.';
+
+  @override
+  String get whatsNewNextStepTitle => 'Следующий шаг — на главной';
+
+  @override
+  String get whatsNewNextStepBody =>
+      'Сделки, которые ждут вас, и незавершённые запросы теперь сверху.';
+
+  @override
+  String get whatsNewDraftsTitle => 'Черновики сохраняются сами';
+
+  @override
+  String get whatsNewDraftsBody =>
+      'Закройте запрос на полпути — продолжите позже.';
+
+  @override
+  String get whatsNewDone => 'Понятно';
+
+  @override
+  String get xizmatCardNew => 'Новый';
+
+  @override
+  String get favoriteAdd => 'В избранное';
+
+  @override
+  String get favoriteRemove => 'Убрать из избранного';
+
+  @override
+  String statJobsDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'выполненной работы',
+      one: 'выполненная работа',
+      few: 'выполненные работы',
+      many: 'выполненных работ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statRating => 'рейтинг';
+
+  @override
+  String get dealBondYou => 'Вы';
+
+  @override
+  String get dealBondYourTurn => 'Ваша очередь: проверьте условия и примите';
+
+  @override
+  String dealBondWaiting(String name) {
+    return 'Ждём ответа: $name';
+  }
+
+  @override
+  String get dealBondAgreed => 'Договорились · работа идёт';
+
+  @override
+  String get dealBondDone => 'Работа выполнена · спасибо';
+
+  @override
+  String get dealBondClosed => 'Эта сделка закрыта';
+
+  @override
+  String get undoDeleted => 'Удалено';
+
+  @override
+  String get savedRemoved => 'Убрано из избранного';
+
+  @override
+  String get yordamKerakTitleRequired => 'Напишите короткий заголовок';
+
+  @override
+  String get yordamKerakMessageRequired => 'Опишите, что нужно сделать';
+
+  @override
+  String get stateErrorTitle => 'Не удалось загрузить';
+
+  @override
+  String get stateErrorBody => 'Проверьте соединение и попробуйте снова.';
+
+  @override
+  String get stateOfflineBanner =>
+      'Нет интернета. Показаны сохранённые данные.';
+
+  @override
+  String get disabledHintServiceName => 'Введите название — минимум 2 буквы';
+
+  @override
+  String get disabledHintServiceCity => 'Выберите город, где вы работаете';
+
+  @override
+  String get disabledHintServicePhoto => 'Добавьте хотя бы одно фото';
+
+  @override
+  String get disabledHintPickSubcategory => 'Сначала выберите специализацию';
+
+  @override
+  String get disabledHintOneAlert => 'Включите хотя бы одно уведомление';
+
+  @override
+  String get milestoneOverline => 'Новое достижение';
+
+  @override
+  String get milestoneDismiss => 'Скрыть';
+
+  @override
+  String get notificationsTooltip => 'Уведомления';
+
+  @override
+  String a11yRating(String rating) {
+    return 'рейтинг $rating';
+  }
+
+  @override
+  String get a11yNewProvider => 'новый на YordamBor';
+
+  @override
+  String get filtersClear => 'Сбросить фильтры';
+
+  @override
+  String get actionClose => 'Закрыть';
+
+  @override
+  String get actionMore => 'Другие действия';
+
+  @override
+  String get actionSend => 'Отправить';
+
+  @override
+  String get actionPreviousMonth => 'Предыдущий месяц';
+
+  @override
+  String get actionNextMonth => 'Следующий месяц';
+
+  @override
+  String get a11yShowPassword => 'Показать пароль';
+
+  @override
+  String get a11yHidePassword => 'Скрыть пароль';
+
+  @override
+  String a11yStarRating(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count звезды',
+      one: '$count звезда',
+      few: '$count звезды',
+      many: '$count звёзд',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get detailPaneEmptyTitle => 'Выберите карточку';
+
+  @override
+  String get detailPaneEmptyBody => 'Она откроется здесь, рядом со списком.';
+
+  @override
+  String get taklifAskHint => 'Какая помощь вам нужна?';
+
+  @override
+  String get taklifAskSubtitle =>
+      'Опишите задачу и, если хотите, бюджет. Работа начнётся, когда вы оба согласитесь.';
+
+  @override
+  String get taklifAskSubmit => 'Отправить запрос';
+
+  @override
+  String dealOfferAutoCancel(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days дня',
+      one: '$days день',
+      few: '$days дня',
+      many: '$days дней',
+    );
+    return 'Если ответа не будет, предложение отменится через $_temp0';
+  }
+
+  @override
+  String dealOfferReplyWithin(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days дня',
+      one: '$days дня',
+      few: '$days дней',
+      many: '$days дней',
+    );
+    return 'Ответьте в течение $_temp0, иначе предложение отменится';
+  }
+
+  @override
+  String get dealAcceptedRow => 'Приняли условия';
+
+  @override
+  String get dealCompletedRow => 'Подтвердили выполнение';
+
+  @override
+  String get dealWithdrawOffer => 'Отозвать предложение';
+
+  @override
+  String get dealWithdrawTitle => 'Отозвать предложение?';
+
+  @override
+  String get dealWithdrawBody =>
+      'Сделка будет отменена. Позже можно отправить новое предложение.';
+
+  @override
+  String get dealChatOpensOnReply => 'Переписка откроется после ответа.';
+
+  @override
+  String get dealRejectTitle => 'Отклонить предложение?';
+
+  @override
+  String get dealRejectBody =>
+      'Если хотите, напишите причину — она будет видна в сделке.';
+
+  @override
+  String get dealRejectCommentLabel => 'Комментарий (необязательно)';
+
+  @override
+  String get dealSendNewOffer => 'Отправить новое предложение';
+
+  @override
+  String get dealClosedNewOfferHint =>
+      'Услуга всё ещё нужна? Отправьте новое предложение — обсуждение начнётся заново.';
+
+  @override
+  String get archiveTabNeeded => 'Нужна была помощь';
+
+  @override
+  String get archiveTabProvided => 'Оказана помощь';
+
+  @override
+  String get archiveNeededEmpty =>
+      'Здесь появятся сделки, где вы просили о помощи.';
+
+  @override
+  String get archiveProvidedEmpty => 'Здесь появятся сделки, где помогали вы.';
+
+  @override
+  String achievementsProgress(int unlocked, int total) {
+    return 'Открыто $unlocked из $total';
+  }
+
+  @override
+  String get achievementsShow => 'Показать все';
+
+  @override
+  String get achievementsHide => 'Скрыть';
+
+  @override
+  String get yordamKerakCityRequired => 'Выберите город';
+
+  @override
+  String get taklifContactTitle => 'Ваши контакты';
+
+  @override
+  String get taklifContactNote =>
+      'Другая сторона увидит их в сделке, чтобы связаться с вами.';
+
+  @override
+  String get taklifFirstNameLabel => 'Имя';
+
+  @override
+  String get taklifLastNameLabel => 'Фамилия';
+
+  @override
+  String get taklifFirstNameRequired => 'Введите имя';
+
+  @override
+  String get taklifPhoneRequired => 'Введите номер телефона';
+
+  @override
+  String get taklifMessageOptionalLabel => 'Сообщение (необязательно)';
+
+  @override
+  String get dealContactTitle => 'Контакты для связи';
+
+  @override
+  String get dealContactSent => 'Вы отправили свои контакты';
+
+  @override
+  String get dealsSectionTitle => 'Ваши сделки';
+
+  @override
+  String get dealStateYourTurn => 'В обсуждении · ваш ход';
+
+  @override
+  String get dealStateSent => 'Отправлено · ждём ответа';
+
+  @override
+  String get dealStateInProgress => 'Принято · в работе';
+
+  @override
+  String get dealStateAwaitingConfirm => 'Вы подтвердили · ждём другую сторону';
+
+  @override
+  String get actionAdd => 'Добавить';
+
+  @override
+  String get businessEarningsTitle => 'Доход в этом месяце';
+
+  @override
+  String get businessEarningsSee => 'Смотреть доход';
+
+  @override
+  String get businessStatWaitingLabel => 'ждут ответа';
+
+  @override
+  String get businessNextStepsTitle => 'Как получить больше клиентов';
+
+  @override
+  String businessNextStepsProgress(int done, int total) {
+    return '$done из $total';
+  }
+
+  @override
+  String get businessStepPhotos => 'Добавьте 3 или больше фото';
+
+  @override
+  String get businessStepPhotosWhy => 'Услуги с фото выбирают чаще';
+
+  @override
+  String get businessStepPrice => 'Укажите цену';
+
+  @override
+  String get businessStepPriceWhy =>
+      'Понятная цена — меньше вопросов до сделки';
+
+  @override
+  String get businessStepAvailability => 'Покажите, когда вы свободны';
+
+  @override
+  String get businessStepAvailabilityWhy =>
+      'Клиенты пишут тем, кто может прийти скоро';
+
+  @override
+  String get businessStepShare => 'Поделитесь ссылкой на услугу';
+
+  @override
+  String get businessStepShareWhy =>
+      'Отправьте в Telegram — друзья порекомендуют вас';
+
+  @override
+  String get businessStartTitle => 'Превратите навыки в доход';
+
+  @override
+  String get businessStartStep1 => 'Опишите услугу и цену';
+
+  @override
+  String get businessStartStep2 => 'Добавьте фото и город';
+
+  @override
+  String get businessStartStep3 => 'Получайте заявки и договаривайтесь';
+
+  @override
+  String businessServicesCount(int count, int max) {
+    return 'Мои услуги · $count из $max';
+  }
+
+  @override
+  String xizmatLimitReached(int max) {
+    return 'Можно до $max услуг. Измените или удалите одну, чтобы добавить новую.';
+  }
+
+  @override
+  String get calendarStatusCaption => 'Ваш статус · его видят клиенты';
+
+  @override
+  String get calendarLegendNeedHelp => 'Мне помогают';
+
+  @override
+  String get calendarLegendGiveHelp => 'Я помогаю';
+
+  @override
+  String get calendarLegendPersonal => 'Личное';
+
+  @override
+  String get calendarHintMark =>
+      'Нажмите на день и отметьте: свободен или занят. Если только часть дня — укажите часы; иначе это весь рабочий день.';
+
+  @override
+  String get calendarHintClient =>
+      'Здесь напоминания о сделках: где помогают вам и где помогаете вы. Нажмите на день, чтобы увидеть детали.';
+
+  @override
+  String get calendarDayNotMarked => 'Не отмечен';
+
+  @override
+  String get calendarWholeWorkingDay => 'Весь рабочий день';
+
+  @override
+  String get calendarAddHours => 'Добавить время';
+
+  @override
+  String get calendarRemoveHours => 'Убрать это время';
+
+  @override
+  String get calendarHoursFrom => 'С';
+
+  @override
+  String get calendarHoursTo => 'До';
+
+  @override
+  String get calendarDayEvents => 'Напоминания на этот день';
+
+  @override
+  String get workingHoursTitle => 'Рабочие часы';
+
+  @override
+  String get workingHoursHint => 'Клиенты видят их в ваших услугах';
+
+  @override
+  String get workingHoursSheetHint =>
+      'Ваш обычный рабочий день. По умолчанию 9:00–13:00 и 14:00–18:00.';
+
+  @override
+  String get workingHoursReset => 'Вернуть 9–13 и 14–18';
+
+  @override
+  String get workingHoursInvalid =>
+      'Проверьте время: начало раньше конца, промежутки не пересекаются.';
+
+  @override
+  String get workingHoursSaved => 'Рабочие часы сохранены';
+
+  @override
+  String get xizmatOwnHoursTitle => 'Свои часы для этой услуги';
+
+  @override
+  String xizmatOwnHoursOff(String hours) {
+    return 'Как в профиле: $hours';
+  }
+
+  @override
+  String get xizmatHoursInCalendar => 'Рабочие часы меняются в календаре.';
+
+  @override
+  String get xizmatHoursOpenCalendar => 'Открыть календарь';
+
+  @override
+  String get xizmatScheduleTitle => 'Часы работы и занятость';
+
+  @override
+  String get xizmatScheduleNextDays => 'Ближайшие 2 недели';
+
+  @override
+  String get xizmatTodayFree => 'Сегодня свободен';
+
+  @override
+  String get xizmatTodayBusy => 'Сегодня занят';
+
+  @override
+  String xizmatTodayBusyAt(String hours) {
+    return 'Сегодня занят: $hours';
+  }
+
+  @override
+  String xizmatTodayFreeAt(String hours) {
+    return 'Сегодня свободен: $hours';
+  }
+
+  @override
+  String get calendarNoRemindersDay => 'На этот день напоминаний нет.';
+
+  @override
+  String get sampleTag => 'Пример';
+
+  @override
+  String get demoDealNote =>
+      'Это пример: сделка не уходит настоящему человеку.';
+
+  @override
+  String get feedInviteProvidersTitle => 'Станьте одним из первых исполнителей';
+
+  @override
+  String get feedInviteProvidersBody =>
+      'Добавьте свою услугу — клиенты увидят её первой.';
+
+  @override
+  String get feedInviteAskTitle => 'Попросите помощи первым';
+
+  @override
+  String get feedInviteAskBody =>
+      'Опишите, что нужно, — исполнители увидят ваш запрос.';
+
+  @override
+  String get feedInviteProvidersAction => 'Добавить свою услугу';
+
+  @override
+  String get feedInviteAskAction => 'Описать, что нужно';
+
+  @override
+  String get sampleFindProvider => 'Найти исполнителя';
+
+  @override
+  String get sampleFindProviderHint =>
+      'Это пример. Опишите задачу — её увидят настоящие исполнители.';
+
+  @override
+  String get sampleAlertNewServices =>
+      'Сообщить, когда в этой сфере появится исполнитель';
+
+  @override
+  String get sampleRequestPosted =>
+      'Запрос опубликован — его увидят исполнители.';
+
+  @override
+  String get sampleRequestTitle => 'Это пример запроса';
+
+  @override
+  String get sampleRequestBody =>
+      'Настоящие запросы появятся здесь. Включите уведомления — мы сообщим, когда кто-то попросит помощи в этой сфере.';
+
+  @override
+  String get sampleAlertHelpPosts => 'Сообщать о новых запросах';
+
+  @override
+  String get sampleAlertOn => 'Готово — сообщим о новых запросах в этой сфере.';
+
+  @override
+  String get foundingBadge => 'Первый на YordamBor';
+
+  @override
+  String get foundingBadgeNote =>
+      'Первые исполнители получают значок «Первый на YordamBor».';
+
+  @override
+  String get inviteTitle => 'Пригласите исполнителей';
+
+  @override
+  String get inviteBody =>
+      'Знаете хорошего электрика, репетитора или салон? Пригласите их: чем больше настоящих исполнителей, тем больше клиентов.';
+
+  @override
+  String get inviteShare => 'Отправить приглашение';
+
+  @override
+  String get invitePrepare => 'Подготовить услугу для знакомого';
+
+  @override
+  String get inviteMessage =>
+      'Присоединяйтесь к YordamBor: здесь клиенты по всему Узбекистану находят исполнителей. Добавить услугу — бесплатно, а первые исполнители получают значок «Первый на YordamBor».';
+
+  @override
+  String invitePersonalMessage(String name, String trade, String city) {
+    return '$name, здравствуйте! Я в YordamBor — здесь клиенты находят исполнителей. Добавьте свою услугу «$trade» ($city): это бесплатно, а первые исполнители получают значок «Первый на YordamBor».';
+  }
+
+  @override
+  String inviteOpenLink(String link) {
+    return 'Откройте, чтобы начать: $link';
+  }
+
+  @override
+  String inviteAppLink(String link) {
+    return 'Приложение: $link';
+  }
+
+  @override
+  String get invitePrepareTitle => 'Услуга для знакомого';
+
+  @override
+  String get invitePrepareBody =>
+      'Выберите сферу и город. Человек получит ссылку, которая откроет «Новую услугу» с этими данными, и опубликует её сам.';
+
+  @override
+  String get invitePersonName => 'Имя (необязательно)';
+
+  @override
+  String get invitePersonPhone => 'Телефон (необязательно)';
+
+  @override
+  String get invitePickTrade => 'Сфера';
+
+  @override
+  String get inviteSendWhatsApp => 'Отправить в WhatsApp';
+
+  @override
+  String get inviteSendSms => 'Отправить по SMS';
+
+  @override
+  String get inviteSendOther => 'Другое приложение';
+
+  @override
+  String get inviteNeedTradeCity => 'Выберите сферу и город';
+
+  @override
+  String get onbGoalTitle => 'Что привело вас в YordamBor?';
+
+  @override
+  String get onbGoalNeedHelp => 'Мне нужна помощь';
+
+  @override
+  String get onbGoalNeedHelpSub => 'Найти исполнителя или описать задачу';
+
+  @override
+  String get onbGoalOffer => 'Я предлагаю услуги';
+
+  @override
+  String get onbGoalOfferSub => 'Находить клиентов и зарабатывать';
+
+  @override
+  String get onbGoalBoth => 'И то, и другое';
+
+  @override
+  String get onbGoalBothSub => 'Помогаю сам и иногда прошу помощи';
+
+  @override
+  String get onbCityTitle => 'Ваш город';
+
+  @override
+  String get onbCitySub => 'Покажем, что есть рядом с вами.';
+
+  @override
+  String get onbNext => 'Далее';
+
+  @override
+  String get onbDone => 'Готово';
+
+  @override
+  String get onbSkip => 'Пропустить';
+
+  @override
+  String onbStep(int current, int total) {
+    return 'Шаг $current из $total';
+  }
+
+  @override
+  String get onbIntro1Title => 'Услуги рядом с вами';
+
+  @override
+  String get onbIntro1Body => 'Специалисты и организации по всему Узбекистану.';
+
+  @override
+  String get onbIntro2Title => 'Нужна помощь? Попросите';
+
+  @override
+  String get onbIntro2Body => 'Опишите задачу — исполнители откликнутся сами.';
+
+  @override
+  String get onbIntro3Title => 'Предлагайте свои услуги';
+
+  @override
+  String get onbIntro3Body => 'Как специалист или как организация. Бесплатно.';
+
+  @override
+  String get onbIntro4Title => 'Честно и спокойно';
+
+  @override
+  String get onbIntro4Body =>
+      'Сделка начинается, когда согласны обе стороны. Отзывы — только после выполненной работы. Оплата — по договорённости.';
+
+  @override
+  String get onbTypeTitle => 'Как вы работаете?';
+
+  @override
+  String get onbTypeSub =>
+      'Это увидят клиенты на ваших услугах. Можно изменить позже.';
+
+  @override
+  String get onbTypeIndividualSub => 'Мастер, репетитор, фрилансер';
+
+  @override
+  String get onbTypeInstitutionSub => 'Компания, салон, клиника, учебный центр';
+
+  @override
+  String onbReadyToOffer(String action) {
+    return 'Когда будете готовы, нажмите «$action».';
+  }
+
+  @override
+  String get inviteAction => 'Пригласить знакомого исполнителя';
+
+  @override
+  String invitePersonalMessageNoName(String trade, String city) {
+    return 'Здравствуйте! Я в YordamBor — здесь клиенты находят исполнителей. Добавьте свою услугу «$trade» ($city): это бесплатно, а первые исполнители получают значок «Первый на YordamBor».';
+  }
+
+  @override
+  String get joinTitle => 'Вас пригласили в YordamBor';
+
+  @override
+  String get joinBody =>
+      'Добавьте свою услугу — это бесплатно. Клиенты находят здесь исполнителей по сфере и городу.';
+
+  @override
+  String get joinLookAround => 'Сначала посмотреть приложение';
+
+  @override
+  String get onbStart => 'Начать';
+
+  @override
+  String get welcomeFindHelp => 'Найти помощь';
+
+  @override
+  String get welcomeGiveHelp => 'Помочь другим';
+
+  @override
+  String get onbTileLawyer => 'Юрист';
+
+  @override
+  String get onbTileBeauty => 'Красота';
+
+  @override
+  String get onbTileCatering => 'Кейтеринг';
+
+  @override
+  String get onbTileVet => 'Ветеринар';
+
+  @override
+  String get onbTileCleaning => 'Уборка';
+
+  @override
+  String get onbTileElectrician => 'Электрик';
+
+  @override
+  String get onbTilePlumber => 'Сантехник';
+
+  @override
+  String get onbTileDental => 'Стоматология';
+
+  @override
+  String onbMoreServices(int count) {
+    return 'и ещё более $count видов услуг';
+  }
+
+  @override
+  String get onbIllRequestTitle => 'Течёт кран на кухне';
+
+  @override
+  String get onbIllToday => 'Сегодня';
+
+  @override
+  String get onbIllNewOffers => '2 новых предложения';
+
+  @override
+  String get onbIllName1 => 'Азиз';
+
+  @override
+  String get onbIllName2 => 'Дилноза';
+
+  @override
+  String get onbIllOffer1 => 'Могу прийти сегодня в 18:00';
+
+  @override
+  String get onbIllOffer2 => 'Свободна завтра утром';
+
+  @override
+  String get onbIllNewRequest => 'Новый запрос';
+
+  @override
+  String get onbIllSocket => 'Заменить розетку';
+
+  @override
+  String get onbTileTutor => 'Репетитор';
+
+  @override
+  String get onbTileAuto => 'Автосервис';
+
+  @override
+  String get searchTooltip => 'Поиск';
+
+  @override
+  String get searchHint => 'Имя, организация или услуга';
+
+  @override
+  String get searchPrompt =>
+      'Введите имя исполнителя, название организации или услугу, например «сантехник».';
+
+  @override
+  String get searchNoResults => 'Ничего не найдено';
+
+  @override
+  String get searchNoResultsHint =>
+      'Опубликуйте запрос — исполнители откликнутся сами.';
+
+  @override
+  String get searchOffline =>
+      'Нет связи: показано только то, что есть на телефоне.';
+
+  @override
+  String get onbTileRenovation => 'Ремонт квартир';
+
+  @override
+  String get onbTileFitness => 'Фитнес';
+
+  @override
+  String get onbTileTranslator => 'Переводчик';
+
+  @override
+  String get onbTileBarber => 'Барбер';
+
+  @override
+  String get onbTileMusic => 'Уроки музыки';
+
+  @override
+  String get onbTileStylist => 'Стилист';
+
+  @override
+  String get onbTileKindergarten => 'Детский сад';
+
+  @override
+  String get onbIllTutorTitle => 'Английский и IELTS';
+
+  @override
+  String get onbIllStylistRequest => 'Образ на свадьбу';
+
+  @override
+  String onbKindsChip(int count) {
+    return '+$count видов услуг';
+  }
+
+  @override
+  String get onbIllDentalRequestTitle => 'Болит зуб';
+
+  @override
+  String get onbTileDentist => 'Стоматолог';
+
+  @override
+  String get onbIllDentalOffer1 => 'Примем сегодня в 16:00';
+
+  @override
+  String get onbIllDentalOffer2 => 'Приму завтра утром';
+
+  @override
+  String get xizmatStatNoReviews => 'Нет отзывов';
+
+  @override
+  String get xizmatStatPrice => 'цена';
+
+  @override
+  String get xizmatStatPerHour => 'в час';
+
+  @override
+  String get xizmatStatNegotiable => 'Договорная';
+
+  @override
+  String get xizmatPromiseOwnWords => 'Слова исполнителя';
+
+  @override
+  String get xizmatAboutTitle => 'Об услуге';
+
+  @override
+  String get actionReadMore => 'Подробнее';
+
+  @override
+  String get actionReadLess => 'Свернуть';
+
+  @override
+  String reviewsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count отзыва',
+      one: '$count отзыв',
+      few: '$count отзыва',
+      many: '$count отзывов',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reviewsSeeAll(int count) {
+    return 'Все отзывы ($count)';
+  }
+
+  @override
+  String get reviewsFilterAll => 'Все';
+
+  @override
+  String get reviewsFilterEmpty => 'Отзывов с такой оценкой пока нет';
+
+  @override
+  String reviewsBarA11y(int stars, int count) {
+    return 'Оценка $stars: $count';
+  }
+
+  @override
+  String get xizmatHowTitle => 'Как это работает';
+
+  @override
+  String get xizmatHowAsk => 'Отправьте запрос';
+
+  @override
+  String get xizmatHowChat => 'Общайтесь в приложении';
+
+  @override
+  String get xizmatHowAgree => 'Договоритесь';
+
+  @override
+  String providerMemberSince(String year) {
+    return 'Участник с $year г.';
+  }
+
+  @override
+  String providerServicesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count услуги',
+      one: '$count услуга',
+      few: '$count услуги',
+      many: '$count услуг',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xizmatAboutHint =>
+      'Что вы делаете, как работаете, что обещаете клиентам';
 }

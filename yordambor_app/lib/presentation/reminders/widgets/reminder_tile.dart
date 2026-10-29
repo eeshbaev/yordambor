@@ -5,6 +5,7 @@ import 'package:yordambor/application/providers/provider_tools_sync.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/reminder.dart';
 import 'package:yordambor/presentation/reminders/widgets/appointment_status_chip.dart';
@@ -36,8 +37,8 @@ class ReminderTile extends ConsumerWidget {
         background: Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: AppSpacing.lg),
-          color: AppColors.error,
-          child: const Icon(Icons.delete_outline, color: Colors.white),
+          color: context.ybColors.error,
+          child: const Icon(YbIcons.delete, color: Colors.white),
         ),
         confirmDismiss: (_) async {
           if (reminder.bookingId != null) {
@@ -59,9 +60,9 @@ class ReminderTile extends ConsumerWidget {
           ),
           leading: Icon(
             reminder.isLinkedToBooking
-                ? Icons.event_available_outlined
-                : Icons.alarm_outlined,
-            color: AppColors.primary,
+                ? YbIcons.eventAvailable
+                : YbIcons.alarm,
+            color: context.ybColors.teal,
           ),
           title: Text(
             reminder.title,

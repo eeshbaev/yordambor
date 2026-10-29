@@ -9,23 +9,96 @@ import 'package:yordambor/application/providers/feed_provider.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/utils/phone_validation.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
+import 'package:yordambor/domain/entities/create_xizmat_prefill.dart';
 import 'package:yordambor/presentation/shared/post_contact_preferences_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_availability_section.dart';
-import 'package:yordambor/presentation/shared/xizmat_promise_section.dart';
+import 'package:yordambor/core/constants/service_cities.dart';
 import 'package:yordambor/presentation/shared/xizmat_pricing_section.dart';
+import 'package:yordambor/presentation/shared/xizmat_service_city_field.dart';
 
-class CreateXizmatScreen extends ConsumerWidget {
-  const CreateXizmatScreen({super.key});
+class CreateXizmatScreen extends ConsumerStatefulWidget {
+  const CreateXizmatScreen({super.key, this.prefill});
+
+  /// From an invite link: the trade, city and provider type to start with.
+  final CreateXizmatPrefill? prefill;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CreateXizmatScreen> createState() =>
+      _CreateXizmatScreenState();
+}
+
+class _CreateXizmatScreenState extends ConsumerState<CreateXizmatScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _applyPrefill());
+  }
+
+  /// Fills what is known before the person starts: how they work (from an
+  /// invite, else from what they told the intro), then the trade and city
+  /// from an invite. Each stays theirs to change.
+  Future<void> _applyPrefill() async {
+    if (!mounted) return;
+    final notifier = ref.read(createXizmatProvider.notifier);
+    final prefill = widget.prefill;
+
+    final type = prefill?.providerType ??
+        ref.read(onboardingPrefsProvider).providerTypePreference;
+    if (type != null && CreateXizmatPrefill.providerTypes.contains(type)) {
+      notifier.setProviderType(type);
+    }
+    if (prefill == null) return;
+
+    final cityId = prefill.cityId;
+    if (cityId != null) notifier.setServiceCity(cityId);
+
+    final categoryId = prefill.categoryId;
+    if (categoryId == null) return;
+    List<CategoryItem> categories;
+    try {
+      categories = await ref.read(categoriesProvider.future);
+    } catch (_) {
+      return;
+    }
+    if (!mounted) return;
+
+    CategoryItem? category;
+    for (final item in categories) {
+      if (item.id == categoryId) category = item;
+    }
+    if (category == null) return;
+
+    // "Other" is a trade for both kinds of provider: the link's kind picks
+    // one; any trade with the id does when the link has no kind.
+    SubcategoryItem? subcategory;
+    for (final item in category.subcategories) {
+      if (item.id != prefill.subcategoryId) continue;
+      if (subcategory == null || item.providerType == prefill.providerType) {
+        subcategory = item;
+      }
+    }
+    // The trade decides the provider type; set it first, as it clears the
+    // trade picked under the other type.
+    if (subcategory != null &&
+        subcategory.providerType != ref.read(createXizmatProvider).providerType &&
+        CreateXizmatPrefill.providerTypes.contains(subcategory.providerType)) {
+      notifier.setProviderType(subcategory.providerType);
+    }
+    notifier.setCategory(category);
+    if (subcategory != null) notifier.setSubcategory(subcategory);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(createXizmatProvider);
     final strings = ref.watch(appStringsProvider);
     final colors = context.ybColors;
@@ -36,8 +109,10 @@ class CreateXizmatScreen extends ConsumerWidget {
         leading: state.step == 2
             ? null
             : IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => context.pop(),
+                tooltip: strings.actionClose,
+                icon: const Icon(YbIcons.closeFilled),
+                onPressed: () =>
+                    context.canPop() ? context.pop() : context.go('/home'),
               ),
         bottom: state.step < 2
             ? PreferredSize(
@@ -46,7 +121,7 @@ class CreateXizmatScreen extends ConsumerWidget {
                   value: (state.step + 1) / 2,
                   minHeight: 3,
                   backgroundColor: colors.borderSubtle,
-                  color: AppColors.primary,
+                  color: context.ybColors.teal,
                 ),
               )
             : null,
@@ -117,6 +192,13 @@ class _StepIdentity extends ConsumerWidget {
                     ? null
                     : () => _pickSubcategory(context, ref, state.category!),
               ),
+              const SizedBox(height: AppSpacing.lg),
+              XizmatServiceCityField(
+                selectedCityId: ServiceCities.isValidId(state.serviceCity)
+                    ? state.serviceCity
+                    : null,
+                onChanged: notifier.setServiceCity,
+              ),
               if (state.errorMessage != null) ...[
                 const SizedBox(height: AppSpacing.md),
                 YbInlineMessage(message: state.errorMessage!),
@@ -129,6 +211,12 @@ class _StepIdentity extends ConsumerWidget {
             YbPrimaryButton(
               label: strings.xizmatContinue,
               onPressed: state.canContinueStep1 ? notifier.nextStep : null,
+              // A disabled button says what unlocks it (manual S-07).
+              disabledHint: state.name.trim().length < 2
+                  ? strings.disabledHintServiceName
+                  : state.category == null || state.subcategory == null
+                      ? strings.xizmatPickCategoryError
+                      : strings.disabledHintServiceCity,
             ),
           ],
         ),
@@ -143,6 +231,7 @@ class _StepIdentity extends ConsumerWidget {
     if (!context.mounted) return;
 
     final selected = await showModalBottomSheet<CategoryItem>(
+      sheetAnimationStyle: AppMotion.sheetOf(context),
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
@@ -172,6 +261,7 @@ class _StepIdentity extends ConsumerWidget {
         .toList();
 
     final selected = await showModalBottomSheet<SubcategoryItem>(
+      sheetAnimationStyle: AppMotion.sheetOf(context),
       context: context,
       showDragHandle: true,
       builder: (context) => _SubcategoryPickList(
@@ -233,7 +323,7 @@ class _PickRow extends StatelessWidget {
                 ),
               ),
               Icon(
-                Icons.chevron_right_rounded,
+                YbIcons.chevronRightFilled,
                 color: enabled ? colors.textTertiary : colors.borderSubtle,
               ),
             ],
@@ -363,13 +453,13 @@ class _StepPortfolioState extends ConsumerState<_StepPortfolio> {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.primary,
+                                color: context.ybColors.teal,
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
                                 strings.xizmatHeroLabel,
                                 style: AppTypography.label.copyWith(
-                                  color: Colors.white,
+                                  color: context.ybColors.onTeal,
                                 ),
                               ),
                             ),
@@ -378,13 +468,14 @@ class _StepPortfolioState extends ConsumerState<_StepPortfolio> {
                           right: 0,
                           top: 0,
                           child: IconButton(
+                            tooltip: strings.actionDelete,
                             style: IconButton.styleFrom(
                               backgroundColor: Colors.black54,
                               foregroundColor: Colors.white,
                             ),
                             iconSize: 18,
                             onPressed: () => notifier.removePortfolioAt(i),
-                            icon: const Icon(Icons.close),
+                            icon: const Icon(YbIcons.closeFilled),
                           ),
                         ),
                       ],
@@ -401,7 +492,7 @@ class _StepPortfolioState extends ConsumerState<_StepPortfolio> {
                         color: colors.card,
                       ),
                       child: Icon(
-                        Icons.add_a_photo_outlined,
+                        YbIcons.addAPhoto,
                         color: colors.textTertiary,
                       ),
                     ),
@@ -409,24 +500,19 @@ class _StepPortfolioState extends ConsumerState<_StepPortfolio> {
                 ],
               ),
               const SizedBox(height: AppSpacing.lg),
+              // One text, in the provider's own words: what they do, how
+              // they work, what they promise.
               TextFormField(
                 initialValue: state.description,
-                maxLines: 4,
+                minLines: 4,
+                maxLines: 10,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  labelText: strings.xizmatDescriptionLabel,
+                  labelText: strings.xizmatAboutTitle,
+                  hintText: strings.xizmatAboutHint,
                   alignLabelWithHint: true,
                 ),
                 onChanged: notifier.setDescription,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              TextFormField(
-                initialValue: state.serviceCity,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  labelText: strings.xizmatServiceCityLabel,
-                  hintText: strings.xizmatServiceCityHint,
-                ),
-                onChanged: notifier.setServiceCity,
               ),
               const SizedBox(height: AppSpacing.lg),
               XizmatAvailabilitySection(
@@ -447,15 +533,6 @@ class _StepPortfolioState extends ConsumerState<_StepPortfolio> {
                 onPricingModelChanged: notifier.setPricingModel,
                 priceController: _priceController,
                 minDurationController: _minDurationController,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              XizmatPromiseSection(
-                strings: strings,
-                visible: state.showServicePromise,
-                onVisibleChanged: notifier.setShowServicePromise,
-                promiseController: _promiseController,
-                onPromiseChanged: () =>
-                    notifier.setServicePromiseText(_promiseController.text),
               ),
               const SizedBox(height: AppSpacing.lg),
               PostContactPreferencesSection(
@@ -484,6 +561,7 @@ class _StepPortfolioState extends ConsumerState<_StepPortfolio> {
                   ? strings.xizmatUploading
                   : strings.xizmatReady,
               isLoading: state.isSubmitting,
+              disabledHint: strings.disabledHintServicePhoto,
               onPressed: state.canContinueStep2 && !state.isSubmitting
                   ? () async {
                       if (!isValidOptionalContactPhone(_phoneController.text)) {
@@ -533,13 +611,13 @@ class _StepSuccess extends ConsumerWidget {
             width: 88,
             height: 88,
             decoration: BoxDecoration(
-              color: AppColors.success.withValues(alpha: 0.12),
+              color: context.ybColors.success.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.check_circle_outline_rounded,
+            child: Icon(
+              YbIcons.checkCircle,
               size: 52,
-              color: AppColors.success,
+              color: context.ybColors.success,
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -559,7 +637,7 @@ class _StepSuccess extends ConsumerWidget {
             label: strings.tabHome,
             onPressed: () {
               ref.read(createXizmatProvider.notifier).reset();
-              context.go('/home');
+              context.go('/xizmatlarim');
             },
           ),
         ],
@@ -602,7 +680,7 @@ class _CategoryPickList extends StatelessWidget {
               category.label(language),
               style: AppTypography.headline.copyWith(color: colors.textPrimary),
             ),
-            trailing: Icon(Icons.chevron_right_rounded, color: colors.textTertiary),
+            trailing: Icon(YbIcons.chevronRightFilled, color: colors.textTertiary),
             onTap: () => Navigator.pop(context, category),
           );
         },
@@ -644,7 +722,7 @@ class _SubcategoryPickList extends StatelessWidget {
               sub.label(language),
               style: AppTypography.headline.copyWith(color: colors.textPrimary),
             ),
-            trailing: Icon(Icons.chevron_right_rounded, color: colors.textTertiary),
+            trailing: Icon(YbIcons.chevronRightFilled, color: colors.textTertiary),
             onTap: () => Navigator.pop(context, sub),
           );
         },

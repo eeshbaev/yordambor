@@ -8,6 +8,8 @@ import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/auth/auth_repository.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class RegisterForm extends ConsumerStatefulWidget {
   const RegisterForm({
@@ -81,8 +83,10 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
       widget.onSuccess();
     } on AuthFailure catch (e) {
       widget.onError(e);
-    } catch (e) {
-      widget.onError(AuthFailure(e.toString()));
+    } catch (_) {
+      widget.onError(
+        AuthFailure(ref.read(appStringsProvider).stateErrorBody),
+      );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -98,7 +102,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   Widget build(BuildContext context) {
     final strings = ref.watch(appStringsProvider);
     final linkStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppColors.primary,
+          color: context.ybColors.teal,
           fontWeight: FontWeight.w600,
           decoration: TextDecoration.underline,
         );
@@ -169,8 +173,11 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
               decoration: InputDecoration(
                 labelText: _requiredLabel(strings, strings.password),
                 suffixIcon: IconButton(
+                  tooltip: _obscurePassword
+                      ? strings.a11yShowPassword
+                      : strings.a11yHidePassword,
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    _obscurePassword ? YbIcons.visibilityOffFilled : YbIcons.visibilityFilled,
                   ),
                   onPressed: () =>
                       setState(() => _obscurePassword = !_obscurePassword),
@@ -227,7 +234,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                 padding: const EdgeInsets.only(left: AppSpacing.lg, bottom: 8),
                 child: Text(
                   strings.acceptTermsRequired,
-                  style: AppTypography.caption.copyWith(color: AppColors.error),
+                  style: AppTypography.caption.copyWith(color: context.ybColors.error),
                 ),
               ),
             const SizedBox(height: AppSpacing.sm),

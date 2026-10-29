@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
 import 'package:yordambor/data/growth/achievement_repository.dart';
+import 'package:yordambor/data/growth/growth_prefs_stores.dart';
 import 'package:yordambor/data/growth/provider_stats_repository.dart';
 import 'package:yordambor/data/support/support_repository.dart';
 import 'package:yordambor/domain/growth/achievement.dart';
@@ -112,4 +113,17 @@ final publicAchievementsProvider =
       .watch(providerStatsRepositoryProvider)
       .fetchAchievementContext(profileId);
   return computeUnlockedAchievementIds(ctx);
+});
+
+/// The newest milestone the person reached and has not seen yet. Home shows
+/// it as a card (manual H-05), never as a pop-up.
+final pendingMilestoneProvider = FutureProvider<String?>((ref) async {
+  final growth = await ref.watch(providerGrowthProvider.future);
+  if (growth == null || growth.unlockedIds.isEmpty) return null;
+  final seen =
+      await ref.watch(achievementCelebrationStoreProvider).loadCelebrated();
+  for (final id in growth.unlockedIds.reversed) {
+    if (!seen.contains(id)) return id;
+  }
+  return null;
 });

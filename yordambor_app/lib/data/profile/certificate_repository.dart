@@ -42,12 +42,12 @@ class CertificateRepository {
       throw CertificateFailure('Kirish talab qilinadi');
     }
     if (userId != profileId) {
-      throw CertificateFailure('Faqat o\'z profilingizga qo\'shishingiz mumkin');
+      throw CertificateFailure('Faqat oʻz profilingizga qoʻshishingiz mumkin');
     }
 
     final title = input.title.trim();
     if (title.length < 2) {
-      throw CertificateFailure('Sarlavha kamida 2 ta belgidan iborat bo\'lsin');
+      throw CertificateFailure('Sarlavha kamida 2 ta belgidan iborat boʻlsin');
     }
 
     final existing = await fetchForProfile(profileId);

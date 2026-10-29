@@ -4,12 +4,14 @@ import 'package:yordambor/application/providers/feed_provider.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/safety_providers.dart';
 import 'package:yordambor/application/providers/yordam_kerak_provider.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_confirm_dialog.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/safety/block_repository.dart';
 import 'package:yordambor/data/safety/report_repository.dart';
 
@@ -22,6 +24,7 @@ Future<void> showSafetyActionsSheet(
   required String reportTargetId,
 }) {
   return showModalBottomSheet<void>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -141,7 +144,7 @@ class _SafetyActionsSheetState extends ConsumerState<_SafetyActionsSheet> {
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               child: Row(
                 children: [
-                  Icon(Icons.block_rounded, color: AppColors.error),
+                  Icon(YbIcons.blockFilled, color: context.ybColors.error),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Column(
@@ -163,7 +166,7 @@ class _SafetyActionsSheetState extends ConsumerState<_SafetyActionsSheet> {
                       ],
                     ),
                   ),
-                  Icon(Icons.chevron_right_rounded, color: colors.textTertiary),
+                  Icon(YbIcons.chevronRightFilled, color: colors.textTertiary),
                 ],
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yordambor/data/experience/experience_prefs_repository.dart';
 import 'package:yordambor/domain/growth/app_review_prompt.dart';
 
 const _keyLastPrompt = 'app_review_last_prompt_at';
@@ -10,10 +11,14 @@ const _keyCelebrated = 'celebrated_achievements';
 class AppReviewPrefsStore {
   Future<AppReviewPrefs> load() async {
     final prefs = await SharedPreferences.getInstance();
+    final firstOpen = prefs.getInt(ExperiencePrefsRepository.firstOpenKey);
     return AppReviewPrefs(
       lastPromptAt: _parse(prefs.getString(_keyLastPrompt)),
       snoozeUntil: _parse(prefs.getString(_keySnoozeUntil)),
       completedKelishuvCount: prefs.getInt(_keyCompletedCount) ?? 0,
+      firstOpenAt: firstOpen == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(firstOpen),
     );
   }
 

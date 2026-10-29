@@ -6,20 +6,30 @@ import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
+import 'package:yordambor/application/providers/yordam_kerak_provider.dart';
+import 'package:yordambor/core/design_system/app_haptics.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/client_book/provider_tools_service.dart';
 import 'package:yordambor/data/kelishuv/kelishuv_repository.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
+import 'package:yordambor/core/utils/demo_ids.dart';
+import 'package:yordambor/core/utils/phone_validation.dart';
 import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 import 'package:yordambor/presentation/shared/busy_slot_confirm.dart';
+import 'package:yordambor/presentation/shared/sample_listing_actions.dart';
 import 'package:yordambor/presentation/shared/yb_safety_banner.dart';
 
 class TaklifTarget {
+  /// A client asks a provider's service for help.
   const TaklifTarget.xizmat({required this.xizmatId}) : postId = null;
 
+  /// A provider answers a request for help ("Yordam bor").
   const TaklifTarget.post({
     required this.postId,
     required this.xizmatId,
@@ -27,6 +37,9 @@ class TaklifTarget {
 
   final String? postId;
   final String xizmatId;
+
+  /// True when the person sending is the one who needs the help.
+  bool get asksForHelp => postId == null;
 }
 
 Future<String?> showTaklifSheet(
@@ -36,6 +49,7 @@ Future<String?> showTaklifSheet(
   TaklifPricingPrefill? prefill,
 }) {
   return showModalBottomSheet<String>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -68,8 +82,23 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
   final _messageController = TextEditingController();
   final _priceController = TextEditingController();
   final _durationController = TextEditingController();
+
+  /// The sender's card, prefilled from their profile.
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  /// The card shows as one line until the person edits it, or while
+  /// something in it is missing.
+  bool _editingContact = false;
+  String? _firstNameError;
+  String? _phoneError;
+
   DateTime? _startDate;
   bool _isSubmitting = false;
+
+  /// Sent: the button closes into a checkmark before the sheet leaves.
+  bool _sent = false;
   String? _errorMessage;
   bool _prefillApplied = false;
 
@@ -77,6 +106,57 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
   void initState() {
     super.initState();
     _applyPrefill(widget.prefill);
+    _prefillContact();
+  }
+
+  /// Name and phone from the profile: the first word of the full name is
+  /// the first name, the rest the family name.
+  void _prefillContact() {
+    final profile = ref.read(sessionProvider).profile;
+    final parts = (profile?.fullName ?? '')
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((part) => part.isNotEmpty)
+        .toList();
+    if (parts.isNotEmpty) {
+      _firstNameController.text = parts.first;
+      _lastNameController.text = parts.skip(1).join(' ');
+    }
+    _phoneController.text = profile?.phone.trim() ?? '';
+    _editingContact = !_contactComplete;
+  }
+
+  bool get _contactComplete =>
+      _firstNameController.text.trim().isNotEmpty &&
+      _phoneController.text.trim().isNotEmpty &&
+      isValidOptionalContactPhone(_phoneController.text);
+
+  /// Checks the card; shows what is missing and opens it when needed.
+  DealContact? _validContact() {
+    final strings = ref.read(appStringsProvider);
+    final first = _firstNameController.text.trim();
+    final phoneText = _phoneController.text.trim();
+    final phone = normalizeOptionalContactPhone(phoneText);
+    final firstError = first.isEmpty ? strings.taklifFirstNameRequired : null;
+    final phoneError = phoneText.isEmpty
+        ? strings.taklifPhoneRequired
+        : !isValidOptionalContactPhone(phoneText) || phone == null
+            ? strings.invalidPhone
+            : null;
+    setState(() {
+      _firstNameError = firstError;
+      _phoneError = phoneError;
+      if (firstError != null || phoneError != null) _editingContact = true;
+    });
+    if (firstError != null || phoneError != null || phone == null) {
+      return null;
+    }
+    final last = _lastNameController.text.trim();
+    return DealContact(
+      firstName: first,
+      lastName: last.isEmpty ? null : last,
+      phone: phone,
+    );
   }
 
   void _applyPrefill(TaklifPricingPrefill? prefill) {
@@ -100,6 +180,9 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
     _messageController.dispose();
     _priceController.dispose();
     _durationController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -124,6 +207,12 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
   }
 
   Future<void> _submit() async {
+    final contact = _validContact();
+    if (contact == null) {
+      AppHaptics.error();
+      return;
+    }
+
     setState(() {
       _isSubmitting = true;
       _errorMessage = null;
@@ -137,6 +226,7 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
       startDate: _startDate,
       durationMinutes:
           durationText.isEmpty ? null : int.tryParse(durationText),
+      contact: contact,
     );
 
     if (_startDate != null) {
@@ -167,17 +257,23 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
         );
       }
 
-      if (mounted) Navigator.of(context).pop(kelishuv.id);
       ref.invalidate(incomingKelishuvProvider);
       ref.invalidate(myKelishuvRequestsProvider);
+      if (!mounted) return;
+      setState(() {
+        _isSubmitting = false;
+        _sent = true;
+      });
+      await Future<void>.delayed(const Duration(milliseconds: 650));
+      if (mounted) Navigator.of(context).pop(kelishuv.id);
     } on KelishuvFailure catch (error) {
       setState(() {
         _errorMessage = error.message;
         _isSubmitting = false;
       });
-    } catch (error) {
+    } catch (_) {
       setState(() {
-        _errorMessage = error.toString();
+        _errorMessage = ref.read(appStringsProvider).stateErrorBody;
         _isSubmitting = false;
       });
     }
@@ -192,19 +288,46 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
         priceText.isNotEmpty && double.tryParse(priceText) == null;
     final durationInvalid =
         durationText.isNotEmpty && int.tryParse(durationText) == null;
+    // The client says what they need; the provider says how they can help.
+    final asks = widget.target.asksForHelp;
 
     return YbSheetBody(
       title: widget.title ?? strings.taklifTitle,
-      subtitle: strings.taklifSubtitle,
+      subtitle: asks ? strings.taklifAskSubtitle : strings.taklifSubtitle,
       children: [
+        // A sample listing: say so before anything is filled in.
+        if (isDemoFeedId(widget.target.postId ?? widget.target.xizmatId)) ...[
+          YbInlineMessage(
+            message: strings.demoDealNote,
+            tone: YbInlineMessageTone.info,
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
         YbSafetyBanner(strings: strings),
+        const SizedBox(height: AppSpacing.lg),
+        _ContactCard(
+          title: strings.taklifContactTitle,
+          note: strings.taklifContactNote,
+          editLabel: strings.actionEdit,
+          firstNameLabel: strings.taklifFirstNameLabel,
+          lastNameLabel: strings.taklifLastNameLabel,
+          phoneLabel: strings.postContactPhoneLabel,
+          firstName: _firstNameController,
+          lastName: _lastNameController,
+          phone: _phoneController,
+          firstNameError: _firstNameError,
+          phoneError: _phoneError,
+          editing: _editingContact,
+          enabled: !_isSubmitting,
+          onEdit: () => setState(() => _editingContact = true),
+        ),
         const SizedBox(height: AppSpacing.lg),
         TextField(
           controller: _messageController,
           enabled: !_isSubmitting,
           decoration: InputDecoration(
-            labelText: strings.taklifMessageLabel,
-            hintText: strings.taklifMessageHint,
+            labelText: strings.taklifMessageOptionalLabel,
+            hintText: asks ? strings.taklifAskHint : strings.taklifMessageHint,
           ),
           maxLines: 4,
           textCapitalization: TextCapitalization.sentences,
@@ -225,7 +348,7 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
           label: _startDate == null
               ? strings.taklifDateLabel
               : _formatDate(_startDate!),
-          icon: Icons.calendar_today_outlined,
+          icon: YbIcons.calendarToday,
           onPressed: _isSubmitting ? null : _pickDate,
         ),
         const SizedBox(height: AppSpacing.lg),
@@ -245,9 +368,10 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
         ],
         const SizedBox(height: AppSpacing.xl),
         YbPrimaryButton(
-          label: strings.taklifSubmit,
+          label: asks ? strings.taklifAskSubmit : strings.taklifSubmit,
           isLoading: _isSubmitting,
-          onPressed: _isSubmitting || priceInvalid || durationInvalid
+          isSuccess: _sent,
+          onPressed: _isSubmitting || _sent || priceInvalid || durationInvalid
               ? null
               : _submit,
         ),
@@ -260,6 +384,181 @@ class _TaklifSheetState extends ConsumerState<TaklifSheet> {
   }
 }
 
+/// The sender's card: one line with their name and phone, ready to send;
+/// "Edit" opens the three fields. Opens by itself when something is
+/// missing.
+class _ContactCard extends StatelessWidget {
+  const _ContactCard({
+    required this.title,
+    required this.note,
+    required this.editLabel,
+    required this.firstNameLabel,
+    required this.lastNameLabel,
+    required this.phoneLabel,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.editing,
+    required this.enabled,
+    required this.onEdit,
+    this.firstNameError,
+    this.phoneError,
+  });
+
+  final String title;
+  final String note;
+  final String editLabel;
+  final String firstNameLabel;
+  final String lastNameLabel;
+  final String phoneLabel;
+  final TextEditingController firstName;
+  final TextEditingController lastName;
+  final TextEditingController phone;
+  final bool editing;
+  final bool enabled;
+  final VoidCallback onEdit;
+  final String? firstNameError;
+  final String? phoneError;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.ybColors;
+    final name = [firstName.text.trim(), lastName.text.trim()]
+        .where((part) => part.isNotEmpty)
+        .join(' ');
+    final initial = name.isEmpty ? '?' : name[0].toUpperCase();
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.tealSoft,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Icon(YbIcons.badge, size: 18, color: colors.tealInk),
+                const SizedBox(width: AppSpacing.xs),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTypography.label.copyWith(
+                      color: colors.tealInk,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                if (!editing)
+                  TextButton(
+                    onPressed: enabled ? onEdit : null,
+                    child: Text(editLabel),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            if (!editing)
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: colors.card,
+                    child: Text(
+                      initial,
+                      style: AppTypography.headline.copyWith(
+                        color: colors.tealInk,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: AppTypography.headline.copyWith(
+                            color: colors.ink,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            Icon(
+                              YbIcons.phone,
+                              size: 16,
+                              color: colors.ink2,
+                            ),
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                phone.text.trim(),
+                                style: AppTypography.tabular(
+                                  AppTypography.body.copyWith(
+                                    color: colors.ink2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            else ...[
+              const SizedBox(height: AppSpacing.xs),
+              TextField(
+                controller: firstName,
+                enabled: enabled,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: '$firstNameLabel *',
+                  errorText: firstNameError,
+                  filled: true,
+                  fillColor: colors.card,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              TextField(
+                controller: lastName,
+                enabled: enabled,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: lastNameLabel,
+                  filled: true,
+                  fillColor: colors.card,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              TextField(
+                controller: phone,
+                enabled: enabled,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  labelText: '$phoneLabel *',
+                  hintText: '+998 90 123 45 67',
+                  errorText: phoneError,
+                  filled: true,
+                  fillColor: colors.card,
+                ),
+              ),
+            ],
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              note,
+              style: AppTypography.caption.copyWith(color: colors.tealInk),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 Future<void> openTaklifFlow(
   BuildContext context,
   WidgetRef ref, {
@@ -269,6 +568,23 @@ Future<void> openTaklifFlow(
   final xizmat =
       await ref.read(xizmatDetailProvider(target.xizmatId).future);
   if (!context.mounted) return;
+
+  // Samples never take a deal: a sample service leads to a real request,
+  // a sample request to alerts for real ones.
+  final postId = target.postId;
+  if (postId != null && isDemoFeedId(postId)) {
+    final sample = await ref.read(yordamKerakPostProvider(postId).future);
+    if (sample != null && context.mounted) {
+      await answerSampleRequest(context, ref, sample);
+    }
+    return;
+  }
+  if (postId == null &&
+      xizmat != null &&
+      (xizmat.isDemo || isDemoFeedId(xizmat.id))) {
+    await findProviderFromSample(context, ref, xizmat);
+    return;
+  }
 
   if (target.postId == null) {
     final userId = ref.read(sessionProvider).user?.id;

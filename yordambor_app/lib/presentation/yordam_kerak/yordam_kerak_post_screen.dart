@@ -6,9 +6,8 @@ import 'package:yordambor/application/providers/yordam_kerak_provider.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_job_post_card.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
-import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/share/feed_share.dart';
-import 'package:yordambor/presentation/auth/auth_gate.dart';
 import 'package:yordambor/presentation/kelishuv/yordam_bor_flow.dart';
 
 class YordamKerakPostScreen extends ConsumerWidget {
@@ -29,7 +28,7 @@ class YordamKerakPostScreen extends ConsumerWidget {
             data: (item) {
               if (item == null) return const SizedBox.shrink();
               return IconButton(
-                icon: const Icon(Icons.share_outlined),
+                icon: const Icon(YbIcons.share),
                 tooltip: strings.shareYordamKerak,
                 onPressed: () => FeedShare.shareYordamKerakPost(
                   strings: strings,
@@ -62,32 +61,16 @@ class YordamKerakPostScreen extends ConsumerWidget {
                   item.categoryLabel,
                   item.subcategoryLabel,
                 ),
+                cityLabel: strings.serviceCityDisplayLabel(item.serviceCity),
+                sampleLabel: item.isDemo ? strings.sampleTag : null,
                 yordamBorLabel: strings.filterYordamBor,
+                compact: false,
                 onTap: () {},
                 onAuthorTap: item.authorId != null && item.showProfile
                     ? () => context.push('/user/${item.authorId}')
                     : null,
-                callLabel: strings.userProfileCall,
                 phoneHiddenLabel: strings.userProfilePhoneHidden,
-                onShare: () => FeedShare.shareYordamKerakPost(
-                  strings: strings,
-                  postId: item.id,
-                  title: item.title,
-                ),
-                onYordamBor: () async {
-                  final allowed = await requireVerifiedAuth(
-                    context,
-                    ref,
-                    authContext: AuthContextType.yordamBor,
-                  );
-                  if (!allowed || !context.mounted) return;
-                  await openYordamBorForPost(
-                    context,
-                    ref,
-                    postId: item.id,
-                    subcategoryId: item.subcategoryId,
-                  );
-                },
+                onYordamBor: () => answerHelpRequest(context, ref, item),
               ),
             ],
           );

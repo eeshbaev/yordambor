@@ -6,6 +6,7 @@ import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_profile_menu.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/presentation/support/feedback_sheet.dart';
 
 class HelpScreen extends ConsumerWidget {
@@ -26,19 +27,19 @@ class HelpScreen extends ConsumerWidget {
             YbProfileMenuSection(
               children: [
                 YbProfileMenuTile(
-                  icon: Icons.bug_report_outlined,
+                  icon: YbIcons.bugReport,
                   title: strings.supportReportTitle,
                   subtitle: strings.supportReportSubtitle,
                   onTap: () => context.push('/support/report'),
                 ),
                 YbProfileMenuTile(
-                  icon: Icons.rate_review_outlined,
+                  icon: YbIcons.rateReview,
                   title: strings.feedbackTitle,
                   subtitle: strings.feedbackSubtitle,
                   onTap: () => showFeedbackSheet(context),
                 ),
                 YbProfileMenuTile(
-                  icon: Icons.menu_book_outlined,
+                  icon: YbIcons.menuBook,
                   title: strings.guidesTitle,
                   subtitle: strings.guidesSubtitle,
                   onTap: () => context.push('/guides'),

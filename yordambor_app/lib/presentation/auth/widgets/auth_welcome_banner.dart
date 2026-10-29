@@ -6,6 +6,7 @@ import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_elevation.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class AuthWelcomeBanner extends ConsumerWidget {
   const AuthWelcomeBanner({super.key});
@@ -27,12 +28,12 @@ class AuthWelcomeBanner extends ConsumerWidget {
       AuthWelcomeKind.newMember => (
           strings.welcomeNewTitle(name),
           strings.welcomeNewBody,
-          Icons.celebration_outlined,
+          YbIcons.celebration,
         ),
       AuthWelcomeKind.returningLogin => (
           strings.welcomeLoginTitle(name),
           strings.welcomeLoginBody,
-          Icons.waving_hand_outlined,
+          YbIcons.wavingHand,
         ),
       AuthWelcomeKind.returningSession => (
           isYordamKerak
@@ -41,7 +42,7 @@ class AuthWelcomeBanner extends ConsumerWidget {
           isYordamKerak
               ? strings.welcomeReturnBodyYordamKerak
               : strings.welcomeReturnBody,
-          Icons.favorite_outline,
+          YbIcons.favorite,
         ),
     };
 
@@ -60,7 +61,7 @@ class AuthWelcomeBanner extends ConsumerWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.card),
-            border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
+            border: Border.all(color: context.ybColors.teal.withValues(alpha: 0.15)),
             boxShadow: AppElevation.card(context),
           ),
           child: Padding(
@@ -72,10 +73,10 @@ class AuthWelcomeBanner extends ConsumerWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.12),
+                    color: context.ybColors.teal.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(AppRadius.chip),
                   ),
-                  child: Icon(icon, color: AppColors.primary),
+                  child: Icon(icon, color: context.ybColors.teal),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -106,7 +107,7 @@ class AuthWelcomeBanner extends ConsumerWidget {
                   onPressed: () {
                     ref.read(authWelcomeProvider.notifier).state = null;
                   },
-                  icon: Icon(Icons.close_rounded, size: 20, color: colors.textTertiary),
+                  icon: Icon(YbIcons.closeFilled, size: 20, color: colors.textTertiary),
                   tooltip: strings.actionCancel,
                 ),
               ],

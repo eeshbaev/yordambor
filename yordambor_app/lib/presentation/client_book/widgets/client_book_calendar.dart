@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/client_book/provider_tools_service.dart';
 
@@ -65,13 +67,14 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
           child: Row(
             children: [
               IconButton(
+                tooltip: widget.strings.actionPreviousMonth,
                 onPressed: () => setState(() {
                   _visibleMonth = DateTime(
                     _visibleMonth.year,
                     _visibleMonth.month - 1,
                   );
                 }),
-                icon: Icon(Icons.chevron_left_rounded, color: colors.textPrimary),
+                icon: Icon(YbIcons.chevronLeftFilled, color: colors.textPrimary),
               ),
               Expanded(
                 child: Text(
@@ -83,6 +86,7 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
                 ),
               ),
               IconButton(
+                tooltip: widget.strings.actionNextMonth,
                 onPressed: () => setState(() {
                   _visibleMonth = DateTime(
                     _visibleMonth.year,
@@ -90,7 +94,7 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
                   );
                 }),
                 icon:
-                    Icon(Icons.chevron_right_rounded, color: colors.textPrimary),
+                    Icon(YbIcons.chevronRightFilled, color: colors.textPrimary),
               ),
             ],
           ),
@@ -149,9 +153,9 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
                       borderRadius: BorderRadius.circular(AppRadius.chip),
                       border: Border.all(
                         color: isToday
-                            ? AppColors.primary
+                            ? context.ybColors.teal
                             : isBusy
-                                ? AppColors.primary
+                                ? context.ybColors.teal
                                 : colors.borderSubtle,
                         width: isToday ? 1.5 : 1,
                       ),
@@ -172,8 +176,8 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
                             width: 6,
                             height: 6,
                             margin: const EdgeInsets.only(top: 2),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
+                            decoration: BoxDecoration(
+                              color: context.ybColors.teal,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -226,6 +230,7 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
     final title = DateFormat.yMMMd(widget.localeCode).format(date);
 
     showModalBottomSheet<void>(
+      sheetAnimationStyle: AppMotion.sheetOf(context),
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
@@ -268,7 +273,7 @@ class _ClientBookCalendarState extends State<ClientBookCalendar> {
                         ),
                       ),
                       Icon(
-                        Icons.chevron_right_rounded,
+                        YbIcons.chevronRightFilled,
                         color: colors.textTertiary,
                       ),
                     ],

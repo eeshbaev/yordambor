@@ -3,15 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/earnings_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/widgets/yb_count_up.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/widgets/yb_undo_snackbar.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/earnings_row.dart';
+import 'package:yordambor/core/utils/money_format.dart';
 
 class EarningsScreen extends ConsumerWidget {
   const EarningsScreen({super.key});
@@ -29,7 +34,7 @@ class EarningsScreen extends ConsumerWidget {
           ref: ref,
           strings: strings,
         ),
-        icon: const Icon(Icons.add),
+        icon: const Icon(YbIcons.addFilled),
         label: Text(strings.earningsAdd),
       ),
       body: AppLayout.page(
@@ -42,9 +47,11 @@ class EarningsScreen extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 YbEmptyState(
-                  icon: Icons.error_outline_rounded,
-                  title: strings.earningsTitle,
-                  subtitle: '$error',
+                  icon: YbIcons.cloudOff,
+                  title: strings.stateErrorTitle,
+                  subtitle: strings.stateErrorBody,
+                  actionLabel: strings.actionRetry,
+                  onAction: () => ref.invalidate(earningsRowsProvider),
                 ),
               ],
             ),
@@ -54,7 +61,7 @@ class EarningsScreen extends ConsumerWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   YbEmptyState(
-                    icon: Icons.payments_outlined,
+                    icon: YbIcons.payments,
                     title: strings.earningsEmptyTitle,
                     subtitle: strings.earningsEmptySub,
                   ),
@@ -81,9 +88,15 @@ class EarningsScreen extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.xs),
-                        Text(
-                          '${total.toStringAsFixed(0)} UZS',
-                          style: AppTypography.title.copyWith(
+                        // The month's total is a hero number (manual V-04).
+                        YbCountUp(
+                          value: total,
+                          format: (value) => formatMoney(
+                            value.roundToDouble(),
+                            'UZS',
+                            languageCode: strings.languageCode,
+                          ),
+                          style: AppTypography.largeTitle.copyWith(
                             color: context.ybColors.textPrimary,
                           ),
                         ),
@@ -127,12 +140,24 @@ class _EarningsTile extends ConsumerWidget {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: AppSpacing.lg),
-        color: AppColors.error,
-        child: const Icon(Icons.delete_outline, color: Colors.white),
+        color: context.ybColors.error,
+        child: const Icon(YbIcons.delete, color: Colors.white),
       ),
       confirmDismiss: (_) async {
-        await ref.read(earningsRepositoryProvider).deleteRow(row.id);
+        final repository = ref.read(earningsRepositoryProvider);
+        final messenger = ScaffoldMessenger.of(context);
+        final container = ProviderScope.containerOf(context);
+        await repository.deleteRow(row.id);
         ref.invalidate(earningsRowsProvider);
+        showYbUndoSnackBar(
+          messenger,
+          message: strings.undoDeleted,
+          undoLabel: strings.actionUndo,
+          onUndo: () async {
+            await repository.updateRow(row);
+            container.invalidate(earningsRowsProvider);
+          },
+        );
         return true;
       },
       child: ListTile(
@@ -153,7 +178,8 @@ class _EarningsTile extends ConsumerWidget {
           style: AppTypography.caption.copyWith(color: colors.textSecondary),
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.edit_outlined),
+          tooltip: strings.earningsEdit,
+          icon: const Icon(YbIcons.edit),
           onPressed: () => _showEarningsSheet(
             context: context,
             ref: ref,
@@ -183,6 +209,7 @@ Future<void> _showEarningsSheet({
   final noteController = TextEditingController(text: row?.note ?? '');
 
   final saved = await showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,

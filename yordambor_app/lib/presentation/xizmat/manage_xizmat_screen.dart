@@ -9,6 +9,7 @@ import 'package:yordambor/application/providers/feed_provider.dart';
 import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
@@ -16,6 +17,7 @@ import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/application/providers/analytics_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
@@ -34,6 +36,7 @@ import 'package:yordambor/presentation/shared/xizmat_availability_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_pricing_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_promise_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_service_city_field.dart';
+import 'package:yordambor/presentation/xizmat/widgets/xizmat_hours_section.dart';
 
 final xizmatPortfolioProvider =
     FutureProvider.family<List<PortfolioItem>, String>((ref, xizmatId) async {
@@ -56,7 +59,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
   final _priceController = TextEditingController();
   final _minDurationController = TextEditingController();
   final _promiseController = TextEditingController();
-  final _serviceCityController = TextEditingController();
+  String? _serviceCityId;
 
   CategoryItem? _category;
   SubcategoryItem? _subcategory;
@@ -68,6 +71,11 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
   DateTime? _availabilityUntil;
   bool _showServicePromise = false;
   bool _showContactPhone = false;
+
+  /// Whether the listing's stored phone is known here. It loads apart from
+  /// the listing (only its owner may read it); until it has, an empty
+  /// field is not saved over it.
+  bool _phoneKnown = false;
   bool _initialized = false;
   bool _isSaving = false;
   bool _isUploading = false;
@@ -81,7 +89,6 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
     _priceController.dispose();
     _minDurationController.dispose();
     _promiseController.dispose();
-    _serviceCityController.dispose();
     super.dispose();
   }
 
@@ -89,9 +96,14 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
     if (_initialized) return;
     _initialized = true;
     _nameController.text = item.name;
-    _descriptionController.text = item.description ?? '';
+    // A promise kept apart before now joins the description as its last
+    // paragraph, so the provider edits one text; a hidden one stays as it
+    // was.
+    _descriptionController.text = item.aboutText ?? '';
     _providerType = item.providerType;
     _phoneController.text = item.contactPhone ?? '';
+    _phoneKnown = item.contactPhone != null;
+    if (!_phoneKnown) _loadContactPhone(item.id);
     _showContactPhone = item.showContactPhone;
     _pricingModel = item.pricingModel;
     if (item.basePrice != null) {
@@ -106,9 +118,10 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
     _availabilityMode = item.availabilityMode;
     _availabilityFrom = item.availabilityFrom;
     _availabilityUntil = item.availabilityUntil;
-    _showServicePromise = item.showServicePromise;
-    _promiseController.text = item.servicePromise ?? '';
-    _serviceCityController.text = item.serviceCity ?? '';
+    _showServicePromise = false;
+    _promiseController.text =
+        item.visibleServicePromise != null ? '' : (item.servicePromise ?? '');
+    _serviceCityId = item.serviceCity;
 
     ref.read(categoriesProvider.future).then((categories) {
       for (final category in categories) {
@@ -124,6 +137,22 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
       }
       if (mounted) setState(() {});
     });
+  }
+
+  Future<void> _loadContactPhone(String xizmatId) async {
+    try {
+      final phone =
+          await ref.read(xizmatRepositoryProvider).fetchMyContactPhone(xizmatId);
+      if (!mounted) return;
+      setState(() {
+        _phoneKnown = true;
+        if (phone != null && _phoneController.text.trim().isEmpty) {
+          _phoneController.text = phone;
+        }
+      });
+    } catch (_) {
+      // Offline: the stored phone stays as it is unless one is typed.
+    }
   }
 
   Future<void> _saveIdentity() async {
@@ -174,6 +203,12 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
       return;
     }
 
+    final cityError = validateServiceCity(_serviceCityId, strings);
+    if (cityError != null) {
+      setState(() => _errorMessage = cityError);
+      return;
+    }
+
     final basePrice = _pricingModel == XizmatPricingModel.negotiable
         ? null
         : parseOptionalPrice(_priceController.text);
@@ -197,6 +232,8 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
               description: _descriptionController.text,
               contactPhone: contactPhone,
               showContactPhone: _showContactPhone,
+              keepContactPhone:
+                  !_phoneKnown && _phoneController.text.trim().isEmpty,
               pricingModel: _pricingModel,
               basePrice: basePrice,
               minDurationMinutes: minDuration,
@@ -206,7 +243,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
               availabilityUntil: _availabilityUntil,
               showServicePromise: _showServicePromise,
               servicePromise: normalizeServicePromise(_promiseController.text),
-              serviceCity: normalizeServiceCity(_serviceCityController.text),
+              serviceCity: _serviceCityId,
             ),
           );
       ref.invalidate(xizmatDetailProvider(widget.xizmatId));
@@ -219,8 +256,10 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
       }
     } on XizmatFailure catch (error) {
       setState(() => _errorMessage = error.message);
-    } catch (error) {
-      setState(() => _errorMessage = error.toString());
+    } catch (_) {
+      setState(
+        () => _errorMessage = ref.read(appStringsProvider).stateErrorBody,
+      );
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -255,10 +294,12 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
       ref.invalidate(xizmatPortfolioProvider(widget.xizmatId));
       ref.invalidate(xizmatDetailProvider(widget.xizmatId));
       ref.read(feedProvider.notifier).load();
-    } on Exception catch (error) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$error')),
+          SnackBar(
+            content: Text(ref.read(appStringsProvider).stateErrorBody),
+          ),
         );
       }
     } finally {
@@ -310,9 +351,11 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
         body: AppLayout.page(
           context: context,
           child: YbEmptyState(
-            icon: Icons.error_outline_rounded,
-            title: strings.xizmatEditTitle,
-            subtitle: '$error',
+            icon: YbIcons.cloudOff,
+            title: strings.stateErrorTitle,
+            subtitle: strings.stateErrorBody,
+            actionLabel: strings.actionRetry,
+            onAction: () => ref.invalidate(xizmatDetailProvider(widget.xizmatId)),
           ),
         ),
       ),
@@ -323,7 +366,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
             body: AppLayout.page(
               context: context,
               child: YbEmptyState(
-                icon: Icons.search_off_outlined,
+                icon: YbIcons.searchOff,
                 title: strings.xizmatEditTitle,
                 subtitle: strings.xizmatNotFound,
               ),
@@ -337,7 +380,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
             body: AppLayout.page(
               context: context,
               child: YbEmptyState(
-                icon: Icons.lock_outline_rounded,
+                icon: YbIcons.lock,
                 title: strings.xizmatEditTitle,
                 subtitle: strings.xizmatNoPermission,
               ),
@@ -396,15 +439,22 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
                 decoration: InputDecoration(labelText: strings.xizmatNameLabel),
               ),
               const SizedBox(height: AppSpacing.lg),
+              // One text, in the provider's own words.
               TextField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: strings.xizmatDescriptionFull),
-                maxLines: 4,
+                minLines: 4,
+                maxLines: 10,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  labelText: strings.xizmatAboutTitle,
+                  hintText: strings.xizmatAboutHint,
+                  alignLabelWithHint: true,
+                ),
               ),
               const SizedBox(height: AppSpacing.lg),
               XizmatServiceCityField(
-                strings: strings,
-                controller: _serviceCityController,
+                selectedCityId: _serviceCityId,
+                onChanged: (cityId) => setState(() => _serviceCityId = cityId),
               ),
               const SizedBox(height: AppSpacing.lg),
               _ManagePickRow(
@@ -449,6 +499,9 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
                     setState(() => _availabilityUntil = value),
               ),
               const SizedBox(height: AppSpacing.lg),
+              // Hours clients see on the service; saved on their own.
+              XizmatHoursSection(xizmatId: widget.xizmatId),
+              const SizedBox(height: AppSpacing.lg),
               XizmatPricingSection(
                 strings: strings,
                 pricingModel: _pricingModel,
@@ -456,15 +509,6 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
                     setState(() => _pricingModel = model),
                 priceController: _priceController,
                 minDurationController: _minDurationController,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              XizmatPromiseSection(
-                strings: strings,
-                visible: _showServicePromise,
-                onVisibleChanged: (value) =>
-                    setState(() => _showServicePromise = value),
-                promiseController: _promiseController,
-                onPromiseChanged: () => setState(() {}),
               ),
               const SizedBox(height: AppSpacing.lg),
               PostContactPreferencesSection(
@@ -498,7 +542,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
                   else
                     IconButton(
                       onPressed: _addPhoto,
-                      icon: const Icon(Icons.add_photo_alternate_outlined),
+                      icon: const Icon(YbIcons.addPhotoAlternate),
                       tooltip: strings.xizmatAddPhoto,
                     ),
                 ],
@@ -506,7 +550,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
               const SizedBox(height: AppSpacing.md),
               portfolioAsync.when(
                 loading: () => const LinearProgressIndicator(),
-                error: (error, _) => Text('$error'),
+                error: (_, _) => Text(strings.profileSectionLoadFailed),
                 data: (items) {
                   if (items.isEmpty) {
                     return Text(
@@ -566,6 +610,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
     if (!context.mounted) return;
 
     final picked = await showModalBottomSheet<CategoryItem>(
+      sheetAnimationStyle: AppMotion.sheetOf(context),
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
@@ -592,6 +637,7 @@ class _ManageXizmatScreenState extends ConsumerState<ManageXizmatScreen> {
 
     final subs = category.subcategories;
     final picked = await showModalBottomSheet<SubcategoryItem>(
+      sheetAnimationStyle: AppMotion.sheetOf(context),
       context: context,
       showDragHandle: true,
       builder: (context) => _PickerList(
@@ -642,12 +688,15 @@ class _PortfolioTile extends StatelessWidget {
                 vertical: 2,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: context.ybColors.teal,
                 borderRadius: BorderRadius.circular(AppRadius.chip),
               ),
               child: Text(
                 strings.xizmatHeroLabel,
-                style: const TextStyle(color: Colors.white, fontSize: 10),
+                style: TextStyle(
+                  color: context.ybColors.onTeal,
+                  fontSize: 10,
+                ),
               ),
             ),
           ),
@@ -655,7 +704,7 @@ class _PortfolioTile extends StatelessWidget {
           right: 0,
           bottom: 0,
           child: PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
+            icon: const Icon(YbIcons.moreVertFilled, color: Colors.white),
             onSelected: (value) {
               if (value == 'hero') onSetHero();
               if (value == 'remove') onRemove();
@@ -867,7 +916,7 @@ class _ReviewReplyTileState extends ConsumerState<_ReviewReplyTile> {
         children: [
           Row(
             children: [
-              Icon(Icons.star_rounded, color: AppColors.star, size: 20),
+              Icon(YbIcons.starFilled, color: context.ybColors.star, size: 20),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 '${review.rating}/5',
@@ -961,7 +1010,7 @@ class _PickerList extends StatelessWidget {
                     ),
                   ),
                   trailing: Icon(
-                    Icons.chevron_right_rounded,
+                    YbIcons.chevronRightFilled,
                     color: colors.textTertiary,
                   ),
                   onTap: () => onPick(index),
@@ -1022,7 +1071,7 @@ class _ManagePickRow extends StatelessWidget {
                 ),
               ),
               Icon(
-                Icons.chevron_right_rounded,
+                YbIcons.chevronRightFilled,
                 color: enabled ? colors.textTertiary : colors.borderSubtle,
               ),
             ],

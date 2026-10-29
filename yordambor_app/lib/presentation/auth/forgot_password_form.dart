@@ -5,6 +5,8 @@ import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/data/auth/auth_repository.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class ForgotPasswordForm extends ConsumerStatefulWidget {
   const ForgotPasswordForm({
@@ -74,9 +76,9 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
           const SizedBox(height: AppSpacing.lg),
           if (_sent) ...[
             Icon(
-              Icons.mark_email_read_outlined,
+              YbIcons.markEmailRead,
               size: 48,
-              color: AppColors.primary,
+              color: context.ybColors.teal,
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
@@ -89,7 +91,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
             Text(
               strings.resetPasswordEmailHint,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.ybColors.textSecondary,
                     height: 1.4,
                   ),
             ),

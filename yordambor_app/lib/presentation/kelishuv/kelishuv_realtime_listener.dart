@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/utils/demo_ids.dart';
 
 class KelishuvRealtimeListener extends ConsumerStatefulWidget {
   const KelishuvRealtimeListener({
@@ -34,7 +35,7 @@ class _KelishuvRealtimeListenerState
   }
 
   void _subscribe() {
-    if (!Env.isConfigured) return;
+    if (!Env.isConfigured || isSimulatedKelishuvId(widget.kelishuvId)) return;
 
     final client = Supabase.instance.client;
     _channel = client

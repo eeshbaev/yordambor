@@ -5,9 +5,12 @@ import 'package:yordambor/application/providers/growth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/widgets/yb_count_up.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_load_error_retry.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
+import 'package:yordambor/core/utils/money_format.dart';
 import 'package:yordambor/presentation/growth/widgets/achievements_chip_grid.dart';
 import 'package:yordambor/domain/growth/provider_tier.dart';
 import 'package:yordambor/presentation/growth/widgets/yb_provider_tier_badge.dart';
@@ -58,12 +61,12 @@ class ProviderProgressSection extends ConsumerWidget {
               children: [
                 Text(
                   strings.providerProgressTitle,
-                  style: AppTypography.headline,
+                  style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   strings.providerProgressSubtitle,
-                  style: AppTypography.caption,
+                  style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 YbInlineMessage(
@@ -72,7 +75,7 @@ class ProviderProgressSection extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 if (showAchievements) ...[
-                  Text(strings.achievementsTitle, style: AppTypography.label),
+                  Text(strings.achievementsTitle, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
                   const SizedBox(height: AppSpacing.sm),
                   AchievementsChipGrid(
                     unlockedIds: const {},
@@ -85,9 +88,6 @@ class ProviderProgressSection extends ConsumerWidget {
         }
 
         final stats = growth.stats;
-        final ratingText = stats.hasRating
-            ? stats.averageRating.toStringAsFixed(1)
-            : '—';
 
         final body = Padding(
           padding: EdgeInsets.all(embedded ? 0 : AppSpacing.lg),
@@ -102,11 +102,11 @@ class ProviderProgressSection extends ConsumerWidget {
                         children: [
                           Text(
                             strings.providerProgressTitle,
-                            style: AppTypography.headline,
+                            style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary),
                           ),
                           Text(
                             strings.providerProgressSubtitle,
-                            style: AppTypography.caption,
+                            style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary),
                           ),
                         ],
                       ),
@@ -117,12 +117,12 @@ class ProviderProgressSection extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  strings.providerJobsRating(stats.completedJobs, ratingText),
-                  style: AppTypography.title.copyWith(
-                    color: AppColors.primary,
-                  ),
+                const SizedBox(height: AppSpacing.lg),
+                _HeroStats(
+                  jobs: stats.completedJobs,
+                  jobsLabel: strings.statJobsDone(stats.completedJobs),
+                  rating: stats.hasRating ? stats.averageRating : null,
+                  ratingLabel: strings.statRating,
                 ),
                 if (stats.jobsUntilNextTier != null &&
                     stats.nextTier != null) ...[
@@ -137,20 +137,20 @@ class ProviderProgressSection extends ConsumerWidget {
                       stats.jobsUntilNextTier!,
                       strings.providerTierLabel(stats.nextTier!),
                     ),
-                    style: AppTypography.caption,
+                    style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary),
                   ),
                 ],
                 if (growth.tips.isNotEmpty) ...[
                   const SizedBox(height: AppSpacing.lg),
-                  Text(strings.providerTipsTitle, style: AppTypography.label),
+                  Text(strings.providerTipsTitle, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
                   const SizedBox(height: AppSpacing.sm),
                   ...growth.tips.map(
                     (tip) => ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.check_circle_outline, size: 20),
+                      leading: const Icon(YbIcons.checkCircle, size: 20),
                       title: Text(strings.progressTipLabel(tip.id)),
                       trailing: tip.guideSlug != null
-                          ? const Icon(Icons.chevron_right, size: 18)
+                          ? const Icon(YbIcons.chevronRightFilled, size: 18)
                           : null,
                       onTap: tip.guideSlug != null
                           ? () => context.push('/guides/${tip.guideSlug}')
@@ -160,7 +160,7 @@ class ProviderProgressSection extends ConsumerWidget {
                 ],
                 if (showAchievements) ...[
                   const SizedBox(height: AppSpacing.lg),
-                  Text(strings.achievementsTitle, style: AppTypography.label),
+                  Text(strings.achievementsTitle, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
                   const SizedBox(height: AppSpacing.sm),
                   AchievementsChipGrid(
                     unlockedIds: growth.unlockedIds.toSet(),
@@ -172,7 +172,7 @@ class ProviderProgressSection extends ConsumerWidget {
                   alignment: Alignment.centerLeft,
                   child: TextButton.icon(
                     onPressed: () => context.push('/guides'),
-                    icon: const Icon(Icons.menu_book_outlined),
+                    icon: const Icon(YbIcons.menuBook),
                     label: Text(strings.guidesTitle),
                   ),
                 ),
@@ -193,6 +193,76 @@ class ProviderProgressSection extends ConsumerWidget {
     final target = jobs + until;
     if (target <= 0) return 0;
     return (jobs / target).clamp(0.05, 1.0);
+  }
+}
+
+/// Jobs done and rating as hero numbers that count up (manual V-04).
+class _HeroStats extends StatelessWidget {
+  const _HeroStats({
+    required this.jobs,
+    required this.jobsLabel,
+    required this.rating,
+    required this.ratingLabel,
+  });
+
+  final int jobs;
+  final String jobsLabel;
+
+  /// Null until the first review.
+  final double? rating;
+  final String ratingLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.ybColors;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final number = AppTypography.largeTitle.copyWith(color: colors.ink);
+    final label = AppTypography.caption.copyWith(color: colors.textSecondary);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              YbCountUp(
+                value: jobs.toDouble(),
+                format: (value) => '${value.round()}',
+                style: number,
+              ),
+              const SizedBox(height: 2),
+              Text(jobsLabel, style: label),
+            ],
+          ),
+        ),
+        const SizedBox(width: AppSpacing.lg),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (rating != null)
+                    YbCountUp(
+                      value: rating!,
+                      format: (value) => formatRating(value, languageCode),
+                      style: number,
+                    )
+                  else
+                    Text('—', style: number),
+                  const SizedBox(width: AppSpacing.xs),
+                  Icon(YbIcons.starFilled, size: 22, color: colors.star),
+                ],
+              ),
+              const SizedBox(height: 2),
+              Text(ratingLabel, style: label),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -231,7 +301,7 @@ class PublicAchievementsRow extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(strings.achievementsTitle, style: AppTypography.label),
+          Text(strings.achievementsTitle, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
           const SizedBox(height: AppSpacing.sm),
           achievementsAsync.when(
             loading: () => const YbSkeletonBox(width: double.infinity, height: 36),

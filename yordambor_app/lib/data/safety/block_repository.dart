@@ -72,7 +72,7 @@ class BlockRepository {
       throw BlockFailure('Kirish talab qilinadi');
     }
     if (blockedId == userId) {
-      throw BlockFailure('O\'zingizni bloklab bo\'lmaydi');
+      throw BlockFailure('Oʻzingizni bloklab boʻlmaydi');
     }
 
     await client.from('blocks').upsert({

@@ -1,6 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/core/constants/feed_constants.dart';
+import 'package:yordambor/core/constants/service_cities.dart';
+import 'package:yordambor/core/constants/xizmat_limits.dart';
+import 'package:yordambor/core/supabase/postgrest_errors.dart';
 import 'package:yordambor/data/categories/category_repository.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
 import 'package:yordambor/domain/entities/portfolio_item.dart';
@@ -90,6 +93,7 @@ class XizmatRepository {
     String? categoryId,
     String? subcategoryId,
     String? providerType,
+    String? serviceCityId,
     required String language,
     int limit = FeedConstants.pageSize,
     int offset = 0,
@@ -113,7 +117,6 @@ class XizmatRepository {
           availability_mode,
           availability_from,
           availability_until,
-          contact_phone,
           show_contact_phone,
           show_profile,
           pricing_model,
@@ -123,6 +126,7 @@ class XizmatRepository {
           show_service_promise,
           service_promise,
           service_city,
+          created_at,
           profiles!xizmatlar_owner_id_fkey (
             full_name,
             avatar_url
@@ -142,6 +146,9 @@ class XizmatRepository {
     }
     if (providerType != null) {
       query = query.eq('provider_type', providerType);
+    }
+    if (serviceCityId != null) {
+      query = query.eq('service_city', serviceCityId);
     }
 
     final rows = await query
@@ -171,6 +178,111 @@ class XizmatRepository {
     );
   }
 
+  /// The columns a feed card needs.
+  static const _cardColumns = '''
+          id,
+          owner_id,
+          name,
+          provider_type,
+          category_id,
+          subcategory_id,
+          description,
+          rating_avg,
+          completed_count,
+          availability_visible,
+          availability_mode,
+          availability_from,
+          availability_until,
+          show_contact_phone,
+          show_profile,
+          pricing_model,
+          base_price,
+          currency_default,
+          min_duration_minutes,
+          show_service_promise,
+          service_promise,
+          service_city,
+          created_at,
+          profiles!xizmatlar_owner_id_fkey (
+            full_name,
+            avatar_url
+          ),
+          portfolio_items (
+            image_url,
+            is_hero,
+            sort_order
+          )
+        ''';
+
+  /// Services whose name contains [query], whose provider or organization
+  /// is called so, or whose trade is one of [subcategoryIds] (the trades
+  /// whose names match). Best rated first within each kind of match.
+  Future<List<XizmatFeedItem>> search(
+    String query, {
+    required String language,
+    Set<String> subcategoryIds = const {},
+    int limit = 30,
+  }) async {
+    final client = _client;
+    final text = query.trim();
+    if (client == null || text.length < 2) return [];
+    final pattern = '%${_likeEscape(text)}%';
+
+    final ownerRows = await client
+        .from('profiles')
+        .select('id')
+        .ilike('full_name', pattern)
+        .limit(limit);
+    final ownerIds = [
+      for (final row in ownerRows as List<dynamic>)
+        (row as Map)['id'] as String,
+    ];
+
+    final results = await Future.wait<dynamic>([
+      client
+          .from('xizmatlar')
+          .select(_cardColumns)
+          .ilike('name', pattern)
+          .order('rating_avg', ascending: false)
+          .limit(limit),
+      if (ownerIds.isNotEmpty)
+        client
+            .from('xizmatlar')
+            .select(_cardColumns)
+            .inFilter('owner_id', ownerIds)
+            .order('rating_avg', ascending: false)
+            .limit(limit),
+      if (subcategoryIds.isNotEmpty)
+        client
+            .from('xizmatlar')
+            .select(_cardColumns)
+            .inFilter('subcategory_id', subcategoryIds.toList())
+            .order('rating_avg', ascending: false)
+            .limit(limit),
+    ]);
+
+    final categories = await _categoryRepository.loadCategories();
+    final seen = <String>{};
+    final items = <XizmatFeedItem>[];
+    for (final rows in results) {
+      for (final raw in rows as List<dynamic>) {
+        final item = _mapRowToFeedItem(
+          Map<String, dynamic>.from(raw as Map),
+          categories: categories,
+          language: language,
+        );
+        if (item != null && seen.add(item.id)) items.add(item);
+      }
+    }
+    return items;
+  }
+
+  /// [text] as a literal inside an ILIKE pattern.
+  static String _likeEscape(String text) => text
+      .replaceAll(r'\', r'\\')
+      .replaceAll('%', r'\%')
+      .replaceAll('_', r'\_');
+
   Future<XizmatFeedItem?> fetchById(String id, String language) async {
     final client = _client;
     if (client == null) return null;
@@ -189,7 +301,6 @@ class XizmatRepository {
           availability_mode,
           availability_from,
           availability_until,
-          contact_phone,
           show_contact_phone,
           show_profile,
           pricing_model,
@@ -199,6 +310,7 @@ class XizmatRepository {
           show_service_promise,
           service_promise,
           service_city,
+          created_at,
           profiles!xizmatlar_owner_id_fkey (
             full_name,
             avatar_url
@@ -279,7 +391,8 @@ class XizmatRepository {
       availabilityUntil: availability.until,
       showServicePromise: map['show_service_promise'] as bool? ?? false,
       servicePromise: map['service_promise'] as String?,
-      serviceCity: map['service_city'] as String?,
+      serviceCity: _readServiceCity(map['service_city']),
+      createdAt: _readCreatedAt(map['created_at']),
     );
   }
 
@@ -314,7 +427,6 @@ class XizmatRepository {
           availability_mode,
           availability_from,
           availability_until,
-          contact_phone,
           show_contact_phone,
           show_profile,
           pricing_model,
@@ -324,6 +436,7 @@ class XizmatRepository {
           show_service_promise,
           service_promise,
           service_city,
+          created_at,
           profiles!xizmatlar_owner_id_fkey (
             full_name,
             avatar_url
@@ -376,7 +489,6 @@ class XizmatRepository {
           availability_mode,
           availability_from,
           availability_until,
-          contact_phone,
           show_contact_phone,
           show_profile,
           pricing_model,
@@ -386,6 +498,7 @@ class XizmatRepository {
           show_service_promise,
           service_promise,
           service_city,
+          created_at,
           profiles!xizmatlar_owner_id_fkey (
             full_name,
             avatar_url
@@ -404,73 +517,14 @@ class XizmatRepository {
 
     for (final raw in rows as List<dynamic>) {
       final map = Map<String, dynamic>.from(raw as Map);
-      final portfolio = (map['portfolio_items'] as List<dynamic>? ?? [])
-          .map((e) => Map<String, dynamic>.from(e as Map))
-          .toList();
-
-      portfolio.sort((a, b) {
-        final aHero = a['is_hero'] == true ? 0 : 1;
-        final bHero = b['is_hero'] == true ? 0 : 1;
-        if (aHero != bHero) return aHero.compareTo(bHero);
-        return ((a['sort_order'] as num?) ?? 0)
-            .compareTo((b['sort_order'] as num?) ?? 0);
-      });
-
-      final urls = portfolio
-          .map((p) => p['image_url'] as String)
-          .where((url) => url.isNotEmpty)
-          .toList();
-
-      final categoryIdValue = map['category_id'] as String?;
-      final subcategoryIdValue = map['subcategory_id'] as String? ?? '';
-      final providerType = map['provider_type'] as String? ?? 'individual';
-      final (ownerName, ownerAvatarUrl) = _readOwnerProfile(map);
-      final pricing = _readPricing(map);
-      final availability = _readAvailability(map);
-
-      items.add(
-        XizmatFeedItem(
-          id: map['id'] as String,
-          name: map['name'] as String,
-          categoryLabel: _categoryLabel(
-            categories: categories,
-            categoryId: categoryIdValue,
-            language: language,
-          ),
-          subcategoryLabel: _subcategoryLabel(
-            categories: categories,
-            categoryId: categoryIdValue,
-            subcategoryId: subcategoryIdValue,
-            providerType: providerType,
-            language: language,
-          ),
-          categoryId: categoryIdValue ?? '',
-          subcategoryId: subcategoryIdValue,
-          heroImageUrl: urls.isNotEmpty ? urls.first : '',
-          portfolioImageUrls: urls,
-          rating: _toDouble(map['rating_avg']),
-          completedCount: (map['completed_count'] as num?)?.toInt() ?? 0,
-          description: map['description'] as String?,
-          providerType: providerType,
-          ownerId: map['owner_id'] as String?,
-          ownerName: ownerName,
-          ownerAvatarUrl: ownerAvatarUrl,
-          contactPhone: map['contact_phone'] as String?,
-          showContactPhone: map['show_contact_phone'] as bool? ?? false,
-          showProfile: map['show_profile'] as bool? ?? true,
-          pricingModel: pricing.pricingModel,
-          basePrice: pricing.basePrice,
-          currency: pricing.currency,
-          minDurationMinutes: pricing.minDurationMinutes,
-          availabilityVisible: availability.visible,
-          availabilityMode: availability.mode,
-          availabilityFrom: availability.from,
-          availabilityUntil: availability.until,
-          showServicePromise: map['show_service_promise'] as bool? ?? false,
-          servicePromise: map['service_promise'] as String?,
-          serviceCity: map['service_city'] as String?,
-        ),
+      final item = _mapRowToFeedItem(
+        map,
+        categories: categories,
+        language: language,
       );
+      if (item != null) {
+        items.add(item);
+      }
     }
 
     return items;
@@ -500,8 +554,10 @@ class XizmatRepository {
     }
 
     final count = await countMine(userId);
-    if (count >= 5) {
-      throw XizmatFailure('Maksimal 5 ta xizmat yaratish mumkin');
+    if (count >= XizmatLimits.maxPerAccount) {
+      throw XizmatFailure(
+        'Maksimal ${XizmatLimits.maxPerAccount} ta xizmat yaratish mumkin',
+      );
     }
 
     final xizmatId = await _insertXizmatShell(input, userId);
@@ -522,8 +578,10 @@ class XizmatRepository {
     }
 
     final count = await countMine(userId);
-    if (count >= 5) {
-      throw XizmatFailure('Maksimal 5 ta xizmat yaratish mumkin');
+    if (count >= XizmatLimits.maxPerAccount) {
+      throw XizmatFailure(
+        'Maksimal ${XizmatLimits.maxPerAccount} ta xizmat yaratish mumkin',
+      );
     }
 
     return _insertXizmatShell(input, userId);
@@ -548,9 +606,11 @@ class XizmatRepository {
       'description': input.description.trim().isEmpty
           ? null
           : input.description.trim(),
-      'contact_phone': input.contactPhone,
-      'show_contact_phone':
-          input.showContactPhone && input.contactPhone != null,
+      if (!input.keepContactPhone) ...{
+        'contact_phone': input.contactPhone,
+        'show_contact_phone':
+            input.showContactPhone && input.contactPhone != null,
+      },
       'show_profile': true,
       ..._pricingPayload(
         pricingModel: input.pricingModel,
@@ -570,6 +630,29 @@ class XizmatRepository {
       ),
       ..._cityPayload(input.serviceCity),
     }).eq('id', xizmatId);
+  }
+
+  /// The contact phone on one of your own listings, for editing it. Only
+  /// its owner may read it (migration 023); a server without that yet is
+  /// read directly.
+  Future<String?> fetchMyContactPhone(String xizmatId) async {
+    final client = _client;
+    if (client == null) return null;
+    try {
+      final phone = await client.rpc<dynamic>(
+        'get_my_xizmat_contact_phone',
+        params: {'p_xizmat_id': xizmatId},
+      );
+      return phone is String && phone.isNotEmpty ? phone : null;
+    } on PostgrestException catch (error) {
+      if (!isMissingRpc(error)) rethrow;
+      final row = await client
+          .from('xizmatlar')
+          .select('contact_phone')
+          .eq('id', xizmatId)
+          .maybeSingle();
+      return row?['contact_phone'] as String?;
+    }
   }
 
   Future<List<PortfolioItem>> fetchPortfolioItems(String xizmatId) async {
@@ -673,7 +756,7 @@ class XizmatRepository {
         .maybeSingle();
 
     if (existing == null || existing['owner_id'] != userId) {
-      throw XizmatFailure('Ruxsat yo\'q');
+      throw XizmatFailure('Ruxsat yoʻq');
     }
   }
 
@@ -866,7 +949,8 @@ class XizmatRepository {
       availabilityUntil: availability.until,
       showServicePromise: map['show_service_promise'] as bool? ?? false,
       servicePromise: map['service_promise'] as String?,
-      serviceCity: map['service_city'] as String?,
+      serviceCity: _readServiceCity(map['service_city']),
+      createdAt: _readCreatedAt(map['created_at']),
     );
   }
 
@@ -957,10 +1041,15 @@ class XizmatRepository {
   }
 
   Map<String, dynamic> _cityPayload(String? city) {
-    final normalized = city?.trim();
+    final id = ServiceCities.normalizeStored(city);
     return {
-      'service_city':
-          normalized != null && normalized.isNotEmpty ? normalized : null,
+      'service_city': ServiceCities.isValidId(id) ? id : null,
     };
   }
+
+  String? _readServiceCity(Object? raw) =>
+      ServiceCities.normalizeStored(raw as String?);
+
+  DateTime? _readCreatedAt(Object? raw) =>
+      raw is String ? DateTime.tryParse(raw) : null;
 }

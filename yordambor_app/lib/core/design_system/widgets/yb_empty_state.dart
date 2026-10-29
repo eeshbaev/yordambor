@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yordambor/core/design_system/app_elevation.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
@@ -33,11 +32,10 @@ class YbEmptyState extends StatelessWidget {
             width: 96,
             height: 96,
             decoration: BoxDecoration(
-              color: colors.primaryMuted,
+              color: colors.tealSoft,
               borderRadius: BorderRadius.circular(AppRadius.sheet),
-              boxShadow: AppElevation.card(context),
             ),
-            child: Icon(icon, size: 44, color: AppColors.primary),
+            child: Icon(icon, size: 44, color: colors.teal),
           ),
           const SizedBox(height: AppSpacing.xl),
           Text(

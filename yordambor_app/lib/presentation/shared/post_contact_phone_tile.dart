@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class PostContactPhoneTile extends StatelessWidget {
   const PostContactPhoneTile({
@@ -23,10 +24,10 @@ class PostContactPhoneTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: const Icon(Icons.phone_outlined),
+        leading: const Icon(YbIcons.phone),
         title: Text(phone),
         trailing: IconButton(
-          icon: const Icon(Icons.call_outlined),
+          icon: const Icon(YbIcons.call),
           tooltip: strings.userProfileCall,
           onPressed: _callPhone,
         ),

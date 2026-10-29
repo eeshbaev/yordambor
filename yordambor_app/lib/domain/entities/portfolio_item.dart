@@ -39,6 +39,7 @@ class UpdateXizmatInput {
     this.showServicePromise = false,
     this.servicePromise,
     this.serviceCity,
+    this.keepContactPhone = false,
   });
 
   final String name;
@@ -59,4 +60,8 @@ class UpdateXizmatInput {
   final bool showServicePromise;
   final String? servicePromise;
   final String? serviceCity;
+
+  /// Leaves the stored contact phone as it is: the edit screen could not
+  /// load it, and saving an empty field must not erase it.
+  final bool keepContactPhone;
 }

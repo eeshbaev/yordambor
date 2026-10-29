@@ -47,12 +47,14 @@ abstract final class DemoXizmatFeed {
   static const _guitarLesson = 'assets/demo/guitar_lesson.jpg';
   static const _bellaPasta = 'assets/demo/bella_pasta.jpg';
   static const _bellaPizza = 'assets/demo/bella_pizza.jpg';
+  static const _rentCarFleet = 'assets/demo/rent_car_fleet.jpg';
+  static const _rentCarWedding = 'assets/demo/rent_car_wedding.jpg';
 
   static const _baseItems = [
     XizmatFeedItem(
       id: 'demo-sanjar-plumber',
       name: 'Santexnika',
-      categoryLabel: 'Uy ta\'miri',
+      categoryLabel: 'Uy taʼmiri',
       subcategoryLabel: 'Santexnik',
       categoryId: 'home_repair',
       subcategoryId: 'plumber',
@@ -83,7 +85,7 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-aziz-electric',
       name: 'Elektrik',
-      categoryLabel: 'Uy ta\'miri',
+      categoryLabel: 'Uy taʼmiri',
       subcategoryLabel: 'Elektrik',
       categoryId: 'home_repair',
       subcategoryId: 'electrician',
@@ -93,12 +95,12 @@ abstract final class DemoXizmatFeed {
       completedCount: 18,
       isDemo: true,
       providerType: 'individual',
-      description: 'Elektr montaj, simlarni almashtirish va ta\'mir.',
+      description: 'Elektr montaj, simlarni almashtirish va taʼmir.',
     ),
     XizmatFeedItem(
       id: 'demo-english-tutor',
       name: 'Ingliz tili',
-      categoryLabel: 'Ta\'lim',
+      categoryLabel: 'Taʼlim',
       subcategoryLabel: 'Ingliz tili repetitori',
       categoryId: 'education',
       subcategoryId: 'english_tutor',
@@ -109,7 +111,7 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'individual',
       description:
-          'IELTS va umumiy ingliz tili. Boshlang\'ichdan yuqori darajagacha.',
+          'IELTS va umumiy ingliz tili. Boshlangʻichdan yuqori darajagacha.',
     ),
     XizmatFeedItem(
       id: 'demo-web-studio',
@@ -124,12 +126,12 @@ abstract final class DemoXizmatFeed {
       completedCount: 54,
       isDemo: true,
       providerType: 'institution',
-      description: 'Sayt, internet-do\'kon va mobil ilova ishlab chiqish.',
+      description: 'Sayt, internet-doʻkon va mobil ilova ishlab chiqish.',
     ),
     XizmatFeedItem(
       id: 'demo-nail-specialist',
       name: 'Tirnoq dizayni',
-      categoryLabel: 'Go\'zallik',
+      categoryLabel: 'Goʻzallik',
       subcategoryLabel: 'Tirnoq ustasi',
       categoryId: 'beauty',
       subcategoryId: 'nail_specialist',
@@ -144,7 +146,7 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-dental-clinic',
       name: 'Smile Dental',
-      categoryLabel: 'Sog\'liq',
+      categoryLabel: 'Sogʻliq',
       subcategoryLabel: 'Stomatologiya klinikasi',
       categoryId: 'health',
       subcategoryId: 'dental_clinic',
@@ -158,9 +160,9 @@ abstract final class DemoXizmatFeed {
     ),
     XizmatFeedItem(
       id: 'demo-eye-clinic',
-      name: 'Ko\'z Merosi Klinikasi',
-      categoryLabel: 'Sog\'liq',
-      subcategoryLabel: 'Ko\'z klinikasi',
+      name: 'Koʻz Merosi Klinikasi',
+      categoryLabel: 'Sogʻliq',
+      subcategoryLabel: 'Koʻz klinikasi',
       categoryId: 'health',
       subcategoryId: 'optics_clinic',
       heroImageUrl: _eyeClinic,
@@ -169,7 +171,7 @@ abstract final class DemoXizmatFeed {
       completedCount: 198,
       isDemo: true,
       providerType: 'institution',
-      description: 'Ko\'z tekshiruvi, linza va diagnostika.',
+      description: 'Koʻz tekshiruvi, linza va diagnostika.',
     ),
     XizmatFeedItem(
       id: 'demo-business-consultant',
@@ -200,7 +202,7 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'individual',
       description:
-          'Shaxsiy budjet, investitsiya va biznes moliyasi bo\'yicha maslahat.',
+          'Shaxsiy budjet, investitsiya va biznes moliyasi boʻyicha maslahat.',
     ),
     XizmatFeedItem(
       id: 'demo-elderly-care',
@@ -215,13 +217,13 @@ abstract final class DemoXizmatFeed {
       completedCount: 62,
       isDemo: true,
       providerType: 'individual',
-      description: 'Uyda g\'amxo\'rlik, dori vaqti va hamrohlik.',
+      description: 'Uyda gʻamxoʻrlik, dori vaqti va hamrohlik.',
     ),
     XizmatFeedItem(
       id: 'demo-kindergarten',
-      name: 'Quvnoch Bog\'cha',
+      name: 'Quvnoch Bogʻcha',
       categoryLabel: 'Oila va bolalar',
-      subcategoryLabel: 'Bog\'cha',
+      subcategoryLabel: 'Bogʻcha',
       categoryId: 'family',
       subcategoryId: 'kindergarten',
       heroImageUrl: _kindergarten,
@@ -230,12 +232,12 @@ abstract final class DemoXizmatFeed {
       completedCount: 120,
       isDemo: true,
       providerType: 'institution',
-      description: '3–6 yosh bolalar uchun kunlik ta\'lim va parvarish.',
+      description: '3–6 yosh bolalar uchun kunlik taʼlim va parvarish.',
     ),
     XizmatFeedItem(
       id: 'demo-blogger',
       name: 'Blogger',
-      categoryLabel: 'Marketing va o\'sish',
+      categoryLabel: 'Marketing va oʻsish',
       subcategoryLabel: 'Blogger',
       categoryId: 'marketing_growth',
       subcategoryId: 'blogger',
@@ -250,7 +252,7 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-ad-agency',
       name: 'Reklama Plus Agentligi',
-      categoryLabel: 'Marketing va o\'sish',
+      categoryLabel: 'Marketing va oʻsish',
       subcategoryLabel: 'Reklama agentligi',
       categoryId: 'marketing_growth',
       subcategoryId: 'advertising_agency',
@@ -265,7 +267,7 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-production-studio',
       name: 'Studio 17 Prodyuserlik',
-      categoryLabel: 'Marketing va o\'sish',
+      categoryLabel: 'Marketing va oʻsish',
       subcategoryLabel: 'Prodyuserlik studiyasi',
       categoryId: 'marketing_growth',
       subcategoryId: 'production_house',
@@ -290,7 +292,7 @@ abstract final class DemoXizmatFeed {
       completedCount: 93,
       isDemo: true,
       providerType: 'individual',
-      description: 'O\'zbek, rus va ingliz tillari. Hujjat va og\'zaki tarjima.',
+      description: 'Oʻzbek, rus va ingliz tillari. Hujjat va ogʻzaki tarjima.',
     ),
     XizmatFeedItem(
       id: 'demo-visa-help',
@@ -305,7 +307,7 @@ abstract final class DemoXizmatFeed {
       completedCount: 156,
       isDemo: true,
       providerType: 'institution',
-      description: 'Schengen, AQSh va BAA vizalari bo\'yicha maslahat.',
+      description: 'Schengen, AQSh va BAA vizalari boʻyicha maslahat.',
     ),
     XizmatFeedItem(
       id: 'demo-fitness-club',
@@ -320,7 +322,7 @@ abstract final class DemoXizmatFeed {
       completedCount: 420,
       isDemo: true,
       providerType: 'institution',
-      description: 'Zal, guruh mashg\'ulotlari va shaxsiy murabbiy.',
+      description: 'Zal, guruh mashgʻulotlari va shaxsiy murabbiy.',
     ),
     XizmatFeedItem(
       id: 'demo-swimming-pool',
@@ -339,7 +341,7 @@ abstract final class DemoXizmatFeed {
     ),
     XizmatFeedItem(
       id: 'demo-transport-repair',
-      name: 'Transport Ta\'miri',
+      name: 'Transport Taʼmiri',
       categoryLabel: 'Avto xizmatlar',
       subcategoryLabel: 'Mexanik',
       categoryId: 'auto',
@@ -351,12 +353,12 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'individual',
       description:
-          'Yengil mashinalar diagnostikasi va ta\'miri. Uyga yoki garajga chiqish.',
+          'Yengil mashinalar diagnostikasi va taʼmiri. Uyga yoki garajga chiqish.',
     ),
     XizmatFeedItem(
       id: 'demo-saloma-massage',
       name: 'Saloma Massaj Markazi',
-      categoryLabel: 'Sog\'liq',
+      categoryLabel: 'Sogʻliq',
       subcategoryLabel: 'Tibbiy markaz',
       categoryId: 'health',
       subcategoryId: 'medical_center',
@@ -400,7 +402,7 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'institution',
       description:
-          'Nikoh, ajrim, aliment, bolalar huquqi. Oilaviy nizolar bo\'yicha to\'liq yuridik yordam.',
+          'Nikoh, ajrim, aliment, bolalar huquqi. Oilaviy nizolar boʻyicha toʻliq yuridik yordam.',
     ),
     XizmatFeedItem(
       id: 'demo-kontrakto-translation',
@@ -416,7 +418,7 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'institution',
       description:
-          'Notarial tasdiqlangan tarjimalar: rus, ingliz, o\'zbek. Pasport, diplom, shartnoma, sud hujjatlari.',
+          'Notarial tasdiqlangan tarjimalar: rus, ingliz, oʻzbek. Pasport, diplom, shartnoma, sud hujjatlari.',
     ),
     XizmatFeedItem(
       id: 'demo-import-export',
@@ -432,7 +434,7 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'individual',
       description:
-          'Xitoy, Turkiya, Rossiya yo\'nalishlari. Bojxona, logistika, hujjatlar, yetkazib beruvchi tekshiruvi.',
+          'Xitoy, Turkiya, Rossiya yoʻnalishlari. Bojxona, logistika, hujjatlar, yetkazib beruvchi tekshiruvi.',
     ),
     XizmatFeedItem(
       id: 'demo-tax-consultant',
@@ -448,7 +450,7 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'individual',
       description:
-          'YATT, MChJ, deklaratsiya, soliq tekshiruvi tayyorgarligi. O\'zbek va rus tillarida.',
+          'YATT, MChJ, deklaratsiya, soliq tekshiruvi tayyorgarligi. Oʻzbek va rus tillarida.',
     ),
     XizmatFeedItem(
       id: 'demo-stylist-sabina',
@@ -470,7 +472,7 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-brobarber',
       name: 'BroBarbershop',
-      categoryLabel: 'Go\'zallik',
+      categoryLabel: 'Goʻzallik',
       subcategoryLabel: 'Sartaroshxona',
       categoryId: 'beauty',
       subcategoryId: 'barbershop',
@@ -546,13 +548,13 @@ abstract final class DemoXizmatFeed {
       isDemo: true,
       providerType: 'individual',
       description:
-          'Rasmlar chizib beraman, sotib olsangiz portfolio ishlarimni ko\'rsataman.',
+          'Rasmlar chizib beraman, sotib olsangiz portfolio ishlarimni koʻrsataman.',
     ),
     XizmatFeedItem(
       id: 'demo-archstroy-design',
       name: 'АрхСтрой — дизайн и ремонт под ключ',
-      categoryLabel: 'Uy ta\'miri',
-      subcategoryLabel: 'Ta\'mir kompaniyasi',
+      categoryLabel: 'Uy taʼmiri',
+      subcategoryLabel: 'Taʼmir kompaniyasi',
       categoryId: 'home_repair',
       subcategoryId: 'renovation_company',
       heroImageUrl: _interiorRenovation,
@@ -582,7 +584,7 @@ abstract final class DemoXizmatFeed {
       description:
           'KFC uslubidagi qovurilgan tovuq va baliq — maxsus asal sous bilan. '
           'Asal tovuq seti (6/12 dona), asal baliq file, combo va garnirlar. '
-          'Yetkazib berish faqat Toshkent bo\'ylab. Buyurtmalar 24/7 qabul qilinadi.',
+          'Yetkazib berish faqat Toshkent boʻylab. Buyurtmalar 24/7 qabul qilinadi.',
     ),
     XizmatFeedItem(
       id: 'demo-ochiq-sahna',
@@ -591,8 +593,8 @@ abstract final class DemoXizmatFeed {
       subcategoryLabel: 'Restoran-teatr',
       categoryId: 'food_culinary',
       subcategoryId: 'restaurant',
-      heroImageUrl: _ochiqSahna,
-      portfolioImageUrls: [_ochiqSahna],
+      heroImageUrl: _ochiqSahnaStage,
+      portfolioImageUrls: [_ochiqSahnaStage, _ochiqSahna],
       rating: 4.9,
       completedCount: 940,
       isDemo: true,
@@ -607,8 +609,8 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-kinopark',
       name: 'Kinopark',
-      categoryLabel: 'San\'at va ijrochilar',
-      subcategoryLabel: 'Ko\'ngil ochar agentlik',
+      categoryLabel: 'Sanʼat va ijrochilar',
+      subcategoryLabel: 'Koʻngil ochar agentlik',
       categoryId: 'arts_performers',
       subcategoryId: 'entertainment_agency',
       heroImageUrl: _kinopark,
@@ -627,7 +629,7 @@ abstract final class DemoXizmatFeed {
     XizmatFeedItem(
       id: 'demo-musiqachi-maktabi',
       name: 'Musiqachi Maktabi',
-      categoryLabel: 'San\'at va ijrochilar',
+      categoryLabel: 'Sanʼat va ijrochilar',
       subcategoryLabel: 'Musiqa maktabi',
       categoryId: 'arts_performers',
       subcategoryId: 'music_school',
@@ -662,6 +664,30 @@ abstract final class DemoXizmatFeed {
           'от настоящего итальянского шефа. Тесто готовим ежедневно, соусы '
           'по семейным рецептам. Уютная атмосфера, бронирование столиков '
           'и доставка по городу.',
+    ),
+    XizmatFeedItem(
+      id: 'demo-toshkent-rent-car',
+      name: 'Rent-Oʻl',
+      categoryLabel: 'Transport',
+      subcategoryLabel: 'Avtomobil ijarasi',
+      categoryId: 'transport',
+      subcategoryId: 'transport_company',
+      heroImageUrl: _rentCarFleet,
+      portfolioImageUrls: [_rentCarFleet, _rentCarWedding],
+      rating: 4.7,
+      completedCount: 1240,
+      isDemo: true,
+      providerType: 'institution',
+      serviceCity: 'Toshkent',
+      description:
+          'Toshkentda turli maqsadlar uchun mashina ijarasi — taksi, toʻy, shahar ichida va sayohat.\n\n'
+          'Batafsil:\n'
+          '• Econom (Nexia, Cobalt): 350 000 / kun\n'
+          '• Comfort (Malibu, BYD va boshqa): 550 000 / kun\n'
+          '• Toʻy — Gelentswagen: 2 800 000 / kun (8 soat)\n'
+          '• Toʻy — Mercedes S-Class: 2 700 000 / kun (8 soat)\n'
+          '• Haydovchi: 150 000 / soat\n\n'
+          'Mashinalarni Toshkent boʻylab yetkazib beramiz. Sugʻurta va kuniga 200 km narxga kiritilgan.',
     ),
     XizmatFeedItem(
       id: 'demo-chiqindi-out',
@@ -721,6 +747,7 @@ abstract final class DemoXizmatFeed {
     'demo-kinopark': 'demo-user-kinopark',
     'demo-musiqachi-maktabi': 'demo-user-musiqachi-maktabi',
     'demo-bella-pasta': 'demo-user-bella-pasta',
+    'demo-toshkent-rent-car': 'demo-user-toshkent-rent-car',
     'demo-chiqindi-out': 'demo-user-chiqindi-out',
   };
 
@@ -732,11 +759,11 @@ abstract final class DemoXizmatFeed {
     'demo-user-codeline': 'CodeLine Veb Studiya',
     'demo-user-nilufar': 'Nilufar',
     'demo-user-smile-dental': 'Smile Dental',
-    'demo-user-koz-merosi': 'Ko\'z Merosi Klinikasi',
+    'demo-user-koz-merosi': 'Koʻz Merosi Klinikasi',
     'demo-user-jasur': 'Jasur',
     'demo-user-nodira': 'Nodira',
     'demo-user-marhabo': 'Marhabo',
-    'demo-user-quvnoch': 'Quvnoch Bog\'cha',
+    'demo-user-quvnoch': 'Quvnoch Bogʻcha',
     'demo-user-aziza-b': 'Aziza',
     'demo-user-reklama-plus': 'Reklama Plus Agentligi',
     'demo-user-studio17': 'Studio 17 Prodyuserlik',
@@ -763,6 +790,7 @@ abstract final class DemoXizmatFeed {
     'demo-user-kinopark': 'Kinopark',
     'demo-user-musiqachi-maktabi': 'Musiqachi Maktabi',
     'demo-user-bella-pasta': 'Bella Pasta',
+    'demo-user-toshkent-rent-car': 'Rent-Oʻl',
     'demo-user-chiqindi-out': 'Chiqindi Out',
   };
 

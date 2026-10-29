@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_haptics.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/growth/achievement.dart';
 
@@ -14,6 +16,7 @@ Future<void> showAchievementCelebrationSheet(
 }) {
   AppHaptics.success();
   return showModalBottomSheet<void>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -38,7 +41,7 @@ Future<void> showAchievementCelebrationSheet(
                 child: Icon(
                   _iconFor(achievementId),
                   size: 44,
-                  color: AppColors.primary,
+                  color: context.ybColors.teal,
                 ),
               ),
             ),
@@ -57,17 +60,17 @@ IconData _iconFor(String id) {
   for (final def in AchievementCatalog.all) {
     if (def.id == id) {
       return switch (def.iconName) {
-        'handyman' => Icons.handyman_outlined,
-        'handshake' => Icons.handshake_outlined,
-        'star' => Icons.star_outline,
-        'stars' => Icons.stars_outlined,
-        'emoji_events' => Icons.emoji_events_outlined,
-        'grade' => Icons.grade_outlined,
-        'workspace_premium' => Icons.workspace_premium_outlined,
-        'favorite' => Icons.favorite_outline,
-        _ => Icons.celebration_outlined,
+        'handyman' => YbIcons.handyman,
+        'handshake' => YbIcons.handshake,
+        'star' => YbIcons.star,
+        'stars' => YbIcons.stars,
+        'emoji_events' => YbIcons.emojiEvents,
+        'grade' => YbIcons.grade,
+        'workspace_premium' => YbIcons.workspacePremium,
+        'favorite' => YbIcons.favorite,
+        _ => YbIcons.celebration,
       };
     }
   }
-  return Icons.celebration_outlined;
+  return YbIcons.celebration;
 }

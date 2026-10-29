@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class YbProfileMenuTile extends StatelessWidget {
   const YbProfileMenuTile({
@@ -25,8 +26,9 @@ class YbProfileMenuTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.ybColors;
-    final foreground = destructive ? AppColors.error : colors.textPrimary;
-    final leadingColor = destructive ? AppColors.error : (iconColor ?? AppColors.primary);
+    final foreground = destructive ? colors.error : colors.textPrimary;
+    final leadingColor =
+        destructive ? colors.error : (iconColor ?? colors.ink2);
 
     return Material(
       color: Colors.transparent,
@@ -66,7 +68,7 @@ class YbProfileMenuTile extends StatelessWidget {
                 trailing!,
               ],
               if (onTap != null)
-                Icon(Icons.chevron_right_rounded, color: colors.textTertiary),
+                Icon(YbIcons.chevronRightFilled, color: colors.textTertiary),
             ],
           ),
         ),
@@ -110,7 +112,10 @@ class YbProfileMenuSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: colors.card,
             borderRadius: BorderRadius.circular(AppRadius.card),
-            border: Border.all(color: colors.borderSubtle),
+            // Lists stay flat: no shadow, and a hairline only in the dark.
+            border: Theme.of(context).brightness == Brightness.dark
+                ? Border.all(color: colors.borderSubtle)
+                : null,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(AppRadius.card),

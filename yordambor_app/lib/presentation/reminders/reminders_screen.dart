@@ -8,6 +8,7 @@ import 'package:yordambor/application/providers/reminder_providers.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_add_sheet.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_open_helper.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_status_sheet.dart';
@@ -82,7 +83,7 @@ class _RemindersScreenState extends ConsumerState<RemindersScreen> {
         title: Text(strings.remindersTitle),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
+            icon: const Icon(YbIcons.settings),
             tooltip: strings.remindersSettingsTitle,
             onPressed: () => context.push('/reminders/settings'),
           ),
@@ -94,7 +95,7 @@ class _RemindersScreenState extends ConsumerState<RemindersScreen> {
           ref: ref,
           strings: strings,
         ),
-        icon: const Icon(Icons.add),
+        icon: const Icon(YbIcons.addFilled),
         label: Text(strings.remindersAdd),
       ),
       body: AppLayout.page(
@@ -107,9 +108,11 @@ class _RemindersScreenState extends ConsumerState<RemindersScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 YbEmptyState(
-                  icon: Icons.error_outline_rounded,
-                  title: strings.remindersTitle,
-                  subtitle: '$error',
+                  icon: YbIcons.cloudOff,
+                  title: strings.stateErrorTitle,
+                  subtitle: strings.stateErrorBody,
+                  actionLabel: strings.actionRetry,
+                  onAction: () => ref.invalidate(remindersProvider),
                 ),
               ],
             ),
@@ -119,7 +122,7 @@ class _RemindersScreenState extends ConsumerState<RemindersScreen> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   children: [
                     YbEmptyState(
-                      icon: Icons.alarm_outlined,
+                      icon: YbIcons.alarm,
                       title: strings.remindersEmptyTitle,
                       subtitle: strings.remindersEmptySubtitle,
                     ),

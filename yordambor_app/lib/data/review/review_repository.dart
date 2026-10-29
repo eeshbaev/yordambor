@@ -36,7 +36,7 @@ class ReviewRepository {
         ''')
         .eq('xizmat_id', xizmatId)
         .order('created_at', ascending: false)
-        .limit(20);
+        .limit(50);
 
     return (rows as List<dynamic>).map((raw) {
       final map = Map<String, dynamic>.from(raw as Map);
@@ -54,6 +54,26 @@ class ReviewRepository {
             : null,
       );
     }).toList();
+  }
+
+  /// Every rating the service has had, for its average and star counts.
+  Future<List<int>> fetchRatings(String xizmatId) async {
+    if (xizmatId.startsWith('demo-')) {
+      return [for (final review in DemoReviews.forXizmat(xizmatId)) review.rating];
+    }
+
+    final client = _client;
+    if (client == null) return const [];
+
+    final rows = await client
+        .from('reviews')
+        .select('rating')
+        .eq('xizmat_id', xizmatId);
+
+    return [
+      for (final row in rows as List<dynamic>)
+        ((row as Map<String, dynamic>)['rating'] as num).toInt(),
+    ];
   }
 
   Future<Review?> fetchForKelishuv(String kelishuvId) async {
@@ -85,7 +105,7 @@ class ReviewRepository {
     }
 
     if (input.rating < 1 || input.rating > 5) {
-      throw ReviewFailure('Baho 1 dan 5 gacha bo\'lishi kerak');
+      throw ReviewFailure('Baho 1 dan 5 gacha boʻlishi kerak');
     }
 
     final existing = await fetchForKelishuv(input.kelishuvId);

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
-import 'package:yordambor/presentation/auth/auth_gate.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
+import 'package:yordambor/presentation/xizmat/create_xizmat_gate.dart';
 
 class ProviderPromptCard extends ConsumerWidget {
   const ProviderPromptCard({super.key});
@@ -35,16 +35,13 @@ class ProviderPromptCard extends ConsumerWidget {
           const SizedBox(height: AppSpacing.lg),
           YbPrimaryButton(
             label: strings.createXizmat,
-            icon: Icons.add_rounded,
+            icon: YbIcons.addFilled,
             onPressed: () async {
               await ref
                   .read(onboardingPrefsProvider.notifier)
                   .dismissProviderPrompt();
               if (!context.mounted) return;
-              final allowed = await requireVerifiedAuth(context, ref);
-              if (allowed && context.mounted) {
-                context.push('/create-xizmat');
-              }
+              await openCreateXizmat(context, ref);
             },
           ),
           const SizedBox(height: AppSpacing.sm),

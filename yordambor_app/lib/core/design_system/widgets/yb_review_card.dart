@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_elevation.dart';
+import 'package:yordambor/core/design_system/app_semantics.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/review.dart';
 
+/// One review: who, the stars, when, what they said and the reply. A
+/// screen reader says it as one sentence (manual A-02).
 class YbReviewCard extends StatelessWidget {
   const YbReviewCard({
     super.key,
@@ -25,189 +29,144 @@ class YbReviewCard extends StatelessWidget {
         review.reviewerName ?? clientFallbackName ?? strings.xizmatClientLabel;
     final dateLabel = review.createdAt == null
         ? null
-        : _formatRelativeDate(review.createdAt!, locale);
+        : formatReviewDate(review.createdAt!, locale);
     final hasReply = review.providerReply != null &&
         review.providerReply!.trim().isNotEmpty;
+    final sentence = ybSentence([
+      name,
+      strings.a11yStarRating(review.rating),
+      dateLabel,
+      review.comment,
+      if (hasReply)
+        '${strings.reviewProviderReplyLabel}: ${review.providerReply!.trim()}',
+    ]);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppSpacing.md),
-      decoration: BoxDecoration(
-        color: colors.card,
-        borderRadius: BorderRadius.circular(AppRadius.sheet),
-        border: Border.all(color: colors.borderSubtle),
-        boxShadow: AppElevation.card(context),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.sm,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _ReviewerAvatar(name: name),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: AppTypography.body.copyWith(
-                          color: colors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      if (dateLabel != null) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          dateLabel,
-                          style: AppTypography.caption.copyWith(
-                            color: colors.textTertiary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                _RatingBadge(rating: review.rating),
-              ],
-            ),
-          ),
-          if (review.comment != null && review.comment!.trim().isNotEmpty)
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                0,
-                AppSpacing.lg,
-                hasReply ? AppSpacing.md : AppSpacing.lg,
-              ),
-              child: Text(
-                review.comment!,
-                style: AppTypography.bodyRegular.copyWith(
-                  color: colors.textPrimary,
-                  height: 1.55,
-                ),
-              ),
-            ),
-          if (hasReply)
+    return Semantics(
+      container: true,
+      label: sentence,
+      excludeSemantics: true,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: AppSpacing.md),
+        decoration: BoxDecoration(
+          color: colors.card,
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          border: Theme.of(context).brightness == Brightness.dark
+              ? Border.all(color: colors.borderSubtle)
+              : null,
+          boxShadow: Theme.of(context).brightness == Brightness.dark
+              ? null
+              : AppElevation.card(context),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppSpacing.lg,
-                0,
                 AppSpacing.lg,
                 AppSpacing.lg,
+                AppSpacing.sm,
               ),
-              child: _ProviderReplyBlock(
-                label: strings.reviewProviderReplyLabel,
-                reply: review.providerReply!,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  YbReviewerAvatar(name: name),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: AppTypography.body.copyWith(
+                            color: colors.textPrimary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        if (dateLabel != null) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            dateLabel,
+                            style: AppTypography.caption.copyWith(
+                              color: colors.textTertiary,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  YbRatingBadge(rating: review.rating),
+                ],
               ),
             ),
-        ],
+            if (review.comment != null && review.comment!.trim().isNotEmpty)
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  0,
+                  AppSpacing.lg,
+                  hasReply ? AppSpacing.md : AppSpacing.lg,
+                ),
+                child: Text(
+                  review.comment!,
+                  style: AppTypography.bodyRegular.copyWith(
+                    color: colors.textPrimary,
+                    height: 1.55,
+                  ),
+                ),
+              ),
+            if (hasReply)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  0,
+                  AppSpacing.lg,
+                  AppSpacing.lg,
+                ),
+                child: _ProviderReplyBlock(
+                  label: strings.reviewProviderReplyLabel,
+                  reply: review.providerReply!,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class YbReviewsSummaryChip extends StatelessWidget {
-  const YbReviewsSummaryChip({
-    super.key,
-    required this.reviews,
-  });
-
-  final List<Review> reviews;
-
-  @override
-  Widget build(BuildContext context) {
-    if (reviews.isEmpty) return const SizedBox.shrink();
-
-    final colors = context.ybColors;
-    final average =
-        reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
-      ),
-      decoration: BoxDecoration(
-        color: colors.surfaceElevated,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: colors.border),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.star_rounded, size: 16, color: AppColors.star),
-          const SizedBox(width: 4),
-          Text(
-            average.toStringAsFixed(1),
-            style: AppTypography.caption.copyWith(
-              color: colors.textPrimary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-            width: 1,
-            height: 14,
-            color: colors.border,
-          ),
-          Text(
-            '${reviews.length}',
-            style: AppTypography.caption.copyWith(
-              color: colors.textSecondary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReviewerAvatar extends StatelessWidget {
-  const _ReviewerAvatar({required this.name});
+/// The reviewer's initials on an apricot circle.
+class YbReviewerAvatar extends StatelessWidget {
+  const YbReviewerAvatar({super.key, required this.name, this.size = 44});
 
   final String name;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    final palette = _avatarPalette(name);
+    final colors = context.ybColors;
 
+    // Reviews come from the people who asked for help: the apricot voice.
     return Container(
-      width: 44,
-      height: 44,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: palette,
-        ),
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: palette.last.withValues(alpha: 0.35),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        color: colors.apricotSoft,
+        shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
-      child: Text(
-        _initials(name),
-        style: AppTypography.caption.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-          fontSize: 15,
+      // Like CircleAvatar: initials stay inside the circle at any text size.
+      child: MediaQuery.withNoTextScaling(
+        child: Text(
+          _initials(name),
+          style: AppTypography.caption.copyWith(
+            color: colors.apricotInk,
+            fontWeight: FontWeight.w700,
+            fontSize: size * 0.34,
+          ),
         ),
       ),
     );
@@ -222,24 +181,11 @@ class _ReviewerAvatar extends StatelessWidget {
     }
     return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
   }
-
-  static List<Color> _avatarPalette(String name) {
-    const palettes = [
-      [Color(0xFF0D9488), Color(0xFF14B8A6)],
-      [Color(0xFF6366F1), Color(0xFF818CF8)],
-      [Color(0xFFEC4899), Color(0xFFF472B6)],
-      [Color(0xFFF59E0B), Color(0xFFFBBF24)],
-      [Color(0xFF8B5CF6), Color(0xFFA78BFA)],
-      [Color(0xFF0891B2), Color(0xFF22D3EE)],
-    ];
-    final index = name.codeUnits.fold<int>(0, (sum, c) => sum + c) %
-        palettes.length;
-    return palettes[index];
-  }
 }
 
-class _RatingBadge extends StatelessWidget {
-  const _RatingBadge({required this.rating});
+/// One review's stars: a gold star and the number.
+class YbRatingBadge extends StatelessWidget {
+  const YbRatingBadge({super.key, required this.rating});
 
   final int rating;
 
@@ -253,22 +199,22 @@ class _RatingBadge extends StatelessWidget {
         vertical: AppSpacing.xs + 2,
       ),
       decoration: BoxDecoration(
-        color: AppColors.star.withValues(alpha: 0.12),
+        color: context.ybColors.star.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppRadius.chip),
         border: Border.all(
-          color: AppColors.star.withValues(alpha: 0.25),
+          color: context.ybColors.star.withValues(alpha: 0.25),
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.star_rounded, size: 15, color: AppColors.star),
+          Icon(YbIcons.starFilled, size: 15, color: context.ybColors.star),
           const SizedBox(width: 3),
           Text(
             '$rating',
             style: AppTypography.caption.copyWith(
               color: colors.textPrimary,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
@@ -292,11 +238,8 @@ class _ProviderReplyBlock extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: colors.primaryMuted,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.12),
-        ),
+        color: colors.tealSoft,
+        borderRadius: BorderRadius.circular(AppRadius.field),
       ),
       child: IntrinsicHeight(
         child: Row(
@@ -305,9 +248,9 @@ class _ProviderReplyBlock extends StatelessWidget {
             Container(
               width: 3,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: context.ybColors.teal,
                 borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(AppRadius.card),
+                  left: Radius.circular(AppRadius.field),
                 ),
               ),
             ),
@@ -320,16 +263,16 @@ class _ProviderReplyBlock extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          Icons.reply_rounded,
+                          YbIcons.replyFilled,
                           size: 16,
-                          color: AppColors.primary.withValues(alpha: 0.85),
+                          color: context.ybColors.teal.withValues(alpha: 0.85),
                         ),
                         const SizedBox(width: AppSpacing.xs),
                         Expanded(
                           child: Text(
                             label,
                             style: AppTypography.label.copyWith(
-                              color: AppColors.primaryDark,
+                              color: context.ybColors.tealInk,
                               letterSpacing: 0.3,
                             ),
                           ),
@@ -355,7 +298,8 @@ class _ProviderReplyBlock extends StatelessWidget {
   }
 }
 
-String _formatRelativeDate(DateTime date, Locale locale) {
+/// "Today", "3 days ago", "2 weeks ago", then the date.
+String formatReviewDate(DateTime date, Locale locale) {
   final now = DateTime.now();
   final local = date.toLocal();
   final diff = now.difference(local);
@@ -366,6 +310,7 @@ String _formatRelativeDate(DateTime date, Locale locale) {
     return switch (lang) {
       'ru' => 'Сегодня',
       'uz' => 'Bugun',
+      'zh' => '今天',
       _ => 'Today',
     };
   }
@@ -373,6 +318,7 @@ String _formatRelativeDate(DateTime date, Locale locale) {
     return switch (lang) {
       'ru' => 'Вчера',
       'uz' => 'Kecha',
+      'zh' => '昨天',
       _ => 'Yesterday',
     };
   }
@@ -380,6 +326,7 @@ String _formatRelativeDate(DateTime date, Locale locale) {
     return switch (lang) {
       'ru' => '$days дн. назад',
       'uz' => '$days kun oldin',
+      'zh' => '$days 天前',
       _ => '$days days ago',
     };
   }
@@ -388,6 +335,7 @@ String _formatRelativeDate(DateTime date, Locale locale) {
     return switch (lang) {
       'ru' => weeks == 1 ? '1 нед. назад' : '$weeks нед. назад',
       'uz' => weeks == 1 ? '1 hafta oldin' : '$weeks hafta oldin',
+      'zh' => '$weeks 周前',
       _ => weeks == 1 ? '1 week ago' : '$weeks weeks ago',
     };
   }

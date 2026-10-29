@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:yordambor/application/providers/certificate_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
@@ -12,6 +13,7 @@ import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/profile/certificate_repository.dart';
 import 'package:yordambor/domain/entities/profile_certificate.dart';
@@ -82,10 +84,10 @@ class _ProfileCertificatesSectionState
           SnackBar(content: Text(strings.profileCertificatesAdded)),
         );
       }
-    } on Exception catch (error) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$error')),
+          SnackBar(content: Text(strings.stateErrorBody)),
         );
       }
     } finally {
@@ -112,10 +114,10 @@ class _ProfileCertificatesSectionState
           SnackBar(content: Text(strings.profileCertificatesRemoved)),
         );
       }
-    } on Exception catch (error) {
+    } on Exception {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$error')),
+          SnackBar(content: Text(strings.stateErrorBody)),
         );
       }
     }
@@ -160,7 +162,7 @@ class _ProfileCertificatesSectionState
                 )
               else
                 IconButton(
-                  icon: const Icon(Icons.add_circle_outline),
+                  icon: const Icon(YbIcons.addCircle),
                   tooltip: strings.profileCertificatesAdd,
                   onPressed: _addCertificate,
                 ),
@@ -191,7 +193,7 @@ class _ProfileCertificatesSectionState
                     onPressed: () => ref.invalidate(
                       profileCertificatesProvider(widget.profileId),
                     ),
-                    icon: const Icon(Icons.refresh_rounded, size: 18),
+                    icon: const Icon(YbIcons.refreshFilled, size: 18),
                     label: Text(strings.actionRetry),
                   ),
                 ),
@@ -211,7 +213,7 @@ class _ProfileCertificatesSectionState
                     const SizedBox(height: AppSpacing.md),
                     YbSecondaryButton(
                       label: strings.profileCertificatesAdd,
-                      icon: Icons.upload_file_outlined,
+                      icon: YbIcons.uploadFile,
                       onPressed: _addCertificate,
                     ),
                   ],
@@ -235,7 +237,7 @@ class _ProfileCertificatesSectionState
                           child: const SizedBox(
                             width: 48,
                             height: 48,
-                            child: Icon(Icons.workspace_premium_outlined),
+                            child: Icon(YbIcons.workspacePremium),
                           ),
                         ),
                       ),
@@ -255,7 +257,8 @@ class _ProfileCertificatesSectionState
                           )
                         : null,
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline),
+                      tooltip: strings.actionDelete,
+                      icon: const Icon(YbIcons.delete),
                       onPressed: () => _removeCertificate(cert),
                     ),
                     onTap: () {},
@@ -289,6 +292,7 @@ class _CertificateDetailsSheet extends StatefulWidget {
     AppStrings strings,
   ) {
     return showModalBottomSheet<_CertificateDetails>(
+      sheetAnimationStyle: AppMotion.sheetOf(context),
       context: context,
       isScrollControlled: true,
       useSafeArea: true,

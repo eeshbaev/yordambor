@@ -7,12 +7,24 @@ class OnboardingPrefsSnapshot {
     required this.providerPromptDismissed,
     required this.language,
     required this.themeMode,
+    this.onboardingDone = false,
+    this.onboardingGoal,
+    this.providerTypePreference,
   });
 
   final bool welcomeSeen;
   final bool providerPromptDismissed;
   final String language;
   final ThemeMode themeMode;
+
+  /// The introduction and the two questions after it were finished.
+  final bool onboardingDone;
+
+  /// `needHelp`, `offer` or `both`, as answered in onboarding.
+  final String? onboardingGoal;
+
+  /// `individual` or `institution`: how the person said they work.
+  final String? providerTypePreference;
 }
 
 class OnboardingPrefsRepository {
@@ -20,6 +32,9 @@ class OnboardingPrefsRepository {
   static const providerPromptDismissedKey = 'provider_prompt_dismissed';
   static const languageKey = 'app_language';
   static const themeModeKey = 'theme_mode';
+  static const onboardingDoneKey = 'onboarding_done';
+  static const onboardingGoalKey = 'onboarding_goal';
+  static const providerTypePreferenceKey = 'provider_type_preference';
 
   SharedPreferences? _prefs;
 
@@ -39,7 +54,25 @@ class OnboardingPrefsRepository {
         'light' => ThemeMode.light,
         _ => ThemeMode.system,
       },
+      onboardingDone: prefs.getBool(onboardingDoneKey) ?? false,
+      onboardingGoal: prefs.getString(onboardingGoalKey),
+      providerTypePreference: prefs.getString(providerTypePreferenceKey),
     );
+  }
+
+  /// Onboarding is over; [goal] and [providerType] are kept when given.
+  Future<void> completeOnboarding({
+    String? goal,
+    String? providerType,
+  }) async {
+    final prefs = await _instance();
+    await prefs.setBool(onboardingDoneKey, true);
+    // Seeing onboarding includes the welcome.
+    await prefs.setBool(welcomeSeenKey, true);
+    if (goal != null) await prefs.setString(onboardingGoalKey, goal);
+    if (providerType != null) {
+      await prefs.setString(providerTypePreferenceKey, providerType);
+    }
   }
 
   Future<bool> isWelcomeSeen() async {

@@ -4,7 +4,7 @@
       "id": "home_repair",
       "icon": "🔧",
       "names": {
-        "uz": "Uy ta'miri",
+        "uz": "Uy taʼmiri",
         "ru": "Ремонт дома",
         "en": "Home Repair"
       },
@@ -44,7 +44,7 @@
         {
           "id": "painter",
           "names": {
-            "uz": "Bo'yoqchi",
+            "uz": "Boʻyoqchi",
             "ru": "Маляр",
             "en": "Painter"
           }
@@ -76,7 +76,7 @@
         {
           "id": "ac_repair",
           "names": {
-            "uz": "Konditsioner ta'miri",
+            "uz": "Konditsioner taʼmiri",
             "ru": "Ремонт кондиционеров",
             "en": "AC repair"
           }
@@ -84,7 +84,7 @@
         {
           "id": "appliance_repair",
           "names": {
-            "uz": "Maishiy texnika ta'miri",
+            "uz": "Maishiy texnika taʼmiri",
             "ru": "Ремонт бытовой техники",
             "en": "Appliance repair"
           }
@@ -124,7 +124,7 @@
         {
           "id": "gas_stove",
           "names": {
-            "uz": "Gaz plita o'rnatish",
+            "uz": "Gaz plita oʻrnatish",
             "ru": "Установка газовой плиты",
             "en": "Gas stove installation"
           }
@@ -140,7 +140,7 @@
         {
           "id": "mosquito_screens",
           "names": {
-            "uz": "Komiljon to'ri",
+            "uz": "Komiljon toʻri",
             "ru": "Москитные сетки",
             "en": "Mosquito screens"
           }
@@ -148,7 +148,7 @@
         {
           "id": "furniture_assembly",
           "names": {
-            "uz": "Mebel yig'ish",
+            "uz": "Mebel yigʻish",
             "ru": "Сборка мебели",
             "en": "Furniture assembly"
           }
@@ -167,7 +167,7 @@
         {
           "id": "renovation_company",
           "names": {
-            "uz": "Ta'mirlash kompaniyasi",
+            "uz": "Taʼmirlash kompaniyasi",
             "ru": "Ремонтная компания",
             "en": "Renovation company"
           }
@@ -175,7 +175,7 @@
         {
           "id": "property_maintenance",
           "names": {
-            "uz": "Mulk xizmat ko'rsatish",
+            "uz": "Mulk xizmat koʻrsatish",
             "ru": "Обслуживание недвижимости",
             "en": "Property maintenance"
           }
@@ -191,7 +191,7 @@
         {
           "id": "construction_firm",
           "names": {
-            "uz": "Qurilish firması",
+            "uz": "Qurilish firmasi",
             "ru": "Строительная фирма",
             "en": "Construction firm"
           }
@@ -299,7 +299,7 @@
         {
           "id": "after_repair_cleaning",
           "names": {
-            "uz": "Ta'mirdan keyin tozalash",
+            "uz": "Taʼmirdan keyin tozalash",
             "ru": "Уборка после ремонта",
             "en": "Post-renovation cleaning"
           }
@@ -315,7 +315,7 @@
         {
           "id": "move_out_cleaning",
           "names": {
-            "uz": "Ko'chishdan keyin tozalash",
+            "uz": "Koʻchishdan keyin tozalash",
             "ru": "Уборка при переезде",
             "en": "Move-out cleaning"
           }
@@ -466,7 +466,7 @@
       "id": "education",
       "icon": "📚",
       "names": {
-        "uz": "Ta'lim",
+        "uz": "Taʼlim",
         "ru": "Образование",
         "en": "Education"
       },
@@ -530,7 +530,7 @@
         {
           "id": "programming_tutor",
           "names": {
-            "uz": "Dasturlash o'qituvchisi",
+            "uz": "Dasturlash oʻqituvchisi",
             "ru": "Репетитор по программированию",
             "en": "Programming tutor"
           }
@@ -554,7 +554,7 @@
         {
           "id": "uzbek_tutor",
           "names": {
-            "uz": "O'zbek tili repetitori",
+            "uz": "Oʻzbek tili repetitori",
             "ru": "Репетитор узбекского",
             "en": "Uzbek language tutor"
           }
@@ -634,7 +634,7 @@
         {
           "id": "quran_lessons",
           "names": {
-            "uz": "Qur'on o'qitish",
+            "uz": "Qurʼon oʻqitish",
             "ru": "Обучение Корану",
             "en": "Quran lessons"
           }
@@ -653,7 +653,7 @@
         {
           "id": "language_center",
           "names": {
-            "uz": "Til o'rganish markazi",
+            "uz": "Til oʻrganish markazi",
             "ru": "Языковой центр",
             "en": "Language center"
           }
@@ -677,7 +677,7 @@
         {
           "id": "preschool",
           "names": {
-            "uz": "Maktabgacha ta'lim",
+            "uz": "Maktabgacha taʼlim",
             "ru": "Дошкольное образование",
             "en": "Preschool"
           }
@@ -685,7 +685,7 @@
         {
           "id": "driving_school",
           "names": {
-            "uz": "Avtoyo'l maktabi",
+            "uz": "Avtoyoʻl maktabi",
             "ru": "Автошкола",
             "en": "Driving school"
           }
@@ -693,7 +693,7 @@
         {
           "id": "vocational_training",
           "names": {
-            "uz": "Kasbiy o'quv markazi",
+            "uz": "Kasbiy oʻquv markazi",
             "ru": "Учебный центр профподготовки",
             "en": "Vocational training center"
           }
@@ -717,7 +717,7 @@
         {
           "id": "art_school",
           "names": {
-            "uz": "San'at maktabi",
+            "uz": "Sanʼat maktabi",
             "ru": "Художественная школа",
             "en": "Art school"
           }
@@ -761,7 +761,7 @@
         {
           "id": "computer_repair",
           "names": {
-            "uz": "Kompyuter ta'miri",
+            "uz": "Kompyuter taʼmiri",
             "ru": "Ремонт компьютера",
             "en": "Computer repair"
           }
@@ -769,7 +769,7 @@
         {
           "id": "phone_repair",
           "names": {
-            "uz": "Telefon ta'miri",
+            "uz": "Telefon taʼmiri",
             "ru": "Ремонт телефона",
             "en": "Phone repair"
           }
@@ -777,7 +777,7 @@
         {
           "id": "software_setup",
           "names": {
-            "uz": "Dastur o'rnatish",
+            "uz": "Dastur oʻrnatish",
             "ru": "Установка программ",
             "en": "Software setup"
           }
@@ -809,7 +809,7 @@
         {
           "id": "laptop_repair",
           "names": {
-            "uz": "Noutbuk ta'miri",
+            "uz": "Noutbuk taʼmiri",
             "ru": "Ремонт ноутбуков",
             "en": "Laptop repair"
           }
@@ -825,7 +825,7 @@
         {
           "id": "cctv_install",
           "names": {
-            "uz": "Video kuzatuv o'rnatish",
+            "uz": "Video kuzatuv oʻrnatish",
             "ru": "Установка видеонаблюдения",
             "en": "CCTV installation"
           }
@@ -841,7 +841,7 @@
         {
           "id": "data_recovery",
           "names": {
-            "uz": "Ma'lumot tiklash",
+            "uz": "Maʼlumot tiklash",
             "ru": "Восстановление данных",
             "en": "Data recovery"
           }
@@ -908,7 +908,7 @@
         {
           "id": "software_agency",
           "names": {
-            "uz": "Dasturiy ta'minot agentligi",
+            "uz": "Dasturiy taʼminot agentligi",
             "ru": "Агентство по разработке ПО",
             "en": "Software agency"
           }
@@ -924,7 +924,7 @@
         {
           "id": "cybersecurity_firm",
           "names": {
-            "uz": "Kiberxavfsizlik firması",
+            "uz": "Kiberxavfsizlik firmasi",
             "ru": "Фирма по кибербезопасности",
             "en": "Cybersecurity firm"
           }
@@ -1016,7 +1016,7 @@
         {
           "id": "moving_help",
           "names": {
-            "uz": "Ko'chishga yordam",
+            "uz": "Koʻchishga yordam",
             "ru": "Помощь с переездом",
             "en": "Moving help"
           }
@@ -1048,7 +1048,7 @@
         {
           "id": "wedding_transport",
           "names": {
-            "uz": "To'y uchun transport",
+            "uz": "Toʻy uchun transport",
             "ru": "Транспорт на свадьбу",
             "en": "Wedding transport"
           }
@@ -1123,7 +1123,7 @@
         {
           "id": "moving_company",
           "names": {
-            "uz": "Ko'chish kompaniyasi",
+            "uz": "Koʻchish kompaniyasi",
             "ru": "Компания переездов",
             "en": "Moving company"
           }
@@ -1151,7 +1151,7 @@
       "id": "beauty",
       "icon": "💄",
       "names": {
-        "uz": "Go'zallik",
+        "uz": "Goʻzallik",
         "ru": "Красота",
         "en": "Beauty"
       },
@@ -1191,7 +1191,7 @@
         {
           "id": "home_beauty",
           "names": {
-            "uz": "Uyga keladigan go'zallik ustasi",
+            "uz": "Uyga keladigan goʻzallik ustasi",
             "ru": "Мастер красоты на выезде",
             "en": "Mobile beauty specialist"
           }
@@ -1207,7 +1207,7 @@
         {
           "id": "wedding_makeup",
           "names": {
-            "uz": "To'y grimi",
+            "uz": "Toʻy grimi",
             "ru": "Свадебный макияж",
             "en": "Wedding makeup"
           }
@@ -1239,7 +1239,7 @@
         {
           "id": "hair_colorist",
           "names": {
-            "uz": "Soch bo'yash ustasi",
+            "uz": "Soch boʻyash ustasi",
             "ru": "Колорист",
             "en": "Hair colorist"
           }
@@ -1258,7 +1258,7 @@
         {
           "id": "beauty_salon",
           "names": {
-            "uz": "Go'zallik saloni",
+            "uz": "Goʻzallik saloni",
             "ru": "Салон красоты",
             "en": "Beauty salon"
           }
@@ -1290,7 +1290,7 @@
         {
           "id": "cosmetics_store",
           "names": {
-            "uz": "Kosmetika do'koni",
+            "uz": "Kosmetika doʻkoni",
             "ru": "Магазин косметики",
             "en": "Cosmetics store"
           }
@@ -1298,7 +1298,7 @@
         {
           "id": "beauty_academy",
           "names": {
-            "uz": "Go'zallik akademiyasi",
+            "uz": "Goʻzallik akademiyasi",
             "ru": "Академия красоты",
             "en": "Beauty academy"
           }
@@ -1306,7 +1306,7 @@
         {
           "id": "wedding_salon",
           "names": {
-            "uz": "To'y saloni",
+            "uz": "Toʻy saloni",
             "ru": "Свадебный салон",
             "en": "Bridal salon"
           }
@@ -1326,7 +1326,7 @@
       "id": "health",
       "icon": "🏥",
       "names": {
-        "uz": "Sog'liq",
+        "uz": "Sogʻliq",
         "ru": "Здоровье",
         "en": "Health & Wellness"
       },
@@ -1406,7 +1406,7 @@
         {
           "id": "fitness_nutrition",
           "names": {
-            "uz": "Sog'lom ovqatlanish maslahati",
+            "uz": "Sogʻlom ovqatlanish maslahati",
             "ru": "Консультация по питанию",
             "en": "Nutrition coaching"
           }
@@ -1481,7 +1481,7 @@
         {
           "id": "optics_clinic",
           "names": {
-            "uz": "Ko'z klinikasi",
+            "uz": "Koʻz klinikasi",
             "ru": "Глазная клиника",
             "en": "Eye clinic"
           }
@@ -1549,7 +1549,7 @@
         {
           "id": "body_repair",
           "names": {
-            "uz": "Kuzov ta'miri",
+            "uz": "Kuzov taʼmiri",
             "ru": "Кузовной ремонт",
             "en": "Body repair"
           }
@@ -1565,7 +1565,7 @@
         {
           "id": "car_alarm",
           "names": {
-            "uz": "Signalizatsiya o'rnatish",
+            "uz": "Signalizatsiya oʻrnatish",
             "ru": "Установка сигнализации",
             "en": "Car alarm install"
           }
@@ -1573,7 +1573,7 @@
         {
           "id": "lpg_install",
           "names": {
-            "uz": "Gaz ballon o'rnatish",
+            "uz": "Gaz ballon oʻrnatish",
             "ru": "Установка ГБО",
             "en": "LPG/CNG install"
           }
@@ -1608,7 +1608,7 @@
         {
           "id": "auto_parts",
           "names": {
-            "uz": "Ehtiyot qismlar do'koni",
+            "uz": "Ehtiyot qismlar doʻkoni",
             "ru": "Магазин автозапчастей",
             "en": "Auto parts store"
           }
@@ -1727,7 +1727,7 @@
         {
           "id": "kindergarten",
           "names": {
-            "uz": "Bog'cha",
+            "uz": "Bogʻcha",
             "ru": "Детский сад",
             "en": "Kindergarten"
           }
@@ -1819,7 +1819,7 @@
         {
           "id": "uzbek_cuisine",
           "names": {
-            "uz": "O'zbek milliy taomlari",
+            "uz": "Oʻzbek milliy taomlari",
             "ru": "Узбекская национальная кухня",
             "en": "Uzbek national cuisine"
           }
@@ -1910,7 +1910,7 @@
         {
           "id": "bakery",
           "names": {
-            "uz": "Non-pishiriq do'koni",
+            "uz": "Non-pishiriq doʻkoni",
             "ru": "Пекарня",
             "en": "Bakery"
           }
@@ -1962,7 +1962,7 @@
       "id": "marketing_growth",
       "icon": "📈",
       "names": {
-        "uz": "Marketing va o'sish",
+        "uz": "Marketing va oʻsish",
         "ru": "Маркетинг и рост",
         "en": "Marketing & Growth"
       },
@@ -2336,7 +2336,7 @@
         {
           "id": "alterations",
           "names": {
-            "uz": "Kiyim ta'mirlash",
+            "uz": "Kiyim taʼmirlash",
             "ru": "Ремонт одежды",
             "en": "Clothing alterations"
           }
@@ -2344,7 +2344,7 @@
         {
           "id": "wedding_dress",
           "names": {
-            "uz": "To'y libosi tikish",
+            "uz": "Toʻy libosi tikish",
             "ru": "Пошив свадебного платья",
             "en": "Wedding dress tailor"
           }
@@ -2360,7 +2360,7 @@
         {
           "id": "shoe_repair",
           "names": {
-            "uz": "Poyabzal ta'miri",
+            "uz": "Poyabzal taʼmiri",
             "ru": "Ремонт обуви",
             "en": "Shoe repair"
           }
@@ -2411,7 +2411,7 @@
         {
           "id": "textile_wholesale",
           "names": {
-            "uz": "To'qimachilik ulgurji",
+            "uz": "Toʻqimachilik ulgurji",
             "ru": "Текстильный опт",
             "en": "Textile wholesale"
           }
@@ -2522,7 +2522,7 @@
         {
           "id": "consulting_firm",
           "names": {
-            "uz": "Konsalting firması",
+            "uz": "Konsalting firmasi",
             "ru": "Консалтинговая фирма",
             "en": "Consulting firm"
           }
@@ -2530,7 +2530,7 @@
         {
           "id": "accounting_firm",
           "names": {
-            "uz": "Buxgalteriya firması",
+            "uz": "Buxgalteriya firmasi",
             "ru": "Бухгалтерская фирма",
             "en": "Accounting firm"
           }
@@ -2546,7 +2546,7 @@
         {
           "id": "investment_firm",
           "names": {
-            "uz": "Investitsiya firması",
+            "uz": "Investitsiya firmasi",
             "ru": "Инвестиционная фирма",
             "en": "Investment firm"
           }
@@ -2630,7 +2630,7 @@
         {
           "id": "wedding_planner",
           "names": {
-            "uz": "To'y tashkilotchisi",
+            "uz": "Toʻy tashkilotchisi",
             "ru": "Свадебный организатор",
             "en": "Wedding planner"
           }
@@ -2697,7 +2697,7 @@
         {
           "id": "wedding_agency",
           "names": {
-            "uz": "To'y agentligi",
+            "uz": "Toʻy agentligi",
             "ru": "Свадебное агентство",
             "en": "Wedding agency"
           }
@@ -2705,7 +2705,7 @@
         {
           "id": "relocation_service",
           "names": {
-            "uz": "Ko'chish xizmati",
+            "uz": "Koʻchish xizmati",
             "ru": "Релокация",
             "en": "Relocation service"
           }
@@ -2725,7 +2725,7 @@
       "id": "arts_performers",
       "icon": "🎭",
       "names": {
-        "uz": "San'at va ijrochilar",
+        "uz": "Sanʼat va ijrochilar",
         "ru": "Искусство и артисты",
         "en": "Arts & Performers"
       },
@@ -2741,7 +2741,7 @@
         {
           "id": "singer",
           "names": {
-            "uz": "Qo'shiqchi",
+            "uz": "Qoʻshiqchi",
             "ru": "Певец/Певица",
             "en": "Singer"
           }
@@ -2840,7 +2840,7 @@
         {
           "id": "entertainment_agency",
           "names": {
-            "uz": "Ko'ngil ochar agentlik",
+            "uz": "Koʻngil ochar agentlik",
             "ru": "Агентство развлечений",
             "en": "Entertainment agency"
           }
@@ -2967,7 +2967,7 @@
         {
           "id": "law_firm",
           "names": {
-            "uz": "Advokatlik firması",
+            "uz": "Advokatlik firmasi",
             "ru": "Юридическая фирма",
             "en": "Law firm"
           }
@@ -3011,7 +3011,7 @@
       "id": "real_estate",
       "icon": "🏠",
       "names": {
-        "uz": "Ko'chmas mulk",
+        "uz": "Koʻchmas mulk",
         "ru": "Недвижимость",
         "en": "Real Estate"
       },
@@ -3051,7 +3051,7 @@
         {
           "id": "commercial_realtor",
           "names": {
-            "uz": "Tijorat ko'chmas mulk",
+            "uz": "Tijorat koʻchmas mulk",
             "ru": "Коммерческая недвижимость",
             "en": "Commercial realtor"
           }
@@ -3078,7 +3078,7 @@
         {
           "id": "real_estate_agency",
           "names": {
-            "uz": "Ko'chmas mulk agentligi",
+            "uz": "Koʻchmas mulk agentligi",
             "ru": "Агентство недвижимости",
             "en": "Real estate agency"
           }
@@ -3154,7 +3154,7 @@
         {
           "id": "pet_trainer",
           "names": {
-            "uz": "Hayvonlarni o'rgatuvchi",
+            "uz": "Hayvonlarni oʻrgatuvchi",
             "ru": "Кинолог/дрессировщик",
             "en": "Pet trainer"
           }
@@ -3197,7 +3197,7 @@
         {
           "id": "pet_shop",
           "names": {
-            "uz": "Hayvonlar do'koni",
+            "uz": "Hayvonlar doʻkoni",
             "ru": "Зоомагазин",
             "en": "Pet shop"
           }
@@ -3281,7 +3281,7 @@
         {
           "id": "martial_arts",
           "names": {
-            "uz": "Jang san'atlari murabbiyi",
+            "uz": "Jang sanʼatlari murabbiyi",
             "ru": "Тренер по единоборствам",
             "en": "Martial arts coach"
           }
@@ -3380,7 +3380,7 @@
         {
           "id": "martial_arts_school",
           "names": {
-            "uz": "Jang san'ati maktabi",
+            "uz": "Jang sanʼati maktabi",
             "ru": "Школа единоборств",
             "en": "Martial arts school"
           }
@@ -3448,7 +3448,7 @@
         {
           "id": "data_analyst",
           "names": {
-            "uz": "Ma'lumotlar tahlilchisi",
+            "uz": "Maʼlumotlar tahlilchisi",
             "ru": "Аналитик данных",
             "en": "Data analyst"
           }
@@ -3557,7 +3557,21 @@
     }
   ],
   "cities": [
-    "Tashkent",
-    "Samarkand"
+    "toshkent",
+    "toshkent_viloyati",
+    "samarqand",
+    "buxoro",
+    "nukus",
+    "namangan",
+    "andijon",
+    "fargona",
+    "qarshi",
+    "urganch",
+    "termiz",
+    "jizzax",
+    "navoiy",
+    "qoqon",
+    "guliston",
+    "boshqa"
   ]
 }

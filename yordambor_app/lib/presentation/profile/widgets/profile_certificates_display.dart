@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/profile_certificate.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class ProfileCertificatesDisplay extends StatelessWidget {
   const ProfileCertificatesDisplay({
@@ -23,13 +25,13 @@ class ProfileCertificatesDisplay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(strings.profileCertificatesTitle, style: AppTypography.headline),
+        Text(strings.profileCertificatesTitle, style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary)),
         if (showDisclaimer) ...[
           const SizedBox(height: AppSpacing.xs),
           Text(
             strings.profileCertificatesDisclaimer,
             style: AppTypography.caption.copyWith(
-              color: AppColors.textSecondary,
+              color: context.ybColors.textSecondary,
             ),
           ),
         ],
@@ -57,34 +59,37 @@ class ProfileCertificatesDisplay extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (context) => Dialog(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppRadius.card),
+        // Scrolls when large text makes it taller than the screen.
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.card),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: cert.imageUrl,
+                  fit: BoxFit.cover,
+                  height: 240,
+                ),
               ),
-              child: CachedNetworkImage(
-                imageUrl: cert.imageUrl,
-                fit: BoxFit.cover,
-                height: 240,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(cert.title, style: AppTypography.title),
-                  if (cert.issuer != null) ...[
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(cert.issuer!, style: AppTypography.caption),
+              Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(cert.title, style: AppTypography.title.copyWith(color: context.ybColors.textPrimary)),
+                    if (cert.issuer != null) ...[
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(cert.issuer!, style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary)),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -106,7 +111,7 @@ class _CertificateTile extends StatelessWidget {
         width: 128,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.card),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: context.ybColors.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,9 +124,9 @@ class _CertificateTile extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: certificate.imageUrl,
                   fit: BoxFit.cover,
-                  errorWidget: (_, _, _) => const ColoredBox(
-                    color: AppColors.skeleton,
-                    child: Icon(Icons.workspace_premium_outlined),
+                  errorWidget: (_, _, _) => ColoredBox(
+                    color: context.ybColors.skeleton,
+                    child: Icon(YbIcons.workspacePremium),
                   ),
                 ),
               ),
@@ -132,7 +137,7 @@ class _CertificateTile extends StatelessWidget {
                 certificate.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: AppTypography.label,
+                style: AppTypography.label.copyWith(color: context.ybColors.textSecondary),
               ),
             ),
           ],

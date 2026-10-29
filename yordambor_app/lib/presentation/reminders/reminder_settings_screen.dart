@@ -5,8 +5,12 @@ import 'package:yordambor/application/providers/reminder_providers.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_filter_chip.dart';
+import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/domain/entities/reminder_settings.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 
 class ReminderSettingsScreen extends ConsumerStatefulWidget {
   const ReminderSettingsScreen({super.key});
@@ -85,8 +89,14 @@ class _ReminderSettingsScreenState
       body: AppLayout.page(
         context: context,
         child: settingsAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => Center(child: Text('$error')),
+          loading: () => const YbSkeletonList(count: 3),
+          error: (_, _) => YbEmptyState(
+            icon: YbIcons.cloudOff,
+            title: strings.stateErrorTitle,
+            subtitle: strings.stateErrorBody,
+            actionLabel: strings.actionRetry,
+            onAction: () => ref.invalidate(reminderSettingsProvider),
+          ),
           data: (settings) {
             _applySettings(settings);
 
@@ -95,7 +105,7 @@ class _ReminderSettingsScreenState
               children: [
                 Text(
                   strings.remindersSettingsAlertsLabel,
-                  style: AppTypography.headline,
+                  style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Wrap(
@@ -150,7 +160,7 @@ class _ReminderSettingsScreenState
                 const SizedBox(height: AppSpacing.xl),
                 Text(
                   strings.remindersSettingsFollowUpLabel,
-                  style: AppTypography.headline,
+                  style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Wrap(

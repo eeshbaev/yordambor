@@ -4,6 +4,7 @@ import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_profile_menu.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/presentation/guides/guides_catalog.dart';
 
@@ -45,12 +46,12 @@ class GuidesListScreen extends StatelessWidget {
   }
 
   IconData _iconFor(String name) => switch (name) {
-        'design' => Icons.design_services_outlined,
-        'payments' => Icons.payments_outlined,
-        'replay' => Icons.replay_outlined,
-        'verified' => Icons.verified_outlined,
-        'rate' => Icons.rate_review_outlined,
-        _ => Icons.menu_book_outlined,
+        'design' => YbIcons.designServices,
+        'payments' => YbIcons.payments,
+        'replay' => YbIcons.replay,
+        'verified' => YbIcons.verified,
+        'rate' => YbIcons.rateReview,
+        _ => YbIcons.menuBook,
       };
 }
 

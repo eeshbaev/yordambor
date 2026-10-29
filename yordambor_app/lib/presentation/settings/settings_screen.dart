@@ -10,6 +10,8 @@ import 'package:yordambor/core/design_system/widgets/yb_confirm_dialog.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/auth/auth_repository.dart';
 import 'package:yordambor/presentation/onboarding/widgets/language_picker.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -57,10 +59,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               AppSpacing.lg,
               AppSpacing.sm,
             ),
-            child: Text(strings.settingsAppearance, style: AppTypography.label),
+            child: Text(strings.settingsAppearance, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
           ),
           ListTile(
-            leading: const Icon(Icons.dark_mode_outlined),
+            leading: const Icon(YbIcons.darkMode),
             title: Text(strings.settingsDarkMode),
             subtitle: Text(_themeModeLabel(strings, themeMode)),
             trailing: DropdownButton<ThemeMode>(
@@ -88,25 +90,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const Divider(height: 1),
           ListTile(
-            leading: const Icon(Icons.language_outlined),
+            leading: const Icon(YbIcons.language),
             title: Text(strings.settingsLanguage),
             trailing: const LanguagePicker(),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.sm,
-            ),
-            child: Text(strings.settingsTools, style: AppTypography.label),
-          ),
-          ListTile(
-            leading: const Icon(Icons.alarm_outlined),
-            title: Text(strings.remindersTitle),
-            subtitle: Text(strings.remindersSettingsSubtitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.push('/reminders'),
           ),
           if (session.isAuthenticated) ...[
             Padding(
@@ -116,10 +102,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 AppSpacing.lg,
                 AppSpacing.sm,
               ),
-              child: Text(strings.settingsPrivacySection, style: AppTypography.label),
+              child: Text(strings.settingsPrivacySection, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
             ),
             SwitchListTile(
-              secondary: const Icon(Icons.phone_outlined),
+              secondary: const Icon(YbIcons.phone),
               title: Text(strings.settingsShowPhoneLabel),
               subtitle: Text(strings.settingsShowPhoneSubtitle),
               value: session.profile?.showPhone ?? false,
@@ -127,15 +113,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ],
           ListTile(
-            leading: const Icon(Icons.help_outline),
+            leading: const Icon(YbIcons.help),
             title: Text(strings.settingsHelp),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(YbIcons.chevronRightFilled),
             onTap: () => context.push('/settings/help'),
           ),
           ListTile(
-            leading: const Icon(Icons.shield_outlined),
+            leading: const Icon(YbIcons.shield),
             title: Text(strings.settingsSafety),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(YbIcons.chevronRightFilled),
             onTap: () => context.push('/legal/safety'),
           ),
           Padding(
@@ -145,25 +131,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               AppSpacing.lg,
               AppSpacing.sm,
             ),
-            child: Text(strings.settingsLegal, style: AppTypography.label),
+            child: Text(strings.settingsLegal, style: AppTypography.label.copyWith(color: context.ybColors.textSecondary)),
           ),
           ListTile(
-            leading: const Icon(Icons.privacy_tip_outlined),
+            leading: const Icon(YbIcons.privacyTip),
             title: Text(strings.settingsPrivacy),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(YbIcons.chevronRightFilled),
             onTap: () => context.push('/legal/privacy'),
           ),
           ListTile(
-            leading: const Icon(Icons.description_outlined),
+            leading: const Icon(YbIcons.description),
             title: Text(strings.settingsTerms),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(YbIcons.chevronRightFilled),
             onTap: () => context.push('/legal/terms'),
           ),
           ListTile(
-            leading: Icon(Icons.delete_forever_outlined, color: AppColors.error),
+            leading: Icon(YbIcons.deleteForever, color: context.ybColors.error),
             title: Text(
               strings.settingsDeleteAccount,
-              style: TextStyle(color: AppColors.error),
+              style: TextStyle(color: context.ybColors.error),
             ),
             subtitle: Text(strings.settingsDeleteAccountHint),
             onTap: () => _deleteAccount(context, ref, strings),

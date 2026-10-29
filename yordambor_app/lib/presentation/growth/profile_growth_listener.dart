@@ -1,27 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yordambor/application/providers/app_review_service.dart';
-import 'package:yordambor/application/providers/growth_providers.dart';
+import 'package:flutter/widgets.dart';
 
-/// Shows achievement celebration sheets when unlocks are detected app-wide.
-class ProfileGrowthListener extends ConsumerWidget {
+/// Milestones used to open a sheet the moment they unlocked. They now show
+/// as a card on home instead (manual H-05: never a pop-up), so this wrapper
+/// only passes its child through.
+class ProfileGrowthListener extends StatelessWidget {
   const ProfileGrowthListener({super.key, required this.child});
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(providerGrowthProvider, (previous, next) {
-      next.whenData((growth) async {
-        if (growth == null) return;
-        await showPendingAchievementCelebrations(
-          context,
-          ref,
-          growth.unlockedIds,
-        );
-      });
-    });
-
-    return child;
-  }
+  Widget build(BuildContext context) => child;
 }

@@ -9,7 +9,9 @@ import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_picker_sheet.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/utils/category_icons.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
 
 enum CategoryPickerTarget { category, subcategory }
@@ -52,26 +54,14 @@ class CategoryPickerSheet extends ConsumerWidget {
           ),
           child: Column(
             children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(
-                    top: AppSpacing.sm,
-                    bottom: AppSpacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.ybColors.border,
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                  ),
-                ),
-              ),
               Expanded(
                 child: categoriesAsync.when(
                   loading: () => const Center(child: YbSkeletonList(count: 6)),
-                  error: (error, _) => Padding(
+                  error: (_, _) => Padding(
                     padding: const EdgeInsets.all(AppSpacing.lg),
-                    child: YbInlineMessage(message: '$error'),
+                    child: YbInlineMessage(
+                      message: ref.read(appStringsProvider).stateErrorBody,
+                    ),
                   ),
                   data: (categories) {
                     if (target == CategoryPickerTarget.category) {
@@ -159,7 +149,7 @@ class _CategoryList extends StatelessWidget {
         YbPickerSheetHeader(
           title: strings.categoryPickTitle,
           subtitle: strings.filterCategoryHint,
-          icon: Icons.category_outlined,
+          icon: YbIcons.category,
         ),
         Expanded(
           child: ListView(
@@ -174,14 +164,14 @@ class _CategoryList extends StatelessWidget {
               YbPickerOptionTile(
                 label: strings.categoryAll,
                 subtitle: strings.filterAllCategoriesHint,
-                icon: Icons.apps_rounded,
+                icon: YbIcons.appsFilled,
                 selected: selectedId == null,
                 onTap: onClear,
               ),
               for (final category in categories)
                 YbPickerOptionTile(
                   label: category.label(language),
-                  emoji: category.icon,
+                  icon: CategoryIcons.forService(categoryId: category.id),
                   selected: selectedId == category.id,
                   onTap: () => onSelected(category),
                 ),
@@ -236,7 +226,7 @@ class _SubcategoryList extends StatelessWidget {
         YbPickerSheetHeader(
           title: strings.filterSubcategory,
           subtitle: providerHint ?? category.label(language),
-          icon: Icons.account_tree_outlined,
+          icon: YbIcons.accountTree,
         ),
         Expanded(
           child: ListView(
@@ -251,7 +241,7 @@ class _SubcategoryList extends StatelessWidget {
               YbPickerOptionTile(
                 label: strings.subcategoryAll,
                 subtitle: strings.filterAllSubcategoriesHint,
-                icon: Icons.layers_outlined,
+                icon: YbIcons.layers,
                 selected: selectedId == null,
                 onTap: onClear,
               ),
@@ -264,8 +254,8 @@ class _SubcategoryList extends StatelessWidget {
                           : strings.xizmatProviderIndividual)
                       : null,
                   icon: subcategory.providerType == 'institution'
-                      ? Icons.business_outlined
-                      : Icons.person_outline_rounded,
+                      ? YbIcons.business
+                      : YbIcons.person,
                   selected: selectedId == subcategory.id &&
                       selectedProviderType == subcategory.providerType,
                   onTap: () => onSelected(subcategory),

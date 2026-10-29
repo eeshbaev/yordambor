@@ -3,9 +3,43 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
+import 'package:yordambor/application/providers/yordam_kerak_provider.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
+import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/utils/demo_ids.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
+import 'package:yordambor/domain/entities/yordam_kerak_post.dart';
+import 'package:yordambor/presentation/auth/auth_gate.dart';
 import 'package:yordambor/presentation/kelishuv/taklif_sheet.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/presentation/shared/sample_listing_actions.dart';
+
+/// "Yordam bor" on a request card or page. A sample explains itself first,
+/// with no sign-in needed to read it; a real request goes through sign-in
+/// to the offer.
+Future<void> answerHelpRequest(
+  BuildContext context,
+  WidgetRef ref,
+  YordamKerakFeedItem item,
+) async {
+  if (item.isDemo || isDemoFeedId(item.id)) {
+    await answerSampleRequest(context, ref, item);
+    return;
+  }
+  final allowed = await requireVerifiedAuth(
+    context,
+    ref,
+    authContext: AuthContextType.yordamBor,
+  );
+  if (!allowed || !context.mounted) return;
+  await openYordamBorForPost(
+    context,
+    ref,
+    postId: item.id,
+    subcategoryId: item.subcategoryId,
+  );
+}
 
 Future<void> openYordamBorForPost(
   BuildContext context,
@@ -13,6 +47,15 @@ Future<void> openYordamBorForPost(
   required String postId,
   String? subcategoryId,
 }) async {
+  // Samples never take an offer.
+  if (isDemoFeedId(postId)) {
+    final sample = await ref.read(yordamKerakPostProvider(postId).future);
+    if (sample != null && context.mounted) {
+      await answerSampleRequest(context, ref, sample);
+    }
+    return;
+  }
+
   final xizmatlar = await ref.read(myXizmatlarProvider.future);
   if (!context.mounted) return;
 
@@ -59,6 +102,7 @@ Future<XizmatFeedItem?> _pickXizmat(
 ) {
   final strings = ref.read(appStringsProvider);
   return showModalBottomSheet<XizmatFeedItem>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     builder: (context) => SafeArea(
       child: Column(
@@ -66,7 +110,7 @@ Future<XizmatFeedItem?> _pickXizmat(
         children: [
           Padding(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Text(strings.pickXizmat, style: AppTypography.title),
+            child: Text(strings.pickXizmat, style: AppTypography.title.copyWith(color: context.ybColors.textPrimary)),
           ),
           Flexible(
             child: ListView.builder(

@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
 import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
 import 'package:yordambor/core/design_system/widgets/yb_confirm_dialog.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/kelishuv/kelishuv_repository.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 
@@ -16,6 +18,7 @@ Future<bool?> showEditKelishuvTermsSheet(
   required Kelishuv kelishuv,
 }) {
   return showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -78,9 +81,9 @@ class _EditKelishuvTermsSheetState extends ConsumerState<EditKelishuvTermsSheet>
     if (widget.kelishuv.status == KelishuvStatus.jarayonda) {
       final ok = await showYbConfirmDialog(
         context,
-        title: 'Shartlarni o\'zgartirasizmi?',
+        title: 'Shartlarni oʻzgartirasizmi?',
         message:
-            'O\'zgarishdan keyin ikkala tomon ham qayta tasdiqlashi kerak bo\'ladi.',
+            'Oʻzgarishdan keyin ikkala tomon ham qayta tasdiqlashi kerak boʻladi.',
         confirmLabel: 'Davom etish',
       );
       if (!ok || !mounted) return;
@@ -116,9 +119,9 @@ class _EditKelishuvTermsSheetState extends ConsumerState<EditKelishuvTermsSheet>
         _errorMessage = error.message;
         _isSubmitting = false;
       });
-    } catch (error) {
+    } catch (_) {
       setState(() {
-        _errorMessage = error.toString();
+        _errorMessage = ref.read(appStringsProvider).stateErrorBody;
         _isSubmitting = false;
       });
     }
@@ -162,7 +165,7 @@ class _EditKelishuvTermsSheetState extends ConsumerState<EditKelishuvTermsSheet>
           label: _startDate == null
               ? strings.kelishuvTermsDateLabel
               : _formatDate(_startDate!),
-          icon: Icons.calendar_today_outlined,
+          icon: YbIcons.calendarToday,
           onPressed: _isSubmitting ? null : _pickDate,
         ),
         const SizedBox(height: AppSpacing.lg),

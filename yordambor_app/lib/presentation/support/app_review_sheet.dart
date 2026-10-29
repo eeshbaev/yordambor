@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
@@ -15,6 +16,7 @@ Future<AppReviewSheetResult?> showAppReviewSheet(
   AppStrings strings,
 ) {
   return showModalBottomSheet<AppReviewSheetResult>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,

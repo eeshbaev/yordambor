@@ -8,6 +8,7 @@ import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_status_badge.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_summary.dart';
 import 'package:yordambor/presentation/kelishuv/repeat_booking_flow.dart';
@@ -68,7 +69,7 @@ class KelishuvListTile extends ConsumerWidget {
                   ),
                   if (showRepeatBook && item.canRepeatBook)
                     IconButton(
-                      icon: const Icon(Icons.replay_rounded),
+                      icon: const Icon(YbIcons.replayFilled),
                       tooltip: strings.repeatBook,
                       onPressed: () {
                         AppHaptics.selection();
@@ -79,7 +80,7 @@ class KelishuvListTile extends ConsumerWidget {
                         );
                       },
                     ),
-                  Icon(Icons.chevron_right_rounded, color: colors.textTertiary),
+                  Icon(YbIcons.chevronRightFilled, color: colors.textTertiary),
                 ],
               ),
               if (item.message != null && item.message!.isNotEmpty) ...[
@@ -130,10 +131,11 @@ class KelishuvListTile extends ConsumerWidget {
     );
   }
 
+  // Muzokarada is apricot, Jarayonda teal, Bajarildi green; the rest neutral.
   YbStatusTone _tone(KelishuvStatus status) => switch (status) {
-        KelishuvStatus.jarayonda => YbStatusTone.success,
-        KelishuvStatus.muzokarada => YbStatusTone.primary,
-        KelishuvStatus.bajarildi => YbStatusTone.primary,
+        KelishuvStatus.muzokarada => YbStatusTone.warning,
+        KelishuvStatus.jarayonda => YbStatusTone.primary,
+        KelishuvStatus.bajarildi => YbStatusTone.success,
         _ => YbStatusTone.neutral,
       };
 }

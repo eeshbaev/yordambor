@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/provider_tools_sync.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
@@ -9,6 +10,8 @@ import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_status_actions.dart';
 import 'package:yordambor/presentation/shared/appointment_date_format.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 Future<bool> showKelishuvAppointmentSheet({
   required BuildContext context,
@@ -20,6 +23,7 @@ Future<bool> showKelishuvAppointmentSheet({
   DateTime selected = DateTime.now().add(const Duration(days: 1));
 
   final saved = await showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -32,11 +36,11 @@ Future<bool> showKelishuvAppointmentSheet({
             children: [
               Text(
                 strings.kelishuvAppointmentRequiredBody,
-                style: AppTypography.body,
+                style: AppTypography.body.copyWith(color: context.ybColors.textPrimary),
               ),
               const SizedBox(height: AppSpacing.md),
               YbSecondaryButton(
-                icon: Icons.schedule_outlined,
+                icon: YbIcons.schedule,
                 label: formatAppointmentDateTime(selected),
                 onPressed: () async {
                   final picked = await pickRescheduleDateTime(context, selected);

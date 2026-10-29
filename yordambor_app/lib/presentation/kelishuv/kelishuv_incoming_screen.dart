@@ -9,6 +9,7 @@ import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_load_error_retry.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/presentation/kelishuv/widgets/kelishuv_list_tile.dart';
 
 class KelishuvIncomingScreen extends ConsumerWidget {
@@ -44,7 +45,7 @@ class KelishuvIncomingScreen extends ConsumerWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   YbEmptyState(
-                    icon: Icons.inbox_outlined,
+                    icon: YbIcons.inbox,
                     title: strings.kelishuvIncoming,
                     subtitle: strings.kelishuvIncomingSub,
                   ),
@@ -95,13 +96,13 @@ class KelishuvIncomingScreen extends ConsumerWidget {
                               child: Text(
                                 '${group.activeCount}',
                                 style: AppTypography.label.copyWith(
-                                  color: AppColors.primary,
+                                  color: context.ybColors.teal,
                                 ),
                               ),
                             ),
                             const SizedBox(width: AppSpacing.sm),
                             Icon(
-                              Icons.chevron_right_rounded,
+                              YbIcons.chevronRightFilled,
                               color: colors.textTertiary,
                             ),
                           ],
@@ -176,7 +177,7 @@ class KelishuvXizmatInboxScreen extends ConsumerWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   YbEmptyState(
-                    icon: Icons.inbox_outlined,
+                    icon: YbIcons.inbox,
                     title: strings.kelishuvIncoming,
                     subtitle: strings.kelishuvIncomingSub,
                   ),

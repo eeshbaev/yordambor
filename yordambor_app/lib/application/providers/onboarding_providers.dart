@@ -14,6 +14,9 @@ class OnboardingPrefsState {
     this.providerPromptDismissed = false,
     this.language = 'uz',
     this.themeMode = ThemeMode.system,
+    this.onboardingDone = false,
+    this.onboardingGoal,
+    this.providerTypePreference,
   });
 
   final bool isLoaded;
@@ -22,12 +25,24 @@ class OnboardingPrefsState {
   final String language;
   final ThemeMode themeMode;
 
+  /// The introduction and its two questions were finished (or skipped).
+  final bool onboardingDone;
+
+  /// `needHelp`, `offer` or `both`.
+  final String? onboardingGoal;
+
+  /// `individual` or `institution`; new services start with it.
+  final String? providerTypePreference;
+
   OnboardingPrefsState copyWith({
     bool? isLoaded,
     bool? welcomeSeen,
     bool? providerPromptDismissed,
     String? language,
     ThemeMode? themeMode,
+    bool? onboardingDone,
+    String? onboardingGoal,
+    String? providerTypePreference,
   }) {
     return OnboardingPrefsState(
       isLoaded: isLoaded ?? this.isLoaded,
@@ -36,6 +51,10 @@ class OnboardingPrefsState {
           providerPromptDismissed ?? this.providerPromptDismissed,
       language: language ?? this.language,
       themeMode: themeMode ?? this.themeMode,
+      onboardingDone: onboardingDone ?? this.onboardingDone,
+      onboardingGoal: onboardingGoal ?? this.onboardingGoal,
+      providerTypePreference:
+          providerTypePreference ?? this.providerTypePreference,
     );
   }
 }
@@ -63,6 +82,26 @@ class OnboardingPrefsNotifier extends StateNotifier<OnboardingPrefsState> {
       providerPromptDismissed: snapshot.providerPromptDismissed,
       language: snapshot.language,
       themeMode: snapshot.themeMode,
+      onboardingDone: snapshot.onboardingDone,
+      onboardingGoal: snapshot.onboardingGoal,
+      providerTypePreference: snapshot.providerTypePreference,
+    );
+  }
+
+  /// Onboarding is over, with what the person chose (if anything).
+  Future<void> completeOnboarding({
+    String? goal,
+    String? providerType,
+  }) async {
+    await _repository.completeOnboarding(
+      goal: goal,
+      providerType: providerType,
+    );
+    state = state.copyWith(
+      onboardingDone: true,
+      welcomeSeen: true,
+      onboardingGoal: goal,
+      providerTypePreference: providerType,
     );
   }
 

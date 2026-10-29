@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/provider_tools_sync.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/domain/entities/booking.dart';
 import 'package:yordambor/domain/entities/client_booking_stats.dart';
 import 'package:yordambor/domain/entities/reminder.dart';
@@ -14,6 +15,7 @@ import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_confirm_dialog.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/client_book/provider_tools_service.dart';
 import 'package:yordambor/domain/entities/client_registry_entry.dart';
@@ -33,6 +35,7 @@ Future<void> showClientDetailSheet({
   final statsFuture = service.fetchClientStats(client.id);
 
   await showModalBottomSheet<void>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -139,7 +142,7 @@ Future<void> showClientDetailSheet({
                                     strings: strings,
                                   ),
                                 Icon(
-                                  Icons.chevron_right,
+                                  YbIcons.chevronRightFilled,
                                   size: 18,
                                   color: colors.textTertiary,
                                 ),

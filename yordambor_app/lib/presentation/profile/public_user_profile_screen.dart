@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yordambor/application/providers/certificate_providers.dart';
-import 'package:yordambor/application/providers/favorites_provider.dart';
 import 'package:yordambor/application/providers/growth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/public_profile_providers.dart';
@@ -13,20 +12,18 @@ import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_job_post_card.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_status_badge.dart';
-import 'package:yordambor/core/design_system/widgets/yb_xizmat_card.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
-import 'package:yordambor/core/share/feed_share.dart';
 import 'package:yordambor/core/utils/xizmat_availability_display.dart';
-import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 import 'package:yordambor/domain/entities/public_user_profile.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
 import 'package:yordambor/domain/growth/provider_tier.dart';
-import 'package:yordambor/presentation/auth/auth_gate.dart';
 import 'package:yordambor/presentation/growth/provider_progress_section.dart';
 import 'package:yordambor/presentation/growth/widgets/yb_provider_tier_badge.dart';
 import 'package:yordambor/presentation/kelishuv/yordam_bor_flow.dart';
 import 'package:yordambor/presentation/profile/widgets/profile_avatar.dart';
 import 'package:yordambor/presentation/profile/widgets/profile_certificates_display.dart';
+import 'package:yordambor/presentation/shared/xizmat_feed_card.dart';
 
 class PublicUserProfileScreen extends ConsumerWidget {
   const PublicUserProfileScreen({super.key, required this.userId});
@@ -36,7 +33,6 @@ class PublicUserProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = ref.watch(appStringsProvider);
-    final favorites = ref.watch(favoritesProvider);
     final profileAsync = ref.watch(publicUserProfileProvider(userId));
     final xizmatlarAsync = ref.watch(publicUserXizmatlarProvider(userId));
     final postsAsync = ref.watch(publicUserYordamKerakProvider(userId));
@@ -50,14 +46,16 @@ class PublicUserProfileScreen extends ConsumerWidget {
       body: profileAsync.when(
         loading: () => const YbSkeletonList(count: 2),
         error: (error, _) => YbEmptyState(
-          icon: Icons.error_outline_rounded,
-          title: strings.userProfileTitle,
-          subtitle: '$error',
+          icon: YbIcons.cloudOff,
+          title: strings.stateErrorTitle,
+          subtitle: strings.stateErrorBody,
+          actionLabel: strings.actionRetry,
+          onAction: () => ref.invalidate(publicUserProfileProvider(userId)),
         ),
         data: (profile) {
           if (profile == null) {
             return YbEmptyState(
-              icon: Icons.person_off_outlined,
+              icon: YbIcons.personOff,
               title: strings.userProfileNotFound,
               subtitle: strings.userProfileNotFound,
             );
@@ -135,10 +133,15 @@ class PublicUserProfileScreen extends ConsumerWidget {
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: YbSkeletonList(count: 1),
                 ),
-                error: (error, _) => Padding(
+                error: (_, _) => Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: Text('$error'),
+                  child: Text(
+                    strings.profileSectionLoadFailed,
+                    style: AppTypography.caption.copyWith(
+                      color: context.ybColors.textSecondary,
+                    ),
+                  ),
                 ),
                 data: (items) {
                   if (items.isEmpty) {
@@ -156,36 +159,14 @@ class PublicUserProfileScreen extends ConsumerWidget {
                   }
 
                   return Column(
-                    children: items.map((item) {
-                      final availability =
-                          xizmatAvailabilityDisplay(item, strings);
-                      return YbXizmatCard(
-                        item: item,
-                        isFavorite: favorites.contains(item.id),
-                        providerTypeLabel:
-                            strings.providerTypeLabel(item.providerType),
-                        sectorLine: strings.sectorLine(
-                          item.categoryLabel,
-                          item.subcategoryLabel,
+                    children: [
+                      for (final item in items)
+                        XizmatFeedCard(
+                          key: ValueKey('profile-xizmat-${item.id}'),
+                          item: item,
+                          showOwner: false,
                         ),
-                        completedLabel:
-                            strings.xizmatCompletedCount(item.completedCount),
-                        priceLabel: xizmatPricingLabel(item, strings),
-                        availabilityLabel: availability?.label,
-                        availabilityTone: availability?.tone,
-                        servicePromise: item.visibleServicePromise,
-                        onTap: () => context.push('/xizmat/${item.id}'),
-                        onShare: () => FeedShare.shareXizmat(
-                          strings: strings,
-                          xizmatId: item.id,
-                          xizmatName: item.name,
-                        ),
-                        shareTooltip: strings.shareXizmat,
-                        onFavoriteToggle: () => ref
-                            .read(favoritesProvider.notifier)
-                            .toggle(item.id),
-                      );
-                    }).toList(),
+                    ],
                   );
                 },
               ),
@@ -200,10 +181,15 @@ class PublicUserProfileScreen extends ConsumerWidget {
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: YbSkeletonList(count: 1),
                 ),
-                error: (error, _) => Padding(
+                error: (_, _) => Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: Text('$error'),
+                  child: Text(
+                    strings.profileSectionLoadFailed,
+                    style: AppTypography.caption.copyWith(
+                      color: context.ybColors.textSecondary,
+                    ),
+                  ),
                 ),
                 data: (items) {
                   if (items.isEmpty) {
@@ -229,30 +215,11 @@ class PublicUserProfileScreen extends ConsumerWidget {
                               item.categoryLabel,
                               item.subcategoryLabel,
                             ),
+                            cityLabel: strings.serviceCityDisplayLabel(item.serviceCity),
+                            sampleLabel: item.isDemo ? strings.sampleTag : null,
                             yordamBorLabel: strings.filterYordamBor,
                             onTap: () => context.push('/post/${item.id}'),
-                            onShare: () => FeedShare.shareYordamKerakPost(
-                              strings: strings,
-                              postId: item.id,
-                              title: item.title,
-                            ),
-                            shareTooltip: strings.shareYordamKerak,
-                            callLabel: strings.userProfileCall,
-                            phoneHiddenLabel: strings.userProfilePhoneHidden,
-                            onYordamBor: () async {
-                              final allowed = await requireVerifiedAuth(
-                                context,
-                                ref,
-                                authContext: AuthContextType.yordamBor,
-                              );
-                              if (!allowed || !context.mounted) return;
-                              await openYordamBorForPost(
-                                context,
-                                ref,
-                                postId: item.id,
-                                subcategoryId: item.subcategoryId,
-                              );
-                            },
+                            onYordamBor: () => answerHelpRequest(context, ref, item),
                           ),
                         )
                         .toList(),

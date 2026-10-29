@@ -4,6 +4,7 @@ import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 /// Shared chrome for modal picker bottom sheets.
 Future<T?> showYbPickerSheet<T>({
@@ -14,6 +15,7 @@ Future<T?> showYbPickerSheet<T>({
   final colors = context.ybColors;
 
   return showModalBottomSheet<T>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: isScrollControlled,
     useSafeArea: true,
@@ -54,12 +56,12 @@ class YbPickerSheetHeader extends StatelessWidget {
           if (icon != null) ...[
             DecoratedBox(
               decoration: BoxDecoration(
-                color: AppColors.primaryMuted,
-                borderRadius: BorderRadius.circular(AppRadius.button),
+                color: context.ybColors.tealSoft,
+                borderRadius: BorderRadius.circular(AppRadius.tile),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.sm + 2),
-                child: Icon(icon, size: 22, color: AppColors.primary),
+                child: Icon(icon, size: 22, color: context.ybColors.teal),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -115,7 +117,6 @@ class YbPickerOptionTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: YbScaleTap(
-        haptic: true,
         onTap: () {
           AppHaptics.selection();
           onTap();
@@ -129,31 +130,20 @@ class YbPickerOptionTile extends StatelessWidget {
             vertical: AppSpacing.md,
           ),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primaryMuted : colors.card,
-            borderRadius: BorderRadius.circular(AppRadius.card),
+            color: selected ? colors.tealSoft : colors.card,
+            borderRadius: BorderRadius.circular(AppRadius.field),
             border: Border.all(
-              color: selected ? AppColors.primary : colors.border,
+              color: selected ? colors.teal : colors.line,
               width: selected ? 1.5 : 1,
             ),
-            boxShadow: selected
-                ? [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.12),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                : null,
           ),
           child: Row(
             children: [
               if (icon != null || emoji != null) ...[
                 DecoratedBox(
                   decoration: BoxDecoration(
-                    color: selected
-                        ? AppColors.primary.withValues(alpha: 0.14)
-                        : colors.surface,
-                    borderRadius: BorderRadius.circular(AppRadius.button - 2),
+                    color: selected ? colors.card : colors.surface2,
+                    borderRadius: BorderRadius.circular(AppRadius.tile),
                   ),
                   child: SizedBox(
                     width: 44,
@@ -164,9 +154,7 @@ class YbPickerOptionTile extends StatelessWidget {
                           : Icon(
                               icon,
                               size: 22,
-                              color: selected
-                                  ? AppColors.primary
-                                  : colors.textSecondary,
+                              color: selected ? colors.teal : colors.ink2,
                             ),
                     ),
                   ),
@@ -181,11 +169,8 @@ class YbPickerOptionTile extends StatelessWidget {
                     Text(
                       label,
                       style: AppTypography.headline.copyWith(
-                        color: selected
-                            ? AppColors.primaryDark
-                            : colors.textPrimary,
-                        fontWeight:
-                            selected ? FontWeight.w700 : FontWeight.w600,
+                        color: selected ? colors.tealInk : colors.ink,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     if (subtitle != null) ...[
@@ -207,13 +192,13 @@ class YbPickerOptionTile extends StatelessWidget {
                 height: 24,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: selected ? AppColors.primary : Colors.transparent,
+                  color: selected ? colors.teal : Colors.transparent,
                   border: selected
                       ? null
-                      : Border.all(color: colors.border, width: 1.5),
+                      : Border.all(color: colors.outline, width: 1.5),
                 ),
                 child: selected
-                    ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
+                    ? Icon(YbIcons.checkFilled, size: 16, color: colors.onTeal)
                     : null,
               ),
             ],
@@ -245,35 +230,27 @@ class YbCompactPickerSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
+    final maxListHeight = MediaQuery.sizeOf(context).height * 0.55;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(
-          child: Container(
-            width: 40,
-            height: 4,
-            margin: const EdgeInsets.only(top: AppSpacing.sm, bottom: AppSpacing.xs),
-            decoration: BoxDecoration(
-              color: context.ybColors.border,
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-            ),
-          ),
-        ),
         YbPickerSheetHeader(
           title: title,
           subtitle: subtitle,
           icon: headerIcon,
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.lg,
-            0,
-            AppSpacing.lg,
-            AppSpacing.lg + bottomSafe,
-          ),
-          child: Column(
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: maxListHeight),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              0,
+              AppSpacing.lg,
+              AppSpacing.lg + bottomSafe,
+            ),
             children: [
               for (final option in options)
                 YbPickerOptionTile(

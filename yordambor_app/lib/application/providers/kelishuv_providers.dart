@@ -88,3 +88,57 @@ final pendingKelishuvActionsProvider = FutureProvider<int>((ref) async {
   }
   return count;
 });
+
+/// How a live deal stands for the viewer, in the order it needs them.
+enum DealActivityKind {
+  /// Negotiating, and the next move is the viewer's.
+  yourTurn,
+
+  /// Agreed and under way; the viewer confirms when the work is done.
+  inProgress,
+
+  /// The viewer's offer waits for the other side.
+  sent,
+
+  /// The viewer confirmed the work; the other side has yet to.
+  awaitingConfirmation,
+}
+
+class DealActivity {
+  const DealActivity({required this.deal, required this.kind});
+
+  final KelishuvSummary deal;
+  final DealActivityKind kind;
+}
+
+/// Every live deal of the viewer, for notifications: what is theirs to do
+/// first, then what waits on others; newest first within each.
+final dealActivityProvider = Provider<List<DealActivity>>((ref) {
+  final incoming = ref.watch(incomingKelishuvProvider).valueOrNull ?? const [];
+  final requests =
+      ref.watch(myKelishuvRequestsProvider).valueOrNull ?? const [];
+  final byId = <String, KelishuvSummary>{
+    for (final group in incoming)
+      for (final item in group.items) item.id: item,
+    for (final item in requests) item.id: item,
+  };
+  final activity = <DealActivity>[
+    for (final deal in byId.values)
+      if (_activityKind(deal) case final kind?)
+        DealActivity(deal: deal, kind: kind),
+  ];
+  activity.sort((a, b) {
+    final byKind = a.kind.index.compareTo(b.kind.index);
+    return byKind != 0 ? byKind : b.deal.updatedAt.compareTo(a.deal.updatedAt);
+  });
+  return activity;
+});
+
+DealActivityKind? _activityKind(KelishuvSummary deal) => switch (deal.status) {
+      KelishuvStatus.muzokarada =>
+        deal.needsMyAccept ? DealActivityKind.yourTurn : DealActivityKind.sent,
+      KelishuvStatus.jarayonda => deal.needsMyComplete
+          ? DealActivityKind.inProgress
+          : DealActivityKind.awaitingConfirmation,
+      _ => null,
+    };

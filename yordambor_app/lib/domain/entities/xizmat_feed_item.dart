@@ -33,6 +33,7 @@ class XizmatFeedItem {
     this.showServicePromise = false,
     this.servicePromise,
     this.serviceCity,
+    this.createdAt,
   });
 
   final String id;
@@ -65,6 +66,9 @@ class XizmatFeedItem {
   final bool showServicePromise;
   final String? servicePromise;
   final String? serviceCity;
+
+  /// When the service was added; unknown for samples.
+  final DateTime? createdAt;
 
   bool get hasServiceCity {
     final city = serviceCity?.trim();
@@ -115,6 +119,20 @@ class XizmatFeedItem {
     final text = servicePromise?.trim();
     if (text == null || text.isEmpty) return null;
     return text;
+  }
+
+  /// What the provider wrote about the service, as one text. Older
+  /// listings kept a short promise apart from the description; it now reads
+  /// on as its last paragraph.
+  String? get aboutText {
+    final parts = <String>[];
+    final text = description?.trim();
+    if (text != null && text.isNotEmpty) parts.add(text);
+    final promise = visibleServicePromise;
+    if (promise != null && !(text?.contains(promise) ?? false)) {
+      parts.add(promise);
+    }
+    return parts.isEmpty ? null : parts.join('\n\n');
   }
 
   List<String> get galleryUrls {

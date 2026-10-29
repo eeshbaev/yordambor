@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class YbLoadErrorRetry extends StatelessWidget {
   const YbLoadErrorRetry({
@@ -25,7 +26,7 @@ class YbLoadErrorRetry extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh_rounded, size: 18),
+            icon: const Icon(YbIcons.refreshFilled, size: 18),
             label: Text(retryLabel),
           ),
         ),

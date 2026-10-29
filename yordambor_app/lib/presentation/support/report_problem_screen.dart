@@ -11,6 +11,7 @@ import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/support/support_repository.dart';
 
@@ -86,7 +87,7 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen> {
         body: AppLayout.page(
           context: context,
           child: YbEmptyState(
-            icon: Icons.lock_outline_rounded,
+            icon: YbIcons.lock,
             title: strings.supportReportTitle,
             subtitle: strings.supportLoginRequired,
           ),
@@ -109,6 +110,8 @@ class _ReportProblemScreenState extends ConsumerState<ReportProblemScreen> {
             ),
           const SizedBox(height: AppSpacing.lg),
           DropdownMenu<SupportCategory>(
+            trailingIcon: const Icon(YbIcons.expandMore),
+            selectedTrailingIcon: const Icon(YbIcons.expandLess),
             initialSelection: _category,
             label: Text(strings.supportCategoryLabelField),
             dropdownMenuEntries: SupportCategory.values

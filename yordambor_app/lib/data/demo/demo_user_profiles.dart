@@ -11,7 +11,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Sarvar',
       phone: '+998 90 123 45 67',
       showPhone: true,
-      bio: 'Oila a\'zolariga g\'amxo\'rlik qilish bo\'yicha yordam izlayman.',
+      bio: 'Oila aʼzolariga gʻamxoʻrlik qilish boʻyicha yordam izlayman.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -43,7 +43,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Aziz',
       phone: '+998 97 333 44 55',
       showPhone: true,
-      bio: 'Elektr montaj va ta\'mir. Tezkor chiqish.',
+      bio: 'Elektr montaj va taʼmir. Tezkor chiqish.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -59,7 +59,7 @@ abstract final class DemoUserProfiles {
       fullName: 'CodeLine Veb Studiya',
       phone: '+998 71 200 30 40',
       showPhone: true,
-      bio: 'Sayt, internet-do\'kon va mobil ilova ishlab chiqish.',
+      bio: 'Sayt, internet-doʻkon va mobil ilova ishlab chiqish.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -80,10 +80,10 @@ abstract final class DemoUserProfiles {
     ),
     PublicUserProfile(
       id: 'demo-user-koz-merosi',
-      fullName: 'Ko\'z Merosi Klinikasi',
+      fullName: 'Koʻz Merosi Klinikasi',
       phone: '+998 71 255 33 44',
       showPhone: true,
-      bio: 'Ko\'z tekshiruvi va diagnostika markazi.',
+      bio: 'Koʻz tekshiruvi va diagnostika markazi.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -104,10 +104,10 @@ abstract final class DemoUserProfiles {
     ),
     PublicUserProfile(
       id: 'demo-user-quvnoch',
-      fullName: 'Quvnoch Bog\'cha',
+      fullName: 'Quvnoch Bogʻcha',
       phone: '+998 71 260 55 66',
       showPhone: true,
-      bio: '3–6 yosh bolalar uchun kunlik ta\'lim.',
+      bio: '3–6 yosh bolalar uchun kunlik taʼlim.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -139,7 +139,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Kamola',
       phone: '+998 90 101 20 30',
       showPhone: true,
-      bio: 'O\'zbek, rus va ingliz tillari — hujjat va og\'zaki tarjima.',
+      bio: 'Oʻzbek, rus va ingliz tillari — hujjat va ogʻzaki tarjima.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -147,7 +147,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Safar Viza Yordami',
       phone: '+998 71 290 12 34',
       showPhone: true,
-      bio: 'Schengen, AQSh va BAA vizalari bo\'yicha maslahat.',
+      bio: 'Schengen, AQSh va BAA vizalari boʻyicha maslahat.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -155,7 +155,7 @@ abstract final class DemoUserProfiles {
       fullName: 'PowerFit Klubi',
       phone: '+998 71 300 23 45',
       showPhone: true,
-      bio: 'Zal, guruh mashg\'ulotlari va shaxsiy murabbiy.',
+      bio: 'Zal, guruh mashgʻulotlari va shaxsiy murabbiy.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -171,7 +171,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Feruza',
       phone: '+998 90 412 56 78',
       showPhone: true,
-      bio: 'Chilonzor, 12-mavze. Uy xo\'jaligi va ta\'mirlash e\'lonlari.',
+      bio: 'Chilonzor, 12-mavze. Uy xoʻjaligi va taʼmirlash eʼlonlari.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -187,7 +187,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Nodira',
       phone: '+998 94 634 78 90',
       showPhone: true,
-      bio: 'Shaxsiy budjet, investitsiya va biznes moliyasi bo\'yicha maslahat.',
+      bio: 'Shaxsiy budjet, investitsiya va biznes moliyasi boʻyicha maslahat.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -203,7 +203,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Bekzod',
       phone: '+998 91 856 90 12',
       showPhone: true,
-      bio: 'Farzandim uchun repetitor va ta\'lim xizmatlari qidiraman.',
+      bio: 'Farzandim uchun repetitor va taʼlim xizmatlari qidiraman.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -211,7 +211,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Maftuna',
       phone: '+998 90 967 01 23',
       showPhone: true,
-      bio: 'Hujjatlar va suratlar uchun yordam kerak bo\'lganda.',
+      bio: 'Hujjatlar va suratlar uchun yordam kerak boʻlganda.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -219,7 +219,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Alisher',
       phone: '+998 93 078 12 34',
       showPhone: true,
-      bio: 'Ko\'chish va transport e\'lonlari.',
+      bio: 'Koʻchish va transport eʼlonlari.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -235,7 +235,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Dilshod',
       phone: '+998 94 290 34 56',
       showPhone: true,
-      bio: 'Farg\'ona viloyati, tadbirlar.',
+      bio: 'Fargʻona viloyati, tadbirlar.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -243,7 +243,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Ziyoda',
       phone: '+998 90 301 45 67',
       showPhone: true,
-      bio: 'Sergeli, bolalar ta\'limi.',
+      bio: 'Sergeli, bolalar taʼlimi.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -259,7 +259,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Kamola',
       phone: '+998 93 523 67 89',
       showPhone: true,
-      bio: 'Uchtepa, uy remonti e\'lonlari.',
+      bio: 'Uchtepa, uy remonti eʼlonlari.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -267,7 +267,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Aziz',
       phone: '+998 95 634 78 90',
       showPhone: true,
-      bio: 'To\'y va tadbirlar uchun transport qidiraman.',
+      bio: 'Toʻy va tadbirlar uchun transport qidiraman.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -275,7 +275,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Nilufar',
       phone: '+998 94 745 89 01',
       showPhone: true,
-      bio: 'Nikoh to\'yi tashkil qilish.',
+      bio: 'Nikoh toʻyi tashkil qilish.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -291,7 +291,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Madina',
       phone: '+998 91 234 56 01',
       showPhone: true,
-      bio: 'Sentabr to\'yi uchun go\'zallik xizmati izlayman.',
+      bio: 'Sentabr toʻyi uchun goʻzallik xizmati izlayman.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -307,7 +307,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Sardor',
       phone: '+998 94 456 78 03',
       showPhone: true,
-      bio: 'Tug\'ilgan kun uchun DJ va musiqa dasturi.',
+      bio: 'Tugʻilgan kun uchun DJ va musiqa dasturi.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -315,7 +315,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Nigora',
       phone: '+998 95 567 89 04',
       showPhone: true,
-      bio: 'Tug\'ruqdan keyin uyda yoga va yengil fitnes.',
+      bio: 'Tugʻruqdan keyin uyda yoga va yengil fitnes.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -339,7 +339,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Rustam',
       phone: '+998 90 111 33 44',
       showPhone: true,
-      bio: 'Yengil mashinalar diagnostikasi va ta\'miri. Uyga chiqaman.',
+      bio: 'Yengil mashinalar diagnostikasi va taʼmiri. Uyga chiqaman.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -355,7 +355,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Shohruh',
       phone: '+998 91 222 33 44',
       showPhone: true,
-      bio: 'Korporativ huquq va shartnomalar bo\'yicha maslahat.',
+      bio: 'Korporativ huquq va shartnomalar boʻyicha maslahat.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -371,7 +371,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Kontrakto notarial Tarjima Byurosi',
       phone: '+998 71 260 88 99',
       showPhone: true,
-      bio: 'Notarial tasdiqlangan tarjimalar — rus, ingliz, o\'zbek.',
+      bio: 'Notarial tasdiqlangan tarjimalar — rus, ingliz, oʻzbek.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -379,7 +379,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Farhod',
       phone: '+998 93 333 44 55',
       showPhone: true,
-      bio: 'Import-eksport: Xitoy, Turkiya, Rossiya yo\'nalishlari.',
+      bio: 'Import-eksport: Xitoy, Turkiya, Rossiya yoʻnalishlari.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -387,7 +387,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Lola',
       phone: '+998 94 444 55 66',
       showPhone: true,
-      bio: 'YATT va MChJ soliq maslahati. O\'zbek va rus tillarida.',
+      bio: 'YATT va MChJ soliq maslahati. Oʻzbek va rus tillarida.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -419,7 +419,7 @@ abstract final class DemoUserProfiles {
       fullName: 'Gilamchi Afzalovs',
       phone: '+998 90 666 77 88',
       showPhone: true,
-      bio: 'Gilam, divan, matras tozalash. Toshkent bo\'ylab olib ketish.',
+      bio: 'Gilam, divan, matras tozalash. Toshkent boʻylab olib ketish.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -455,7 +455,7 @@ abstract final class DemoUserProfiles {
       showPhone: true,
       bio:
           'KFC uslubidagi qovurilgan tovuq va baliq — maxsus asal sous bilan. '
-          'Yetkazib berish faqat Toshkent bo\'ylab, buyurtmalar 24/7.',
+          'Yetkazib berish faqat Toshkent boʻylab, buyurtmalar 24/7.',
       isDemo: true,
     ),
     PublicUserProfile(
@@ -496,6 +496,15 @@ abstract final class DemoUserProfiles {
       bio:
           'Новый итальянский ресторан — пицца и спагетти от итальянского шефа. '
           'Центр Ташкента.',
+      isDemo: true,
+    ),
+    PublicUserProfile(
+      id: 'demo-user-toshkent-rent-car',
+      fullName: 'Rent-Oʻl',
+      showPhone: false,
+      bio:
+          'Toshkentda mashina ijarasi — taksi, toʻy, kunlik va uzoq muddatli. '
+          '50 dan ortiq avtomobil, sugʻurta va yetkazib berish xizmati.',
       isDemo: true,
     ),
     PublicUserProfile(

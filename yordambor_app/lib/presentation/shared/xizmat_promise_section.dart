@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 
 const kXizmatServicePromiseMaxLength = 280;
 
@@ -25,9 +26,9 @@ class XizmatPromiseSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(strings.xizmatPromiseSectionTitle, style: AppTypography.headline),
+        Text(strings.xizmatPromiseSectionTitle, style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary)),
         const SizedBox(height: AppSpacing.sm),
-        Text(strings.xizmatPromiseSectionSubtitle, style: AppTypography.caption),
+        Text(strings.xizmatPromiseSectionSubtitle, style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary)),
         const SizedBox(height: AppSpacing.lg),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
@@ -38,7 +39,7 @@ class XizmatPromiseSection extends StatelessWidget {
         ),
         if (visible) ...[
           const SizedBox(height: AppSpacing.md),
-          Text(strings.xizmatPromisePresetsLabel, style: AppTypography.caption),
+          Text(strings.xizmatPromisePresetsLabel, style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary)),
           const SizedBox(height: AppSpacing.sm),
           Wrap(
             spacing: AppSpacing.sm,
@@ -70,7 +71,7 @@ class XizmatPromiseSection extends StatelessWidget {
           Text(
             strings.xizmatPromiseDisclaimer,
             style: AppTypography.caption.copyWith(
-              color: AppColors.textSecondary,
+              color: context.ybColors.textSecondary,
               fontStyle: FontStyle.italic,
             ),
           ),

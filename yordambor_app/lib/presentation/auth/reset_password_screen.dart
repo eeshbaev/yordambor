@@ -8,6 +8,7 @@ import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/auth/auth_repository.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
@@ -73,7 +74,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         body: AppLayout.page(
           context: context,
           child: YbEmptyState(
-            icon: Icons.link_off_rounded,
+            icon: YbIcons.linkOffFilled,
             title: strings.resetPasswordExpiredTitle,
             subtitle: strings.resetPasswordExpiredBody,
             actionLabel: strings.login,
@@ -109,10 +110,13 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   decoration: InputDecoration(
                     labelText: '${strings.password} *',
                     suffixIcon: IconButton(
+                      tooltip: _obscurePassword
+                          ? strings.a11yShowPassword
+                          : strings.a11yHidePassword,
                       icon: Icon(
                         _obscurePassword
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+                            ? YbIcons.visibilityOff
+                            : YbIcons.visibility,
                       ),
                       onPressed: () =>
                           setState(() => _obscurePassword = !_obscurePassword),

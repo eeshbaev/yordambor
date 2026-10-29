@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/appointment_status.dart';
 
@@ -15,26 +16,27 @@ class AppointmentStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = switch (status) {
-      AppointmentStatus.upcoming => AppColors.primary,
-      AppointmentStatus.completed => AppColors.primary,
-      AppointmentStatus.postponed => AppColors.warning,
-      AppointmentStatus.incomplete => AppColors.warning,
-      AppointmentStatus.cancelled => AppColors.error,
+    final c = context.ybColors;
+    final (fill, ink) = switch (status) {
+      AppointmentStatus.upcoming => (c.tealSoft, c.tealInk),
+      AppointmentStatus.completed => (c.successSoft, c.success),
+      AppointmentStatus.postponed => (c.apricotSoft, c.apricotInk),
+      AppointmentStatus.incomplete => (c.apricotSoft, c.apricotInk),
+      AppointmentStatus.cancelled => (c.errorSoft, c.error),
     };
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: 2,
+        horizontal: AppSpacing.sm + 2,
+        vertical: 3,
       ),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(AppRadius.chip),
+      decoration: ShapeDecoration(
+        color: fill,
+        shape: const StadiumBorder(),
       ),
       child: Text(
         strings.appointmentStatusLabel(status),
-        style: AppTypography.caption.copyWith(color: color),
+        style: AppTypography.label.copyWith(color: ink),
       ),
     );
   }

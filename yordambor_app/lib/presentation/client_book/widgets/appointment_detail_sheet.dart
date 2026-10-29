@@ -7,10 +7,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/provider_tools_sync.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/data/client_book/provider_tools_service.dart';
 import 'package:yordambor/domain/entities/reminder.dart';
@@ -25,6 +27,7 @@ Future<void> showBookingDetailSheet({
   required BookingWithClient booking,
 }) async {
   await showModalBottomSheet<void>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -212,7 +215,7 @@ class _BookingDetailSheetState extends ConsumerState<_BookingDetailSheet> {
             const Spacer(),
             TextButton.icon(
               onPressed: _addPhoto,
-              icon: const Icon(Icons.add_photo_alternate_outlined, size: 18),
+              icon: const Icon(YbIcons.addPhotoAlternate, size: 18),
               label: Text(strings.clientBookAddPhoto),
             ),
           ],
@@ -248,10 +251,11 @@ class _BookingDetailSheetState extends ConsumerState<_BookingDetailSheet> {
                       top: -6,
                       right: -6,
                       child: IconButton.filledTonal(
+                        tooltip: strings.actionDelete,
                         visualDensity: VisualDensity.compact,
                         iconSize: 16,
                         onPressed: () => _removePhoto(path),
-                        icon: const Icon(Icons.close),
+                        icon: const Icon(YbIcons.closeFilled),
                       ),
                     ),
                   ],

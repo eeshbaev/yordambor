@@ -1,3 +1,5 @@
+import 'package:yordambor/core/utils/money_format.dart';
+
 class YordamKerakFeedItem {
   const YordamKerakFeedItem({
     required this.id,
@@ -18,6 +20,7 @@ class YordamKerakFeedItem {
     this.contactPhone,
     this.showContactPhone = false,
     this.showProfile = true,
+    this.serviceCity,
   });
 
   final String id;
@@ -39,15 +42,40 @@ class YordamKerakFeedItem {
   final bool showContactPhone;
   final bool showProfile;
 
+  /// Where the help is needed: a city id from [ServiceCityIds].
+  final String? serviceCity;
+
+  /// The same request, placed in [city].
+  YordamKerakFeedItem withServiceCity(String? city) => YordamKerakFeedItem(
+        id: id,
+        title: title,
+        categoryLabel: categoryLabel,
+        subcategoryLabel: subcategoryLabel,
+        categoryId: categoryId,
+        subcategoryId: subcategoryId,
+        authorName: authorName,
+        message: message,
+        price: price,
+        currency: currency,
+        startDate: startDate,
+        durationMinutes: durationMinutes,
+        seekingProviderType: seekingProviderType,
+        isDemo: isDemo,
+        authorId: authorId,
+        contactPhone: contactPhone,
+        showContactPhone: showContactPhone,
+        showProfile: showProfile,
+        serviceCity: city,
+      );
+
   bool get hasVisibleContactPhone =>
       showContactPhone &&
       contactPhone != null &&
       contactPhone!.trim().isNotEmpty;
 
+  /// "350 000 soʻm".
   String? get priceLabel {
     if (price == null) return null;
-    final unit = currency ?? 'UZS';
-    final formatted = price! % 1 == 0 ? price!.toInt().toString() : price.toString();
-    return '$formatted $unit';
+    return formatMoney(price!, currency);
   }
 }

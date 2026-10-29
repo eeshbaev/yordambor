@@ -1,3 +1,10 @@
+/// Rules of a deal that both the app and the server keep.
+abstract final class KelishuvRules {
+  /// An offer that gets no answer (accept, decline or new terms) in this
+  /// time is cancelled.
+  static const offerReplyWindow = Duration(days: 10);
+}
+
 enum KelishuvStatus {
   muzokarada,
   jarayonda,
@@ -34,6 +41,8 @@ class Kelishuv {
     this.updatedAt,
     this.xizmatOwnerId,
     this.jarayondaAt,
+    this.offeredAt,
+    this.contact,
   });
 
   final String id;
@@ -61,6 +70,35 @@ class Kelishuv {
   final DateTime? updatedAt;
   final String? xizmatOwnerId;
   final DateTime? jarayondaAt;
+
+  /// When the terms on the table were offered: the sender's acceptance, or
+  /// the deal's creation.
+  final DateTime? offeredAt;
+
+  /// The card the person who started the deal sent with it: their name and
+  /// phone, for the other side to reach them.
+  final DealContact? contact;
+
+  /// While terms wait for an answer: the moment they lapse.
+  DateTime? get respondBy {
+    if (status != KelishuvStatus.muzokarada) return null;
+    final from = offeredAt ?? createdAt;
+    return from?.add(KelishuvRules.offerReplyWindow);
+  }
+
+  /// The offer lapsed without an answer.
+  bool offerExpiredAt(DateTime now) {
+    final deadline = respondBy;
+    return deadline != null && now.isAfter(deadline);
+  }
+
+  /// Whole days left to answer, at least 1 while the offer stands.
+  int? daysLeftToRespond(DateTime now) {
+    final deadline = respondBy;
+    if (deadline == null || now.isAfter(deadline)) return null;
+    final days = (deadline.difference(now).inHours / 24).ceil();
+    return days < 1 ? 1 : days;
+  }
 
   bool canRepeatBook(String userId) {
     if (xizmatId == null || xizmatOwnerId == null) return false;
@@ -149,6 +187,7 @@ class TaklifInput {
     this.currency,
     this.startDate,
     this.durationMinutes,
+    this.contact,
   });
 
   final String? message;
@@ -156,4 +195,42 @@ class TaklifInput {
   final String? currency;
   final DateTime? startDate;
   final int? durationMinutes;
+
+  /// The sender's card, prefilled from their profile.
+  final DealContact? contact;
+}
+
+/// Who sent a request and how to reach them.
+class DealContact {
+  const DealContact({
+    required this.firstName,
+    required this.phone,
+    this.lastName,
+  });
+
+  final String firstName;
+  final String? lastName;
+  final String phone;
+
+  /// "Erkin Eshbaev".
+  String get fullName => [firstName, lastName ?? '']
+      .map((part) => part.trim())
+      .where((part) => part.isNotEmpty)
+      .join(' ');
+
+  /// "Erkin Eshbaev · +998 90 123 45 67".
+  String get line => '$fullName · $phone';
+
+  /// The card stored with a deal, or null when it is incomplete.
+  static DealContact? fromRow(Map<String, dynamic> row) {
+    final first = (row['contact_first_name'] as String?)?.trim() ?? '';
+    final phone = (row['contact_phone'] as String?)?.trim() ?? '';
+    if (first.isEmpty || phone.isEmpty) return null;
+    final last = (row['contact_last_name'] as String?)?.trim();
+    return DealContact(
+      firstName: first,
+      lastName: last == null || last.isEmpty ? null : last,
+      phone: phone,
+    );
+  }
 }

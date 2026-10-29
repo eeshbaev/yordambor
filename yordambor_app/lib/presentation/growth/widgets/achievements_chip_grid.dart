@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/growth/achievement.dart';
 
@@ -67,9 +68,9 @@ class _AchievementChip extends StatelessWidget {
     return Chip(
       visualDensity: compact ? VisualDensity.compact : VisualDensity.standard,
       avatar: Icon(
-        unlocked ? Icons.emoji_events_outlined : Icons.lock_outline,
+        unlocked ? YbIcons.emojiEvents : YbIcons.lock,
         size: 16,
-        color: unlocked ? AppColors.primary : colors.textTertiary,
+        color: unlocked ? context.ybColors.teal : colors.textTertiary,
       ),
       label: Text(
         label,
@@ -80,7 +81,7 @@ class _AchievementChip extends StatelessWidget {
       backgroundColor: unlocked ? colors.primaryMuted : colors.surface,
       side: BorderSide(
         color: unlocked
-            ? AppColors.primary.withValues(alpha: 0.2)
+            ? context.ybColors.teal.withValues(alpha: 0.2)
             : colors.borderSubtle,
       ),
     );

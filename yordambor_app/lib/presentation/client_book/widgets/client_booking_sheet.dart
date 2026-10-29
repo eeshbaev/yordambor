@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/provider_tools_sync.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/client_registry_entry.dart';
 import 'package:yordambor/presentation/shared/appointment_date_format.dart';
@@ -44,6 +46,7 @@ Future<void> showClientBookingSheet({
       );
 
   final saved = await showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -57,6 +60,7 @@ Future<void> showClientBookingSheet({
             title: strings.clientBookBookClient,
             children: [
               DropdownButtonFormField<String>(
+                icon: const Icon(YbIcons.expandMore),
                 value: selectedClientId,
                 decoration: InputDecoration(
                   labelText: strings.clientBookSelectClient,
@@ -96,7 +100,7 @@ Future<void> showClientBookingSheet({
               const SizedBox(height: AppSpacing.md),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.calendar_today_outlined),
+                leading: const Icon(YbIcons.calendarToday),
                 title: Text(strings.clientBookDateLabel),
                 subtitle: Text(formatAppointmentDate(slotStart)),
                 onTap: () async {
@@ -121,7 +125,7 @@ Future<void> showClientBookingSheet({
               ),
               const SizedBox(height: AppSpacing.sm),
               YbSecondaryButton(
-                icon: Icons.schedule_outlined,
+                icon: YbIcons.schedule,
                 label: formatAppointmentTime(slotStart),
                 onPressed: () async {
                   final time = await showTimePicker(

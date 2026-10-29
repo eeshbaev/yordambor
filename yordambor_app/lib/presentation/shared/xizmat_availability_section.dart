@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/xizmat_availability_mode.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 class XizmatAvailabilitySection extends StatelessWidget {
   const XizmatAvailabilitySection({
@@ -35,11 +37,11 @@ class XizmatAvailabilitySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(strings.xizmatAvailabilitySectionTitle, style: AppTypography.headline),
+        Text(strings.xizmatAvailabilitySectionTitle, style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary)),
         const SizedBox(height: AppSpacing.sm),
         Text(
           strings.xizmatAvailabilitySectionSubtitle,
-          style: AppTypography.caption,
+          style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.lg),
         SwitchListTile(
@@ -126,7 +128,7 @@ class _DateTimeField extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           IconButton(
             onPressed: onClear,
-            icon: const Icon(Icons.close),
+            icon: const Icon(YbIcons.closeFilled),
             tooltip: label,
           ),
         ],

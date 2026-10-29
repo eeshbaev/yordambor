@@ -4,17 +4,11 @@ import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/core/design_system/app_haptics.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 
 class LanguagePicker extends ConsumerWidget {
   const LanguagePicker({super.key});
-
-  static const _languageFlags = {
-    'uz': '🇺🇿',
-    'ru': '🇷🇺',
-    'en': '🇬🇧',
-    'zh': '🇨🇳',
-  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,9 +37,17 @@ class LanguagePicker extends ConsumerWidget {
               height: 48,
               child: Row(
                 children: [
-                  Text(
-                    _languageFlags[code] ?? '',
-                    style: const TextStyle(fontSize: 20),
+                  // The language code, not a flag: languages are not
+                  // countries, and the app draws no emoji.
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 28),
+                    child: Text(
+                      code.toUpperCase(),
+                      style: AppTypography.label.copyWith(
+                        color: colors.textSecondary,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -53,18 +55,18 @@ class LanguagePicker extends ConsumerWidget {
                       AppStrings.languageLabel(code),
                       style: AppTypography.body.copyWith(
                         color: code == language
-                            ? AppColors.primaryDark
+                            ? context.ybColors.tealInk
                             : colors.textPrimary,
                         fontWeight:
-                            code == language ? FontWeight.w700 : FontWeight.w500,
+                            code == language ? FontWeight.w700 : FontWeight.w400,
                       ),
                     ),
                   ),
                   if (code == language)
-                    const Icon(
-                      Icons.check_rounded,
+                    Icon(
+                      YbIcons.checkFilled,
                       size: 20,
-                      color: AppColors.primary,
+                      color: context.ybColors.teal,
                     ),
                 ],
               ),
@@ -92,22 +94,22 @@ class LanguagePicker extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
-                Icons.language_rounded,
+              Icon(
+                YbIcons.languageFilled,
                 size: 18,
-                color: AppColors.primary,
+                color: context.ybColors.teal,
               ),
               const SizedBox(width: AppSpacing.xs),
               Text(
                 language.toUpperCase(),
                 style: AppTypography.label.copyWith(
-                  color: AppColors.primaryDark,
+                  color: context.ybColors.tealInk,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.4,
                 ),
               ),
               Icon(
-                Icons.expand_more_rounded,
+                YbIcons.expandMoreFilled,
                 size: 20,
                 color: colors.textSecondary,
               ),

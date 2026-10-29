@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
+import 'package:yordambor/domain/entities/create_xizmat_prefill.dart';
 import 'package:yordambor/presentation/client_book/client_book_screen.dart';
 import 'package:yordambor/presentation/earnings/earnings_screen.dart';
+import 'package:yordambor/presentation/invite/join_screen.dart';
+import 'package:yordambor/presentation/margin/margin_product_screen.dart';
+import 'package:yordambor/presentation/margin/margin_screen.dart';
+import 'package:yordambor/presentation/margin/margin_units_screen.dart';
+import 'package:yordambor/presentation/calendar/schedule_calendar_screen.dart';
 import 'package:yordambor/presentation/favorites/favorites_screen.dart';
 import 'package:yordambor/presentation/home/home_screen.dart';
 import 'package:yordambor/presentation/notifications/notifications_screen.dart';
+import 'package:yordambor/presentation/onboarding/onboarding_screen.dart';
 import 'package:yordambor/presentation/onboarding/splash_screen.dart';
 import 'package:yordambor/presentation/onboarding/verify_email_screen.dart';
 import 'package:yordambor/presentation/onboarding/welcome_screen.dart';
@@ -13,15 +21,22 @@ import 'package:yordambor/presentation/auth/reset_password_screen.dart';
 import 'package:yordambor/presentation/profile/blocked_users_screen.dart';
 import 'package:yordambor/presentation/profile/profile_screen.dart';
 import 'package:yordambor/presentation/profile/public_user_profile_screen.dart';
+import 'package:yordambor/presentation/receipts/receipt_detail_screen.dart';
+import 'package:yordambor/presentation/receipts/receipt_editor_screen.dart';
+import 'package:yordambor/presentation/receipts/receipts_screen.dart';
 import 'package:yordambor/presentation/reminders/reminder_settings_screen.dart';
-import 'package:yordambor/presentation/reminders/reminders_screen.dart';
+import 'package:yordambor/presentation/search/search_screen.dart';
 import 'package:yordambor/presentation/settings/legal_document_screen.dart';
 import 'package:yordambor/presentation/settings/settings_screen.dart';
 import 'package:yordambor/presentation/shell/main_shell.dart';
+import 'package:yordambor/presentation/shell/shell_branch_container.dart';
+import 'package:yordambor/presentation/shell/shell_tab_scaffold.dart';
+import 'package:yordambor/presentation/shell/shell_tabs.dart';
 import 'package:yordambor/presentation/kelishuv/kelishuv_archive_screen.dart';
 import 'package:yordambor/presentation/kelishuv/kelishuv_incoming_screen.dart';
 import 'package:yordambor/presentation/kelishuv/kelishuv_requests_screen.dart';
 import 'package:yordambor/presentation/kelishuv/kelishuv_screen.dart';
+import 'package:yordambor/presentation/xizmat/my_xizmatlar_screen.dart';
 import 'package:yordambor/presentation/xizmat/create_xizmat_screen.dart';
 import 'package:yordambor/presentation/xizmat/manage_xizmat_screen.dart';
 import 'package:yordambor/presentation/xizmat/xizmat_profile_screen.dart';
@@ -32,6 +47,35 @@ import 'package:yordambor/presentation/support/report_problem_screen.dart';
 import 'package:yordambor/presentation/yordam_kerak/yordam_kerak_post_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
+/// The tabs fade up when they first appear (after the splash or the
+/// welcome) and move like any other page while a screen covers them.
+Widget _shellTransition(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  final route = ModalRoute.of(context);
+  final covered = route is PageRoute
+      ? Theme.of(context).pageTransitionsTheme.buildTransitions(
+            route,
+            context,
+            kAlwaysCompleteAnimation,
+            secondaryAnimation,
+            child,
+          )
+      : child;
+  final arriving = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+  return FadeTransition(
+    opacity: arriving,
+    child: SlideTransition(
+      position: Tween(begin: const Offset(0, 0.015), end: Offset.zero)
+          .animate(arriving),
+      child: covered,
+    ),
+  );
+}
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -47,6 +91,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const WelcomeScreen(),
       ),
       GoRoute(
+        path: '/start',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
         path: '/verify-email',
         builder: (context, state) => const VerifyEmailScreen(),
       ),
@@ -54,9 +102,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/reset-password',
         builder: (context, state) => const ResetPasswordScreen(),
       ),
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return MainShell(navigationShell: navigationShell);
+      StatefulShellRoute(
+        navigatorContainerBuilder: (context, navigationShell, children) =>
+            ShellBranchContainer(
+              currentIndex: navigationShell.currentIndex,
+              children: children,
+            ),
+        pageBuilder: (context, state, navigationShell) {
+          final still = AppMotion.reduced(context);
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: MainShell(navigationShell: navigationShell),
+            transitionDuration:
+                still ? AppMotion.reducedFade : const Duration(milliseconds: 360),
+            reverseTransitionDuration: AppMotion.exit(
+              const Duration(milliseconds: 360),
+            ),
+            transitionsBuilder: _shellTransition,
+          );
         },
         branches: [
           StatefulShellBranch(
@@ -76,7 +139,38 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/favorites',
                 pageBuilder: (context, state) => const NoTransitionPage(
-                  child: FavoritesScreen(),
+                  child: TabScrollToTop(
+                    index: 1,
+                    child: ShellTabScaffold(child: FavoritesScreen()),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            preload: false,
+            routes: [
+              GoRoute(
+                path: '/calendar',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: TabScrollToTop(
+                    index: 2,
+                    child: ShellTabScaffold(child: ScheduleCalendarScreen()),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            preload: false,
+            routes: [
+              GoRoute(
+                path: '/xizmatlarim',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: TabScrollToTop(
+                    index: 3,
+                    child: ShellTabScaffold(child: MyXizmatlarScreen()),
+                  ),
                 ),
               ),
             ],
@@ -87,7 +181,10 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/profile',
                 pageBuilder: (context, state) => const NoTransitionPage(
-                  child: ProfileScreen(),
+                  child: TabScrollToTop(
+                    index: 4,
+                    child: ShellTabScaffold(child: ProfileScreen()),
+                  ),
                 ),
               ),
             ],
@@ -101,6 +198,36 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/earnings',
         builder: (context, state) => const EarningsScreen(),
+      ),
+      GoRoute(
+        path: '/receipts',
+        builder: (context, state) => const ReceiptsScreen(),
+      ),
+      GoRoute(
+        path: '/receipts/new',
+        builder: (context, state) => const ReceiptEditorScreen(),
+      ),
+      GoRoute(
+        path: '/receipts/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ReceiptDetailScreen(receiptId: id);
+        },
+      ),
+      GoRoute(
+        path: '/margin',
+        builder: (context, state) => const MarginScreen(),
+      ),
+      GoRoute(
+        path: '/margin/units',
+        builder: (context, state) => const MarginUnitsScreen(),
+      ),
+      GoRoute(
+        path: '/margin/product/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return MarginProductScreen(productId: id);
+        },
       ),
       GoRoute(
         path: '/user/:id',
@@ -151,7 +278,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/reminders',
-        builder: (context, state) => const RemindersScreen(),
+        redirect: (context, state) =>
+            state.uri.path == '/reminders' ? '/calendar' : null,
         routes: [
           GoRoute(
             path: 'settings',
@@ -168,7 +296,21 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/create-xizmat',
-        builder: (context, state) => const CreateXizmatScreen(),
+        builder: (context, state) {
+          final prefill =
+              CreateXizmatPrefill.fromQuery(state.uri.queryParameters);
+          return CreateXizmatScreen(prefill: prefill.isEmpty ? null : prefill);
+        },
+      ),
+      GoRoute(
+        path: '/search',
+        builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: '/join',
+        builder: (context, state) => JoinScreen(
+          prefill: CreateXizmatPrefill.fromQuery(state.uri.queryParameters),
+        ),
       ),
       GoRoute(
         path: '/kelishuv/incoming',

@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:yordambor/core/constants/feed_constants.dart';
 import 'package:yordambor/core/config/auth_redirect.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/supabase/postgrest_errors.dart';
+import 'package:yordambor/core/supabase/supabase_auth_errors.dart';
 import 'package:yordambor/domain/auth/app_user.dart';
 
 class AuthFailure implements Exception {
@@ -35,12 +40,7 @@ class AuthRepository {
     final client = _client;
     if (user == null || client == null) return null;
 
-    final row = await client
-        .from('profiles')
-        .select('full_name, email, phone, language, avatar_url, show_phone')
-        .eq('id', user.id)
-        .maybeSingle();
-
+    final row = await _readOwnProfile(client, user.id);
     if (row == null) return null;
 
     return AppUser(
@@ -53,6 +53,25 @@ class AuthRepository {
       avatarUrl: row['avatar_url'] as String?,
       showPhone: row['show_phone'] as bool? ?? false,
     );
+  }
+
+  /// Your own profile, email and phone included. Only you can read those
+  /// (migration 023), so they come through get_my_profile(); a server
+  /// without it yet is read the old way.
+  Future<Map<String, dynamic>?> _readOwnProfile(
+    SupabaseClient client,
+    String userId,
+  ) async {
+    try {
+      return await client.rpc('get_my_profile').maybeSingle();
+    } on PostgrestException catch (error) {
+      if (!isMissingRpc(error)) rethrow;
+      return client
+          .from('profiles')
+          .select('full_name, email, phone, language, avatar_url, show_phone')
+          .eq('id', userId)
+          .maybeSingle();
+    }
   }
 
   Future<void> updateShowPhone(bool showPhone) async {
@@ -113,7 +132,7 @@ class AuthRepository {
 
       final user = response.user;
       if (user == null) {
-        throw AuthFailure('Ro\'yxatdan o\'tish amalga oshmadi');
+        throw AuthFailure('Roʻyxatdan oʻtish amalga oshmadi');
       }
 
       if (response.session != null) {
@@ -143,16 +162,36 @@ class AuthRepository {
     }
 
     try {
-      final email = await _resolveLoginEmail(identifier.trim());
-      await client.auth.signInWithPassword(email: email, password: password);
-      await ensureProfile();
+      await _signInWithTimeout(
+        client,
+        identifier: identifier,
+        password: password,
+      );
     } on AuthFailure {
       rethrow;
+    } on TimeoutException {
+      throw AuthFailure(
+        'Internet aloqasi sekin yoki server javob bermayapti. '
+        'Emulyator internetini tekshiring yoki keyinroq qayta urinib koʻring.',
+      );
     } on AuthException catch (e) {
       throw AuthFailure(_mapAuthError(e));
     } on PostgrestException catch (e) {
       throw AuthFailure(_mapPostgrestError(e));
     }
+  }
+
+  Future<void> _signInWithTimeout(
+    SupabaseClient client, {
+    required String identifier,
+    required String password,
+  }) async {
+    final email = await _resolveLoginEmail(identifier.trim(), password)
+        .timeout(FeedConstants.networkTimeout);
+    await client.auth
+        .signInWithPassword(email: email, password: password)
+        .timeout(FeedConstants.networkTimeout);
+    await ensureProfile().timeout(FeedConstants.networkTimeout);
   }
 
   Future<void> signOut() async {
@@ -206,7 +245,7 @@ class AuthRepository {
       throw AuthFailure('Supabase sozlanmagan');
     }
     if (currentUser == null) {
-      throw AuthFailure('Parolni tiklash havolasi muddati tugagan. Qayta so\'rang.');
+      throw AuthFailure('Parolni tiklash havolasi muddati tugagan. Qayta soʻrang.');
     }
 
     try {
@@ -268,15 +307,23 @@ class AuthRepository {
     final client = _client;
     if (client == null) return;
 
-    await client.from('profiles').upsert({
-      'id': userId,
-      'full_name': fullName,
-      'email': email,
-      'phone': phone,
-    });
+    // Adds the row once; an existing profile is left as it is.
+    await client.from('profiles').upsert(
+      {
+        'id': userId,
+        'full_name': fullName,
+        'email': email,
+        'phone': phone,
+      },
+      ignoreDuplicates: true,
+    );
   }
 
-  Future<String> _resolveLoginEmail(String identifier) async {
+  /// The email to sign in with. A phone number is looked up on the server,
+  /// which names the account only for the right password and stops after
+  /// five wrong tries in 15 minutes (migration 023), so nobody can collect
+  /// emails by trying numbers.
+  Future<String> _resolveLoginEmail(String identifier, String password) async {
     if (identifier.contains('@')) {
       return identifier;
     }
@@ -287,6 +334,23 @@ class AuthRepository {
     }
 
     final phone = normalizePhone(identifier);
+    try {
+      final email = await client.rpc<dynamic>(
+        'login_email_for_phone',
+        params: {'p_phone': phone, 'p_password': password},
+      );
+      if (email is String && email.isNotEmpty) return email;
+      throw AuthFailure('Telefon raqami yoki parol notoʻgʻri');
+    } on PostgrestException catch (error) {
+      if (error.message.contains('too_many_attempts')) {
+        throw AuthFailure(
+          'Juda koʻp urinish. 15 daqiqadan keyin qayta urinib koʻring.',
+        );
+      }
+      if (!isMissingRpc(error)) rethrow;
+    }
+
+    // A server without the function yet: the old lookup.
     final row = await client
         .from('profiles')
         .select('email')
@@ -315,16 +379,23 @@ class AuthRepository {
   }
 
   static String _mapAuthError(AuthException error) {
+    if (isSupabaseAuthNetworkError(error)) {
+      return mapSupabaseNetworkMessage(error);
+    }
+
     final message = error.message.toLowerCase();
     if (message.contains('invalid api key')) {
-      return 'Supabase API kaliti noto\'g\'ri. .env.json faylida anon key ni tekshiring va ilovani qayta ishga tushiring.';
+      return 'Supabase API kaliti notoʻgʻri. .env.json faylida anon key ni tekshiring va ilovani qayta ishga tushiring.';
     }
     if (message.contains('invalid login credentials')) {
-      return 'Email yoki parol noto\'g\'ri';
+      return 'Email yoki parol notoʻgʻri';
+    }
+    if (message.contains('email not confirmed')) {
+      return 'Email tasdiqlanmagan. Pochtangizdagi havolani bosing yoki qayta yuboring.';
     }
     if (message.contains('already registered') ||
         message.contains('user already registered')) {
-      return 'Bu email bilan hisob mavjud. Kirishni sinab ko\'ring.';
+      return 'Bu email bilan hisob mavjud. Kirishni sinab koʻring.';
     }
     return error.message;
   }
@@ -332,10 +403,10 @@ class AuthRepository {
   static String _mapPostgrestError(PostgrestException error) {
     if (error.code == '23505') {
       if (error.message.contains('email')) {
-        return 'Bu email bilan hisob mavjud. Kirishni sinab ko\'ring.';
+        return 'Bu email bilan hisob mavjud. Kirishni sinab koʻring.';
       }
       if (error.message.contains('phone')) {
-        return 'Bu telefon raqami allaqachon ro\'yxatdan o\'tgan';
+        return 'Bu telefon raqami allaqachon roʻyxatdan oʻtgan';
       }
     }
     return error.message;

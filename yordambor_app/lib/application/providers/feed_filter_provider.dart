@@ -13,6 +13,7 @@ class FeedFilterState {
     this.categoryLabel,
     this.subcategoryLabel,
     this.providerType,
+    this.serviceCityId,
   });
 
   final FeedMode mode;
@@ -24,6 +25,9 @@ class FeedFilterState {
   /// `individual`, `institution`, or null for all provider types.
   final String? providerType;
 
+  /// Canonical [ServiceCityIds] value, or null for all cities.
+  final String? serviceCityId;
+
   FeedFilterState copyWith({
     FeedMode? mode,
     String? categoryId,
@@ -31,9 +35,11 @@ class FeedFilterState {
     String? categoryLabel,
     String? subcategoryLabel,
     String? providerType,
+    String? serviceCityId,
     bool clearCategory = false,
     bool clearSubcategory = false,
     bool clearProviderType = false,
+    bool clearServiceCity = false,
   }) {
     return FeedFilterState(
       mode: mode ?? this.mode,
@@ -48,6 +54,9 @@ class FeedFilterState {
       providerType: clearProviderType
           ? null
           : (providerType ?? this.providerType),
+      serviceCityId: clearServiceCity
+          ? null
+          : (serviceCityId ?? this.serviceCityId),
     );
   }
 }
@@ -106,6 +115,13 @@ class FeedFilterNotifier extends StateNotifier<FeedFilterState> {
         ),
       );
 
+  void setServiceCity(String? cityId) => _update(
+        state.copyWith(
+          serviceCityId: cityId,
+          clearServiceCity: cityId == null,
+        ),
+      );
+
   void clearSubcategory() =>
       _update(state.copyWith(clearSubcategory: true));
 
@@ -123,6 +139,7 @@ class FeedFilterNotifier extends StateNotifier<FeedFilterState> {
         'categoryLabel': state.categoryLabel,
         'subcategoryLabel': state.subcategoryLabel,
         'providerType': state.providerType,
+        'serviceCityId': state.serviceCityId,
       };
 
   FeedFilterState _fromJson(Map<String, dynamic> json) {
@@ -140,6 +157,7 @@ class FeedFilterNotifier extends StateNotifier<FeedFilterState> {
       categoryLabel: json['categoryLabel'] as String?,
       subcategoryLabel: json['subcategoryLabel'] as String?,
       providerType: json['providerType'] as String?,
+      serviceCityId: json['serviceCityId'] as String?,
     );
   }
 }

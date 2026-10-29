@@ -8,6 +8,7 @@ import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/client_registry_entry.dart';
 import 'package:yordambor/presentation/client_book/widgets/client_book_calendar.dart';
@@ -67,7 +68,7 @@ class _ClientBookScreenState extends ConsumerState<ClientBookScreen> {
                 ref: ref,
                 strings: strings,
               ),
-              icon: const Icon(Icons.person_add_outlined),
+              icon: const Icon(YbIcons.personAdd),
               label: Text(strings.clientBookAdd),
             )
           : null,
@@ -113,13 +114,13 @@ class _RegistryList extends ConsumerWidget {
 
     return clientsAsync.when(
       loading: () => const YbSkeletonList(count: 4),
-      error: (error, _) => ListView(
+      error: (_, _) => ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           YbEmptyState(
-            icon: Icons.error_outline_rounded,
-            title: strings.clientBookTitle,
-            subtitle: '$error',
+            icon: YbIcons.cloudOff,
+            title: strings.stateErrorTitle,
+            subtitle: strings.stateErrorBody,
           ),
         ],
       ),
@@ -129,7 +130,7 @@ class _RegistryList extends ConsumerWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
               YbEmptyState(
-                icon: Icons.menu_book_outlined,
+                icon: YbIcons.menuBook,
                 title: strings.clientBookEmptyTitle,
                 subtitle: strings.clientBookEmptySub,
               ),
@@ -170,13 +171,13 @@ class _CalendarView extends ConsumerWidget {
 
     return bookingsAsync.when(
       loading: () => const YbSkeletonList(count: 4),
-      error: (error, _) => ListView(
+      error: (_, _) => ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           YbEmptyState(
-            icon: Icons.error_outline_rounded,
-            title: strings.clientBookTitle,
-            subtitle: '$error',
+            icon: YbIcons.cloudOff,
+            title: strings.stateErrorTitle,
+            subtitle: strings.stateErrorBody,
           ),
         ],
       ),

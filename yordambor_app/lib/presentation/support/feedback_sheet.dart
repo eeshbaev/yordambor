@@ -3,13 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/growth_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_haptics.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
 import 'package:yordambor/data/support/support_repository.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 Future<void> showFeedbackSheet(BuildContext context) {
   return showModalBottomSheet<void>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -79,12 +83,13 @@ class _FeedbackSheetState extends ConsumerState<FeedbackSheet> {
           children: List.generate(5, (index) {
             final star = index + 1;
             return IconButton(
+              tooltip: strings.a11yStarRating(star),
               onPressed: _isSubmitting ? null : () => _setRating(star),
               icon: Icon(
                 star <= (_rating ?? 0)
-                    ? Icons.star_rounded
-                    : Icons.star_outline_rounded,
-                color: AppColors.star,
+                    ? YbIcons.starFilled
+                    : YbIcons.star,
+                color: context.ybColors.star,
                 size: 40,
               ),
             );

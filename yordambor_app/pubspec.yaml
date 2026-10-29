@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.13.1
@@ -55,6 +55,8 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.1
   app_links: ^7.2.1
+  pdf: ^3.13.1
+  printing: ^5.15.1
 
 dev_dependencies:
   flutter_test:
@@ -92,11 +94,34 @@ flutter:
     - assets/logo/yordambor-play-store-512.png
     - assets/data/categories.json
     - assets/demo/
+    - assets/illustrations/tools/
+    - assets/fonts/OFL-Onest.txt
+    - assets/fonts/OFL-Commissioner.txt
+    - assets/fonts/LICENSE-MaterialSymbols.txt
 
+  # Onest for the interface (three weights), Commissioner Flare for display
+  # moments only. Static, subset instances of the OFL variable fonts.
   fonts:
-    - family: Manrope
+    - family: Onest
       fonts:
-        - asset: assets/fonts/Manrope-Variable.ttf
+        - asset: assets/fonts/Onest-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Onest-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Onest-Bold.ttf
+          weight: 700
+    - family: CommissionerFlare
+      fonts:
+        - asset: assets/fonts/CommissionerFlare-ExtraBold.ttf
+          weight: 800
+    # Material Symbols Rounded (Apache 2.0), subset to the glyphs the app
+    # uses: outline for resting icons, filled for selected ones.
+    - family: YbSymbols
+      fonts:
+        - asset: assets/fonts/YbSymbols-Outline.ttf
+    - family: YbSymbolsFilled
+      fonts:
+        - asset: assets/fonts/YbSymbols-Filled.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -128,11 +153,11 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: assets/logo/app_icon.png
-  adaptive_icon_background: "#0D9488"
+  adaptive_icon_background: "#048289"
   adaptive_icon_foreground: assets/logo/app_icon.png
   remove_alpha_ios: true
   web:
     generate: true
     image_path: assets/logo/app_icon.png
-    background_color: "#0D9488"
-    theme_color: "#0D9488"
+    background_color: "#048289"
+    theme_color: "#048289"

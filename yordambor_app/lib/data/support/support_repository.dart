@@ -43,7 +43,7 @@ class SupportRepository {
 
     final trimmed = description.trim();
     if (trimmed.length < 10) {
-      throw SupportFailure('Tavsif kamida 10 ta belgidan iborat bo\'lsin');
+      throw SupportFailure('Tavsif kamida 10 ta belgidan iborat boʻlsin');
     }
 
     await client.from('support_tickets').insert({

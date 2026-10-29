@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/growth/provider_tier.dart';
 
@@ -18,7 +19,7 @@ class YbProviderTierBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final label = strings.providerTierLabel(tier);
-    final colors = _colors(tier);
+    final colors = _colors(context, tier);
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -27,7 +28,7 @@ class YbProviderTierBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: colors.background,
-        borderRadius: BorderRadius.circular(AppRadius.chip),
+        borderRadius: BorderRadius.circular(AppRadius.pill),
         border: Border.all(color: colors.border),
       ),
       child: Text(
@@ -41,27 +42,32 @@ class YbProviderTierBadge extends StatelessWidget {
     );
   }
 
-  ({Color background, Color border, Color foreground}) _colors(ProviderTier tier) {
+  /// The tiers climb from neutral to teal, ending on the brand teal.
+  ({Color background, Color border, Color foreground}) _colors(
+    BuildContext context,
+    ProviderTier tier,
+  ) {
+    final c = context.ybColors;
     return switch (tier) {
       ProviderTier.newProvider => (
-          background: AppColors.skeleton,
-          border: AppColors.border,
-          foreground: AppColors.textSecondary,
+          background: c.surface2,
+          border: c.surface2,
+          foreground: c.ink2,
         ),
       ProviderTier.active => (
-          background: AppColors.primaryMuted,
-          border: AppColors.primary.withValues(alpha: 0.2),
-          foreground: AppColors.primary,
+          background: c.tealSoft,
+          border: c.tealSoft,
+          foreground: c.tealInk,
         ),
       ProviderTier.trusted => (
-          background: const Color(0xFFECFDF5),
-          border: const Color(0xFF10B981).withValues(alpha: 0.3),
-          foreground: const Color(0xFF059669),
+          background: c.teal,
+          border: c.teal,
+          foreground: c.onTeal,
         ),
       ProviderTier.top => (
-          background: const Color(0xFFFFFBEB),
-          border: const Color(0xFFF59E0B).withValues(alpha: 0.4),
-          foreground: const Color(0xFFD97706),
+          background: c.tealBrand,
+          border: c.tealBrand,
+          foreground: c.onTeal,
         ),
     };
   }

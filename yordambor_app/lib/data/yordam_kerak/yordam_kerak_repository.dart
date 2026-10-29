@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/core/constants/feed_constants.dart';
+import 'package:yordambor/core/constants/service_cities.dart';
 import 'package:yordambor/data/categories/category_repository.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
 import 'package:yordambor/domain/entities/yordam_kerak_post.dart';
@@ -24,6 +25,7 @@ class CreateYordamKerakInput {
     this.durationMinutes,
     this.contactPhone,
     this.showContactPhone = false,
+    this.serviceCity,
   });
 
   final String title;
@@ -36,6 +38,9 @@ class CreateYordamKerakInput {
   final int? durationMinutes;
   final String? contactPhone;
   final bool showContactPhone;
+
+  /// Where the help is needed: a [ServiceCityIds] value. Required.
+  final String? serviceCity;
 }
 
 class YordamKerakRepository {
@@ -49,6 +54,7 @@ class YordamKerakRepository {
   Future<List<YordamKerakFeedItem>> fetchOpenPosts({
     String? categoryId,
     String? subcategoryId,
+    String? serviceCityId,
     required String language,
     int limit = FeedConstants.pageSize,
     int offset = 0,
@@ -56,6 +62,7 @@ class YordamKerakRepository {
     final page = await fetchOpenPostsPage(
       categoryId: categoryId,
       subcategoryId: subcategoryId,
+      serviceCityId: serviceCityId,
       language: language,
       limit: limit,
       offset: offset,
@@ -66,6 +73,7 @@ class YordamKerakRepository {
   Future<FeedPage<YordamKerakFeedItem>> fetchOpenPostsPage({
     String? categoryId,
     String? subcategoryId,
+    String? serviceCityId,
     required String language,
     int limit = FeedConstants.pageSize,
     int offset = 0,
@@ -75,34 +83,24 @@ class YordamKerakRepository {
       return const FeedPage(items: [], hasMore: false, nextOffset: 0);
     }
 
-    var query = client.from('yordam_kerak_posts').select('''
-          id,
-          author_id,
-          title,
-          message,
-          price,
-          currency,
-          start_date,
-          duration_minutes,
-          category_id,
-          subcategory_id,
-          created_at,
-          contact_phone,
-          show_contact_phone,
-          show_profile,
-          profiles!yordam_kerak_posts_author_id_fkey (
-            full_name
-          )
-        ''').eq('status', 'open');
+    final rows = await _withCityFallback(() {
+      var query = client
+          .from('yordam_kerak_posts')
+          .select(_columns())
+          .eq('status', 'open');
 
-    if (categoryId != null) query = query.eq('category_id', categoryId);
-    if (subcategoryId != null) {
-      query = query.eq('subcategory_id', subcategoryId);
-    }
+      if (categoryId != null) query = query.eq('category_id', categoryId);
+      if (subcategoryId != null) {
+        query = query.eq('subcategory_id', subcategoryId);
+      }
+      if (serviceCityId != null && !_cityColumnMissing) {
+        query = query.eq('service_city', serviceCityId);
+      }
 
-    final rows = await query
-        .order('created_at', ascending: false)
-        .range(offset, offset + limit - 1);
+      return query
+          .order('created_at', ascending: false)
+          .range(offset, offset + limit - 1);
+    });
     final rowList = rows as List<dynamic>;
     final categories = await _categoryRepository.loadCategories();
 
@@ -127,13 +125,13 @@ class YordamKerakRepository {
     }
 
     if (input.title.trim().length < 3) {
-      throw YordamKerakFailure('Sarlavha kamida 3 ta belgidan iborat bo\'lsin');
+      throw YordamKerakFailure('Sarlavha kamida 3 ta belgidan iborat boʻlsin');
     }
 
     final message = input.message?.trim() ?? '';
     if (message.length < 10) {
       throw YordamKerakFailure(
-        'Loyiha tavsifi kamida 10 ta belgidan iborat bo\'lsin',
+        'Loyiha tavsifi kamida 10 ta belgidan iborat boʻlsin',
       );
     }
 
@@ -145,49 +143,42 @@ class YordamKerakRepository {
       throw YordamKerakFailure('Subsohani tanlang');
     }
 
-    final inserted = await client
-        .from('yordam_kerak_posts')
-        .insert({
-          'author_id': userId,
-          'title': input.title.trim(),
-          'message': message,
-          'price': input.price,
-          'currency': input.price != null ? (input.currency ?? 'UZS') : null,
-          'category_id': input.categoryId,
-          'subcategory_id': input.subcategoryId,
-          'start_date': input.startDate?.toIso8601String().split('T').first,
-          'duration_minutes': input.durationMinutes,
-          'status': 'open',
-          'contact_phone': input.contactPhone,
-          'show_contact_phone':
-              input.showContactPhone && input.contactPhone != null,
-          'show_profile': true,
-        })
-        .select('''
-          id,
-          author_id,
-          title,
-          message,
-          price,
-          currency,
-          start_date,
-          duration_minutes,
-          category_id,
-          subcategory_id,
-          created_at,
-          contact_phone,
-          show_contact_phone,
-          show_profile,
-          profiles!yordam_kerak_posts_author_id_fkey (
-            full_name
-          )
-        ''')
-        .single();
+    final serviceCity = input.serviceCity;
+    if (!ServiceCities.isValidId(serviceCity)) {
+      throw YordamKerakFailure('Shaharni tanlang');
+    }
+
+    final inserted = await _withCityFallback(
+      () => client
+          .from('yordam_kerak_posts')
+          .insert({
+            'author_id': userId,
+            'title': input.title.trim(),
+            'message': message,
+            'price': input.price,
+            'currency': input.price != null ? (input.currency ?? 'UZS') : null,
+            'category_id': input.categoryId,
+            'subcategory_id': input.subcategoryId,
+            'start_date': input.startDate?.toIso8601String().split('T').first,
+            'duration_minutes': input.durationMinutes,
+            'status': 'open',
+            'contact_phone': input.contactPhone,
+            'show_contact_phone':
+                input.showContactPhone && input.contactPhone != null,
+            'show_profile': true,
+            if (!_cityColumnMissing) 'service_city': serviceCity,
+          })
+          .select(_columns())
+          .single(),
+    );
 
     final map = Map<String, dynamic>.from(inserted);
     final profile = map['profiles'] as Map<String, dynamic>?;
     final categories = await _categoryRepository.loadCategories();
-    return _mapRow(map, profile, categories, 'uz'    );
+    // Until the server keeps the city, the new post still shows the one
+    // the person chose.
+    map['service_city'] ??= serviceCity;
+    return _mapRow(map, profile, categories, 'uz');
   }
 
   Future<YordamKerakFeedItem?> fetchById({
@@ -197,25 +188,13 @@ class YordamKerakRepository {
     final client = _client;
     if (client == null) return null;
 
-    final rows = await client.from('yordam_kerak_posts').select('''
-          id,
-          author_id,
-          title,
-          message,
-          price,
-          currency,
-          start_date,
-          duration_minutes,
-          category_id,
-          subcategory_id,
-          created_at,
-          contact_phone,
-          show_contact_phone,
-          show_profile,
-          profiles!yordam_kerak_posts_author_id_fkey (
-            full_name
-          )
-        ''').eq('id', id).maybeSingle();
+    final rows = await _withCityFallback(
+      () => client
+          .from('yordam_kerak_posts')
+          .select(_columns())
+          .eq('id', id)
+          .maybeSingle(),
+    );
 
     if (rows == null) return null;
 
@@ -232,30 +211,14 @@ class YordamKerakRepository {
     final client = _client;
     if (client == null) return [];
 
-    final rows = await client
-        .from('yordam_kerak_posts')
-        .select('''
-          id,
-          author_id,
-          title,
-          message,
-          price,
-          currency,
-          start_date,
-          duration_minutes,
-          category_id,
-          subcategory_id,
-          created_at,
-          contact_phone,
-          show_contact_phone,
-          show_profile,
-          profiles!yordam_kerak_posts_author_id_fkey (
-            full_name
-          )
-        ''')
-        .eq('author_id', authorId)
-        .eq('status', 'open')
-        .order('created_at', ascending: false);
+    final rows = await _withCityFallback(
+      () => client
+          .from('yordam_kerak_posts')
+          .select(_columns())
+          .eq('author_id', authorId)
+          .eq('status', 'open')
+          .order('created_at', ascending: false),
+    );
 
     final categories = await _categoryRepository.loadCategories();
     return (rows as List<dynamic>).map((raw) {
@@ -297,7 +260,51 @@ class YordamKerakRepository {
       contactPhone: map['contact_phone'] as String?,
       showContactPhone: map['show_contact_phone'] as bool? ?? false,
       showProfile: map['show_profile'] as bool? ?? true,
+      serviceCity: ServiceCities.normalizeStored(
+        map['service_city'] as String?,
+      ),
     );
+  }
+
+  /// The post columns, with the city while the server has it.
+  /// What a request shows. Its contact phone is not readable (migration
+  /// 023).
+  static String _columns() => '''
+          id,
+          author_id,
+          title,
+          message,
+          price,
+          currency,
+          start_date,
+          duration_minutes,
+          category_id,
+          subcategory_id,
+          created_at,
+          show_contact_phone,
+          show_profile,
+          ${_cityColumnMissing ? '' : 'service_city,'}
+          profiles!yordam_kerak_posts_author_id_fkey (
+            full_name
+          )
+        ''';
+
+  /// True once the server answers that `service_city` does not exist yet
+  /// (migration 020 not applied), so later calls stop asking for it.
+  static bool _cityColumnMissing = false;
+
+  /// Runs [run]; if the server lacks the city column, notes that and runs
+  /// it once more without the city, so posts still load and save.
+  Future<T> _withCityFallback<T>(Future<T> Function() run) async {
+    try {
+      return await run();
+    } on PostgrestException catch (error) {
+      if (_cityColumnMissing || !error.message.contains('service_city')) {
+        rethrow;
+      }
+      _cityColumnMissing = true;
+      return run();
+    }
   }
 
   String _categoryLabel(

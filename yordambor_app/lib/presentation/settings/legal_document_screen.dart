@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 
 class LegalDocumentScreen extends ConsumerWidget {
   const LegalDocumentScreen({super.key, required this.type});
@@ -39,15 +40,15 @@ class LegalDocumentScreen extends ConsumerWidget {
                 : isSafety
                     ? strings.legalSafetyTitle
                     : strings.legalTermsTitle,
-            style: AppTypography.title,
+            style: AppTypography.title.copyWith(color: context.ybColors.textPrimary),
           ),
           const SizedBox(height: AppSpacing.lg),
           for (final paragraph in paragraphs) ...[
             Text(
               paragraph,
               style: paragraph.startsWith(RegExp(r'\d+\.'))
-                  ? AppTypography.headline
-                  : AppTypography.body,
+                  ? AppTypography.headline.copyWith(color: context.ybColors.textPrimary)
+                  : AppTypography.body.copyWith(color: context.ybColors.textPrimary),
             ),
             const SizedBox(height: AppSpacing.md),
           ],

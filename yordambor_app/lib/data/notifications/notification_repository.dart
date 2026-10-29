@@ -37,7 +37,7 @@ class NotificationRepository {
         .order('created_at', ascending: false)
         .limit(limit);
 
-    return (rows as List<dynamic>).map((raw) {
+    final notifications = (rows as List<dynamic>).map((raw) {
       final map = Map<String, dynamic>.from(raw as Map);
       final payload = map['payload'] as Map<String, dynamic>?;
       return AppNotification(
@@ -49,8 +49,22 @@ class NotificationRepository {
         body: payload?['body'] as String?,
         payload: payload,
       );
-    }).toList();
+    });
+    // A declined or cancelled deal is news for 5 days; then it lives in
+    // the archive only.
+    final now = DateTime.now();
+    return notifications
+        .where(
+          (item) =>
+              item.type != closedDealType ||
+              now.difference(item.createdAt) < closedDealShownFor,
+        )
+        .toList();
   }
+
+  /// Sent when a deal is declined or cancelled.
+  static const closedDealType = 'kelishuv_closed';
+  static const closedDealShownFor = Duration(days: 5);
 
   Future<void> markRead(String id) async {
     final client = _client;
@@ -65,10 +79,18 @@ class NotificationRepository {
 
     final rows = await client
         .from('notifications')
-        .select('id')
+        .select('id, type, created_at')
         .eq('user_id', userId)
         .eq('read', false);
 
-    return (rows as List).length;
+    // The same 5-day window as the list, so the badge never counts news
+    // the list no longer shows.
+    final now = DateTime.now();
+    return (rows as List<dynamic>).where((raw) {
+      final map = Map<String, dynamic>.from(raw as Map);
+      if (map['type'] != closedDealType) return true;
+      final created = DateTime.tryParse(map['created_at'] as String? ?? '');
+      return created == null || now.difference(created) < closedDealShownFor;
+    }).length;
   }
 }

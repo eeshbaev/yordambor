@@ -55,6 +55,7 @@ class CategoryLabelResolver {
       showServicePromise: item.showServicePromise,
       servicePromise: item.servicePromise,
       serviceCity: item.serviceCity,
+      createdAt: item.createdAt,
     );
   }
 
@@ -85,6 +86,7 @@ class CategoryLabelResolver {
       contactPhone: item.contactPhone,
       showContactPhone: item.showContactPhone,
       showProfile: item.showProfile,
+      serviceCity: item.serviceCity,
     );
   }
 

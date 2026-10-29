@@ -3,6 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 
 typedef ReminderNotificationTapHandler = void Function(String reminderId);
+typedef AppNotificationTapHandler = void Function(Map<String, String> payload);
 
 class LocalNotificationService {
   LocalNotificationService._();
@@ -12,7 +13,9 @@ class LocalNotificationService {
   final _plugin = FlutterLocalNotificationsPlugin();
   bool _initialized = false;
   ReminderNotificationTapHandler? _onReminderTap;
+  AppNotificationTapHandler? _onAppNotificationTap;
   String? _pendingLaunchReminderId;
+  Map<String, String>? _pendingAppPayload;
 
   ReminderNotificationTapHandler? get onReminderTap => _onReminderTap;
 
@@ -25,7 +28,17 @@ class LocalNotificationService {
     }
   }
 
+  set onAppNotificationTap(AppNotificationTapHandler? handler) {
+    _onAppNotificationTap = handler;
+    if (handler != null && _pendingAppPayload != null) {
+      final payload = _pendingAppPayload!;
+      _pendingAppPayload = null;
+      handler(payload);
+    }
+  }
+
   static const _payloadPrefix = 'reminder:';
+  static const _appPayloadPrefix = 'app:';
 
   Future<void> initialize() async {
     if (_initialized) return;
@@ -53,7 +66,25 @@ class LocalNotificationService {
   }
 
   void _handlePayload(String? payload) {
-    if (payload == null || !payload.startsWith(_payloadPrefix)) return;
+    if (payload == null) return;
+
+    if (payload.startsWith(_appPayloadPrefix)) {
+      final parts = payload.substring(_appPayloadPrefix.length).split('|');
+      if (parts.length < 2) return;
+      final data = <String, String>{
+        'type': parts[0],
+        for (var i = 1; i + 1 < parts.length; i += 2) parts[i]: parts[i + 1],
+      };
+      final handler = _onAppNotificationTap;
+      if (handler != null) {
+        handler(data);
+      } else {
+        _pendingAppPayload = data;
+      }
+      return;
+    }
+
+    if (!payload.startsWith(_payloadPrefix)) return;
     final reminderId = payload.substring(_payloadPrefix.length);
     if (reminderId.isEmpty) return;
 
@@ -63,6 +94,52 @@ class LocalNotificationService {
     } else {
       _pendingLaunchReminderId = reminderId;
     }
+  }
+
+  String buildAppPayload({
+    required String type,
+    String? xizmatId,
+    String? postId,
+    String? kelishuvId,
+  }) {
+    final parts = <String>[type];
+    if (xizmatId != null) {
+      parts.addAll(['xizmat_id', xizmatId]);
+    }
+    if (postId != null) {
+      parts.addAll(['post_id', postId]);
+    }
+    if (kelishuvId != null) {
+      parts.addAll(['kelishuv_id', kelishuvId]);
+    }
+    return '$_appPayloadPrefix${parts.join('|')}';
+  }
+
+  Future<void> showInstant({
+    required String notificationId,
+    required String title,
+    required String body,
+    required String payload,
+  }) async {
+    if (!_initialized) await initialize();
+
+    final id = notificationId.hashCode.abs() % 2147483647;
+    await _plugin.show(
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'yordambor_alerts',
+          'Bildirishnomalar',
+          channelDescription: 'Kelishuv va subsoha bildirishnomalari',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(),
+      ),
+      payload: payload,
+    );
   }
 
   Future<bool> requestPermission() async {

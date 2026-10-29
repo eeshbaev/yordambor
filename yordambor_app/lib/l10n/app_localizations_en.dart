@@ -19,7 +19,81 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabHome => 'Home';
 
   @override
+  String get tabCalendar => 'Calendar';
+
+  @override
+  String get calendarGuestSubtitle =>
+      'Sign in to see your schedule and mark availability.';
+
+  @override
+  String get calendarProviderHint =>
+      'Tap a day on the calendar, then use the button below to mark available or busy.';
+
+  @override
+  String get calendarClientHint =>
+      'Your appointments and reminders appear on the calendar. Tap a day for details.';
+
+  @override
+  String get calendarLegendAvailable => 'Available';
+
+  @override
+  String get calendarLegendBusy => 'Busy';
+
+  @override
+  String get calendarLegendAppointment => 'Appointment';
+
+  @override
+  String get calendarMarkAvailable => 'Marked: available — tap to change';
+
+  @override
+  String get calendarMarkBusy => 'Marked: busy — tap to change';
+
+  @override
+  String get calendarMarkUnset => 'Mark day: available / busy';
+
+  @override
+  String get calendarNoEventsDay => 'No appointments on this day.';
+
+  @override
+  String get calendarWeekdayMon => 'Mon';
+
+  @override
+  String get calendarWeekdayTue => 'Tue';
+
+  @override
+  String get calendarWeekdayWed => 'Wed';
+
+  @override
+  String get calendarWeekdayThu => 'Thu';
+
+  @override
+  String get calendarWeekdayFri => 'Fri';
+
+  @override
+  String get calendarWeekdaySat => 'Sat';
+
+  @override
+  String get calendarWeekdaySun => 'Sun';
+
+  @override
   String get tabFavorites => 'Saved';
+
+  @override
+  String get tabBusiness => 'Business';
+
+  @override
+  String get businessTabServices => 'Services';
+
+  @override
+  String get businessTabTools => 'Tools';
+
+  @override
+  String get businessToolsSubtitle =>
+      'Client book, receipts, earnings, and other provider tools.';
+
+  @override
+  String get myXizmatlarGuestSubtitle =>
+      'Sign in to manage your services and provider tools.';
 
   @override
   String get tabProfile => 'Profile';
@@ -72,6 +146,70 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get filterAllSubcategoriesHint =>
       'All specialties in the selected field';
+
+  @override
+  String get filterCity => 'City';
+
+  @override
+  String get filterAllCities => 'All cities';
+
+  @override
+  String get filterCityHint => 'Where do you need the service?';
+
+  @override
+  String get filterAllCitiesHint => 'Listings in every city';
+
+  @override
+  String get xizmatServiceCityRequired =>
+      'Select the city where you provide this service';
+
+  @override
+  String get serviceCityToshkent => 'Tashkent';
+
+  @override
+  String get serviceCityToshkentViloyati => 'Tashkent region';
+
+  @override
+  String get serviceCitySamarqand => 'Samarkand';
+
+  @override
+  String get serviceCityBuxoro => 'Bukhara';
+
+  @override
+  String get serviceCityNukus => 'Nukus';
+
+  @override
+  String get serviceCityNamangan => 'Namangan';
+
+  @override
+  String get serviceCityAndijon => 'Andijan';
+
+  @override
+  String get serviceCityFargona => 'Fergana';
+
+  @override
+  String get serviceCityQarshi => 'Qarshi';
+
+  @override
+  String get serviceCityUrganch => 'Urgench';
+
+  @override
+  String get serviceCityTermiz => 'Termiz';
+
+  @override
+  String get serviceCityJizzax => 'Jizzakh';
+
+  @override
+  String get serviceCityNavoiy => 'Navoi';
+
+  @override
+  String get serviceCityQoqon => 'Kokand';
+
+  @override
+  String get serviceCityGuliston => 'Gulistan';
+
+  @override
+  String get serviceCityBoshqa => 'Other';
 
   @override
   String homeFeedShowing(String summary) {
@@ -207,7 +345,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidEmail => 'Enter a valid email address';
 
   @override
-  String get invalidPhone => 'Enter a valid phone number (+998...)';
+  String get invalidPhone => 'Enter a valid phone number (+998…)';
 
   @override
   String get invalidNumber => 'Enter a valid number';
@@ -282,7 +420,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verifyEmailBodyMissing =>
-      'We sent a confirmation link to your email. After opening it, tap \"I confirmed\".';
+      'We sent a confirmation link to your email. After opening it, tap “I confirmed”.';
 
   @override
   String get verifyEmailCheck => 'I confirmed';
@@ -314,7 +452,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeNewBody =>
-      'We\'re so glad you joined YordamBor. Find services, offer help, or post a job — we\'re here for you every step of the way.';
+      'We’re so glad you joined YordamBor. Find services, offer help, or post a job — we’re here for you every step of the way.';
 
   @override
   String welcomeLoginTitle(String name) {
@@ -525,7 +663,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareCopied => 'Link copied';
 
   @override
-  String get languageUz => 'O\'zbek';
+  String get languageUz => 'Oʻzbek';
 
   @override
   String get languageRu => 'Русский';
@@ -620,7 +758,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get kelishuvMessageHint => 'Write a message...';
+  String get kelishuvMessageHint => 'Write a message…';
 
   @override
   String get kelishuvIncoming => 'Incoming';
@@ -660,6 +798,261 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileEarningsSub => 'Self-declared income';
+
+  @override
+  String get profileMargin => 'Margin';
+
+  @override
+  String get profileMarginSub => 'Cost & profit';
+
+  @override
+  String get profilePaymentReceipt => 'Payment receipt';
+
+  @override
+  String get profilePaymentReceiptSub => 'PDF receipts for your services';
+
+  @override
+  String get receiptTitle => 'Payment receipts';
+
+  @override
+  String get receiptNew => 'New receipt';
+
+  @override
+  String get receiptEmptyTitle => 'No receipts yet';
+
+  @override
+  String get receiptEmptySubtitle =>
+      'Create a payment receipt for a client and share it as PDF.';
+
+  @override
+  String get receiptDocumentTitle => 'PAYMENT RECEIPT';
+
+  @override
+  String get receiptNumber => 'No.';
+
+  @override
+  String get receiptDate => 'Date';
+
+  @override
+  String get receiptSeller => 'From';
+
+  @override
+  String get receiptBuyer => 'To';
+
+  @override
+  String get receiptBuyerName => 'Client name';
+
+  @override
+  String get receiptBuyerPhone => 'Client phone';
+
+  @override
+  String get receiptPickClient => 'Pick from client book';
+
+  @override
+  String get receiptXizmat => 'Service';
+
+  @override
+  String get receiptLines => 'Line items';
+
+  @override
+  String get receiptLineTitle => 'Description';
+
+  @override
+  String get receiptQuantity => 'Qty';
+
+  @override
+  String get receiptUnitPrice => 'Price';
+
+  @override
+  String get receiptLineTotal => 'Amount';
+
+  @override
+  String get receiptAddLine => 'Add line';
+
+  @override
+  String get receiptDiscount => 'Discount';
+
+  @override
+  String get receiptTaxEnable => 'Add tax';
+
+  @override
+  String get receiptTaxRate => 'Tax rate (%)';
+
+  @override
+  String get receiptTaxLabel => 'Tax label';
+
+  @override
+  String get receiptTaxDisclaimer =>
+      'You choose the tax rate. YordamBor does not provide tax advice.';
+
+  @override
+  String get receiptSubtotal => 'Subtotal';
+
+  @override
+  String get receiptTotal => 'Total';
+
+  @override
+  String get receiptNote => 'Note';
+
+  @override
+  String get receiptDueDate => 'Payment due';
+
+  @override
+  String get receiptCurrency => 'Currency';
+
+  @override
+  String get receiptCurrencyUzs => 'UZS';
+
+  @override
+  String get receiptCurrencyUsd => 'USD';
+
+  @override
+  String get receiptSharePdf => 'Share PDF';
+
+  @override
+  String get receiptPreview => 'Preview PDF';
+
+  @override
+  String get receiptSaved => 'Receipt saved';
+
+  @override
+  String get receiptValidationBuyer => 'Enter client name';
+
+  @override
+  String get receiptValidationXizmat => 'Select a service';
+
+  @override
+  String get receiptValidationLines =>
+      'Add at least one line item with a price';
+
+  @override
+  String get receiptFooterBranding => 'Created with YordamBor';
+
+  @override
+  String get receiptDeleteConfirm => 'Delete this receipt?';
+
+  @override
+  String get receiptTaxPresetCustom => 'Custom';
+
+  @override
+  String get marginTitle => 'Margin';
+
+  @override
+  String get marginUnitsTitle => 'Unit library';
+
+  @override
+  String get marginUnitsSubtitle =>
+      'Reusable units with a cost for quick product math';
+
+  @override
+  String get marginOpenUnits => 'Unit library';
+
+  @override
+  String get marginAddUnit => 'Add unit';
+
+  @override
+  String get marginEditUnit => 'Edit unit';
+
+  @override
+  String get marginUnitName => 'Unit name';
+
+  @override
+  String get marginUnitCost => 'Cost per unit (UZS)';
+
+  @override
+  String get marginUnitBasis => 'Cost basis (optional)';
+
+  @override
+  String get marginUnitBasisHint => 'e.g. per hour, per kg, per item';
+
+  @override
+  String get marginUnitsEmptyTitle => 'No units yet';
+
+  @override
+  String get marginUnitsEmptySub =>
+      'Save units you use often — labor, materials, packaging — with a cost.';
+
+  @override
+  String get marginAddProduct => 'Add product';
+
+  @override
+  String get marginEditProduct => 'Edit product';
+
+  @override
+  String get marginProductName => 'Product name';
+
+  @override
+  String get marginSalePrice => 'Sale price (UZS)';
+
+  @override
+  String get marginCostTotal => 'Total cost';
+
+  @override
+  String get marginProfit => 'Profit';
+
+  @override
+  String get marginMarginPercent => 'Margin';
+
+  @override
+  String get marginCostBreakdown => 'Cost breakdown';
+
+  @override
+  String get marginAddLine => 'Add unit line';
+
+  @override
+  String get marginEditLine => 'Edit unit line';
+
+  @override
+  String get marginLineName => 'Unit / item name';
+
+  @override
+  String get marginLineQuantity => 'Quantity';
+
+  @override
+  String get marginLineUnitCost => 'Cost per unit (UZS)';
+
+  @override
+  String get marginLineQuantityLabel => 'Quantity label (optional)';
+
+  @override
+  String get marginLineQuantityLabelHint => 'e.g. hr, kg, pc';
+
+  @override
+  String get marginSelectUnit => 'Pick from library';
+
+  @override
+  String get marginCustomLine => 'Custom line';
+
+  @override
+  String get marginProductsEmptyTitle => 'No products yet';
+
+  @override
+  String get marginProductsEmptySub =>
+      'Add a product or service to see cost, profit, and margin.';
+
+  @override
+  String get marginNameRequired => 'Enter a name';
+
+  @override
+  String get marginPriceRequired => 'Enter a sale price';
+
+  @override
+  String get marginCostRequired => 'Enter a cost';
+
+  @override
+  String get marginQuantityRequired => 'Enter a quantity';
+
+  @override
+  String get marginAvgMargin => 'Average margin';
+
+  @override
+  String get marginPerProduct => 'per product';
+
+  @override
+  String get marginDeleteProduct => 'Delete product';
+
+  @override
+  String get marginDeleteUnit => 'Delete unit';
 
   @override
   String get profileMyXizmatlar => 'My services';
@@ -864,6 +1257,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationKelishuvComplete => 'Job completed';
 
   @override
+  String get notificationSubsectorNewService =>
+      'New service in your sub-sector';
+
+  @override
+  String get notificationSubsectorDiscount => 'Price drop in your sub-sector';
+
+  @override
+  String get notificationSubsectorHelpPost => 'Help needed in your sub-sector';
+
+  @override
+  String get notificationAlertsTitle => 'Sub-sector alerts';
+
+  @override
+  String get notificationAlertsSubtitle =>
+      'Get notified when services appear, prices drop, or someone needs help.';
+
+  @override
+  String get notificationAlertsAdd => 'Add alert';
+
+  @override
+  String get notificationAlertsEmpty => 'No sub-sector alerts yet';
+
+  @override
+  String get notificationAlertNewService => 'New services';
+
+  @override
+  String get notificationAlertDiscount => 'Price drops';
+
+  @override
+  String get notificationAlertHelpPost => 'Help requests (Yordam kerak)';
+
+  @override
+  String get notificationAlertSeekerHint =>
+      'When you are looking for a service';
+
+  @override
+  String get notificationAlertProviderHint =>
+      'When you can offer help as a provider';
+
+  @override
+  String get notificationAlertsSaved => 'Alert saved';
+
+  @override
+  String get notificationAlertsRemoved => 'Alert removed';
+
+  @override
   String get notificationGeneric => 'Notification';
 
   @override
@@ -902,6 +1341,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get demoKelishuvBlocked => 'Cannot create deals in demo mode';
 
   @override
+  String get demoKelishuvSimulatedNote =>
+      'Demo deal — not saved on the server. The demo provider is shown as having received your offer.';
+
+  @override
   String get genericUser => 'User';
 
   @override
@@ -932,7 +1375,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get xizmatServiceCityLabel => 'City you serve';
 
   @override
-  String get xizmatServiceCityHint => 'e.g. Tashkent (optional)';
+  String get xizmatServiceCityHint => 'Choose where you provide this service';
 
   @override
   String get xizmatContinue => 'Continue';
@@ -965,7 +1408,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cannotRequestOwnXizmat =>
-      'You can\'t send a request to your own service';
+      'You can’t send a request to your own service';
 
   @override
   String get xizmatNotFound => 'Service not found';
@@ -1338,7 +1781,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get xizmatPricingSectionSubtitle =>
-      'Choose negotiable, fixed, or hourly — it\'s up to you.';
+      'Choose negotiable, fixed, or hourly — it’s up to you.';
 
   @override
   String get xizmatPricingNegotiable => 'Negotiable';
@@ -1382,7 +1825,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get xizmatAvailabilitySectionSubtitle =>
-      'Optional — let clients know if you\'re free. Client Book does not change this.';
+      'Optional — let clients know if you’re free. Client Book does not change this.';
 
   @override
   String get xizmatAvailabilityShowLabel => 'Show availability';
@@ -1398,7 +1841,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get xizmatAvailabilityBusy => 'Unavailable';
 
   @override
-  String get xizmatAvailabilityCallMe => 'Call to book';
+  String get xizmatAvailabilityCallMe => 'By appointment';
 
   @override
   String get xizmatAvailabilityFromLabel => 'From (optional)';
@@ -1453,18 +1896,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get xizmatPromisePreset1 =>
-      'If you\'re not satisfied, I\'ll redo the work';
+      'If you’re not satisfied, I’ll redo the work';
 
   @override
   String get xizmatPromisePreset2 =>
-      'Quality guaranteed — if there\'s a problem, I\'ll refund you';
+      'Quality guaranteed — if there’s a problem, I’ll refund you';
 
   @override
   String get xizmatPromisePreset3 => 'On time and at the agreed price';
 
   @override
   String get xizmatPromiseDisclaimer =>
-      'YordamBor does not provide warranties. This is the provider\'s own statement.';
+      'YordamBor does not provide warranties. This is the provider’s own statement.';
 
   @override
   String get xizmatPromiseRequiredError =>
@@ -1648,7 +2091,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get achievementBodyJobs10 =>
-      'Ten completed jobs. You\'re building a real reputation.';
+      'Ten completed jobs. You’re building a real reputation.';
 
   @override
   String get achievementBodyJobs25 =>
@@ -1723,4 +2166,1022 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get legalSafetyBody =>
       'YordamBor connects clients and providers. It does not perform services, hold money, or guarantee outcomes.\n\nPayments\n\nAll payments are agreed directly between you and the other party. Never send full payment upfront to someone you do not trust. Meet in person when possible. YordamBor is not responsible for fraud, poor service, or disputes about money paid outside the app.\n\nYour responsibility\n\nVerify credentials, reviews, and certificates yourself. Use completed deals and reviews to judge providers.\n\nReporting\n\nReport abuse in the app. For product issues, use Help & support.';
+
+  @override
+  String get greetingMorning => 'Good morning';
+
+  @override
+  String get greetingAfternoon => 'Good afternoon';
+
+  @override
+  String get greetingEvening => 'Good evening';
+
+  @override
+  String get greetingNight => 'Hello';
+
+  @override
+  String get greetingWelcomeBack => 'Welcome back';
+
+  @override
+  String get greetingWelcomeNew => 'Welcome';
+
+  @override
+  String greetingWithName(String greeting, String name) {
+    return '$greeting, $name';
+  }
+
+  @override
+  String homeFactAwaitingReply(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count deals are waiting for your reply',
+      one: '$count deal is waiting for your reply',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeFactInProgress(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count deals in progress',
+      one: '$count deal in progress',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeFactNewMember => 'Ask for help or offer a service to begin';
+
+  @override
+  String get continueYourTurn => 'Your turn';
+
+  @override
+  String get continueReplyToDeal => 'Review the terms and reply';
+
+  @override
+  String get continueInProgress => 'In progress';
+
+  @override
+  String get continueMarkDone => 'Confirm when the job is done';
+
+  @override
+  String get continueDraftTitle => 'Unfinished request';
+
+  @override
+  String get continueDraftUntitled => 'Untitled request';
+
+  @override
+  String get continueDraftHint => 'Pick up where you left off';
+
+  @override
+  String get draftDelete => 'Delete draft';
+
+  @override
+  String get draftDeleted => 'Draft deleted';
+
+  @override
+  String get draftRestored => 'Draft restored';
+
+  @override
+  String get draftStartOver => 'Start over';
+
+  @override
+  String get actionUndo => 'Undo';
+
+  @override
+  String get quickAskHelp => 'Ask for help';
+
+  @override
+  String get quickOfferService => 'Offer a service';
+
+  @override
+  String get feedEndTitle => 'You’re all caught up';
+
+  @override
+  String get feedEndAskPrompt => 'Didn’t find the right person?';
+
+  @override
+  String get feedEndJobsHint => 'New requests appear here first';
+
+  @override
+  String get whatsNewTitle => 'What’s new';
+
+  @override
+  String get whatsNewLookTitle => 'A cleaner, calmer look';
+
+  @override
+  String get whatsNewLookBody =>
+      'New type, colors and icons that are easier to read.';
+
+  @override
+  String get whatsNewNextStepTitle => 'Your next step, on Home';
+
+  @override
+  String get whatsNewNextStepBody =>
+      'Deals waiting for you and unfinished requests now come first.';
+
+  @override
+  String get whatsNewDraftsTitle => 'Drafts save themselves';
+
+  @override
+  String get whatsNewDraftsBody =>
+      'Close a request halfway and finish it later.';
+
+  @override
+  String get whatsNewDone => 'Got it';
+
+  @override
+  String get xizmatCardNew => 'New';
+
+  @override
+  String get favoriteAdd => 'Save';
+
+  @override
+  String get favoriteRemove => 'Remove from saved';
+
+  @override
+  String statJobsDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'jobs done',
+      one: 'job done',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get statRating => 'rating';
+
+  @override
+  String get dealBondYou => 'You';
+
+  @override
+  String get dealBondYourTurn => 'Your turn: review the terms and accept';
+
+  @override
+  String dealBondWaiting(String name) {
+    return 'Waiting for $name to reply';
+  }
+
+  @override
+  String get dealBondAgreed => 'Agreed · the work is under way';
+
+  @override
+  String get dealBondDone => 'Done · thank you both';
+
+  @override
+  String get dealBondClosed => 'This deal is closed';
+
+  @override
+  String get undoDeleted => 'Deleted';
+
+  @override
+  String get savedRemoved => 'Removed from saved';
+
+  @override
+  String get yordamKerakTitleRequired => 'Write a short title';
+
+  @override
+  String get yordamKerakMessageRequired => 'Describe what you need';
+
+  @override
+  String get stateErrorTitle => 'Couldn’t load this';
+
+  @override
+  String get stateErrorBody => 'Check your connection and try again.';
+
+  @override
+  String get stateOfflineBanner => 'No internet. Showing saved results.';
+
+  @override
+  String get disabledHintServiceName => 'Add a name of at least 2 letters';
+
+  @override
+  String get disabledHintServiceCity => 'Choose the city you work in';
+
+  @override
+  String get disabledHintServicePhoto => 'Add at least one photo to publish';
+
+  @override
+  String get disabledHintPickSubcategory => 'Choose a speciality first';
+
+  @override
+  String get disabledHintOneAlert => 'Turn on at least one alert';
+
+  @override
+  String get milestoneOverline => 'New milestone';
+
+  @override
+  String get milestoneDismiss => 'Dismiss';
+
+  @override
+  String get notificationsTooltip => 'Notifications';
+
+  @override
+  String a11yRating(String rating) {
+    return 'rated $rating';
+  }
+
+  @override
+  String get a11yNewProvider => 'new on YordamBor';
+
+  @override
+  String get filtersClear => 'Clear filters';
+
+  @override
+  String get actionClose => 'Close';
+
+  @override
+  String get actionMore => 'More options';
+
+  @override
+  String get actionSend => 'Send';
+
+  @override
+  String get actionPreviousMonth => 'Previous month';
+
+  @override
+  String get actionNextMonth => 'Next month';
+
+  @override
+  String get a11yShowPassword => 'Show password';
+
+  @override
+  String get a11yHidePassword => 'Hide password';
+
+  @override
+  String a11yStarRating(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stars',
+      one: '1 star',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get detailPaneEmptyTitle => 'Pick a card';
+
+  @override
+  String get detailPaneEmptyBody => 'It opens here, beside the list.';
+
+  @override
+  String get taklifAskHint => 'What help do you need?';
+
+  @override
+  String get taklifAskSubtitle =>
+      'Describe the job and, if you like, your budget. Work starts once you both agree.';
+
+  @override
+  String get taklifAskSubmit => 'Send request';
+
+  @override
+  String dealOfferAutoCancel(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'Cancelled automatically if there’s no reply in $_temp0';
+  }
+
+  @override
+  String dealOfferReplyWithin(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'Reply within $_temp0, or the offer is cancelled';
+  }
+
+  @override
+  String get dealAcceptedRow => 'Accepted the terms';
+
+  @override
+  String get dealCompletedRow => 'Confirmed the work is done';
+
+  @override
+  String get dealWithdrawOffer => 'Withdraw offer';
+
+  @override
+  String get dealWithdrawTitle => 'Withdraw your offer?';
+
+  @override
+  String get dealWithdrawBody =>
+      'The deal is cancelled. You can send a new offer later.';
+
+  @override
+  String get dealChatOpensOnReply => 'The chat opens once they reply.';
+
+  @override
+  String get dealRejectTitle => 'Decline this offer?';
+
+  @override
+  String get dealRejectBody =>
+      'Add a reason if you like — it stays visible in the deal.';
+
+  @override
+  String get dealRejectCommentLabel => 'Comment (optional)';
+
+  @override
+  String get dealSendNewOffer => 'Send a new offer';
+
+  @override
+  String get dealClosedNewOfferHint =>
+      'Still need this service? Send a new offer and the discussion starts afresh.';
+
+  @override
+  String get archiveTabNeeded => 'Needed help';
+
+  @override
+  String get archiveTabProvided => 'Provided help';
+
+  @override
+  String get archiveNeededEmpty =>
+      'Deals where you asked for help will appear here.';
+
+  @override
+  String get archiveProvidedEmpty =>
+      'Deals where you helped someone will appear here.';
+
+  @override
+  String achievementsProgress(int unlocked, int total) {
+    return '$unlocked of $total unlocked';
+  }
+
+  @override
+  String get achievementsShow => 'Show all';
+
+  @override
+  String get achievementsHide => 'Hide';
+
+  @override
+  String get yordamKerakCityRequired => 'Select a city';
+
+  @override
+  String get taklifContactTitle => 'Your contact details';
+
+  @override
+  String get taklifContactNote =>
+      'The other side sees these in the deal, to reach you.';
+
+  @override
+  String get taklifFirstNameLabel => 'First name';
+
+  @override
+  String get taklifLastNameLabel => 'Family name';
+
+  @override
+  String get taklifFirstNameRequired => 'Enter your first name';
+
+  @override
+  String get taklifPhoneRequired => 'Enter your phone number';
+
+  @override
+  String get taklifMessageOptionalLabel => 'Message (optional)';
+
+  @override
+  String get dealContactTitle => 'Contact details';
+
+  @override
+  String get dealContactSent => 'You shared your contact details';
+
+  @override
+  String get dealsSectionTitle => 'Your deals';
+
+  @override
+  String get dealStateYourTurn => 'In discussion · your turn';
+
+  @override
+  String get dealStateSent => 'Sent · waiting for a reply';
+
+  @override
+  String get dealStateInProgress => 'Accepted · under way';
+
+  @override
+  String get dealStateAwaitingConfirm =>
+      'Done on your side · waiting for confirmation';
+
+  @override
+  String get actionAdd => 'Add';
+
+  @override
+  String get businessEarningsTitle => 'Earned this month';
+
+  @override
+  String get businessEarningsSee => 'See earnings';
+
+  @override
+  String get businessStatWaitingLabel => 'waiting for you';
+
+  @override
+  String get businessNextStepsTitle => 'Get more clients';
+
+  @override
+  String businessNextStepsProgress(int done, int total) {
+    return '$done of $total';
+  }
+
+  @override
+  String get businessStepPhotos => 'Add 3 or more photos';
+
+  @override
+  String get businessStepPhotosWhy =>
+      'Services with photos get chosen more often';
+
+  @override
+  String get businessStepPrice => 'Set a price';
+
+  @override
+  String get businessStepPriceWhy =>
+      'A clear price means fewer questions before the deal';
+
+  @override
+  String get businessStepAvailability => 'Show when you’re free';
+
+  @override
+  String get businessStepAvailabilityWhy =>
+      'Clients write to people who can come soon';
+
+  @override
+  String get businessStepShare => 'Share your service link';
+
+  @override
+  String get businessStepShareWhy =>
+      'Send it on Telegram so friends can recommend you';
+
+  @override
+  String get businessStartTitle => 'Turn your skills into income';
+
+  @override
+  String get businessStartStep1 => 'Describe your service and price';
+
+  @override
+  String get businessStartStep2 => 'Add photos and your city';
+
+  @override
+  String get businessStartStep3 => 'Get requests and agree on the deal';
+
+  @override
+  String businessServicesCount(int count, int max) {
+    return 'My services · $count of $max';
+  }
+
+  @override
+  String xizmatLimitReached(int max) {
+    return 'You can have up to $max services. Edit or remove one to add another.';
+  }
+
+  @override
+  String get calendarStatusCaption => 'Your status · clients see it';
+
+  @override
+  String get calendarLegendNeedHelp => 'Help I get';
+
+  @override
+  String get calendarLegendGiveHelp => 'Help I give';
+
+  @override
+  String get calendarLegendPersonal => 'Personal';
+
+  @override
+  String get calendarHintMark =>
+      'Tap a day and mark it free or busy. Add hours if it’s only part of the day; otherwise it’s the whole working day.';
+
+  @override
+  String get calendarHintClient =>
+      'Reminders of your deals: help you get and help you give. Tap a day for details.';
+
+  @override
+  String get calendarDayNotMarked => 'Not marked';
+
+  @override
+  String get calendarWholeWorkingDay => 'Whole working day';
+
+  @override
+  String get calendarAddHours => 'Add hours';
+
+  @override
+  String get calendarRemoveHours => 'Remove these hours';
+
+  @override
+  String get calendarHoursFrom => 'From';
+
+  @override
+  String get calendarHoursTo => 'To';
+
+  @override
+  String get calendarDayEvents => 'Reminders this day';
+
+  @override
+  String get workingHoursTitle => 'Working hours';
+
+  @override
+  String get workingHoursHint => 'Clients see them on your services';
+
+  @override
+  String get workingHoursSheetHint =>
+      'Your usual working day. By default 9:00–13:00 and 14:00–18:00.';
+
+  @override
+  String get workingHoursReset => 'Back to 9–13 and 14–18';
+
+  @override
+  String get workingHoursInvalid =>
+      'Check the hours: each one starts before it ends, and they don’t overlap.';
+
+  @override
+  String get workingHoursSaved => 'Working hours saved';
+
+  @override
+  String get xizmatOwnHoursTitle => 'Own hours for this service';
+
+  @override
+  String xizmatOwnHoursOff(String hours) {
+    return 'Same as your profile: $hours';
+  }
+
+  @override
+  String get xizmatHoursInCalendar =>
+      'You change working hours in the calendar.';
+
+  @override
+  String get xizmatHoursOpenCalendar => 'Open calendar';
+
+  @override
+  String get xizmatScheduleTitle => 'Hours and availability';
+
+  @override
+  String get xizmatScheduleNextDays => 'Next two weeks';
+
+  @override
+  String get xizmatTodayFree => 'Free today';
+
+  @override
+  String get xizmatTodayBusy => 'Busy today';
+
+  @override
+  String xizmatTodayBusyAt(String hours) {
+    return 'Busy today: $hours';
+  }
+
+  @override
+  String xizmatTodayFreeAt(String hours) {
+    return 'Free today: $hours';
+  }
+
+  @override
+  String get calendarNoRemindersDay => 'No reminders on this day.';
+
+  @override
+  String get sampleTag => 'Sample';
+
+  @override
+  String get demoDealNote =>
+      'This is a sample: the deal doesn’t go to a real person.';
+
+  @override
+  String get feedInviteProvidersTitle => 'Be one of the first providers';
+
+  @override
+  String get feedInviteProvidersBody =>
+      'Add your service, and clients will see it first.';
+
+  @override
+  String get feedInviteAskTitle => 'Be the first to ask';
+
+  @override
+  String get feedInviteAskBody =>
+      'Say what you need, and providers will see your request.';
+
+  @override
+  String get feedInviteProvidersAction => 'Add your service';
+
+  @override
+  String get feedInviteAskAction => 'Describe what you need';
+
+  @override
+  String get sampleFindProvider => 'Find a provider';
+
+  @override
+  String get sampleFindProviderHint =>
+      'This is a sample. Describe the job, and real providers will see it.';
+
+  @override
+  String get sampleAlertNewServices =>
+      'Tell me when a provider joins in this field';
+
+  @override
+  String get sampleRequestPosted => 'Request posted — providers will see it.';
+
+  @override
+  String get sampleRequestTitle => 'This is a sample request';
+
+  @override
+  String get sampleRequestBody =>
+      'Real requests will show up here. Turn on alerts and we’ll tell you when someone asks for help in this field.';
+
+  @override
+  String get sampleAlertHelpPosts => 'Alert me to new requests';
+
+  @override
+  String get sampleAlertOn =>
+      'Done — we’ll tell you about new requests in this field.';
+
+  @override
+  String get foundingBadge => 'First on YordamBor';
+
+  @override
+  String get foundingBadgeNote =>
+      'The first providers get the “First on YordamBor” badge.';
+
+  @override
+  String get inviteTitle => 'Invite providers';
+
+  @override
+  String get inviteBody =>
+      'Know a good electrician, tutor or salon? Invite them: the more real providers, the more clients come.';
+
+  @override
+  String get inviteShare => 'Share an invite';
+
+  @override
+  String get invitePrepare => 'Prepare a service for someone';
+
+  @override
+  String get inviteMessage =>
+      'Join me on YordamBor: clients there find providers across Uzbekistan. Adding your service is free, and the first providers get the “First on YordamBor” badge.';
+
+  @override
+  String invitePersonalMessage(String name, String trade, String city) {
+    return '$name, hello! I’m on YordamBor, where clients find providers. Add your service “$trade” in $city: it’s free, and the first providers get the “First on YordamBor” badge.';
+  }
+
+  @override
+  String inviteOpenLink(String link) {
+    return 'Open to start: $link';
+  }
+
+  @override
+  String inviteAppLink(String link) {
+    return 'The app: $link';
+  }
+
+  @override
+  String get invitePrepareTitle => 'A service for someone you know';
+
+  @override
+  String get invitePrepareBody =>
+      'Pick their trade and city. They get a link that opens “New service” with these filled in; they publish it themselves.';
+
+  @override
+  String get invitePersonName => 'Their name (optional)';
+
+  @override
+  String get invitePersonPhone => 'Their phone (optional)';
+
+  @override
+  String get invitePickTrade => 'Trade';
+
+  @override
+  String get inviteSendWhatsApp => 'Send on WhatsApp';
+
+  @override
+  String get inviteSendSms => 'Send by SMS';
+
+  @override
+  String get inviteSendOther => 'Another app';
+
+  @override
+  String get inviteNeedTradeCity => 'Choose the trade and the city';
+
+  @override
+  String get onbGoalTitle => 'What brings you to YordamBor?';
+
+  @override
+  String get onbGoalNeedHelp => 'I need help';
+
+  @override
+  String get onbGoalNeedHelpSub => 'Find a provider or describe a job';
+
+  @override
+  String get onbGoalOffer => 'I offer services';
+
+  @override
+  String get onbGoalOfferSub => 'Get clients and earn';
+
+  @override
+  String get onbGoalBoth => 'Both';
+
+  @override
+  String get onbGoalBothSub => 'I help, and sometimes I need help';
+
+  @override
+  String get onbCityTitle => 'Your city';
+
+  @override
+  String get onbCitySub => 'We’ll show what’s near you.';
+
+  @override
+  String get onbNext => 'Next';
+
+  @override
+  String get onbDone => 'Done';
+
+  @override
+  String get onbSkip => 'Skip';
+
+  @override
+  String onbStep(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get onbIntro1Title => 'Services near you';
+
+  @override
+  String get onbIntro1Body => 'Specialists and organizations across Uzbekistan.';
+
+  @override
+  String get onbIntro2Title => 'Need help? Just ask';
+
+  @override
+  String get onbIntro2Body => 'Describe the task, and providers will reach out.';
+
+  @override
+  String get onbIntro3Title => 'Offer your services';
+
+  @override
+  String get onbIntro3Body => 'As an individual or an organization. Free.';
+
+  @override
+  String get onbIntro4Title => 'Fair and calm';
+
+  @override
+  String get onbIntro4Body =>
+      'A deal starts when both sides agree. Reviews come only after finished work. You pay as agreed.';
+
+  @override
+  String get onbTypeTitle => 'How do you work?';
+
+  @override
+  String get onbTypeSub =>
+      'Clients see this on your services. You can change it later.';
+
+  @override
+  String get onbTypeIndividualSub => 'A tradesperson, tutor or freelancer';
+
+  @override
+  String get onbTypeInstitutionSub =>
+      'A company, salon, clinic or training centre';
+
+  @override
+  String onbReadyToOffer(String action) {
+    return 'Whenever you’re ready, tap “$action”.';
+  }
+
+  @override
+  String get inviteAction => 'Invite a provider you know';
+
+  @override
+  String invitePersonalMessageNoName(String trade, String city) {
+    return 'Hello! I’m on YordamBor, where clients find providers. Add your service “$trade” in $city: it’s free, and the first providers get the “First on YordamBor” badge.';
+  }
+
+  @override
+  String get joinTitle => 'You’re invited to YordamBor';
+
+  @override
+  String get joinBody =>
+      'Add your service — it’s free. Clients find providers here by trade and city.';
+
+  @override
+  String get joinLookAround => 'Look around first';
+
+  @override
+  String get onbStart => 'Get started';
+
+  @override
+  String get welcomeFindHelp => 'Find help';
+
+  @override
+  String get welcomeGiveHelp => 'Offer help';
+
+  @override
+  String get onbTileLawyer => 'Lawyer';
+
+  @override
+  String get onbTileBeauty => 'Beauty';
+
+  @override
+  String get onbTileCatering => 'Catering';
+
+  @override
+  String get onbTileVet => 'Vet';
+
+  @override
+  String get onbTileCleaning => 'Cleaning';
+
+  @override
+  String get onbTileElectrician => 'Electrician';
+
+  @override
+  String get onbTilePlumber => 'Plumber';
+
+  @override
+  String get onbTileDental => 'Dental clinic';
+
+  @override
+  String onbMoreServices(int count) {
+    return 'and $count+ more kinds of service';
+  }
+
+  @override
+  String get onbIllRequestTitle => 'The kitchen tap is leaking';
+
+  @override
+  String get onbIllToday => 'Today';
+
+  @override
+  String get onbIllNewOffers => '2 new offers';
+
+  @override
+  String get onbIllName1 => 'Aziz';
+
+  @override
+  String get onbIllName2 => 'Dilnoza';
+
+  @override
+  String get onbIllOffer1 => 'I can come today at 6 pm';
+
+  @override
+  String get onbIllOffer2 => 'Free tomorrow morning';
+
+  @override
+  String get onbIllNewRequest => 'New request';
+
+  @override
+  String get onbIllSocket => 'Replace a socket';
+
+  @override
+  String get onbTileTutor => 'Tutor';
+
+  @override
+  String get onbTileAuto => 'Car repair';
+
+  @override
+  String get searchTooltip => 'Search';
+
+  @override
+  String get searchHint => 'Name, organization or service';
+
+  @override
+  String get searchPrompt =>
+      'Type a provider’s name, an organization or a service, such as “plumber”.';
+
+  @override
+  String get searchNoResults => 'Nothing found';
+
+  @override
+  String get searchNoResultsHint =>
+      'Post a request, and providers will reach out.';
+
+  @override
+  String get searchOffline =>
+      'No connection: showing only what’s on your phone.';
+
+  @override
+  String get onbTileRenovation => 'Renovation';
+
+  @override
+  String get onbTileFitness => 'Fitness';
+
+  @override
+  String get onbTileTranslator => 'Translator';
+
+  @override
+  String get onbTileBarber => 'Barber';
+
+  @override
+  String get onbTileMusic => 'Music lessons';
+
+  @override
+  String get onbTileStylist => 'Stylist';
+
+  @override
+  String get onbTileKindergarten => 'Kindergarten';
+
+  @override
+  String get onbIllTutorTitle => 'English and IELTS';
+
+  @override
+  String get onbIllStylistRequest => 'A look for a wedding';
+
+  @override
+  String onbKindsChip(int count) {
+    return '+$count kinds of service';
+  }
+
+  @override
+  String get onbIllDentalRequestTitle => 'I have a toothache';
+
+  @override
+  String get onbTileDentist => 'Dentist';
+
+  @override
+  String get onbIllDentalOffer1 => 'We can see you today at 4 pm';
+
+  @override
+  String get onbIllDentalOffer2 => 'I can see you tomorrow morning';
+
+  @override
+  String get xizmatStatNoReviews => 'No reviews';
+
+  @override
+  String get xizmatStatPrice => 'price';
+
+  @override
+  String get xizmatStatPerHour => 'per hour';
+
+  @override
+  String get xizmatStatNegotiable => 'Negotiable';
+
+  @override
+  String get xizmatPromiseOwnWords => 'In the provider’s own words';
+
+  @override
+  String get xizmatAboutTitle => 'About this service';
+
+  @override
+  String get actionReadMore => 'Read more';
+
+  @override
+  String get actionReadLess => 'Show less';
+
+  @override
+  String reviewsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reviews',
+      one: '$count review',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reviewsSeeAll(int count) {
+    return 'All reviews ($count)';
+  }
+
+  @override
+  String get reviewsFilterAll => 'All';
+
+  @override
+  String get reviewsFilterEmpty => 'No reviews with this rating yet';
+
+  @override
+  String reviewsBarA11y(int stars, int count) {
+    return 'Rating $stars: $count';
+  }
+
+  @override
+  String get xizmatHowTitle => 'How it works';
+
+  @override
+  String get xizmatHowAsk => 'Send a request';
+
+  @override
+  String get xizmatHowChat => 'Chat in the app';
+
+  @override
+  String get xizmatHowAgree => 'Agree on the job';
+
+  @override
+  String providerMemberSince(String year) {
+    return 'Member since $year';
+  }
+
+  @override
+  String providerServicesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count services',
+      one: '$count service',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xizmatAboutHint =>
+      'What you do, how you work, what you promise clients';
 }

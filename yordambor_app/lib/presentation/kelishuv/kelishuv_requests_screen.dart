@@ -7,6 +7,7 @@ import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_load_error_retry.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/presentation/kelishuv/widgets/kelishuv_list_tile.dart';
 
 class KelishuvRequestsScreen extends ConsumerWidget {
@@ -42,7 +43,7 @@ class KelishuvRequestsScreen extends ConsumerWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   YbEmptyState(
-                    icon: Icons.send_outlined,
+                    icon: YbIcons.send,
                     title: strings.kelishuvRequests,
                     subtitle: strings.kelishuvRequestsSub,
                   ),

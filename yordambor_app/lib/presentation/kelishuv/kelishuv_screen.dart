@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yordambor/application/providers/growth_providers.dart';
 import 'package:yordambor/application/providers/app_review_service.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
@@ -12,27 +13,34 @@ import 'package:yordambor/presentation/reminders/widgets/reminder_status_actions
 import 'package:yordambor/application/providers/review_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
+import 'package:yordambor/core/utils/demo_ids.dart';
 import 'package:yordambor/core/design_system/app_elevation.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_confirm_dialog.dart';
+import 'package:yordambor/core/design_system/widgets/yb_deal_bond.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/widgets/yb_status_badge.dart';
 import 'package:yordambor/core/design_system/widgets/yb_surface_card.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/kelishuv/kelishuv_repository.dart';
 import 'package:yordambor/data/safety/report_repository.dart';
 import 'package:yordambor/domain/growth/app_review_prompt.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_message.dart';
+import 'package:yordambor/presentation/kelishuv/decline_offer_sheet.dart';
 import 'package:yordambor/presentation/kelishuv/edit_kelishuv_terms_sheet.dart';
 import 'package:yordambor/presentation/kelishuv/kelishuv_realtime_listener.dart';
 import 'package:yordambor/presentation/kelishuv/repeat_booking_flow.dart';
 import 'package:yordambor/presentation/kelishuv/review_sheet.dart';
+import 'package:yordambor/presentation/kelishuv/taklif_sheet.dart';
 import 'package:yordambor/presentation/shared/yb_safety_banner.dart';
 import 'package:yordambor/presentation/safety/safety_actions_sheet.dart';
+import 'package:yordambor/core/utils/money_format.dart';
 
 class KelishuvScreen extends ConsumerStatefulWidget {
   const KelishuvScreen({super.key, required this.kelishuvId});
@@ -50,6 +58,16 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
   bool _reviewPromptShown = false;
   bool _showTermsChangedBanner = false;
   String? _providerToolsSyncedForKelishuv;
+
+  /// The status shown last, so a change made while the screen is open plays
+  /// on the bond (and the review waits for the "done" moment to finish).
+  KelishuvStatus? _shownStatus;
+  bool _celebrating = false;
+
+  /// Set when this person finishes the deal as the provider: the store may
+  /// ask for a rating once the celebration is over (manual FB-05). Clients
+  /// are asked after a five-star review instead.
+  bool _storePromptPending = false;
 
   @override
   void dispose() {
@@ -81,7 +99,8 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
 
     return [
       IconButton(
-        icon: const Icon(Icons.more_vert),
+        tooltip: ref.read(appStringsProvider).actionMore,
+        icon: const Icon(YbIcons.moreVertFilled),
         onPressed: () => showSafetyActionsSheet(
           context,
           ref,
@@ -168,44 +187,38 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
       title: 'Ish bajarildimi?',
       message: otherMarked
           ? 'Siz tasdiqlasangiz, kelishuv yakunlanadi.'
-          : 'Ish to\'liq bajarilganini tasdiqlaysizmi? Ikkinchi tomon ham tasdiqlashi kerak.',
+          : 'Ish toʻliq bajarilganini tasdiqlaysizmi? Ikkinchi tomon ham tasdiqlashi kerak.',
       confirmLabel: 'Bajarildi',
     );
     if (!ok || !mounted) return;
 
+    final wasWaitingForOther = otherMarked;
+    // Set before the status changes: the celebration may end (or be skipped
+    // with reduced motion) before this method resumes.
+    _storePromptPending =
+        wasWaitingForOther && detail != null && !detail.isClient(userId);
     try {
-      final wasWaitingForOther = otherMarked;
       await ref
           .read(kelishuvRepositoryProvider)
           .markBajarildi(widget.kelishuvId, userId);
+      if (!mounted) return;
+      if (wasWaitingForOther) await recordKelishuvCompletedForReview(ref);
       _refreshKelishuvState();
       await ref.read(kelishuvDetailProvider(widget.kelishuvId).future);
       final detail = ref.read(kelishuvDetailProvider(widget.kelishuvId)).valueOrNull;
       final xizmatId = detail?.xizmatId;
       if (xizmatId != null) {
         ref.invalidate(xizmatDetailProvider(xizmatId));
+        // A new milestone, if any, waits as a card on home.
         ref.invalidate(providerGrowthProvider);
-        final growth = await ref.read(providerGrowthProvider.future);
-        if (mounted && growth != null) {
-          await showPendingAchievementCelebrations(
-            context,
-            ref,
-            growth.unlockedIds,
-          );
-        }
       }
       if (wasWaitingForOther &&
           detail?.status == KelishuvStatus.bajarildi &&
           mounted) {
-        await recordKelishuvCompletedForReview(ref);
-        await maybePromptAppReview(
-          context,
-          ref,
-          trigger: AppReviewTrigger.completedDeal,
-        );
         await _completeLinkedAppointment(detail!, userId);
       }
     } on KelishuvFailure catch (error) {
+      _storePromptPending = false;
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(error.message)),
@@ -214,12 +227,17 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     }
   }
 
-  Future<void> _cancel(String userId) async {
+  Future<void> _cancel(String userId, {bool withdraw = false}) async {
+    final strings = ref.read(appStringsProvider);
     final ok = await showYbConfirmDialog(
       context,
-      title: 'Bekor qilasizmi?',
-      message: 'Kelishuv bekor qilinadi. Bu amalni qaytarib bo\'lmaydi.',
-      confirmLabel: 'Bekor qilish',
+      title: withdraw ? strings.dealWithdrawTitle : 'Bekor qilasizmi?',
+      message: withdraw
+          ? strings.dealWithdrawBody
+          : 'Kelishuv bekor qilinadi. Bu amalni qaytarib boʻlmaydi.',
+      confirmLabel:
+          withdraw ? strings.dealWithdrawOffer : strings.kelishuvCancel,
+      cancelLabel: strings.actionCancel,
       isDestructive: true,
     );
     if (!ok || !mounted) return;
@@ -240,18 +258,21 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     }
   }
 
+  /// Declines with an optional reason, which stays in the deal's messages.
   Future<void> _reject(String userId) async {
-    final ok = await showYbConfirmDialog(
+    final comment = await showDeclineOfferSheet(
       context,
-      title: 'Rad etasizmi?',
-      message: 'Taklif rad etiladi.',
-      confirmLabel: 'Rad etish',
-      isDestructive: true,
+      ref.read(appStringsProvider),
     );
-    if (!ok || !mounted) return;
+    if (comment == null || !mounted) return;
 
+    final repo = ref.read(kelishuvRepositoryProvider);
     try {
-      await ref.read(kelishuvRepositoryProvider).reject(widget.kelishuvId, userId);
+      if (comment.trim().isNotEmpty) {
+        await repo.sendMessage(widget.kelishuvId, comment);
+        ref.invalidate(kelishuvMessagesProvider(widget.kelishuvId));
+      }
+      await repo.reject(widget.kelishuvId, userId);
       _refreshKelishuvState();
     } on KelishuvFailure catch (error) {
       if (mounted) {
@@ -323,7 +344,59 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     await _handleKelishuvSync(kelishuv, userId);
   }
 
+  /// The ring has closed and the stars have risen, or the person tapped to
+  /// skip: the review may follow.
+  void _onDealCelebrated() {
+    if (!mounted) return;
+    if (_celebrating) setState(() => _celebrating = false);
+    if (_storePromptPending) {
+      _storePromptPending = false;
+      maybePromptAppReview(
+        context,
+        ref,
+        trigger: AppReviewTrigger.completedDeal,
+      );
+    }
+  }
+
+  YbBondState _bondState(KelishuvStatus status) => switch (status) {
+        KelishuvStatus.muzokarada => YbBondState.negotiating,
+        KelishuvStatus.jarayonda => YbBondState.agreed,
+        KelishuvStatus.bajarildi => YbBondState.done,
+        _ => YbBondState.closed,
+      };
+
+  /// One line that says whose turn it is.
+  String _turnLine(
+    AppStrings strings,
+    Kelishuv kelishuv,
+    String? userId,
+    String otherName,
+  ) {
+    switch (kelishuv.status) {
+      case KelishuvStatus.muzokarada:
+        final myTurn = userId != null &&
+            kelishuv.isParty(userId) &&
+            !kelishuv.hasAccepted(userId);
+        return myTurn
+            ? strings.dealBondYourTurn
+            : strings.dealBondWaiting(otherName);
+      case KelishuvStatus.jarayonda:
+        return strings.dealBondAgreed;
+      case KelishuvStatus.bajarildi:
+        return strings.dealBondDone;
+      default:
+        return strings.dealBondClosed;
+    }
+  }
+
+  static String _initial(String name) {
+    final trimmed = name.trim();
+    return trimmed.isEmpty ? '?' : trimmed.characters.first.toUpperCase();
+  }
+
   Future<void> _maybePromptReview(Kelishuv kelishuv, String? userId) async {
+    if (_celebrating) return;
     if (_reviewPromptShown || userId == null) return;
     if (kelishuv.status != KelishuvStatus.bajarildi) return;
     if (!kelishuv.isClient(userId)) return;
@@ -360,18 +433,30 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
         ),
         body: detailAsync.when(
           loading: () => const YbSkeletonList(count: 2),
-          error: (error, _) => YbEmptyState(
-            icon: Icons.error_outline_rounded,
-            title: strings.kelishuvTitle,
-            subtitle: '$error',
+          error: (_, _) => YbEmptyState(
+            icon: YbIcons.cloudOff,
+            title: strings.stateErrorTitle,
+            subtitle: strings.stateErrorBody,
+            actionLabel: strings.actionRetry,
+            onAction: () =>
+                ref.invalidate(kelishuvDetailProvider(widget.kelishuvId)),
           ),
           data: (kelishuv) {
             if (kelishuv == null) {
               return YbEmptyState(
-                icon: Icons.handshake_outlined,
+                icon: YbIcons.handshake,
                 title: strings.kelishuvNotFound,
                 subtitle: strings.kelishuvNotFound,
               );
+            }
+
+            final previousStatus = _shownStatus;
+            _shownStatus = kelishuv.status;
+            if (previousStatus != null &&
+                previousStatus != KelishuvStatus.bajarildi &&
+                kelishuv.status == KelishuvStatus.bajarildi &&
+                !AppMotion.reduced(context)) {
+              _celebrating = true;
             }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -387,6 +472,26 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
               kelishuv.durationMinutes,
             );
             final colors = context.ybColors;
+            // You first, then the other person, instead of "Party A / B".
+            final isPartyA = userId != null && userId == kelishuv.partyAId;
+            final isPartyB = userId != null && userId == kelishuv.partyBId;
+            final named = isPartyA || isPartyB;
+            final firstLabel = named
+                ? strings.dealBondYou
+                : (kelishuv.partyAName ?? strings.kelishuvPartyA);
+            final secondLabel = named
+                ? otherName
+                : (kelishuv.partyBName ?? strings.kelishuvPartyB);
+            final firstAccepted =
+                isPartyB ? kelishuv.acceptB : kelishuv.acceptA;
+            final secondAccepted =
+                isPartyB ? kelishuv.acceptA : kelishuv.acceptB;
+            final firstDone = isPartyB ? kelishuv.completeB : kelishuv.completeA;
+            final secondDone =
+                isPartyB ? kelishuv.completeA : kelishuv.completeB;
+            // An offer waits 10 days for an answer, then lapses.
+            final daysLeft = kelishuv.daysLeftToRespond(DateTime.now());
+            final iAmWaiting = userId != null && kelishuv.hasAccepted(userId);
 
             return Column(
               children: [
@@ -399,10 +504,48 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            YbStatusBadge(
-                              label: strings.kelishuvStatusLabel(kelishuv.status),
-                              tone: _toneForStatus(kelishuv.status),
+                            // The bond: who is in this deal and where it
+                            // stands; tap to skip the "done" moment.
+                            GestureDetector(
+                              onTap: _celebrating ? _onDealCelebrated : null,
+                              child: YbDealBond(
+                                state: _bondState(kelishuv.status),
+                                myLabel: strings.dealBondYou,
+                                otherInitial: _initial(otherName),
+                                onCelebrationDone: _onDealCelebrated,
+                              ),
                             ),
+                            const SizedBox(height: AppSpacing.sm),
+                            Semantics(
+                              liveRegion: true,
+                              child: Text(
+                                _turnLine(strings, kelishuv, userId, otherName),
+                                textAlign: TextAlign.center,
+                                style: AppTypography.body.copyWith(
+                                  color: colors.ink,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            if (daysLeft != null && named) ...[
+                              const SizedBox(height: AppSpacing.xs),
+                              Text(
+                                iAmWaiting
+                                    ? strings.dealOfferAutoCancel(daysLeft)
+                                    : strings.dealOfferReplyWithin(daysLeft),
+                                textAlign: TextAlign.center,
+                                style: AppTypography.caption.copyWith(
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                            ],
+                            if (isSimulatedKelishuvId(widget.kelishuvId)) ...[
+                              const SizedBox(height: AppSpacing.md),
+                              YbInlineMessage(
+                                message: strings.demoDealNote,
+                                tone: YbInlineMessageTone.info,
+                              ),
+                            ],
                             if (kelishuv.status == KelishuvStatus.muzokarada ||
                                 kelishuv.status == KelishuvStatus.jarayonda) ...[
                               const SizedBox(height: AppSpacing.md),
@@ -437,11 +580,18 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                               const SizedBox(height: AppSpacing.md),
                               Text(
                                 strings.kelishuvDetailPrice(
-                                  kelishuv.price!.toStringAsFixed(0),
-                                  kelishuv.currency ?? 'UZS',
+                                  groupThousands(
+                                    kelishuv.price!,
+                                    languageCode: strings.languageCode,
+                                  ),
+                                  currencyUnit(
+                                    kelishuv.currency,
+                                    languageCode: strings.languageCode,
+                                  ),
                                 ),
-                                style: AppTypography.body.copyWith(
-                                  color: AppColors.primary,
+                                // A number people act on: 17 pt, tabular.
+                                style: AppTypography.price.copyWith(
+                                  color: context.ybColors.ink,
                                 ),
                               ),
                             ],
@@ -463,32 +613,32 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                               ),
                             ],
                             const SizedBox(height: AppSpacing.lg),
-                            Row(
-                              children: [
+                            _ChipRow(
+                              caption: strings.dealAcceptedRow,
+                              chips: [
                                 _AcceptChip(
-                                  label: strings.kelishuvPartyA,
-                                  accepted: kelishuv.acceptA,
+                                  label: firstLabel,
+                                  accepted: firstAccepted,
                                 ),
-                                const SizedBox(width: AppSpacing.sm),
                                 _AcceptChip(
-                                  label: strings.kelishuvPartyB,
-                                  accepted: kelishuv.acceptB,
+                                  label: secondLabel,
+                                  accepted: secondAccepted,
                                 ),
                               ],
                             ),
                             if (kelishuv.status == KelishuvStatus.jarayonda ||
                                 kelishuv.status == KelishuvStatus.bajarildi) ...[
                               const SizedBox(height: AppSpacing.md),
-                              Row(
-                                children: [
+                              _ChipRow(
+                                caption: strings.dealCompletedRow,
+                                chips: [
                                   _AcceptChip(
-                                    label: strings.kelishuvCompleteA,
-                                    accepted: kelishuv.completeA,
+                                    label: firstLabel,
+                                    accepted: firstDone,
                                   ),
-                                  const SizedBox(width: AppSpacing.sm),
                                   _AcceptChip(
-                                    label: strings.kelishuvCompleteB,
-                                    accepted: kelishuv.completeB,
+                                    label: secondLabel,
+                                    accepted: secondDone,
                                   ),
                                 ],
                               ),
@@ -506,7 +656,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                               const SizedBox(height: AppSpacing.md),
                               YbStatusBadge(
                                 label: strings.kelishuvDualAccepted,
-                                tone: YbStatusTone.success,
+                                tone: YbStatusTone.primary,
                               ),
                             ],
                           ],
@@ -530,7 +680,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                                     kelishuv.isClient(userId))
                                   YbSecondaryButton(
                                     label: strings.reviewsRate,
-                                    icon: Icons.star_outline,
+                                    icon: YbIcons.star,
                                     onPressed: kelishuv.xizmatId == null
                                         ? null
                                         : () => showReviewSheet(
@@ -547,7 +697,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                                     const SizedBox(height: AppSpacing.sm),
                                   YbPrimaryButton(
                                     label: strings.repeatBook,
-                                    icon: Icons.replay_outlined,
+                                    icon: YbIcons.replay,
                                     onPressed: kelishuv.xizmatId == null
                                         ? null
                                         : () => openRepeatBookFlow(
@@ -560,6 +710,19 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                               ],
                             );
                           },
+                        ),
+                      ],
+                      // The card the sender attached: the other side can
+                      // call straight from here.
+                      if (kelishuv.contact != null) ...[
+                        const SizedBox(height: AppSpacing.lg),
+                        _DealContactCard(
+                          contact: kelishuv.contact!,
+                          title: userId == kelishuv.initiatorId
+                              ? strings.dealContactSent
+                              : strings.dealContactTitle,
+                          callLabel: strings.userProfileCall,
+                          canCall: userId != kelishuv.initiatorId,
                         ),
                       ],
                       const SizedBox(height: AppSpacing.xl),
@@ -581,7 +744,12 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                           padding: EdgeInsets.all(AppSpacing.lg),
                           child: LinearProgressIndicator(),
                         ),
-                        error: (error, _) => Text('$error'),
+                        error: (_, _) => Text(
+                          strings.profileSectionLoadFailed,
+                          style: AppTypography.caption.copyWith(
+                            color: colors.textSecondary,
+                          ),
+                        ),
                         data: (messages) {
                           if (messages.isEmpty &&
                               (kelishuv.message == null ||
@@ -610,7 +778,17 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                     ],
                   ),
                 ),
-                _buildComposer(context, kelishuv, userId, strings),
+                _buildComposer(
+                  context,
+                  kelishuv,
+                  userId,
+                  strings,
+                  otherSpoke: userId != null &&
+                      (messagesAsync.valueOrNull
+                              ?.any((message) => message.senderId != userId) ??
+                          false),
+                  otherName: otherName,
+                ),
               ],
             );
           },
@@ -623,18 +801,32 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     BuildContext context,
     Kelishuv kelishuv,
     String? userId,
-    AppStrings strings,
-  ) {
+    AppStrings strings, {
+    required bool otherSpoke,
+    required String otherName,
+  }) {
     final currentUserId = userId;
     final isParticipant =
         currentUserId != null && kelishuv.isParty(currentUserId);
+    final negotiating = kelishuv.status == KelishuvStatus.muzokarada;
+
+    // The sender's offer stands until the other side answers: accepts,
+    // declines, offers new terms or writes. Until then the sender only
+    // waits (or withdraws); after it, either side may accept, decline or
+    // edit until both have accepted.
+    final waiting = currentUserId != null &&
+        isParticipant &&
+        negotiating &&
+        kelishuv.hasAccepted(currentUserId) &&
+        !otherSpoke;
 
     final canAccept = isParticipant &&
         !kelishuv.hasAccepted(currentUserId) &&
-        kelishuv.status == KelishuvStatus.muzokarada;
+        negotiating;
 
-    final canEditTerms =
-        isParticipant && kelishuv.canEditTerms(currentUserId);
+    final canEditTerms = isParticipant &&
+        !waiting &&
+        kelishuv.canEditTerms(currentUserId);
 
     final canComplete =
         isParticipant && kelishuv.canMarkComplete(currentUserId);
@@ -643,12 +835,20 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
         ? kelishuv.daysUntilCanComplete(currentUserId)
         : null;
 
-    final canCancel = isParticipant && kelishuv.isActive;
+    // An agreed deal can be cancelled; a waiting offer withdrawn.
+    final canCancel = isParticipant &&
+        (kelishuv.status == KelishuvStatus.jarayonda || waiting);
 
-    final canReject =
-        isParticipant && kelishuv.status == KelishuvStatus.muzokarada;
+    final canReject = isParticipant && negotiating && !waiting;
 
-    final canChat = isParticipant && kelishuv.isActive;
+    final canChat = isParticipant && kelishuv.isActive && !waiting;
+
+    // A closed deal: whoever needed the service may start again.
+    final canOfferAgain = currentUserId != null &&
+        (kelishuv.status == KelishuvStatus.rad ||
+            kelishuv.status == KelishuvStatus.bekor) &&
+        kelishuv.xizmatId != null &&
+        kelishuv.isClient(currentUserId);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -668,6 +868,38 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (waiting) ...[
+                // The offer is with the other side; nothing to discuss yet.
+                YbInlineMessage(
+                  tone: YbInlineMessageTone.info,
+                  message: '${strings.dealBondWaiting(otherName)}. '
+                      '${strings.dealChatOpensOnReply}',
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+              if (canOfferAgain) ...[
+                Text(
+                  strings.dealClosedNewOfferHint,
+                  textAlign: TextAlign.center,
+                  style: AppTypography.caption.copyWith(
+                    color: context.ybColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                YbPrimaryButton(
+                  label: strings.dealSendNewOffer,
+                  icon: YbIcons.handshake,
+                  tone: YbButtonTone.ask,
+                  onPressed: () => openTaklifFlow(
+                    context,
+                    ref,
+                    target: TaklifTarget.xizmat(xizmatId: kelishuv.xizmatId!),
+                    title: strings.taklifFlowTitleYordamKerak(
+                      kelishuv.xizmatName ?? otherName,
+                    ),
+                  ),
+                ),
+              ],
               if (daysUntilComplete != null) ...[
                 YbInlineMessage(
                   tone: YbInlineMessageTone.warning,
@@ -678,7 +910,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
               if (canAccept) ...[
                 YbPrimaryButton(
                   label: strings.kelishuvAccept,
-                  icon: Icons.check_circle_outline,
+                  icon: YbIcons.checkCircle,
                   onPressed: () => _accept(currentUserId),
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -686,7 +918,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
               if (canComplete) ...[
                 YbPrimaryButton(
                   label: strings.kelishuvComplete,
-                  icon: Icons.task_alt_outlined,
+                  icon: YbIcons.taskAlt,
                   onPressed: () => _markComplete(currentUserId),
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -694,7 +926,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
               if (canEditTerms)
                 TextButton.icon(
                   onPressed: () => _editTerms(kelishuv),
-                  icon: const Icon(Icons.edit_outlined, size: 18),
+                  icon: const Icon(YbIcons.edit, size: 18),
                   label: Text(strings.kelishuvEditTerms),
                 ),
               if (canReject || canCancel) ...[
@@ -713,8 +945,11 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                     if (canCancel)
                       Expanded(
                         child: YbSecondaryButton(
-                          label: strings.kelishuvCancel,
-                          onPressed: () => _cancel(currentUserId),
+                          label: waiting
+                              ? strings.dealWithdrawOffer
+                              : strings.kelishuvCancel,
+                          onPressed: () =>
+                              _cancel(currentUserId, withdraw: waiting),
                         ),
                       ),
                   ],
@@ -742,6 +977,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     IconButton.filled(
+                      tooltip: strings.actionSend,
                       onPressed: _isSending ? null : _sendMessage,
                       icon: _isSending
                           ? const SizedBox(
@@ -749,7 +985,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
                               height: 18,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : const Icon(Icons.send_rounded),
+                          : const Icon(YbIcons.sendFilled),
                     ),
                   ],
                 ),
@@ -761,12 +997,36 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     );
   }
 
-  YbStatusTone _toneForStatus(KelishuvStatus status) => switch (status) {
-        KelishuvStatus.jarayonda => YbStatusTone.success,
-        KelishuvStatus.bajarildi => YbStatusTone.primary,
-        KelishuvStatus.bekor || KelishuvStatus.rad => YbStatusTone.warning,
-        _ => YbStatusTone.neutral,
-      };
+}
+
+/// A caption and the two people's chips under it; the chips wrap with
+/// large text.
+class _ChipRow extends StatelessWidget {
+  const _ChipRow({required this.caption, required this.chips});
+
+  final String caption;
+  final List<Widget> chips;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          caption,
+          style: AppTypography.caption.copyWith(
+            color: context.ybColors.textSecondary,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.xs,
+          children: chips,
+        ),
+      ],
+    );
+  }
 }
 
 class _AcceptChip extends StatelessWidget {
@@ -788,16 +1048,16 @@ class _AcceptChip extends StatelessWidget {
         color: accepted ? colors.primaryMuted : colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.chip),
         border: Border.all(
-          color: accepted ? AppColors.primary : colors.borderSubtle,
+          color: accepted ? context.ybColors.teal : colors.borderSubtle,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            accepted ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
+            accepted ? YbIcons.checkCircleFilled : YbIcons.radioButtonUnchecked,
             size: 18,
-            color: accepted ? AppColors.primary : colors.textTertiary,
+            color: accepted ? context.ybColors.teal : colors.textTertiary,
           ),
           const SizedBox(width: AppSpacing.xs),
           Text(
@@ -805,6 +1065,109 @@ class _AcceptChip extends StatelessWidget {
             style: AppTypography.caption.copyWith(color: colors.textPrimary),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The sender's name and phone, with a call button for the other side.
+class _DealContactCard extends StatelessWidget {
+  const _DealContactCard({
+    required this.contact,
+    required this.title,
+    required this.callLabel,
+    required this.canCall,
+  });
+
+  final DealContact contact;
+  final String title;
+  final String callLabel;
+  final bool canCall;
+
+  Future<void> _call() async {
+    final uri = Uri(scheme: 'tel', path: contact.phone.replaceAll(' ', ''));
+    if (await canLaunchUrl(uri)) await launchUrl(uri);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.ybColors;
+    final name = contact.fullName;
+    final initial = name.isEmpty ? '?' : name[0].toUpperCase();
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.tealSoft,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Icon(YbIcons.badge, size: 18, color: colors.tealInk),
+                const SizedBox(width: AppSpacing.xs),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTypography.label.copyWith(
+                      color: colors.tealInk,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: colors.card,
+                  child: Text(
+                    initial,
+                    style: AppTypography.headline.copyWith(
+                      color: colors.tealInk,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: AppTypography.headline.copyWith(
+                          color: colors.ink,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      SelectableText(
+                        contact.phone,
+                        style: AppTypography.tabular(
+                          AppTypography.body.copyWith(color: colors.ink2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (canCall)
+                  IconButton.filled(
+                    tooltip: callLabel,
+                    onPressed: _call,
+                    style: IconButton.styleFrom(
+                      backgroundColor: colors.teal,
+                      foregroundColor: colors.onTeal,
+                    ),
+                    icon: const Icon(YbIcons.call),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

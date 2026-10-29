@@ -1,5 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/utils/demo_ids.dart';
+import 'package:yordambor/data/demo/demo_kelishuv_simulator.dart';
 import 'package:yordambor/data/kelishuv/kelishuv_exceptions.dart';
 export 'package:yordambor/data/kelishuv/kelishuv_exceptions.dart';
 import 'package:yordambor/data/safety/block_repository.dart';
@@ -26,6 +28,15 @@ class KelishuvRepository {
       throw KelishuvFailure('Kirish talab qilinadi');
     }
 
+    if (isDemoFeedId(xizmatId)) {
+      return DemoKelishuvSimulator.createFromXizmat(
+        xizmatId: xizmatId,
+        clientUserId: userId,
+        clientDisplayName: _currentUserDisplayName(client),
+        input: input,
+      );
+    }
+
     final xizmat = await client
         .from('xizmatlar')
         .select('id, owner_id, name')
@@ -36,33 +47,21 @@ class KelishuvRepository {
 
     final ownerId = xizmat['owner_id'] as String;
     if (ownerId == userId) {
-      throw KelishuvFailure('O\'z xizmatingizga so\'rov yuborib bo\'lmaydi');
+      throw KelishuvFailure('Oʻz xizmatingizga soʻrov yuborib boʻlmaydi');
     }
 
     await _blockRepository.assertCanInteract(ownerId);
 
     await _guardOneActive(client, xizmatId: xizmatId, userId: userId, ownerId: ownerId);
 
-    final row = await client
-        .from('kelishuvlar')
-        .insert({
-          'xizmat_id': xizmatId,
-          'party_a_id': userId,
-          'party_b_id': ownerId,
-          'initiator_id': userId,
-          'message': input.message?.trim().isEmpty ?? true
-              ? null
-              : input.message!.trim(),
-          'price': input.price,
-          'currency': input.price != null ? (input.currency ?? 'UZS') : null,
-          'start_date': input.startDate?.toIso8601String().split('T').first,
-          'duration_minutes': input.durationMinutes,
-          'status': 'muzokarada',
-        })
-        .select('id')
-        .single();
-
-    final kelishuv = await fetchById(row['id'] as String);
+    final kelishuvId = await _insertOffer(client, input, {
+      'xizmat_id': xizmatId,
+      'party_a_id': userId,
+      'party_b_id': ownerId,
+      'initiator_id': userId,
+    });
+    await _acceptOwnOffer(kelishuvId, userId);
+    final kelishuv = await fetchById(kelishuvId);
     if (kelishuv == null) throw KelishuvFailure('Kelishuv yaratilmadi');
     return kelishuv;
   }
@@ -78,17 +77,36 @@ class KelishuvRepository {
       throw KelishuvFailure('Kirish talab qilinadi');
     }
 
+    if (isDemoFeedId(postId)) {
+      final xizmatRow = await client
+          .from('xizmatlar')
+          .select('name, owner_id')
+          .eq('id', xizmatId)
+          .maybeSingle();
+      if (xizmatRow == null || xizmatRow['owner_id'] != userId) {
+        throw KelishuvFailure('Faqat oʻz xizmatingiz orqali taklif yuboring');
+      }
+      return DemoKelishuvSimulator.createFromPost(
+        postId: postId,
+        xizmatId: xizmatId,
+        providerUserId: userId,
+        providerDisplayName: _currentUserDisplayName(client),
+        xizmatName: xizmatRow['name'] as String? ?? 'Xizmat',
+        input: input,
+      );
+    }
+
     final post = await client
         .from('yordam_kerak_posts')
         .select('id, author_id, title')
         .eq('id', postId)
         .maybeSingle();
 
-    if (post == null) throw KelishuvFailure('E\'lon topilmadi');
+    if (post == null) throw KelishuvFailure('Eʼlon topilmadi');
 
     final authorId = post['author_id'] as String;
     if (authorId == userId) {
-      throw KelishuvFailure('O\'z e\'loningizga taklif yuborib bo\'lmaydi');
+      throw KelishuvFailure('Oʻz eʼloningizga taklif yuborib boʻlmaydi');
     }
 
     await _blockRepository.assertCanInteract(authorId);
@@ -100,7 +118,7 @@ class KelishuvRepository {
         .maybeSingle();
 
     if (xizmat == null || xizmat['owner_id'] != userId) {
-      throw KelishuvFailure('Faqat o\'z xizmatingiz orqali taklif yuboring');
+      throw KelishuvFailure('Faqat oʻz xizmatingiz orqali taklif yuboring');
     }
 
     await _guardOneActive(
@@ -110,28 +128,94 @@ class KelishuvRepository {
       ownerId: userId,
     );
 
-    final row = await client.from('kelishuvlar').insert({
+    final kelishuvId = await _insertOffer(client, input, {
       'xizmat_id': xizmatId,
       'yordam_kerak_post_id': postId,
       'party_a_id': authorId,
       'party_b_id': userId,
       'initiator_id': userId,
-      'message': input.message?.trim().isEmpty ?? true
-          ? null
-          : input.message!.trim(),
+    });
+    await _acceptOwnOffer(kelishuvId, userId);
+    final kelishuv = await fetchById(kelishuvId);
+    if (kelishuv == null) throw KelishuvFailure('Kelishuv yaratilmadi');
+    return kelishuv;
+  }
+
+  /// Saves a new offer between [parties] and returns its id. The sender's
+  /// card goes in its own columns (migration 021); until the server has
+  /// them, the card leads the message, so the other side still gets it.
+  Future<String> _insertOffer(
+    SupabaseClient client,
+    TaklifInput input,
+    Map<String, Object?> parties,
+  ) async {
+    Future<String> insert() async {
+      final row = await client
+          .from('kelishuvlar')
+          .insert(_offerRow(input, parties))
+          .select('id')
+          .single();
+      return row['id'] as String;
+    }
+
+    try {
+      return await insert();
+    } on PostgrestException catch (error) {
+      if (_contactColumnsMissing ||
+          input.contact == null ||
+          !error.message.contains('contact_')) {
+        rethrow;
+      }
+      _contactColumnsMissing = true;
+      return insert();
+    }
+  }
+
+  /// True once the server answers that the card columns do not exist yet.
+  static bool _contactColumnsMissing = false;
+
+  Map<String, Object?> _offerRow(
+    TaklifInput input,
+    Map<String, Object?> parties,
+  ) {
+    final contact = input.contact;
+    final typed = input.message?.trim() ?? '';
+    final message = contact != null && _contactColumnsMissing
+        ? [contact.line, if (typed.isNotEmpty) typed].join('\n\n')
+        : typed;
+    return {
+      ...parties,
+      'message': message.isEmpty ? null : message,
       'price': input.price,
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
       'start_date': input.startDate?.toIso8601String().split('T').first,
       'duration_minutes': input.durationMinutes,
       'status': 'muzokarada',
-    }).select('id').single();
+      if (contact != null && !_contactColumnsMissing) ...{
+        'contact_first_name': contact.firstName,
+        'contact_last_name': contact.lastName,
+        'contact_phone': contact.phone,
+      },
+    };
+  }
 
-    final kelishuv = await fetchById(row['id'] as String);
-    if (kelishuv == null) throw KelishuvFailure('Kelishuv yaratilmadi');
-    return kelishuv;
+  /// Sending an offer is the sender's acceptance of it: the deal then waits
+  /// for the other side to accept, decline or offer new terms. If this
+  /// fails the deal still exists and the sender can accept by hand.
+  Future<void> _acceptOwnOffer(String kelishuvId, String userId) async {
+    try {
+      await accept(kelishuvId, userId);
+    } catch (_) {
+      // Kept as sent; nothing is lost.
+    }
   }
 
   Future<void> accept(String kelishuvId, String userId) async {
+    if (isSimulatedKelishuvId(kelishuvId)) {
+      DemoKelishuvSimulator.accept(kelishuvId, userId);
+      return;
+    }
+
     final client = _client;
     if (client == null) throw KelishuvFailure('Supabase sozlanmagan');
 
@@ -146,7 +230,7 @@ class KelishuvRepository {
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yo\'q');
+      throw KelishuvFailure('Ruxsat yoʻq');
     }
 
     final updates = <String, dynamic>{};
@@ -188,13 +272,13 @@ class KelishuvRepository {
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yo\'q');
+      throw KelishuvFailure('Ruxsat yoʻq');
     }
 
     final status = _parseStatus(row['status'] as String);
     if (status != KelishuvStatus.muzokarada &&
         status != KelishuvStatus.jarayonda) {
-      throw KelishuvFailure('Shartlarni faqat faol kelishuvda o\'zgartirish mumkin');
+      throw KelishuvFailure('Shartlarni faqat faol kelishuvda oʻzgartirish mumkin');
     }
 
     if (status == KelishuvStatus.jarayonda) {
@@ -203,7 +287,7 @@ class KelishuvRepository {
           jarayondaAtRaw != null ? DateTime.tryParse(jarayondaAtRaw) : null;
       if (jarayondaAt != null &&
           DateTime.now().difference(jarayondaAt).inDays > 3) {
-        throw KelishuvFailure('3 kundan keyin shartlarni o\'zgartirib bo\'lmaydi');
+        throw KelishuvFailure('3 kundan keyin shartlarni oʻzgartirib boʻlmaydi');
       }
     }
 
@@ -215,10 +299,12 @@ class KelishuvRepository {
       'currency': input.price != null ? (input.currency ?? 'UZS') : null,
       'start_date': input.startDate?.toIso8601String().split('T').first,
       'duration_minutes': input.durationMinutes,
-      'accept_a': false,
-      'accept_b': false,
-      'accept_a_at': null,
-      'accept_b_at': null,
+      // New terms are the editor's offer: they accept them, and the other
+      // side has a fresh window to answer.
+      'accept_a': userId == partyA,
+      'accept_b': userId == partyB,
+      'accept_a_at': userId == partyA ? now : null,
+      'accept_b_at': userId == partyB ? now : null,
       'complete_a': false,
       'complete_b': false,
       'complete_a_at': null,
@@ -268,7 +354,7 @@ class KelishuvRepository {
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yo\'q');
+      throw KelishuvFailure('Ruxsat yoʻq');
     }
 
     final status = _parseStatus(row['status'] as String);
@@ -282,7 +368,7 @@ class KelishuvRepository {
     if (jarayondaAt != null &&
         DateTime.now().difference(jarayondaAt).inDays < 3) {
       throw KelishuvFailure(
-        'Ishni tugatish jarayon boshlanganidan 3 kun o\'tgach mumkin',
+        'Ishni tugatish jarayon boshlanganidan 3 kun oʻtgach mumkin',
       );
     }
 
@@ -379,7 +465,7 @@ class KelishuvRepository {
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yo\'q');
+      throw KelishuvFailure('Ruxsat yoʻq');
     }
 
     final status = _parseStatus(row['status'] as String);
@@ -426,11 +512,8 @@ class KelishuvRepository {
         .order('updated_at', ascending: false);
 
     final grouped = <String, List<KelishuvSummary>>{};
-    for (final raw in rows as List<dynamic>) {
-      final summary = _mapSummary(
-        Map<String, dynamic>.from(raw as Map),
-        viewerId: ownerId,
-      );
+    for (final map in await _withoutLapsedOffers(client, rows)) {
+      final summary = _mapSummary(map, viewerId: ownerId);
       final xizmatId = summary.xizmatId;
       if (xizmatId == null) continue;
       grouped.putIfAbsent(xizmatId, () => []).add(summary);
@@ -462,20 +545,20 @@ class KelishuvRepository {
         .inFilter('status', ['muzokarada', 'jarayonda'])
         .order('updated_at', ascending: false);
 
-    return (rows as List<dynamic>)
-        .map(
-          (raw) => _mapSummary(
-            Map<String, dynamic>.from(raw as Map),
-            viewerId: ownerId,
-          ),
-        )
-        .toList();
+    final active = await _withoutLapsedOffers(client, rows);
+    return active.map((map) => _mapSummary(map, viewerId: ownerId)).toList();
   }
 
   Future<List<KelishuvSummary>> fetchMyRequests(String userId) async {
     final client = _client;
-    if (client == null) return [];
-    return _fetchMyRequestsRemote(client, userId);
+    final demo = DemoKelishuvSimulator.summariesForUser(userId);
+    if (client == null) return demo;
+    final remote = await _fetchMyRequestsRemote(client, userId);
+    final seen = remote.map((s) => s.id).toSet();
+    return [
+      ...demo.where((s) => !seen.contains(s.id)),
+      ...remote,
+    ];
   }
 
   Future<List<KelishuvSummary>> _fetchMyRequestsRemote(
@@ -492,8 +575,7 @@ class KelishuvRepository {
         .order('updated_at', ascending: false);
 
     final summaries = <KelishuvSummary>[];
-    for (final raw in rows as List<dynamic>) {
-      final map = Map<String, dynamic>.from(raw as Map);
+    for (final map in await _withoutLapsedOffers(client, rows)) {
       final xizmat = map['xizmatlar'] as Map<String, dynamic>?;
       final xizmatOwnerId = xizmat?['owner_id'] as String?;
       if (xizmatOwnerId == userId) continue;
@@ -503,6 +585,10 @@ class KelishuvRepository {
   }
 
   Future<List<KelishuvMessage>> fetchMessages(String kelishuvId) async {
+    if (isSimulatedKelishuvId(kelishuvId)) {
+      return DemoKelishuvSimulator.messages(kelishuvId);
+    }
+
     final client = _client;
     if (client == null) return [];
 
@@ -539,13 +625,28 @@ class KelishuvRepository {
   ) async {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
-    if (client == null || userId == null) {
+    if (userId == null) {
       throw KelishuvFailure('Kirish talab qilinadi');
     }
 
     final trimmed = content.trim();
     if (trimmed.isEmpty) {
-      throw KelishuvFailure('Xabar bo\'sh bo\'lmasin');
+      throw KelishuvFailure('Xabar boʻsh boʻlmasin');
+    }
+
+    if (isSimulatedKelishuvId(kelishuvId)) {
+      DemoKelishuvSimulator.addMessage(
+        kelishuvId: kelishuvId,
+        senderId: userId,
+        senderName: client != null ? _currentUserDisplayName(client) : 'Siz',
+        content: trimmed,
+      );
+      final sent = DemoKelishuvSimulator.messages(kelishuvId).last;
+      return KelishuvSendMessageResult(message: sent, acceptsReset: false);
+    }
+
+    if (client == null) {
+      throw KelishuvFailure('Supabase sozlanmagan');
     }
 
     var acceptsReset = false;
@@ -560,8 +661,11 @@ class KelishuvRepository {
       final partyB = kelishuvRow['party_b_id'] as String;
       final acceptA = kelishuvRow['accept_a'] as bool? ?? false;
       final acceptB = kelishuvRow['accept_b'] as bool? ?? false;
-      final otherHadAccepted =
-          (userId == partyA && acceptB) || (userId == partyB && acceptA);
+      // While an offer waits for an answer, a question about it does not
+      // withdraw it.
+      final negotiating = kelishuvRow['status'] == 'muzokarada';
+      final otherHadAccepted = !negotiating &&
+          ((userId == partyA && acceptB) || (userId == partyB && acceptA));
 
       if (otherHadAccepted) {
         acceptsReset = true;
@@ -627,8 +731,11 @@ class KelishuvRepository {
         duration_minutes,
         accept_a,
         accept_b,
+        accept_a_at,
+        accept_b_at,
         complete_a,
         complete_b,
+        created_at,
         updated_at,
         xizmatlar ( name, owner_id ),
         yordam_kerak_posts ( title ),
@@ -679,10 +786,18 @@ class KelishuvRepository {
       canRepeatBook: canRepeatBook,
       needsMyAccept: needsAccept,
       needsMyComplete: needsMyComplete,
+      iProvide: xizmatOwnerId != null && xizmatOwnerId == viewerId,
+      respondBy: status == KelishuvStatus.muzokarada
+          ? _offeredAtOf(map)?.add(KelishuvRules.offerReplyWindow)
+          : null,
     );
   }
 
   Future<Kelishuv?> fetchById(String id) async {
+    if (isSimulatedKelishuvId(id)) {
+      return DemoKelishuvSimulator.kelishuv(id);
+    }
+
     final client = _client;
     if (client == null) return null;
 
@@ -695,7 +810,81 @@ class KelishuvRepository {
         ''').eq('id', id).maybeSingle();
 
     if (row == null) return null;
-    return _mapRow(Map<String, dynamic>.from(row));
+    final map = Map<String, dynamic>.from(row);
+    if (!_offerLapsed(map)) return _mapRow(map);
+
+    // Nobody answered in time: the offer is cancelled.
+    await _cancelLapsedOffers(client, [id]);
+    final fresh = await client.from('kelishuvlar').select('''
+          *,
+          xizmatlar ( name, owner_id ),
+          yordam_kerak_posts ( title ),
+          party_a:profiles!kelishuvlar_party_a_id_fkey ( full_name ),
+          party_b:profiles!kelishuvlar_party_b_id_fkey ( full_name )
+        ''').eq('id', id).maybeSingle();
+    return _mapRow(Map<String, dynamic>.from(fresh ?? map));
+  }
+
+  /// When the terms on the table were offered: the latest acceptance (the
+  /// sender's), else the deal's creation.
+  static DateTime? _offeredAtOf(Map<String, dynamic> row) {
+    DateTime? parse(Object? raw) =>
+        raw is String ? DateTime.tryParse(raw) : null;
+    final times = [
+      if (row['accept_a'] == true) parse(row['accept_a_at']),
+      if (row['accept_b'] == true) parse(row['accept_b_at']),
+    ].whereType<DateTime>().toList();
+    if (times.isEmpty) return parse(row['created_at']);
+    return times.reduce((a, b) => a.isAfter(b) ? a : b);
+  }
+
+  /// An offer left unanswered past [KelishuvRules.offerReplyWindow].
+  static bool _offerLapsed(Map<String, dynamic> row) {
+    if (row['status'] != 'muzokarada') return false;
+    final offeredAt = _offeredAtOf(row);
+    if (offeredAt == null) return false;
+    return DateTime.now()
+        .isAfter(offeredAt.add(KelishuvRules.offerReplyWindow));
+  }
+
+  /// Cancels offers nobody answered in time. The server does the same on
+  /// its schedule; this keeps the app right in between.
+  Future<void> _cancelLapsedOffers(
+    SupabaseClient client,
+    List<String> ids,
+  ) async {
+    if (ids.isEmpty) return;
+    try {
+      await client
+          .from('kelishuvlar')
+          .update({
+            'status': 'bekor',
+            'updated_at': DateTime.now().toUtc().toIso8601String(),
+          })
+          .inFilter('id', ids)
+          .eq('status', 'muzokarada');
+    } catch (_) {
+      // Left as it was; the next load tries again.
+    }
+  }
+
+  /// Active rows without the lapsed offers, which are cancelled on the way.
+  Future<List<Map<String, dynamic>>> _withoutLapsedOffers(
+    SupabaseClient client,
+    List<dynamic> rows,
+  ) async {
+    final kept = <Map<String, dynamic>>[];
+    final lapsed = <String>[];
+    for (final raw in rows) {
+      final map = Map<String, dynamic>.from(raw as Map);
+      if (_offerLapsed(map)) {
+        lapsed.add(map['id'] as String);
+      } else {
+        kept.add(map);
+      }
+    }
+    await _cancelLapsedOffers(client, lapsed);
+    return kept;
   }
 
   Future<void> _guardOneActive(
@@ -759,7 +948,20 @@ class KelishuvRepository {
       xizmatOwnerId: xizmat?['owner_id'] as String?,
       jarayondaAt:
           jarayondaAtRaw != null ? DateTime.tryParse(jarayondaAtRaw) : null,
+      offeredAt: _offeredAtOf(map),
+      contact: DealContact.fromRow(map),
     );
+  }
+
+  String _currentUserDisplayName(SupabaseClient client) {
+    final user = client.auth.currentUser;
+    final meta = user?.userMetadata?['full_name'] as String?;
+    if (meta != null && meta.trim().isNotEmpty) return meta.trim();
+    final email = user?.email;
+    if (email != null && email.contains('@')) {
+      return email.split('@').first;
+    }
+    return 'Siz';
   }
 
   KelishuvStatus _parseStatus(String raw) => switch (raw) {

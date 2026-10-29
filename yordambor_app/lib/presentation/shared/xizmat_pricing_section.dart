@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 
 class XizmatPricingSection extends StatelessWidget {
   const XizmatPricingSection({
@@ -26,11 +27,11 @@ class XizmatPricingSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(strings.xizmatPricingSectionTitle, style: AppTypography.headline),
+        Text(strings.xizmatPricingSectionTitle, style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary)),
         const SizedBox(height: AppSpacing.sm),
         Text(
           strings.xizmatPricingSectionSubtitle,
-          style: AppTypography.caption,
+          style: AppTypography.caption.copyWith(color: context.ybColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.lg),
         SegmentedButton<XizmatPricingModel>(

@@ -14,6 +14,7 @@ import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 import 'package:yordambor/presentation/shared/xizmat_availability_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_pricing_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_promise_section.dart';
+import 'package:yordambor/core/constants/service_cities.dart';
 import 'package:yordambor/presentation/shared/xizmat_service_city_field.dart';
 
 class PortfolioDraft {
@@ -77,7 +78,8 @@ class CreateXizmatState {
       name.trim().length >= 2 &&
       category != null &&
       subcategory != null &&
-      providerType.isNotEmpty;
+      providerType.isNotEmpty &&
+      ServiceCities.isValidId(serviceCity);
 
   bool get canContinueStep2 => portfolio.isNotEmpty;
 
@@ -312,6 +314,13 @@ class CreateXizmatNotifier extends StateNotifier<CreateXizmatState> {
       );
       if (promiseError != null) {
         state = state.copyWith(isSubmitting: false, errorMessage: promiseError);
+        return false;
+      }
+
+      final strings = _ref.read(appStringsProvider);
+      final cityError = validateServiceCity(state.serviceCity, strings);
+      if (cityError != null) {
+        state = state.copyWith(isSubmitting: false, errorMessage: cityError);
         return false;
       }
 

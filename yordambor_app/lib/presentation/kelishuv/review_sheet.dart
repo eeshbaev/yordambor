@@ -4,6 +4,7 @@ import 'package:yordambor/application/providers/app_review_service.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/review_providers.dart';
 import 'package:yordambor/core/design_system/app_haptics.dart';
+import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
@@ -11,6 +12,8 @@ import 'package:yordambor/core/design_system/widgets/yb_sheet_body.dart';
 import 'package:yordambor/data/review/review_repository.dart';
 import 'package:yordambor/domain/entities/review.dart';
 import 'package:yordambor/domain/growth/app_review_prompt.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 
 Future<bool?> showReviewSheet(
   BuildContext context, {
@@ -19,6 +22,7 @@ Future<bool?> showReviewSheet(
   String? xizmatName,
 }) {
   return showModalBottomSheet<bool>(
+    sheetAnimationStyle: AppMotion.sheetOf(context),
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -51,6 +55,7 @@ class _ReviewSheetState extends ConsumerState<ReviewSheet> {
   final _commentController = TextEditingController();
   int _rating = 5;
   bool _isSubmitting = false;
+  bool _sent = false;
   String? _errorMessage;
 
   @override
@@ -81,8 +86,15 @@ class _ReviewSheetState extends ConsumerState<ReviewSheet> {
           );
       ref.invalidate(kelishuvReviewProvider(widget.kelishuvId));
       ref.invalidate(xizmatReviewsProvider(widget.xizmatId));
+      ref.invalidate(xizmatRatingSummaryProvider(widget.xizmatId));
       if (mounted) {
-        AppHaptics.success();
+        // The button closes into a checkmark (its haptic marks success).
+        setState(() {
+          _isSubmitting = false;
+          _sent = true;
+        });
+        await Future<void>.delayed(const Duration(milliseconds: 650));
+        if (!mounted) return;
         Navigator.of(context).pop(true);
         if (_rating == 5) {
           await maybePromptAppReview(
@@ -97,9 +109,9 @@ class _ReviewSheetState extends ConsumerState<ReviewSheet> {
         _errorMessage = error.message;
         _isSubmitting = false;
       });
-    } catch (error) {
+    } catch (_) {
       setState(() {
-        _errorMessage = error.toString();
+        _errorMessage = ref.read(appStringsProvider).stateErrorBody;
         _isSubmitting = false;
       });
     }
@@ -118,10 +130,11 @@ class _ReviewSheetState extends ConsumerState<ReviewSheet> {
           children: List.generate(5, (index) {
             final star = index + 1;
             return IconButton(
+              tooltip: strings.a11yStarRating(star),
               onPressed: _isSubmitting ? null : () => _setRating(star),
               icon: Icon(
-                star <= _rating ? Icons.star_rounded : Icons.star_outline_rounded,
-                color: AppColors.star,
+                star <= _rating ? YbIcons.starFilled : YbIcons.star,
+                color: context.ybColors.star,
                 size: 40,
               ),
             );
@@ -146,7 +159,8 @@ class _ReviewSheetState extends ConsumerState<ReviewSheet> {
         YbPrimaryButton(
           label: strings.actionSubmit,
           isLoading: _isSubmitting,
-          onPressed: _isSubmitting ? null : _submit,
+          isSuccess: _sent,
+          onPressed: _isSubmitting || _sent ? null : _submit,
         ),
         const SizedBox(height: AppSpacing.sm),
         TextButton(

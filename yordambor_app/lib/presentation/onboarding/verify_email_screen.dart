@@ -12,6 +12,7 @@ import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
+import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/auth/auth_repository.dart';
 
 class VerifyEmailScreen extends ConsumerStatefulWidget {
@@ -148,9 +149,9 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  Icons.mark_email_unread_outlined,
+                  YbIcons.markEmailUnread,
                   size: 48,
-                  color: AppColors.primary,
+                  color: context.ybColors.teal,
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
@@ -173,7 +174,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               const Spacer(),
               YbPrimaryButton(
                 label: strings.openMail,
-                icon: Icons.mail_outline_rounded,
+                icon: YbIcons.mail,
                 onPressed: _openMail,
               ),
               const SizedBox(height: AppSpacing.sm),
