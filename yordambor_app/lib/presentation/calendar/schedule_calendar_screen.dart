@@ -4,12 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:yordambor/application/providers/appointment_providers.dart';
 import 'package:yordambor/application/providers/auth_providers.dart';
-import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/application/providers/pending_reminder_notification.dart';
-import 'package:yordambor/application/providers/provider_tools_sync.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
 import 'package:yordambor/application/providers/schedule_calendar_providers.dart';
 import 'package:yordambor/application/providers/xizmat_providers.dart';
@@ -34,6 +32,7 @@ import 'package:yordambor/presentation/calendar/widgets/schedule_month_grid.dart
 import 'package:yordambor/presentation/calendar/widgets/service_availability_sheet.dart';
 import 'package:yordambor/presentation/calendar/widgets/time_ranges_editor.dart';
 import 'package:yordambor/presentation/calendar/widgets/working_hours_sheet.dart';
+import 'package:yordambor/presentation/shared/save_client_prompt.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_status_sheet.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_add_sheet.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_open_helper.dart';
@@ -391,39 +390,13 @@ class _ScheduleCalendarScreenState extends ConsumerState<ScheduleCalendarScreen>
     }
   }
 
-  Future<void> _promptSaveClient(CalendarAppointment appt) async {
-    final strings = ref.read(appStringsProvider);
-    final saved = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(strings.saveClientPromptTitle),
-        content: Text(strings.saveClientPromptBody(appt.otherPartyName)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(strings.saveClientSkip),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(strings.saveClientConfirm),
-          ),
-        ],
-      ),
-    );
-    await ClientSavePrompts.markAsked(appt.id);
-    if (saved == true && mounted) {
-      await ref.read(clientRegistryRepositoryProvider).create(
-            clientName: appt.otherPartyName,
-            yordamBorUserId: appt.otherPartyId,
-          );
-      invalidateProviderTools(ref);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(strings.saveClientDone)),
-        );
-      }
-    }
-  }
+  Future<void> _promptSaveClient(CalendarAppointment appt) => promptSaveClient(
+        context,
+        ref,
+        dealId: appt.id,
+        otherPartyId: appt.otherPartyId,
+        name: appt.otherPartyName,
+      );
 
   String _localeTag(String language) => switch (language) {
         'ru' => 'ru',

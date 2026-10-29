@@ -8,6 +8,7 @@ import 'package:yordambor/application/providers/kelishuv_providers.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/client_book_providers.dart';
 import 'package:yordambor/application/providers/provider_tools_sync.dart';
+import 'package:yordambor/presentation/shared/save_client_prompt.dart';
 import 'package:yordambor/presentation/kelishuv/kelishuv_appointment_sheet.dart';
 import 'package:yordambor/presentation/reminders/widgets/reminder_status_actions.dart';
 import 'package:yordambor/application/providers/review_providers.dart';
@@ -296,11 +297,12 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
         kelishuv: kelishuv,
         userId: userId,
       );
-      return;
-    }
-
-    if (result.synced) {
+    } else if (result.synced) {
       _providerToolsSyncedForKelishuv = kelishuv.id;
+    }
+    // The deal is agreed: offer to keep the client (once per deal).
+    if (mounted) {
+      await maybePromptSaveClient(context, ref, deal: kelishuv, userId: userId);
     }
   }
 

@@ -20,7 +20,14 @@ void setUpPluginFakes() {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(
     const MethodChannel('dexterous.com/flutter/local_notifications'),
-    (call) async => null,
+    // Answers as a device would: set up, nothing pending, exact alarms
+    // allowed; scheduling and cancelling succeed.
+    (call) async => switch (call.method) {
+      'initialize' => true,
+      'pendingNotificationRequests' => <Object?>[],
+      'canScheduleExactNotifications' => true,
+      _ => null,
+    },
   );
   // Deep links: the app was not opened from one, and none arrive.
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger

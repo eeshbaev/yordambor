@@ -302,23 +302,7 @@ class ProviderToolsService {
       return const KelishuvSyncResult(synced: true);
     }
 
-    final clientName = kelishuv.otherPartyNameFor(userId);
-    final otherPartyId =
-        kelishuv.partyAId == userId ? kelishuv.partyBId : kelishuv.partyAId;
-    ClientRegistryEntry? client;
-    final clients = await _registry.fetchAll(includeDeleted: true);
-    for (final entry in clients) {
-      if (entry.yordamBorUserId == otherPartyId ||
-          entry.clientName == clientName) {
-        client = entry;
-        break;
-      }
-    }
-    client ??= await _registry.create(
-      clientName: clientName,
-      yordamBorUserId: otherPartyId,
-      note: kelishuv.message,
-    );
+    final client = await _clientForDeal(kelishuv, userId);
 
     if (kelishuv.startDate == null) {
       return const KelishuvSyncResult(needsAppointmentDate: true);
@@ -409,21 +393,7 @@ class ProviderToolsService {
 
     if (!isProvider) return;
 
-    final clientName = kelishuv.otherPartyNameFor(userId);
-    final otherPartyId =
-        kelishuv.partyAId == userId ? kelishuv.partyBId : kelishuv.partyAId;
-    var client = (await _registry.fetchAll(includeDeleted: true))
-        .where(
-          (entry) =>
-              entry.yordamBorUserId == otherPartyId ||
-              entry.clientName == clientName,
-        )
-        .firstOrNull;
-    client ??= await _registry.create(
-      clientName: clientName,
-      yordamBorUserId: otherPartyId,
-      note: kelishuv.message,
-    );
+    final client = await _clientForDeal(kelishuv, userId);
 
     final booking = await _upsertKelishuvBooking(
       kelishuvId: kelishuv.id,
@@ -438,6 +408,54 @@ class ProviderToolsService {
       client: client,
       status: AppointmentStatus.upcoming,
     );
+  }
+
+  /// The client-book entry a deal's bookings hang on. A client not saved
+  /// yet is kept hidden: the booking and its reminders work, and they show
+  /// in the client book only once the provider says to save them.
+  Future<ClientRegistryEntry> _clientForDeal(
+    Kelishuv kelishuv,
+    String userId,
+  ) async {
+    final otherPartyId = kelishuv.otherPartyIdFor(userId);
+    final clientName = kelishuv.otherPartyNameFor(userId);
+    final clients = await _registry.fetchAll(includeDeleted: true);
+    for (final entry in clients) {
+      if (entry.yordamBorUserId == otherPartyId) return entry;
+    }
+    // Someone the provider added by hand under the same name.
+    for (final entry in clients) {
+      if (!entry.isDeleted &&
+          entry.yordamBorUserId == null &&
+          entry.clientName == clientName) {
+        return entry;
+      }
+    }
+    return _registry.save(
+      ClientRegistryEntry(
+        id: const Uuid().v4(),
+        clientName: clientName,
+        note: kelishuv.message,
+        yordamBorUserId: otherPartyId,
+        isDeleted: true,
+        createdAt: DateTime.now(),
+      ),
+    );
+  }
+
+  /// Puts the other side of a deal in the client book: the hidden entry
+  /// their bookings use comes into view, or a new one is made.
+  Future<ClientRegistryEntry> saveClientFromDeal({
+    required String otherPartyId,
+    required String name,
+  }) async {
+    await ensureReady();
+    for (final entry in await _registry.fetchAll(includeDeleted: true)) {
+      if (entry.yordamBorUserId != otherPartyId) continue;
+      if (!entry.isDeleted) return entry;
+      return _registry.save(entry.copyWith(isDeleted: false));
+    }
+    return _registry.create(clientName: name, yordamBorUserId: otherPartyId);
   }
 
   Future<Booking?> findBookingByKelishuvId(String kelishuvId) async {
@@ -574,13 +592,5 @@ class ProviderToolsService {
           ),
         )
         .toList();
-  }
-}
-
-extension _FirstOrNull<E> on Iterable<E> {
-  E? get firstOrNull {
-    final iterator = this.iterator;
-    if (!iterator.moveNext()) return null;
-    return iterator.current;
   }
 }
