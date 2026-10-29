@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/kelishuv_providers.dart';
+import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/core/design_system/app_motion.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
@@ -163,7 +164,7 @@ class _KelishuvTabBody extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
+      separatorBuilder: (_, _) => const Divider(height: 1),
       itemBuilder: (_, i) => KelishuvListTile(item: items[i]),
     );
   }

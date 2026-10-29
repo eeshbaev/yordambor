@@ -34,7 +34,6 @@ import 'package:yordambor/presentation/shell/deal_box.dart';
 import 'package:yordambor/presentation/shell/shell_notification_button.dart';
 import 'package:yordambor/presentation/shell/shell_tabs.dart';
 import 'package:yordambor/presentation/xizmat/create_xizmat_gate.dart';
-import 'package:yordambor/core/utils/xizmat_pricing_display.dart';
 
 /// Home, top to bottom (design direction Part 10): the greeting, the mode
 /// switch, the filters and the feed. The bar and the mode switch stay
@@ -402,7 +401,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               listShownAt: _feedShownAt,
               child: YbJobPostCard(
                 item: item,
-                priceText: helpRequestPriceLabel(item, strings),
                 sampleLabel: item.isDemo ? strings.sampleTag : null,
                 sectorLine: strings.sectorLine(
                   item.categoryLabel,
