@@ -1174,8 +1174,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Обе стороны одобрили сделку. Выберите дату и время услуги.';
 
   @override
-  String get remindersSettingsFollowUpLabel =>
-      'Проверка после записи (часы после)';
+  String get remindersSettingsFollowUpLabel => 'Проверка после встречи';
 
   @override
   String get remindersFollowUpPrompt => 'Услуга была оказана?';
@@ -1207,10 +1206,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get remindersSettingsTitle => 'Настройки напоминаний';
 
   @override
-  String get remindersSettingsAlertsLabel => 'Время оповещений (минут до)';
+  String get remindersSettingsAlertsLabel => 'Напомнить';
 
   @override
-  String get remindersSettingsAtTime => 'Вовремя';
+  String get remindersSettingsAtTime => 'В момент встречи';
 
   @override
   String get earningsTitle => 'Мой доход';
@@ -3688,4 +3687,67 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get notifSubsectorHelpTitle => 'В вашей области нужна помощь';
+
+  @override
+  String reminderLeadMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'За $count минут',
+      few: 'За $count минуты',
+      one: 'За $count минуту',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reminderLeadHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'За $count часов',
+      few: 'За $count часа',
+      one: 'За $count час',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reminderLeadDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'За $count дней',
+      few: 'За $count дня',
+      one: 'За $count день',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reminderFollowUpAfterHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Через $count часов',
+      few: 'Через $count часа',
+      one: 'Через $count час',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderFollowUpServiceDone => 'Услуга выполнена?';
+
+  @override
+  String reminderDefaultBody(String name) {
+    return 'Встреча с $name';
+  }
+
+  @override
+  String get remindersSettingsPickOne => 'Выберите хотя бы одно время';
+
+  @override
+  String get remindersSettingsFollowUpHint =>
+      'Мы спросим, как всё прошло, чтобы сделка и доход были актуальны.';
 }

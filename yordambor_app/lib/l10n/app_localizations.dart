@@ -2313,7 +2313,7 @@ abstract class AppLocalizations {
   /// No description provided for @remindersSettingsFollowUpLabel.
   ///
   /// In en, this message translates to:
-  /// **'Follow-up checks (hours after appointment)'**
+  /// **'Check after the appointment'**
   String get remindersSettingsFollowUpLabel;
 
   /// No description provided for @remindersFollowUpPrompt.
@@ -2373,13 +2373,13 @@ abstract class AppLocalizations {
   /// No description provided for @remindersSettingsAlertsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Alert times (minutes before)'**
+  /// **'Remind me'**
   String get remindersSettingsAlertsLabel;
 
   /// No description provided for @remindersSettingsAtTime.
   ///
   /// In en, this message translates to:
-  /// **'At time'**
+  /// **'At the time'**
   String get remindersSettingsAtTime;
 
   /// No description provided for @earningsTitle.
@@ -6779,6 +6779,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help needed in your area'**
   String get notifSubsectorHelpTitle;
+
+  /// No description provided for @reminderLeadMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 minute before} other{{count} minutes before}}'**
+  String reminderLeadMinutes(int count);
+
+  /// No description provided for @reminderLeadHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour before} other{{count} hours before}}'**
+  String reminderLeadHours(int count);
+
+  /// No description provided for @reminderLeadDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day before} other{{count} days before}}'**
+  String reminderLeadDays(int count);
+
+  /// No description provided for @reminderFollowUpAfterHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour after} other{{count} hours after}}'**
+  String reminderFollowUpAfterHours(int count);
+
+  /// No description provided for @reminderFollowUpServiceDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Was the service done?'**
+  String get reminderFollowUpServiceDone;
+
+  /// No description provided for @reminderDefaultBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment with {name}'**
+  String reminderDefaultBody(String name);
+
+  /// No description provided for @remindersSettingsPickOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick at least one time'**
+  String get remindersSettingsPickOne;
+
+  /// No description provided for @remindersSettingsFollowUpHint.
+  ///
+  /// In en, this message translates to:
+  /// **'We ask how it went, so the deal and your earnings stay up to date.'**
+  String get remindersSettingsFollowUpHint;
 }
 
 class _AppLocalizationsDelegate

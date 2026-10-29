@@ -1140,7 +1140,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get kelishuvAppointmentRequiredBody => '双方已同意交易。请选择服务时间。';
 
   @override
-  String get remindersSettingsFollowUpLabel => '预约后跟进（小时）';
+  String get remindersSettingsFollowUpLabel => '预约后跟进';
 
   @override
   String get remindersFollowUpPrompt => '这次预约成功了吗？';
@@ -1172,7 +1172,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get remindersSettingsTitle => '提醒设置';
 
   @override
-  String get remindersSettingsAlertsLabel => '提醒时间（分钟前）';
+  String get remindersSettingsAlertsLabel => '提醒我';
 
   @override
   String get remindersSettingsAtTime => '准时';
@@ -3517,4 +3517,38 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get notifSubsectorHelpTitle => '您的领域需要帮助';
+
+  @override
+  String reminderLeadMinutes(int count) {
+    return '提前$count分钟';
+  }
+
+  @override
+  String reminderLeadHours(int count) {
+    return '提前$count小时';
+  }
+
+  @override
+  String reminderLeadDays(int count) {
+    return '提前$count天';
+  }
+
+  @override
+  String reminderFollowUpAfterHours(int count) {
+    return '$count小时后';
+  }
+
+  @override
+  String get reminderFollowUpServiceDone => '服务完成了吗？';
+
+  @override
+  String reminderDefaultBody(String name) {
+    return '与$name的预约';
+  }
+
+  @override
+  String get remindersSettingsPickOne => '请至少选择一个时间';
+
+  @override
+  String get remindersSettingsFollowUpHint => '我们会询问进展，让交易和收入保持最新。';
 }

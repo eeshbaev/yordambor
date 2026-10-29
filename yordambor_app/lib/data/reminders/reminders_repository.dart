@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
+import 'package:yordambor/core/l10n/app_strings.dart';
 import 'package:yordambor/core/notifications/local_notification_service.dart';
 import 'package:yordambor/domain/entities/appointment_status.dart';
 import 'package:yordambor/domain/entities/booking.dart';
@@ -8,12 +9,20 @@ import 'package:yordambor/domain/entities/reminder.dart';
 import 'package:yordambor/domain/entities/reminder_settings.dart';
 
 class RemindersRepository {
-  RemindersRepository(this._notifications);
+  RemindersRepository(this._notifications, {this.languageOf});
 
   static const boxName = 'reminders';
   static const settingsKey = 'reminder_settings';
 
   final LocalNotificationService _notifications;
+  /// Reads the app language; null means Uzbek.
+  final String Function()? languageOf;
+
+  /// The app language (uz, ru, en or zh), which reminder texts are written
+  /// in when they are scheduled.
+  String get language => languageOf?.call() ?? 'uz';
+
+  AppStrings get _strings => AppStrings.forLanguage(language);
 
   Future<Box<Map>> _box() async {
     if (Hive.isBoxOpen(boxName)) {
@@ -29,22 +38,40 @@ class RemindersRepository {
     return ReminderSettings.fromMap(Map<dynamic, dynamic>.from(raw));
   }
 
+  /// Saves [settings] and schedules every active reminder's alerts again
+  /// by them.
   Future<void> saveSettings(ReminderSettings settings) async {
     final box = await _box();
     await box.put(settingsKey, settings.toMap());
+    await rescheduleAll(settings);
   }
 
+  /// Schedules the alerts of every active reminder again: after the
+  /// settings or the language change.
+  Future<void> rescheduleAll([ReminderSettings? settings]) async {
+    final current = settings ?? await fetchSettings();
+    for (final reminder in await fetchAll()) {
+      await _rescheduleNotifications(reminder, current);
+    }
+  }
+
+  /// Every reminder, soonest first. The settings live in the same box
+  /// under [settingsKey] (with no `id` field), so entries are told apart by
+  /// their key; one that cannot be read is skipped, not fatal.
   Future<List<Reminder>> fetchAll() async {
     final box = await _box();
-    return box.values
-        .map((raw) {
-          final map = Map<dynamic, dynamic>.from(raw);
-          if (map['id'] == settingsKey) return null;
-          return Reminder.fromMap(map);
-        })
-        .whereType<Reminder>()
-        .toList()
-      ..sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
+    final reminders = <Reminder>[];
+    for (final key in box.keys) {
+      if (key == settingsKey) continue;
+      final raw = box.get(key);
+      if (raw == null) continue;
+      try {
+        reminders.add(Reminder.fromMap(Map<dynamic, dynamic>.from(raw)));
+      } catch (_) {
+        // A damaged entry; the rest still show.
+      }
+    }
+    return reminders..sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
   }
 
   Future<Reminder?> fetchByBookingId(String bookingId) async {
@@ -56,12 +83,15 @@ class RemindersRepository {
   }
 
   Future<Reminder?> fetchById(String id) async {
+    if (id == settingsKey) return null;
     final box = await _box();
     final raw = box.get(id);
     if (raw == null) return null;
-    final map = Map<dynamic, dynamic>.from(raw);
-    if (map['id'] == settingsKey) return null;
-    return Reminder.fromMap(map);
+    try {
+      return Reminder.fromMap(Map<dynamic, dynamic>.from(raw));
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> syncForBooking({
@@ -95,7 +125,7 @@ class RemindersRepository {
   }) async {
     final settings = await fetchSettings();
     final title = booking.xizmatName ?? client.clientName;
-    final body = booking.note ?? '${client.clientName} bilan uchrashuv';
+    final body = booking.note ?? _strings.reminderDefaultBody(client.clientName);
 
     final existing = await fetchByBookingId(booking.id);
     final reminder = (existing ??
@@ -186,7 +216,8 @@ class RemindersRepository {
         title: reminder.title,
         body: minutesBefore == 0
             ? reminder.body ?? reminder.title
-            : '${reminder.body ?? reminder.title} (${_formatLead(minutesBefore)})',
+            : '${reminder.body ?? reminder.title} '
+                '(${_strings.reminderLead(minutesBefore).toLowerCase()})',
         scheduledAt: fireAt,
       );
     }
@@ -204,10 +235,9 @@ class RemindersRepository {
     }
   }
 
-  String _followUpBody(int hoursAfter) {
-    if (hoursAfter >= 24) return 'Uchrashuv yakunlandimi?';
-    return 'Xizmat bajarildimi?';
-  }
+  String _followUpBody(int hoursAfter) => hoursAfter >= 24
+      ? _strings.remindersFollowUpPrompt
+      : _strings.reminderFollowUpServiceDone;
 
   Future<List<Reminder>> fetchNeedingFollowUp() async {
     final settings = await fetchSettings();
@@ -223,10 +253,5 @@ class RemindersRepository {
         (hours) => hoursSince >= hours,
       );
     }).toList();
-  }
-
-  String _formatLead(int minutes) {
-    if (minutes >= 60) return '${minutes ~/ 60} soat oldin';
-    return '$minutes daqiqa oldin';
   }
 }

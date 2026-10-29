@@ -1174,8 +1174,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Both sides approved the deal. Pick when the service will happen.';
 
   @override
-  String get remindersSettingsFollowUpLabel =>
-      'Follow-up checks (hours after appointment)';
+  String get remindersSettingsFollowUpLabel => 'Check after the appointment';
 
   @override
   String get remindersFollowUpPrompt => 'Was this appointment successful?';
@@ -1207,10 +1206,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get remindersSettingsTitle => 'Reminder settings';
 
   @override
-  String get remindersSettingsAlertsLabel => 'Alert times (minutes before)';
+  String get remindersSettingsAlertsLabel => 'Remind me';
 
   @override
-  String get remindersSettingsAtTime => 'At time';
+  String get remindersSettingsAtTime => 'At the time';
 
   @override
   String get earningsTitle => 'My earnings';
@@ -3685,4 +3684,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifSubsectorHelpTitle => 'Help needed in your area';
+
+  @override
+  String reminderLeadMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes before',
+      one: '1 minute before',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reminderLeadHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours before',
+      one: '1 hour before',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reminderLeadDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days before',
+      one: '1 day before',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reminderFollowUpAfterHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours after',
+      one: '1 hour after',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reminderFollowUpServiceDone => 'Was the service done?';
+
+  @override
+  String reminderDefaultBody(String name) {
+    return 'Appointment with $name';
+  }
+
+  @override
+  String get remindersSettingsPickOne => 'Pick at least one time';
+
+  @override
+  String get remindersSettingsFollowUpHint =>
+      'We ask how it went, so the deal and your earnings stay up to date.';
 }

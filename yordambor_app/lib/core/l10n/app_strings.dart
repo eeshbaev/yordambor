@@ -1279,6 +1279,24 @@ class AppStrings {
   String get reminderLead3Hours => _l10n.reminderLead3Hours;
   String get reminderLeadHour => _l10n.reminderLeadHour;
   String get reminderLead15Min => _l10n.reminderLead15Min;
+  String reminderLeadMinutes(int count) => _l10n.reminderLeadMinutes(count);
+  String reminderLeadHours(int count) => _l10n.reminderLeadHours(count);
+  String reminderLeadDays(int count) => _l10n.reminderLeadDays(count);
+  String reminderFollowUpAfterHours(int count) =>
+      _l10n.reminderFollowUpAfterHours(count);
+  String get reminderFollowUpServiceDone => _l10n.reminderFollowUpServiceDone;
+  String reminderDefaultBody(String name) => _l10n.reminderDefaultBody(name);
+  String get remindersSettingsPickOne => _l10n.remindersSettingsPickOne;
+  String get remindersSettingsFollowUpHint =>
+      _l10n.remindersSettingsFollowUpHint;
+
+  /// "1 day before", "3 hours before", "15 minutes before" or "At time".
+  String reminderLead(int minutes) {
+    if (minutes <= 0) return remindersSettingsAtTime;
+    if (minutes % 1440 == 0) return reminderLeadDays(minutes ~/ 1440);
+    if (minutes % 60 == 0) return reminderLeadHours(minutes ~/ 60);
+    return reminderLeadMinutes(minutes);
+  }
   String get saveClientPromptTitle => _l10n.saveClientPromptTitle;
   String saveClientPromptBody(String name) => _l10n.saveClientPromptBody(name);
   String get saveClientConfirm => _l10n.saveClientConfirm;

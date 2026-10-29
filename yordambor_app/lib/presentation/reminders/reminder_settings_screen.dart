@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yordambor/application/providers/locale_provider.dart';
 import 'package:yordambor/application/providers/reminder_providers.dart';
+import 'package:yordambor/core/design_system/app_haptics.dart';
 import 'package:yordambor/core/design_system/app_layout.dart';
 import 'package:yordambor/core/design_system/app_tokens.dart';
+import 'package:yordambor/core/design_system/theme_extensions.dart';
 import 'package:yordambor/core/design_system/widgets/yb_buttons.dart';
 import 'package:yordambor/core/design_system/widgets/yb_empty_state.dart';
 import 'package:yordambor/core/design_system/widgets/yb_filter_chip.dart';
+import 'package:yordambor/core/design_system/widgets/yb_inline_message.dart';
 import 'package:yordambor/core/design_system/widgets/yb_skeleton.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/domain/entities/reminder_settings.dart';
-import 'package:yordambor/core/design_system/theme_extensions.dart';
 
+/// When reminders ring: before the appointment (1 day, 3 hours, 1 hour,
+/// 15 minutes, at the time) and the checks after it, each a chip to tap.
 class ReminderSettingsScreen extends ConsumerStatefulWidget {
   const ReminderSettingsScreen({super.key});
-
-  static const alertPresets = <int>[360, 120, 60, 30, 0];
 
   @override
   ConsumerState<ReminderSettingsScreen> createState() =>
@@ -24,59 +26,57 @@ class ReminderSettingsScreen extends ConsumerStatefulWidget {
 
 class _ReminderSettingsScreenState
     extends ConsumerState<ReminderSettingsScreen> {
-  late final TextEditingController _minutesController;
-  late final TextEditingController _followUpController;
-  Set<int> _selectedPresets = {};
-  Set<int> _selectedFollowUp = {};
+  Set<int> _alerts = {};
+  Set<int> _followUps = {};
   bool _loaded = false;
+  bool _saving = false;
+  bool _showMissing = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _minutesController = TextEditingController();
-    _followUpController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _minutesController.dispose();
-    _followUpController.dispose();
-    super.dispose();
-  }
-
-  void _applySettings(ReminderSettings settings) {
+  void _apply(ReminderSettings settings) {
     if (_loaded) return;
-    _selectedPresets = settings.alertMinutesBefore.toSet();
-    _selectedFollowUp = settings.followUpHoursAfter.toSet();
-    _minutesController.text = settings.alertMinutesBefore.join(', ');
-    _followUpController.text = settings.followUpHoursAfter.join(', ');
+    _alerts = settings.alertMinutesBefore.toSet();
+    _followUps = settings.followUpHoursAfter.toSet();
     _loaded = true;
   }
 
-  List<int> _parseFollowUpHours() {
-    final fromField = _followUpController.text
-        .split(',')
-        .map((part) => int.tryParse(part.trim()))
-        .whereType<int>()
-        .where((value) => value >= 0)
-        .toSet();
+  /// The presets, plus any other time saved before presets existed, so
+  /// nothing saved disappears from view.
+  static List<int> _choices(List<int> presets, Set<int> selected) =>
+      {...presets, ...selected}.toList();
 
-    if (fromField.isNotEmpty) {
-      return fromField.toList()..sort();
-    }
-    return _selectedFollowUp.toList()..sort();
+  void _toggle(Set<int> set, int value) {
+    setState(() {
+      if (!set.remove(value)) set.add(value);
+      _showMissing = false;
+    });
   }
 
-  List<int> _parseMinutes() {
-    final fromField = _minutesController.text
-        .split(',')
-        .map((part) => int.tryParse(part.trim()))
-        .whereType<int>()
-        .where((value) => value >= 0)
-        .toSet();
-
-    if (fromField.isNotEmpty) return fromField.toList()..sort((a, b) => b.compareTo(a));
-    return _selectedPresets.toList()..sort((a, b) => b.compareTo(a));
+  Future<void> _save(ReminderSettings settings) async {
+    if (_alerts.isEmpty) {
+      AppHaptics.error();
+      setState(() => _showMissing = true);
+      return;
+    }
+    setState(() => _saving = true);
+    final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final strings = ref.read(appStringsProvider);
+    try {
+      await ref.read(remindersRepositoryProvider).saveSettings(
+            settings.copyWith(
+              alertMinutesBefore: _alerts.toList()
+                ..sort((a, b) => b.compareTo(a)),
+              followUpHoursAfter: _followUps.toList()..sort(),
+            ),
+          );
+      ref.invalidate(reminderSettingsProvider);
+      AppHaptics.success();
+      if (mounted) navigator.pop();
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _saving = false);
+      messenger.showSnackBar(SnackBar(content: Text(strings.stateErrorBody)));
+    }
   }
 
   @override
@@ -98,136 +98,97 @@ class _ReminderSettingsScreenState
             onAction: () => ref.invalidate(reminderSettingsProvider),
           ),
           data: (settings) {
-            _applySettings(settings);
+            _apply(settings);
+            final alertChoices =
+                _choices(ReminderSettings.alertPresets, _alerts)
+                  ..sort((a, b) => b.compareTo(a));
+            final followUpChoices =
+                _choices(ReminderSettings.followUpPresets, _followUps)..sort();
 
             return ListView(
               padding: const EdgeInsets.all(AppSpacing.lg),
               children: [
-                Text(
-                  strings.remindersSettingsAlertsLabel,
-                  style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary),
-                ),
+                _SectionTitle(text: strings.remindersSettingsAlertsLabel),
                 const SizedBox(height: AppSpacing.md),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.sm,
-                  children: ReminderSettingsScreen.alertPresets.map((minutes) {
-                    final label = switch (minutes) {
-                      360 => '6h',
-                      120 => '2h',
-                      60 => '1h',
-                      30 => '30m',
-                      _ => strings.remindersSettingsAtTime,
-                    };
-                    final selected = _selectedPresets.contains(minutes);
-                    return YbFilterChip(
-                      label: label,
-                      selected: selected,
-                      onTap: () {
-                        setState(() {
-                          if (selected) {
-                            _selectedPresets.remove(minutes);
-                          } else {
-                            _selectedPresets.add(minutes);
-                          }
-                          _minutesController.text =
-                              (_selectedPresets.toList()
-                                    ..sort((a, b) => b.compareTo(a)))
-                                  .join(', ');
-                        });
-                      },
-                    );
-                  }).toList(),
+                _ChipRow(
+                  children: [
+                    for (final minutes in alertChoices)
+                      YbFilterChip(
+                        label: strings.reminderLead(minutes),
+                        selected: _alerts.contains(minutes),
+                        onTap: () => _toggle(_alerts, minutes),
+                      ),
+                  ],
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                TextField(
-                  controller: _minutesController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: strings.remindersSettingsAlertsLabel,
-                    hintText: '360, 120, 60, 30, 0',
-                  ),
-                  onChanged: (_) {
-                    final parsed = _minutesController.text
-                        .split(',')
-                        .map((part) => int.tryParse(part.trim()))
-                        .whereType<int>()
-                        .where((value) => value >= 0)
-                        .toSet();
-                    setState(() => _selectedPresets = parsed);
-                  },
-                ),
+                if (_showMissing) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  YbInlineMessage(message: strings.remindersSettingsPickOne),
+                ],
                 const SizedBox(height: AppSpacing.xl),
+                _SectionTitle(text: strings.remindersSettingsFollowUpLabel),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
-                  strings.remindersSettingsFollowUpLabel,
-                  style: AppTypography.headline.copyWith(color: context.ybColors.textPrimary),
+                  strings.remindersSettingsFollowUpHint,
+                  style: AppTypography.caption.copyWith(
+                    color: context.ybColors.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.sm,
-                  children: [1, 2, 24].map((hours) {
-                    final label = hours == 24 ? '24h' : '${hours}h';
-                    final selected = _selectedFollowUp.contains(hours);
-                    return YbFilterChip(
-                      label: label,
-                      selected: selected,
-                      onTap: () {
-                        setState(() {
-                          if (selected) {
-                            _selectedFollowUp.remove(hours);
-                          } else {
-                            _selectedFollowUp.add(hours);
-                          }
-                          _followUpController.text =
-                              (_selectedFollowUp.toList()..sort()).join(', ');
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                TextField(
-                  controller: _followUpController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: strings.remindersSettingsFollowUpLabel,
-                    hintText: '1, 2, 24',
-                  ),
-                  onChanged: (_) {
-                    final parsed = _followUpController.text
-                        .split(',')
-                        .map((part) => int.tryParse(part.trim()))
-                        .whereType<int>()
-                        .where((value) => value >= 0)
-                        .toSet();
-                    setState(() => _selectedFollowUp = parsed);
-                  },
+                _ChipRow(
+                  children: [
+                    for (final hours in followUpChoices)
+                      YbFilterChip(
+                        label: strings.reminderFollowUpAfterHours(hours),
+                        selected: _followUps.contains(hours),
+                        onTap: () => _toggle(_followUps, hours),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: AppSpacing.xl),
                 YbPrimaryButton(
                   label: strings.actionSave,
-                  onPressed: () async {
-                    final minutes = _parseMinutes();
-                    final followUp = _parseFollowUpHours();
-                    if (minutes.isEmpty || followUp.isEmpty) return;
-
-                    await ref.read(remindersRepositoryProvider).saveSettings(
-                          settings.copyWith(
-                            alertMinutesBefore: minutes,
-                            followUpHoursAfter: followUp,
-                          ),
-                        );
-                    ref.invalidate(reminderSettingsProvider);
-
-                    if (context.mounted) Navigator.pop(context);
-                  },
+                  isLoading: _saving,
+                  onPressed: _saving ? null : () => _save(settings),
                 ),
               ],
             );
           },
         ),
       ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      header: true,
+      child: Text(
+        text,
+        style: AppTypography.headline.copyWith(
+          color: context.ybColors.textPrimary,
+        ),
+      ),
+    );
+  }
+}
+
+class _ChipRow extends StatelessWidget {
+  const _ChipRow({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
+      children: children,
     );
   }
 }

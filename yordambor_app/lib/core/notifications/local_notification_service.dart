@@ -201,13 +201,28 @@ class LocalNotificationService {
     await cancelAllForReminder(reminderId);
   }
 
+  /// Every alert of [reminderId], whatever lead time it was scheduled
+  /// with: the pending ones are found by their payload, and the usual ids
+  /// are cancelled too for platforms that do not list pending alerts.
   Future<void> cancelAllForReminder(String reminderId) async {
+    if (!_initialized) await initialize();
+    try {
+      final payload = '$_payloadPrefix$reminderId';
+      for (final request in await _plugin.pendingNotificationRequests()) {
+        if (request.payload == payload) await _plugin.cancel(id: request.id);
+      }
+    } catch (_) {
+      // Fall back to the known ids below.
+    }
     for (final suffix in [
       '',
+      '_before_1440',
       '_before_360',
+      '_before_180',
       '_before_120',
       '_before_60',
       '_before_30',
+      '_before_15',
       '_before_0',
       '_followup_1',
       '_followup_2',

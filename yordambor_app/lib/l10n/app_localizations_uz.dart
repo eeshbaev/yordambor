@@ -1180,8 +1180,7 @@ class AppLocalizationsUz extends AppLocalizations {
       'Ikkala tom kelishuvni qabul qildi. Xizmat qachon boʻlishini tanlang.';
 
   @override
-  String get remindersSettingsFollowUpLabel =>
-      'Uchrashuvdan keyin tekshirish (soat)';
+  String get remindersSettingsFollowUpLabel => 'Uchrashuvdan keyin tekshirish';
 
   @override
   String get remindersFollowUpPrompt => 'Uchrashuv muvaffaqiyatli boʻldimi?';
@@ -1213,11 +1212,10 @@ class AppLocalizationsUz extends AppLocalizations {
   String get remindersSettingsTitle => 'Eslatma sozlamalari';
 
   @override
-  String get remindersSettingsAlertsLabel =>
-      'Ogohlantirish vaqti (daqiqa oldin)';
+  String get remindersSettingsAlertsLabel => 'Eslatish';
 
   @override
-  String get remindersSettingsAtTime => 'Vaqtida';
+  String get remindersSettingsAtTime => 'Uchrashuv vaqtida';
 
   @override
   String get earningsTitle => 'Mening daromadim';
@@ -3675,4 +3673,39 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get notifSubsectorHelpTitle => 'Sizning sochangizda yordam kerak';
+
+  @override
+  String reminderLeadMinutes(int count) {
+    return '$count daqiqa oldin';
+  }
+
+  @override
+  String reminderLeadHours(int count) {
+    return '$count soat oldin';
+  }
+
+  @override
+  String reminderLeadDays(int count) {
+    return '$count kun oldin';
+  }
+
+  @override
+  String reminderFollowUpAfterHours(int count) {
+    return '$count soatdan keyin';
+  }
+
+  @override
+  String get reminderFollowUpServiceDone => 'Xizmat bajarildimi?';
+
+  @override
+  String reminderDefaultBody(String name) {
+    return '$name bilan uchrashuv';
+  }
+
+  @override
+  String get remindersSettingsPickOne => 'Kamida bitta vaqtni tanlang';
+
+  @override
+  String get remindersSettingsFollowUpHint =>
+      'Qanday oʻtganini soʻraymiz — kelishuv va daromadingiz yangilanib turadi.';
 }

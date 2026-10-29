@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yordambor/application/providers/onboarding_providers.dart';
 import 'package:yordambor/core/notifications/local_notification_service.dart';
 import 'package:yordambor/data/reminders/reminders_repository.dart';
 import 'package:yordambor/domain/entities/reminder.dart';
@@ -10,7 +11,20 @@ final localNotificationServiceProvider =
 });
 
 final remindersRepositoryProvider = Provider<RemindersRepository>((ref) {
-  return RemindersRepository(ref.watch(localNotificationServiceProvider));
+  final repository = RemindersRepository(
+    ref.watch(localNotificationServiceProvider),
+    languageOf: () => ref.read(onboardingPrefsProvider).language,
+  );
+  // Alerts already scheduled are written in the old language.
+  ref.listen(
+    onboardingPrefsProvider.select((prefs) => prefs.language),
+    (previous, next) {
+      if (previous != null && previous != next) {
+        repository.rescheduleAll().ignore();
+      }
+    },
+  );
+  return repository;
 });
 
 final remindersProvider = FutureProvider<List<Reminder>>((ref) async {
