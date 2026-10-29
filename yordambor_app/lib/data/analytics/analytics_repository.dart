@@ -45,35 +45,40 @@ class AnalyticsRepository {
       );
     }
 
-    final views = await client
-        .from('analytics_events')
-        .select('id')
-        .eq('xizmat_id', xizmatId)
-        .eq('event_type', 'view');
+    // Counted by the server: only the totals come back, not the rows.
+    Future<int> count(PostgrestFilterBuilder<PostgrestList> query) async =>
+        (await query.limit(1).count(CountOption.exact)).count;
 
-    final favorites = await client
-        .from('favorites')
-        .select('user_id')
-        .eq('xizmat_id', xizmatId);
-
-    final deals = await client
-        .from('kelishuvlar')
-        .select('status')
-        .eq('xizmat_id', xizmatId);
-
-    var incoming = 0;
-    var completed = 0;
-    for (final raw in deals as List<dynamic>) {
-      final status = (raw as Map<String, dynamic>)['status'] as String;
-      if (status == 'muzokarada' || status == 'jarayonda') incoming++;
-      if (status == 'bajarildi') completed++;
-    }
+    final counts = await Future.wait([
+      count(
+        client
+            .from('analytics_events')
+            .select('id')
+            .eq('xizmat_id', xizmatId)
+            .eq('event_type', 'view'),
+      ),
+      count(client.from('favorites').select('user_id').eq('xizmat_id', xizmatId)),
+      count(
+        client
+            .from('kelishuvlar')
+            .select('id')
+            .eq('xizmat_id', xizmatId)
+            .inFilter('status', ['muzokarada', 'jarayonda']),
+      ),
+      count(
+        client
+            .from('kelishuvlar')
+            .select('id')
+            .eq('xizmat_id', xizmatId)
+            .eq('status', 'bajarildi'),
+      ),
+    ]);
 
     return XizmatAnalytics(
-      viewCount: (views as List).length,
-      favoriteCount: (favorites as List).length,
-      incomingDeals: incoming,
-      completedDeals: completed,
+      viewCount: counts[0],
+      favoriteCount: counts[1],
+      incomingDeals: counts[2],
+      completedDeals: counts[3],
     );
   }
 }

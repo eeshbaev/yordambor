@@ -98,4 +98,41 @@ class StorageRepository {
       _ => 'image/jpeg',
     };
   }
+
+  /// Every file under [ownerId]'s folder (service photos, avatar,
+  /// certificates), for account deletion. Supabase allows removing files
+  /// only through the Storage API, not from the database.
+  Future<void> deleteAllFor(String ownerId) async {
+    final client = _client;
+    if (client == null) return;
+    final storage = client.storage.from(bucket);
+    const page = 100;
+
+    final paths = <String>[];
+    Future<void> collect(String folder) async {
+      for (var offset = 0;; offset += page) {
+        final items = await storage.list(
+          path: folder,
+          searchOptions: SearchOptions(limit: page, offset: offset),
+        );
+        for (final item in items) {
+          final path = '$folder/${item.name}';
+          // Folders come back without an id.
+          if (item.id == null) {
+            await collect(path);
+          } else {
+            paths.add(path);
+          }
+        }
+        if (items.length < page) return;
+      }
+    }
+
+    await collect(ownerId);
+    for (var i = 0; i < paths.length; i += page) {
+      await storage.remove(
+        paths.sublist(i, i + page > paths.length ? paths.length : i + page),
+      );
+    }
+  }
 }

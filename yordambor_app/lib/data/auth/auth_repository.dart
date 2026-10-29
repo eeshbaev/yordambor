@@ -6,6 +6,7 @@ import 'package:yordambor/core/config/auth_redirect.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/core/supabase/postgrest_errors.dart';
 import 'package:yordambor/core/supabase/supabase_auth_errors.dart';
+import 'package:yordambor/data/storage/storage_repository.dart';
 import 'package:yordambor/domain/auth/app_user.dart';
 
 class AuthFailure implements Exception {
@@ -211,15 +212,19 @@ class AuthRepository {
     }
 
     try {
+      // Files first: once the account is gone, nobody may remove them.
+      await StorageRepository().deleteAllFor(user.id);
+      // Removes the data and the sign-in itself (migration 025).
       await client.rpc('delete_user_account');
-      await client.auth.updateUser(
-        UserAttributes(data: const {'account_deleted': true}),
-      );
-      await signOut();
+    } on StorageException catch (e) {
+      throw AuthFailure(e.message);
     } on PostgrestException catch (e) {
       throw AuthFailure(e.message);
-    } on AuthException catch (e) {
-      throw AuthFailure(_mapAuthError(e));
+    }
+    try {
+      await signOut();
+    } catch (_) {
+      // The session belonged to an account that no longer exists.
     }
   }
 

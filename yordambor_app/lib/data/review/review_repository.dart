@@ -127,7 +127,7 @@ class ReviewRepository {
         .select('id, kelishuv_id, xizmat_id, rating, comment, created_at')
         .single();
 
-    await _refreshXizmatRating(input.xizmatId);
+    // The service's rating follows on the server (migration 025).
 
     final map = Map<String, dynamic>.from(inserted);
     return Review(
@@ -152,29 +152,5 @@ class ReviewRepository {
     await client.from('reviews').update({
       'provider_reply': trimmed.isEmpty ? null : trimmed,
     }).eq('id', reviewId);
-  }
-
-  Future<void> _refreshXizmatRating(String xizmatId) async {
-    final client = _client;
-    if (client == null) return;
-
-    final rows = await client
-        .from('reviews')
-        .select('rating')
-        .eq('xizmat_id', xizmatId);
-
-    final ratings = (rows as List<dynamic>)
-        .map((row) => (row as Map<String, dynamic>)['rating'] as num)
-        .toList();
-
-    if (ratings.isEmpty) return;
-
-    final avg = ratings.fold<double>(0, (sum, r) => sum + r.toDouble()) /
-        ratings.length;
-
-    await client.from('xizmatlar').update({
-      'rating_avg': double.parse(avg.toStringAsFixed(2)),
-      'review_count': ratings.length,
-    }).eq('id', xizmatId);
   }
 }

@@ -395,26 +395,8 @@ class KelishuvRepository {
       updates['bajarildi_at'] = now;
     }
 
+    // The service's completed count goes up on the server (migration 025).
     await client.from('kelishuvlar').update(updates).eq('id', kelishuvId);
-
-    if (nextCompleteA && nextCompleteB) {
-      final xizmatId = row['xizmat_id'] as String?;
-      if (xizmatId != null) {
-        final xizmat = await client
-            .from('xizmatlar')
-            .select('completed_count')
-            .eq('id', xizmatId)
-            .maybeSingle();
-
-        if (xizmat != null) {
-          final count = (xizmat['completed_count'] as num?)?.toInt() ?? 0;
-          await client
-              .from('xizmatlar')
-              .update({'completed_count': count + 1})
-              .eq('id', xizmatId);
-        }
-      }
-    }
   }
 
   Future<List<KelishuvSummary>> fetchArchived(String userId) async {
