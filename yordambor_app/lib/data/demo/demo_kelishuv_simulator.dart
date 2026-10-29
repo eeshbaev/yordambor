@@ -4,6 +4,7 @@ import 'package:yordambor/data/kelishuv/kelishuv_exceptions.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_message.dart';
 import 'package:yordambor/domain/entities/kelishuv_summary.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 /// In-memory kelishuv for demo listings/posts (never sent to Supabase).
 abstract final class DemoKelishuvSimulator {
@@ -27,9 +28,9 @@ abstract final class DemoKelishuvSimulator {
 
   static void accept(String kelishuvId, String userId) {
     final current = _kelishuvlar[kelishuvId];
-    if (current == null) throw KelishuvFailure('Kelishuv topilmadi');
+    if (current == null) throw KelishuvFailure(CurrentStrings.value.errDealNotFound);
     if (!current.isParty(userId)) {
-      throw KelishuvFailure('Ruxsat yoʻq');
+      throw KelishuvFailure(CurrentStrings.value.errNoPermission);
     }
 
     var acceptA = current.acceptA;
@@ -78,7 +79,7 @@ abstract final class DemoKelishuvSimulator {
     required String content,
   }) {
     if (_kelishuvlar[kelishuvId] == null) {
-      throw KelishuvFailure('Kelishuv topilmadi');
+      throw KelishuvFailure(CurrentStrings.value.errDealNotFound);
     }
     final list = _messages.putIfAbsent(kelishuvId, () => []);
     list.add(
@@ -101,12 +102,12 @@ abstract final class DemoKelishuvSimulator {
   }) {
     final xizmat = DemoXizmatFeed.findById(xizmatId);
     if (xizmat == null) {
-      throw KelishuvFailure('Xizmat topilmadi');
+      throw KelishuvFailure(CurrentStrings.value.errServiceNotFound);
     }
 
     final ownerId = xizmat.ownerId ?? 'demo-user-unknown';
     if (ownerId == clientUserId) {
-      throw KelishuvFailure('Oʻz xizmatingizga soʻrov yuborib boʻlmaydi');
+      throw KelishuvFailure(CurrentStrings.value.errOwnService);
     }
 
     final now = DateTime.now();
@@ -153,12 +154,12 @@ abstract final class DemoKelishuvSimulator {
   }) {
     final post = DemoYordamKerakFeed.findById(postId);
     if (post == null) {
-      throw KelishuvFailure('Eʼlon topilmadi');
+      throw KelishuvFailure(CurrentStrings.value.errRequestNotFound);
     }
 
     final authorId = post.authorId ?? 'demo-user-unknown';
     if (authorId == providerUserId) {
-      throw KelishuvFailure('Oʻz eʼloningizga taklif yuborib boʻlmaydi');
+      throw KelishuvFailure(CurrentStrings.value.errOwnRequest);
     }
 
     final now = DateTime.now();

@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class BlockFailure implements Exception {
   BlockFailure(this.message);
@@ -59,7 +60,7 @@ class BlockRepository {
       final profile = map['profiles'] as Map<String, dynamic>?;
       return BlockedUser(
         userId: map['blocked_id'] as String,
-        fullName: profile?['full_name'] as String? ?? 'Foydalanuvchi',
+        fullName: profile?['full_name'] as String? ?? CurrentStrings.value.fallbackUserName,
         blockedAt: DateTime.parse(map['created_at'] as String),
       );
     }).toList();
@@ -69,10 +70,10 @@ class BlockRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw BlockFailure('Kirish talab qilinadi');
+      throw BlockFailure(CurrentStrings.value.errSignInRequired);
     }
     if (blockedId == userId) {
-      throw BlockFailure('Oʻzingizni bloklab boʻlmaydi');
+      throw BlockFailure(CurrentStrings.value.errCannotBlockSelf);
     }
 
     await client.from('blocks').upsert({
@@ -85,7 +86,7 @@ class BlockRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw BlockFailure('Kirish talab qilinadi');
+      throw BlockFailure(CurrentStrings.value.errSignInRequired);
     }
 
     await client
@@ -109,7 +110,7 @@ class BlockRepository {
         );
 
     if ((rows as List).isNotEmpty) {
-      throw BlockFailure('Bu foydalanuvchi bilan aloqa bloklangan');
+      throw BlockFailure(CurrentStrings.value.errUserBlocked);
     }
   }
 }

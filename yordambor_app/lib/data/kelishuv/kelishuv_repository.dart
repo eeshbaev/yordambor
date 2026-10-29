@@ -8,6 +8,7 @@ import 'package:yordambor/data/safety/block_repository.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
 import 'package:yordambor/domain/entities/kelishuv_message.dart';
 import 'package:yordambor/domain/entities/kelishuv_summary.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class KelishuvRepository {
   KelishuvRepository([BlockRepository? blockRepository])
@@ -25,7 +26,7 @@ class KelishuvRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw KelishuvFailure('Kirish talab qilinadi');
+      throw KelishuvFailure(CurrentStrings.value.errSignInRequired);
     }
 
     if (isDemoFeedId(xizmatId)) {
@@ -43,11 +44,11 @@ class KelishuvRepository {
         .eq('id', xizmatId)
         .maybeSingle();
 
-    if (xizmat == null) throw KelishuvFailure('Xizmat topilmadi');
+    if (xizmat == null) throw KelishuvFailure(CurrentStrings.value.errServiceNotFound);
 
     final ownerId = xizmat['owner_id'] as String;
     if (ownerId == userId) {
-      throw KelishuvFailure('Oʻz xizmatingizga soʻrov yuborib boʻlmaydi');
+      throw KelishuvFailure(CurrentStrings.value.errOwnService);
     }
 
     await _blockRepository.assertCanInteract(ownerId);
@@ -62,7 +63,7 @@ class KelishuvRepository {
     });
     await _acceptOwnOffer(kelishuvId, userId);
     final kelishuv = await fetchById(kelishuvId);
-    if (kelishuv == null) throw KelishuvFailure('Kelishuv yaratilmadi');
+    if (kelishuv == null) throw KelishuvFailure(CurrentStrings.value.errDealNotCreated);
     return kelishuv;
   }
 
@@ -74,7 +75,7 @@ class KelishuvRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw KelishuvFailure('Kirish talab qilinadi');
+      throw KelishuvFailure(CurrentStrings.value.errSignInRequired);
     }
 
     if (isDemoFeedId(postId)) {
@@ -84,14 +85,14 @@ class KelishuvRepository {
           .eq('id', xizmatId)
           .maybeSingle();
       if (xizmatRow == null || xizmatRow['owner_id'] != userId) {
-        throw KelishuvFailure('Faqat oʻz xizmatingiz orqali taklif yuboring');
+        throw KelishuvFailure(CurrentStrings.value.errOfferViaOwnService);
       }
       return DemoKelishuvSimulator.createFromPost(
         postId: postId,
         xizmatId: xizmatId,
         providerUserId: userId,
         providerDisplayName: _currentUserDisplayName(client),
-        xizmatName: xizmatRow['name'] as String? ?? 'Xizmat',
+        xizmatName: xizmatRow['name'] as String? ?? CurrentStrings.value.fallbackServiceName,
         input: input,
       );
     }
@@ -102,11 +103,11 @@ class KelishuvRepository {
         .eq('id', postId)
         .maybeSingle();
 
-    if (post == null) throw KelishuvFailure('Eʼlon topilmadi');
+    if (post == null) throw KelishuvFailure(CurrentStrings.value.errRequestNotFound);
 
     final authorId = post['author_id'] as String;
     if (authorId == userId) {
-      throw KelishuvFailure('Oʻz eʼloningizga taklif yuborib boʻlmaydi');
+      throw KelishuvFailure(CurrentStrings.value.errOwnRequest);
     }
 
     await _blockRepository.assertCanInteract(authorId);
@@ -118,7 +119,7 @@ class KelishuvRepository {
         .maybeSingle();
 
     if (xizmat == null || xizmat['owner_id'] != userId) {
-      throw KelishuvFailure('Faqat oʻz xizmatingiz orqali taklif yuboring');
+      throw KelishuvFailure(CurrentStrings.value.errOfferViaOwnService);
     }
 
     await _guardOneActive(
@@ -137,7 +138,7 @@ class KelishuvRepository {
     });
     await _acceptOwnOffer(kelishuvId, userId);
     final kelishuv = await fetchById(kelishuvId);
-    if (kelishuv == null) throw KelishuvFailure('Kelishuv yaratilmadi');
+    if (kelishuv == null) throw KelishuvFailure(CurrentStrings.value.errDealNotCreated);
     return kelishuv;
   }
 
@@ -217,7 +218,7 @@ class KelishuvRepository {
     }
 
     final client = _client;
-    if (client == null) throw KelishuvFailure('Supabase sozlanmagan');
+    if (client == null) throw KelishuvFailure(CurrentStrings.value.errServerNotSetUp);
 
     final row = await client
         .from('kelishuvlar')
@@ -225,12 +226,12 @@ class KelishuvRepository {
         .eq('id', kelishuvId)
         .maybeSingle();
 
-    if (row == null) throw KelishuvFailure('Kelishuv topilmadi');
+    if (row == null) throw KelishuvFailure(CurrentStrings.value.errDealNotFound);
 
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yoʻq');
+      throw KelishuvFailure(CurrentStrings.value.errNoPermission);
     }
 
     final updates = <String, dynamic>{};
@@ -259,7 +260,7 @@ class KelishuvRepository {
     TaklifInput input,
   ) async {
     final client = _client;
-    if (client == null) throw KelishuvFailure('Supabase sozlanmagan');
+    if (client == null) throw KelishuvFailure(CurrentStrings.value.errServerNotSetUp);
 
     final row = await client
         .from('kelishuvlar')
@@ -267,18 +268,18 @@ class KelishuvRepository {
         .eq('id', kelishuvId)
         .maybeSingle();
 
-    if (row == null) throw KelishuvFailure('Kelishuv topilmadi');
+    if (row == null) throw KelishuvFailure(CurrentStrings.value.errDealNotFound);
 
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yoʻq');
+      throw KelishuvFailure(CurrentStrings.value.errNoPermission);
     }
 
     final status = _parseStatus(row['status'] as String);
     if (status != KelishuvStatus.muzokarada &&
         status != KelishuvStatus.jarayonda) {
-      throw KelishuvFailure('Shartlarni faqat faol kelishuvda oʻzgartirish mumkin');
+      throw KelishuvFailure(CurrentStrings.value.errTermsOnlyOpenDeal);
     }
 
     if (status == KelishuvStatus.jarayonda) {
@@ -287,7 +288,7 @@ class KelishuvRepository {
           jarayondaAtRaw != null ? DateTime.tryParse(jarayondaAtRaw) : null;
       if (jarayondaAt != null &&
           DateTime.now().difference(jarayondaAt).inDays > 3) {
-        throw KelishuvFailure('3 kundan keyin shartlarni oʻzgartirib boʻlmaydi');
+        throw KelishuvFailure(CurrentStrings.value.errTermsLocked);
       }
     }
 
@@ -315,7 +316,7 @@ class KelishuvRepository {
     }).eq('id', kelishuvId);
 
     final kelishuv = await fetchById(kelishuvId);
-    if (kelishuv == null) throw KelishuvFailure('Kelishuv yangilanmadi');
+    if (kelishuv == null) throw KelishuvFailure(CurrentStrings.value.errDealNotUpdated);
     return kelishuv;
   }
 
@@ -339,7 +340,7 @@ class KelishuvRepository {
 
   Future<void> markBajarildi(String kelishuvId, String userId) async {
     final client = _client;
-    if (client == null) throw KelishuvFailure('Supabase sozlanmagan');
+    if (client == null) throw KelishuvFailure(CurrentStrings.value.errServerNotSetUp);
 
     final row = await client
         .from('kelishuvlar')
@@ -349,17 +350,17 @@ class KelishuvRepository {
         .eq('id', kelishuvId)
         .maybeSingle();
 
-    if (row == null) throw KelishuvFailure('Kelishuv topilmadi');
+    if (row == null) throw KelishuvFailure(CurrentStrings.value.errDealNotFound);
 
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yoʻq');
+      throw KelishuvFailure(CurrentStrings.value.errNoPermission);
     }
 
     final status = _parseStatus(row['status'] as String);
     if (status != KelishuvStatus.jarayonda) {
-      throw KelishuvFailure('Faqat jarayondagi kelishuvni yakunlash mumkin');
+      throw KelishuvFailure(CurrentStrings.value.errOnlyAgreedDone);
     }
 
     final jarayondaAtRaw = row['jarayonda_at'] as String?;
@@ -368,7 +369,7 @@ class KelishuvRepository {
     if (jarayondaAt != null &&
         DateTime.now().difference(jarayondaAt).inDays < 3) {
       throw KelishuvFailure(
-        'Ishni tugatish jarayon boshlanganidan 3 kun oʻtgach mumkin',
+        CurrentStrings.value.errDoneAfter3Days,
       );
     }
 
@@ -434,7 +435,7 @@ class KelishuvRepository {
     required String nextStatus,
   }) async {
     final client = _client;
-    if (client == null) throw KelishuvFailure('Supabase sozlanmagan');
+    if (client == null) throw KelishuvFailure(CurrentStrings.value.errServerNotSetUp);
 
     final row = await client
         .from('kelishuvlar')
@@ -442,17 +443,17 @@ class KelishuvRepository {
         .eq('id', kelishuvId)
         .maybeSingle();
 
-    if (row == null) throw KelishuvFailure('Kelishuv topilmadi');
+    if (row == null) throw KelishuvFailure(CurrentStrings.value.errDealNotFound);
 
     final partyA = row['party_a_id'] as String;
     final partyB = row['party_b_id'] as String;
     if (userId != partyA && userId != partyB) {
-      throw KelishuvFailure('Ruxsat yoʻq');
+      throw KelishuvFailure(CurrentStrings.value.errNoPermission);
     }
 
     final status = _parseStatus(row['status'] as String);
     if (!allowed.contains(status)) {
-      throw KelishuvFailure('Bu amal hozirgi holatda mumkin emas');
+      throw KelishuvFailure(CurrentStrings.value.errNotNow);
     }
 
     await client.from('kelishuvlar').update({
@@ -506,7 +507,7 @@ class KelishuvRepository {
         .map(
           (id) => KelishuvInboxGroup(
             xizmatId: id,
-            xizmatName: nameById[id] ?? 'Xizmat',
+            xizmatName: nameById[id] ?? CurrentStrings.value.fallbackServiceName,
             items: grouped[id]!,
           ),
         )
@@ -608,19 +609,19 @@ class KelishuvRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (userId == null) {
-      throw KelishuvFailure('Kirish talab qilinadi');
+      throw KelishuvFailure(CurrentStrings.value.errSignInRequired);
     }
 
     final trimmed = content.trim();
     if (trimmed.isEmpty) {
-      throw KelishuvFailure('Xabar boʻsh boʻlmasin');
+      throw KelishuvFailure(CurrentStrings.value.errMessageEmpty);
     }
 
     if (isSimulatedKelishuvId(kelishuvId)) {
       DemoKelishuvSimulator.addMessage(
         kelishuvId: kelishuvId,
         senderId: userId,
-        senderName: client != null ? _currentUserDisplayName(client) : 'Siz',
+        senderName: client != null ? _currentUserDisplayName(client) : CurrentStrings.value.fallbackYou,
         content: trimmed,
       );
       final sent = DemoKelishuvSimulator.messages(kelishuvId).last;
@@ -628,7 +629,7 @@ class KelishuvRepository {
     }
 
     if (client == null) {
-      throw KelishuvFailure('Supabase sozlanmagan');
+      throw KelishuvFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     var acceptsReset = false;
@@ -757,8 +758,8 @@ class KelishuvRepository {
       id: map['id'] as String,
       status: status,
       xizmatId: xizmatId,
-      xizmatName: xizmat?['name'] as String? ?? 'Xizmat',
-      otherPartyName: otherProfile?['full_name'] as String? ?? 'Foydalanuvchi',
+      xizmatName: xizmat?['name'] as String? ?? CurrentStrings.value.fallbackServiceName,
+      otherPartyName: otherProfile?['full_name'] as String? ?? CurrentStrings.value.fallbackUserName,
       updatedAt: DateTime.parse(map['updated_at'] as String),
       message: map['message'] as String?,
       postTitle: post?['title'] as String?,
@@ -951,7 +952,7 @@ class KelishuvRepository {
       final b = row['party_b_id'] as String;
       final isPair = (a == userId && b == ownerId) || (a == ownerId && b == userId);
       if (isPair) {
-        throw KelishuvFailure('Bu xizmat uchun faol kelishuv allaqachon mavjud');
+        throw KelishuvFailure(CurrentStrings.value.errDealAlreadyOpen);
       }
     }
   }
@@ -1013,7 +1014,7 @@ class KelishuvRepository {
     if (email != null && email.contains('@')) {
       return email.split('@').first;
     }
-    return 'Siz';
+    return CurrentStrings.value.fallbackYou;
   }
 
   KelishuvStatus _parseStatus(String raw) => switch (raw) {

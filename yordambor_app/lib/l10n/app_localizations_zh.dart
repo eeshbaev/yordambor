@@ -3560,4 +3560,226 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get alertAnyCity => '任何城市';
+
+  @override
+  String get errSignInRequired => '请先登录';
+
+  @override
+  String get errServerNotSetUp => '服务器未配置';
+
+  @override
+  String get errNoPermission => '没有权限';
+
+  @override
+  String get errDealNotFound => '未找到交易';
+
+  @override
+  String get errServiceNotFound => '未找到服务';
+
+  @override
+  String get errOwnService => '不能向自己的服务发送请求';
+
+  @override
+  String get errOwnRequest => '不能回应自己的求助';
+
+  @override
+  String get errDealNotCreated => '交易未创建';
+
+  @override
+  String get errPhotoRequired => '请至少添加一张作品照片';
+
+  @override
+  String get errOfferViaOwnService => '请通过您自己的服务提供帮助';
+
+  @override
+  String get errRequestNotFound => '未找到求助';
+
+  @override
+  String get errServiceNotUploaded => '服务已创建，但未能加载';
+
+  @override
+  String get errMessageTooShort => '消息太短';
+
+  @override
+  String get errMessageEmpty => '请先输入消息';
+
+  @override
+  String get errWrongPhoneOrPassword => '电话号码或密码错误';
+
+  @override
+  String get errDescriptionTooShort => '描述至少需要10个字符';
+
+  @override
+  String get errPickSubcategory => '请选择子类别';
+
+  @override
+  String get errPickCategory => '请选择类别';
+
+  @override
+  String get errTermsOnlyOpenDeal => '只有进行中的交易才能修改条件';
+
+  @override
+  String get errPickCity => '请选择城市';
+
+  @override
+  String get errTitleMin3 => '标题至少需要3个字符';
+
+  @override
+  String get errTitleMin2 => '标题至少需要2个字符';
+
+  @override
+  String get errSignUpFailed => '注册未成功';
+
+  @override
+  String get errResetLinkExpired => '密码重置链接已过期，请重新申请。';
+
+  @override
+  String get errCannotBlockSelf => '不能屏蔽自己';
+
+  @override
+  String errMaxAlerts(int count) {
+    return '最多$count个提醒';
+  }
+
+  @override
+  String errMaxCertificates(int count) {
+    return '最多$count个证书';
+  }
+
+  @override
+  String get errDealNotUpdated => '交易未更新';
+
+  @override
+  String get errKeepOnePhoto => '请至少保留一张作品照片';
+
+  @override
+  String get errPickAlertType => '请至少选择一种提醒';
+
+  @override
+  String get errOwnProfileOnly => '只能添加到您自己的资料';
+
+  @override
+  String get errOnlyAgreedDone => '只有已达成的交易才能标记完成';
+
+  @override
+  String get errEmailNotFound => '未找到邮箱';
+
+  @override
+  String get errDealAlreadyOpen => '此服务已有进行中的交易';
+
+  @override
+  String get errAccountNotFound => '未找到使用此电话或邮箱的账户';
+
+  @override
+  String get errAlreadyReviewed => '此交易已评价';
+
+  @override
+  String get errUserBlocked => '已屏蔽与此用户的联系';
+
+  @override
+  String get errNotNow => '当前无法执行此操作';
+
+  @override
+  String get errRatingRange => '评分须在1到5之间';
+
+  @override
+  String get errTermsLocked => '达成三天后无法修改条件';
+
+  @override
+  String get errSlowNetwork => '网络较慢或服务器无响应，请稍后再试。';
+
+  @override
+  String get errTooManyAttempts => '尝试次数过多。请15分钟后再试，或使用邮箱登录。';
+
+  @override
+  String get errProjectDescriptionTooShort => '描述至少需要10个字符';
+
+  @override
+  String errMaxServices(int count) {
+    return '最多$count个服务';
+  }
+
+  @override
+  String get errDoneAfter3Days => '达成三天后才能确认完成';
+
+  @override
+  String get errOffline => '没有网络或无法连接服务器，请稍后再试。';
+
+  @override
+  String get dealAcceptTitle => '接受吗？';
+
+  @override
+  String get dealAcceptBody => '您接受条件后，对方也需要确认。';
+
+  @override
+  String get dealDoneTitle => '工作完成了吗？';
+
+  @override
+  String get dealDoneBodyLast => '您确认后，交易即完成。';
+
+  @override
+  String get dealDoneBodyFirst => '确认工作已全部完成？对方也需要确认。';
+
+  @override
+  String get dealDoneConfirm => '已完成';
+
+  @override
+  String get dealCancelTitle => '取消交易吗？';
+
+  @override
+  String get dealCancelBody => '交易将被取消，且无法撤销。';
+
+  @override
+  String get dealEditTitle => '修改条件吗？';
+
+  @override
+  String get dealEditBody => '修改后，双方需重新确认。';
+
+  @override
+  String get actionYes => '是';
+
+  @override
+  String get actionNo => '否';
+
+  @override
+  String get fallbackUserName => '用户';
+
+  @override
+  String get fallbackServiceName => '服务';
+
+  @override
+  String get fallbackYou => '您';
+
+  @override
+  String get channelAlerts => '提醒';
+
+  @override
+  String get channelAlertsSub => '交易和类别提醒';
+
+  @override
+  String get channelReminders => '预约提醒';
+
+  @override
+  String get channelRemindersSub => '交易和客户提醒';
+
+  @override
+  String get channelTips => '建议';
+
+  @override
+  String get channelTipsSub => '发展业务的建议';
+
+  @override
+  String get errBadApiKey => '服务器密钥错误。请检查 .env.json 中的 anon key 并重启应用。';
+
+  @override
+  String get errWrongEmailOrPassword => '邮箱或密码错误';
+
+  @override
+  String get errEmailNotConfirmed => '邮箱尚未验证。请点击邮件中的链接，或重新发送。';
+
+  @override
+  String get errEmailTaken => '此邮箱已有账户，请尝试登录。';
+
+  @override
+  String get errPhoneTaken => '此电话号码已注册';
 }

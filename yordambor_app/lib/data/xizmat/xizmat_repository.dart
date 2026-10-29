@@ -11,6 +11,7 @@ import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
 import 'package:yordambor/domain/entities/xizmat_availability_mode.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 import 'package:yordambor/domain/entities/working_hours.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class XizmatFailure implements Exception {
   XizmatFailure(this.message);
@@ -547,17 +548,17 @@ class XizmatRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw XizmatFailure('Kirish talab qilinadi');
+      throw XizmatFailure(CurrentStrings.value.errSignInRequired);
     }
 
     if (input.portfolioImageUrls.isEmpty) {
-      throw XizmatFailure('Kamida bitta portfolio rasmi kerak');
+      throw XizmatFailure(CurrentStrings.value.errPhotoRequired);
     }
 
     final count = await countMine(userId);
     if (count >= XizmatLimits.maxPerAccount) {
       throw XizmatFailure(
-        'Maksimal ${XizmatLimits.maxPerAccount} ta xizmat yaratish mumkin',
+        CurrentStrings.value.errMaxServices(XizmatLimits.maxPerAccount),
       );
     }
 
@@ -566,7 +567,7 @@ class XizmatRepository {
 
     final created = await fetchById(xizmatId, 'uz');
     if (created == null) {
-      throw XizmatFailure('Xizmat yaratildi, lekin yuklanmadi');
+      throw XizmatFailure(CurrentStrings.value.errServiceNotUploaded);
     }
     return created;
   }
@@ -575,13 +576,13 @@ class XizmatRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw XizmatFailure('Kirish talab qilinadi');
+      throw XizmatFailure(CurrentStrings.value.errSignInRequired);
     }
 
     final count = await countMine(userId);
     if (count >= XizmatLimits.maxPerAccount) {
       throw XizmatFailure(
-        'Maksimal ${XizmatLimits.maxPerAccount} ta xizmat yaratish mumkin',
+        CurrentStrings.value.errMaxServices(XizmatLimits.maxPerAccount),
       );
     }
 
@@ -590,7 +591,7 @@ class XizmatRepository {
 
   Future<void> attachPortfolio(String xizmatId, List<String> urls) async {
     if (urls.isEmpty) {
-      throw XizmatFailure('Kamida bitta portfolio rasmi kerak');
+      throw XizmatFailure(CurrentStrings.value.errPhotoRequired);
     }
     await _attachPortfolio(xizmatId, urls);
   }
@@ -802,7 +803,7 @@ class XizmatRepository {
         .eq('xizmat_id', xizmatId);
 
     if ((rows as List).length <= 1) {
-      throw XizmatFailure('Kamida bitta portfolio rasmi qolishi kerak');
+      throw XizmatFailure(CurrentStrings.value.errKeepOnePhoto);
     }
 
     final item = await client
@@ -840,7 +841,7 @@ class XizmatRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw XizmatFailure('Kirish talab qilinadi');
+      throw XizmatFailure(CurrentStrings.value.errSignInRequired);
     }
 
     final existing = await client
@@ -850,7 +851,7 @@ class XizmatRepository {
         .maybeSingle();
 
     if (existing == null || existing['owner_id'] != userId) {
-      throw XizmatFailure('Ruxsat yoʻq');
+      throw XizmatFailure(CurrentStrings.value.errNoPermission);
     }
   }
 

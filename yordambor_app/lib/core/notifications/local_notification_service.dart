@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 typedef ReminderNotificationTapHandler = void Function(String reminderId);
 typedef AppNotificationTapHandler = void Function(Map<String, String> payload);
@@ -128,15 +129,15 @@ class LocalNotificationService {
       id: id,
       title: title,
       body: body,
-      notificationDetails: const NotificationDetails(
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           'yordambor_alerts',
-          'Bildirishnomalar',
-          channelDescription: 'Kelishuv va subsoha bildirishnomalari',
+          CurrentStrings.value.channelAlerts,
+          channelDescription: CurrentStrings.value.channelAlertsSub,
           importance: Importance.high,
           priority: Priority.high,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(),
       ),
       payload: payload,
     );
@@ -170,15 +171,15 @@ class LocalNotificationService {
       title: title,
       body: body,
       scheduledDate: scheduled,
-      notificationDetails: const NotificationDetails(
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           'yordambor_reminders',
-          'Eslatmalar',
-          channelDescription: 'Kelishuv va mijoz eslatmalari',
+          CurrentStrings.value.channelReminders,
+          channelDescription: CurrentStrings.value.channelRemindersSub,
           importance: Importance.high,
           priority: Priority.high,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(),
       ),
       androidScheduleMode: await _reminderScheduleMode(),
       payload: '$_payloadPrefix$reminderId',
@@ -253,15 +254,15 @@ class LocalNotificationService {
       title: title,
       body: body,
       scheduledDate: tz.TZDateTime.from(at, tz.local),
-      notificationDetails: const NotificationDetails(
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           'yordambor_tips',
-          'Maslahatlar',
-          channelDescription: 'Biznesingizni oʻstirish boʻyicha maslahatlar',
+          CurrentStrings.value.channelTips,
+          channelDescription: CurrentStrings.value.channelTipsSub,
           importance: Importance.defaultImportance,
           priority: Priority.defaultPriority,
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(),
       ),
       // A tip may come a few minutes late; it needs no exact alarm.
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,

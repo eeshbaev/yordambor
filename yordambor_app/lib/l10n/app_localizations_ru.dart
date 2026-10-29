@@ -3760,4 +3760,240 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get alertAnyCity => 'Любой город';
+
+  @override
+  String get errSignInRequired => 'Сначала войдите';
+
+  @override
+  String get errServerNotSetUp => 'Сервер не настроен';
+
+  @override
+  String get errNoPermission => 'Нет доступа';
+
+  @override
+  String get errDealNotFound => 'Сделка не найдена';
+
+  @override
+  String get errServiceNotFound => 'Услуга не найдена';
+
+  @override
+  String get errOwnService => 'Нельзя отправить запрос на свою услугу';
+
+  @override
+  String get errOwnRequest => 'Нельзя предложить помощь по своей заявке';
+
+  @override
+  String get errDealNotCreated => 'Сделка не создана';
+
+  @override
+  String get errPhotoRequired => 'Добавьте хотя бы одно фото';
+
+  @override
+  String get errOfferViaOwnService => 'Предлагайте через свою услугу';
+
+  @override
+  String get errRequestNotFound => 'Заявка не найдена';
+
+  @override
+  String get errServiceNotUploaded => 'Услуга создана, но не загрузилась';
+
+  @override
+  String get errMessageTooShort => 'Сообщение слишком короткое';
+
+  @override
+  String get errMessageEmpty => 'Напишите сообщение';
+
+  @override
+  String get errWrongPhoneOrPassword => 'Неверный номер телефона или пароль';
+
+  @override
+  String get errDescriptionTooShort => 'Описание — не меньше 10 символов';
+
+  @override
+  String get errPickSubcategory => 'Выберите подраздел';
+
+  @override
+  String get errPickCategory => 'Выберите раздел';
+
+  @override
+  String get errTermsOnlyOpenDeal =>
+      'Условия можно менять только в открытой сделке';
+
+  @override
+  String get errPickCity => 'Выберите город';
+
+  @override
+  String get errTitleMin3 => 'Заголовок — не меньше 3 символов';
+
+  @override
+  String get errTitleMin2 => 'Заголовок — не меньше 2 символов';
+
+  @override
+  String get errSignUpFailed => 'Регистрация не удалась';
+
+  @override
+  String get errResetLinkExpired =>
+      'Срок ссылки для сброса пароля истёк. Запросите новую.';
+
+  @override
+  String get errCannotBlockSelf => 'Нельзя заблокировать себя';
+
+  @override
+  String errMaxAlerts(int count) {
+    return 'Не больше $count оповещений';
+  }
+
+  @override
+  String errMaxCertificates(int count) {
+    return 'Не больше $count сертификатов';
+  }
+
+  @override
+  String get errDealNotUpdated => 'Сделка не обновлена';
+
+  @override
+  String get errKeepOnePhoto => 'Оставьте хотя бы одно фото';
+
+  @override
+  String get errPickAlertType => 'Выберите хотя бы один тип оповещений';
+
+  @override
+  String get errOwnProfileOnly => 'Можно добавлять только в свой профиль';
+
+  @override
+  String get errOnlyAgreedDone => 'Завершить можно только согласованную сделку';
+
+  @override
+  String get errEmailNotFound => 'Email не найден';
+
+  @override
+  String get errDealAlreadyOpen => 'По этой услуге уже есть открытая сделка';
+
+  @override
+  String get errAccountNotFound =>
+      'Аккаунт с этим телефоном или email не найден';
+
+  @override
+  String get errAlreadyReviewed => 'Отзыв по этой сделке уже оставлен';
+
+  @override
+  String get errUserBlocked => 'Связь с этим пользователем заблокирована';
+
+  @override
+  String get errNotNow => 'Сейчас это действие недоступно';
+
+  @override
+  String get errRatingRange => 'Оценка — от 1 до 5';
+
+  @override
+  String get errTermsLocked => 'Через 3 дня после согласия условия не меняются';
+
+  @override
+  String get errSlowNetwork =>
+      'Медленное соединение или сервер не отвечает. Попробуйте позже.';
+
+  @override
+  String get errTooManyAttempts =>
+      'Слишком много попыток. Попробуйте через 15 минут или войдите по email.';
+
+  @override
+  String get errProjectDescriptionTooShort =>
+      'Описание — не меньше 10 символов';
+
+  @override
+  String errMaxServices(int count) {
+    return 'Не больше $count услуг';
+  }
+
+  @override
+  String get errDoneAfter3Days =>
+      'Подтвердить выполнение можно через 3 дня после согласия';
+
+  @override
+  String get errOffline =>
+      'Нет интернета или сервер недоступен. Попробуйте позже.';
+
+  @override
+  String get dealAcceptTitle => 'Принять?';
+
+  @override
+  String get dealAcceptBody =>
+      'После вашего согласия условия подтверждает и другая сторона.';
+
+  @override
+  String get dealDoneTitle => 'Работа выполнена?';
+
+  @override
+  String get dealDoneBodyLast =>
+      'После вашего подтверждения сделка завершится.';
+
+  @override
+  String get dealDoneBodyFirst =>
+      'Подтвердить, что работа выполнена полностью? Другая сторона тоже подтвердит.';
+
+  @override
+  String get dealDoneConfirm => 'Выполнено';
+
+  @override
+  String get dealCancelTitle => 'Отменить сделку?';
+
+  @override
+  String get dealCancelBody => 'Сделка будет отменена. Это нельзя отменить.';
+
+  @override
+  String get dealEditTitle => 'Изменить условия?';
+
+  @override
+  String get dealEditBody => 'После изменения обе стороны подтверждают заново.';
+
+  @override
+  String get actionYes => 'Да';
+
+  @override
+  String get actionNo => 'Нет';
+
+  @override
+  String get fallbackUserName => 'Пользователь';
+
+  @override
+  String get fallbackServiceName => 'Услуга';
+
+  @override
+  String get fallbackYou => 'Вы';
+
+  @override
+  String get channelAlerts => 'Оповещения';
+
+  @override
+  String get channelAlertsSub => 'Сделки и оповещения по разделам';
+
+  @override
+  String get channelReminders => 'Напоминания';
+
+  @override
+  String get channelRemindersSub => 'Напоминания о сделках и клиентах';
+
+  @override
+  String get channelTips => 'Советы';
+
+  @override
+  String get channelTipsSub => 'Советы для роста бизнеса';
+
+  @override
+  String get errBadApiKey =>
+      'Неверный ключ сервера. Проверьте anon key в .env.json и перезапустите приложение.';
+
+  @override
+  String get errWrongEmailOrPassword => 'Неверный email или пароль';
+
+  @override
+  String get errEmailNotConfirmed =>
+      'Email не подтверждён. Откройте ссылку из письма или отправьте её снова.';
+
+  @override
+  String get errEmailTaken =>
+      'Аккаунт с этим email уже есть. Попробуйте войти.';
+
+  @override
+  String get errPhoneTaken => 'Этот номер телефона уже зарегистрирован';
 }

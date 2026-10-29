@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/domain/entities/profile_certificate.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class CertificateFailure implements Exception {
   CertificateFailure(this.message);
@@ -39,20 +40,20 @@ class CertificateRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw CertificateFailure('Kirish talab qilinadi');
+      throw CertificateFailure(CurrentStrings.value.errSignInRequired);
     }
     if (userId != profileId) {
-      throw CertificateFailure('Faqat oʻz profilingizga qoʻshishingiz mumkin');
+      throw CertificateFailure(CurrentStrings.value.errOwnProfileOnly);
     }
 
     final title = input.title.trim();
     if (title.length < 2) {
-      throw CertificateFailure('Sarlavha kamida 2 ta belgidan iborat boʻlsin');
+      throw CertificateFailure(CurrentStrings.value.errTitleMin2);
     }
 
     final existing = await fetchForProfile(profileId);
     if (existing.length >= maxCertificates) {
-      throw CertificateFailure('Maksimal $maxCertificates ta sertifikat');
+      throw CertificateFailure(CurrentStrings.value.errMaxCertificates(maxCertificates));
     }
 
     final issuer = input.issuer?.trim();
@@ -73,7 +74,7 @@ class CertificateRepository {
 
   Future<void> remove(String certificateId) async {
     final client = _client;
-    if (client == null) throw CertificateFailure('Supabase sozlanmagan');
+    if (client == null) throw CertificateFailure(CurrentStrings.value.errServerNotSetUp);
 
     await client.from('profile_certificates').delete().eq('id', certificateId);
   }

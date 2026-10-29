@@ -16,6 +16,7 @@ import 'package:yordambor/presentation/shared/xizmat_pricing_section.dart';
 import 'package:yordambor/presentation/shared/xizmat_promise_section.dart';
 import 'package:yordambor/core/constants/service_cities.dart';
 import 'package:yordambor/presentation/shared/xizmat_service_city_field.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class PortfolioDraft {
   const PortfolioDraft({
@@ -275,7 +276,7 @@ class CreateXizmatNotifier extends StateNotifier<CreateXizmatState> {
     final session = _ref.read(sessionProvider);
     final userId = session.user?.id;
     if (userId == null) {
-      state = state.copyWith(errorMessage: 'Kirish talab qilinadi');
+      state = state.copyWith(errorMessage: CurrentStrings.value.errSignInRequired);
       return false;
     }
 

@@ -12,6 +12,7 @@ import 'package:yordambor/core/design_system/widgets/yb_confirm_dialog.dart';
 import 'package:yordambor/core/design_system/yb_icons.dart';
 import 'package:yordambor/data/kelishuv/kelishuv_repository.dart';
 import 'package:yordambor/domain/entities/kelishuv.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 Future<bool?> showEditKelishuvTermsSheet(
   BuildContext context, {
@@ -79,12 +80,12 @@ class _EditKelishuvTermsSheetState extends ConsumerState<EditKelishuvTermsSheet>
 
   Future<void> _submit() async {
     if (widget.kelishuv.status == KelishuvStatus.jarayonda) {
+      final strings = ref.read(appStringsProvider);
       final ok = await showYbConfirmDialog(
         context,
-        title: 'Shartlarni oʻzgartirasizmi?',
-        message:
-            'Oʻzgarishdan keyin ikkala tomon ham qayta tasdiqlashi kerak boʻladi.',
-        confirmLabel: 'Davom etish',
+        title: strings.dealEditTitle,
+        message: strings.dealEditBody,
+        confirmLabel: strings.actionContinue,
       );
       if (!ok || !mounted) return;
     }
@@ -106,7 +107,7 @@ class _EditKelishuvTermsSheetState extends ConsumerState<EditKelishuvTermsSheet>
 
     try {
       final userId = ref.read(sessionProvider).user?.id;
-      if (userId == null) throw KelishuvFailure('Kirish talab qilinadi');
+      if (userId == null) throw KelishuvFailure(CurrentStrings.value.errSignInRequired);
 
       await ref.read(kelishuvRepositoryProvider).updateTerms(
             widget.kelishuv.id,

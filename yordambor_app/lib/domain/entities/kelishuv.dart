@@ -1,3 +1,5 @@
+import 'package:yordambor/core/l10n/current_strings.dart';
+
 /// Rules of a deal that both the app and the server keep.
 abstract final class KelishuvRules {
   /// An offer that gets no answer (accept, decline or new terms) in this
@@ -138,12 +140,12 @@ class Kelishuv {
 
   String otherPartyNameFor(String userId) {
     if (userId == partyAId) {
-      return partyBName ?? 'Foydalanuvchi';
+      return partyBName ?? CurrentStrings.value.fallbackUserName;
     }
     if (userId == partyBId) {
-      return partyAName ?? 'Foydalanuvchi';
+      return partyAName ?? CurrentStrings.value.fallbackUserName;
     }
-    return otherPartyName ?? 'Foydalanuvchi';
+    return otherPartyName ?? CurrentStrings.value.fallbackUserName;
   }
 
   /// The other side of the deal for [userId].

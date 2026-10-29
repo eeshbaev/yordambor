@@ -8,6 +8,7 @@ import 'package:yordambor/core/supabase/postgrest_errors.dart';
 import 'package:yordambor/core/supabase/supabase_auth_errors.dart';
 import 'package:yordambor/data/storage/storage_repository.dart';
 import 'package:yordambor/domain/auth/app_user.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class AuthFailure implements Exception {
   AuthFailure(this.message);
@@ -79,7 +80,7 @@ class AuthRepository {
     final user = currentUser;
     final client = _client;
     if (user == null || client == null) {
-      throw AuthFailure('Kirish talab qilinadi');
+      throw AuthFailure(CurrentStrings.value.errSignInRequired);
     }
 
     try {
@@ -96,7 +97,7 @@ class AuthRepository {
     final user = currentUser;
     final client = _client;
     if (user == null || client == null) {
-      throw AuthFailure('Kirish talab qilinadi');
+      throw AuthFailure(CurrentStrings.value.errSignInRequired);
     }
 
     try {
@@ -117,7 +118,7 @@ class AuthRepository {
   }) async {
     final client = _client;
     if (client == null) {
-      throw AuthFailure('Supabase sozlanmagan');
+      throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     try {
@@ -133,7 +134,7 @@ class AuthRepository {
 
       final user = response.user;
       if (user == null) {
-        throw AuthFailure('Roʻyxatdan oʻtish amalga oshmadi');
+        throw AuthFailure(CurrentStrings.value.errSignUpFailed);
       }
 
       if (response.session != null) {
@@ -159,7 +160,7 @@ class AuthRepository {
   }) async {
     final client = _client;
     if (client == null) {
-      throw AuthFailure('Supabase sozlanmagan');
+      throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     try {
@@ -172,8 +173,7 @@ class AuthRepository {
       rethrow;
     } on TimeoutException {
       throw AuthFailure(
-        'Internet aloqasi sekin yoki server javob bermayapti. '
-        'Emulyator internetini tekshiring yoki keyinroq qayta urinib koʻring.',
+        CurrentStrings.value.errSlowNetwork,
       );
     } on AuthException catch (e) {
       throw AuthFailure(_mapAuthError(e));
@@ -208,7 +208,7 @@ class AuthRepository {
     final client = _client;
     final user = currentUser;
     if (client == null || user == null) {
-      throw AuthFailure('Kirish talab qilinadi');
+      throw AuthFailure(CurrentStrings.value.errSignInRequired);
     }
 
     try {
@@ -231,7 +231,7 @@ class AuthRepository {
   Future<void> resetPassword(String email) async {
     final client = _client;
     if (client == null) {
-      throw AuthFailure('Supabase sozlanmagan');
+      throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     try {
@@ -247,10 +247,10 @@ class AuthRepository {
   Future<void> updatePassword(String password) async {
     final client = _client;
     if (client == null) {
-      throw AuthFailure('Supabase sozlanmagan');
+      throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
     }
     if (currentUser == null) {
-      throw AuthFailure('Parolni tiklash havolasi muddati tugagan. Qayta soʻrang.');
+      throw AuthFailure(CurrentStrings.value.errResetLinkExpired);
     }
 
     try {
@@ -263,14 +263,14 @@ class AuthRepository {
   Future<void> resendVerificationEmail({String? email}) async {
     final client = _client;
     if (client == null) {
-      throw AuthFailure('Supabase sozlanmagan');
+      throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     final targetEmail = email?.trim().isNotEmpty == true
         ? email!.trim()
         : currentUser?.email;
     if (targetEmail == null || targetEmail.isEmpty) {
-      throw AuthFailure('Email topilmadi');
+      throw AuthFailure(CurrentStrings.value.errEmailNotFound);
     }
 
     try {
@@ -335,7 +335,7 @@ class AuthRepository {
 
     final client = _client;
     if (client == null) {
-      throw AuthFailure('Supabase sozlanmagan');
+      throw AuthFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     final phone = normalizePhone(identifier);
@@ -345,11 +345,11 @@ class AuthRepository {
         params: {'p_phone': phone, 'p_password': password},
       );
       if (email is String && email.isNotEmpty) return email;
-      throw AuthFailure('Telefon raqami yoki parol notoʻgʻri');
+      throw AuthFailure(CurrentStrings.value.errWrongPhoneOrPassword);
     } on PostgrestException catch (error) {
       if (error.message.contains('too_many_attempts')) {
         throw AuthFailure(
-          'Juda koʻp urinish. 15 daqiqadan keyin qayta urinib koʻring.',
+          CurrentStrings.value.errTooManyAttempts,
         );
       }
       if (!isMissingRpc(error)) rethrow;
@@ -363,7 +363,7 @@ class AuthRepository {
         .maybeSingle();
 
     if (row == null) {
-      throw AuthFailure('Bu telefon yoki email bilan hisob topilmadi');
+      throw AuthFailure(CurrentStrings.value.errAccountNotFound);
     }
 
     return row['email'] as String;
@@ -390,17 +390,17 @@ class AuthRepository {
 
     final message = error.message.toLowerCase();
     if (message.contains('invalid api key')) {
-      return 'Supabase API kaliti notoʻgʻri. .env.json faylida anon key ni tekshiring va ilovani qayta ishga tushiring.';
+      return CurrentStrings.value.errBadApiKey;
     }
     if (message.contains('invalid login credentials')) {
-      return 'Email yoki parol notoʻgʻri';
+      return CurrentStrings.value.errWrongEmailOrPassword;
     }
     if (message.contains('email not confirmed')) {
-      return 'Email tasdiqlanmagan. Pochtangizdagi havolani bosing yoki qayta yuboring.';
+      return CurrentStrings.value.errEmailNotConfirmed;
     }
     if (message.contains('already registered') ||
         message.contains('user already registered')) {
-      return 'Bu email bilan hisob mavjud. Kirishni sinab koʻring.';
+      return CurrentStrings.value.errEmailTaken;
     }
     return error.message;
   }
@@ -408,10 +408,10 @@ class AuthRepository {
   static String _mapPostgrestError(PostgrestException error) {
     if (error.code == '23505') {
       if (error.message.contains('email')) {
-        return 'Bu email bilan hisob mavjud. Kirishni sinab koʻring.';
+        return CurrentStrings.value.errEmailTaken;
       }
       if (error.message.contains('phone')) {
-        return 'Bu telefon raqami allaqachon roʻyxatdan oʻtgan';
+        return CurrentStrings.value.errPhoneTaken;
       }
     }
     return error.message;

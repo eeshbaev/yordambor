@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/domain/entities/subsector_alert_subscription.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class SubsectorAlertFailure implements Exception {
   SubsectorAlertFailure(this.message);
@@ -35,13 +36,13 @@ class SubsectorAlertRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw SubsectorAlertFailure('Kirish talab qilinadi');
+      throw SubsectorAlertFailure(CurrentStrings.value.errSignInRequired);
     }
 
     if (!input.alertNewService &&
         !input.alertDiscount &&
         !input.alertHelpPost) {
-      throw SubsectorAlertFailure('Kamida bitta bildirishnoma turini tanlang');
+      throw SubsectorAlertFailure(CurrentStrings.value.errPickAlertType);
     }
 
     final existing = await client
@@ -59,7 +60,7 @@ class SubsectorAlertRepository {
           .select('id')
           .eq('user_id', userId);
       if ((countRows as List).length >= maxSubscriptions) {
-        throw SubsectorAlertFailure('Maksimal $maxSubscriptions ta sozlama');
+        throw SubsectorAlertFailure(CurrentStrings.value.errMaxAlerts(maxSubscriptions));
       }
     }
 

@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/data/growth/provider_stats_repository.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 enum SupportCategory {
   bug,
@@ -38,12 +39,12 @@ class SupportRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw SupportFailure('Kirish talab qilinadi');
+      throw SupportFailure(CurrentStrings.value.errSignInRequired);
     }
 
     final trimmed = description.trim();
     if (trimmed.length < 10) {
-      throw SupportFailure('Tavsif kamida 10 ta belgidan iborat boʻlsin');
+      throw SupportFailure(CurrentStrings.value.errDescriptionTooShort);
     }
 
     await client.from('support_tickets').insert({
@@ -76,12 +77,12 @@ class FeedbackRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw FeedbackFailure('Kirish talab qilinadi');
+      throw FeedbackFailure(CurrentStrings.value.errSignInRequired);
     }
 
     final trimmed = message.trim();
     if (trimmed.length < 3) {
-      throw FeedbackFailure('Xabar juda qisqa');
+      throw FeedbackFailure(CurrentStrings.value.errMessageTooShort);
     }
 
     await client.from('feedback_submissions').insert({

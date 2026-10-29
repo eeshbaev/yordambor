@@ -6845,6 +6845,438 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Any city'**
   String get alertAnyCity;
+
+  /// No description provided for @errSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in first'**
+  String get errSignInRequired;
+
+  /// No description provided for @errServerNotSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is not set up'**
+  String get errServerNotSetUp;
+
+  /// No description provided for @errNoPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t do that'**
+  String get errNoPermission;
+
+  /// No description provided for @errDealNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Deal not found'**
+  String get errDealNotFound;
+
+  /// No description provided for @errServiceNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Service not found'**
+  String get errServiceNotFound;
+
+  /// No description provided for @errOwnService.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t send a request to your own service'**
+  String get errOwnService;
+
+  /// No description provided for @errOwnRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t make an offer on your own request'**
+  String get errOwnRequest;
+
+  /// No description provided for @errDealNotCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'The deal was not created'**
+  String get errDealNotCreated;
+
+  /// No description provided for @errPhotoRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one portfolio photo'**
+  String get errPhotoRequired;
+
+  /// No description provided for @errOfferViaOwnService.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer through one of your own services'**
+  String get errOfferViaOwnService;
+
+  /// No description provided for @errRequestNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Request not found'**
+  String get errRequestNotFound;
+
+  /// No description provided for @errServiceNotUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'The service was created but could not be loaded'**
+  String get errServiceNotUploaded;
+
+  /// No description provided for @errMessageTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'The message is too short'**
+  String get errMessageTooShort;
+
+  /// No description provided for @errMessageEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message first'**
+  String get errMessageEmpty;
+
+  /// No description provided for @errWrongPhoneOrPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong phone number or password'**
+  String get errWrongPhoneOrPassword;
+
+  /// No description provided for @errDescriptionTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'The description needs at least 10 characters'**
+  String get errDescriptionTooShort;
+
+  /// No description provided for @errPickSubcategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a sub-sector'**
+  String get errPickSubcategory;
+
+  /// No description provided for @errPickCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a sector'**
+  String get errPickCategory;
+
+  /// No description provided for @errTermsOnlyOpenDeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms can only change while the deal is open'**
+  String get errTermsOnlyOpenDeal;
+
+  /// No description provided for @errPickCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a city'**
+  String get errPickCity;
+
+  /// No description provided for @errTitleMin3.
+  ///
+  /// In en, this message translates to:
+  /// **'The title needs at least 3 characters'**
+  String get errTitleMin3;
+
+  /// No description provided for @errTitleMin2.
+  ///
+  /// In en, this message translates to:
+  /// **'The title needs at least 2 characters'**
+  String get errTitleMin2;
+
+  /// No description provided for @errSignUpFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-up did not go through'**
+  String get errSignUpFailed;
+
+  /// No description provided for @errResetLinkExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This password reset link has expired. Ask for a new one.'**
+  String get errResetLinkExpired;
+
+  /// No description provided for @errCannotBlockSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t block yourself'**
+  String get errCannotBlockSelf;
+
+  /// No description provided for @errMaxAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} alerts'**
+  String errMaxAlerts(int count);
+
+  /// No description provided for @errMaxCertificates.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} certificates'**
+  String errMaxCertificates(int count);
+
+  /// No description provided for @errDealNotUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'The deal was not updated'**
+  String get errDealNotUpdated;
+
+  /// No description provided for @errKeepOnePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep at least one portfolio photo'**
+  String get errKeepOnePhoto;
+
+  /// No description provided for @errPickAlertType.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one kind of alert'**
+  String get errPickAlertType;
+
+  /// No description provided for @errOwnProfileOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only add to your own profile'**
+  String get errOwnProfileOnly;
+
+  /// No description provided for @errOnlyAgreedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Only an agreed deal can be marked done'**
+  String get errOnlyAgreedDone;
+
+  /// No description provided for @errEmailNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Email not found'**
+  String get errEmailNotFound;
+
+  /// No description provided for @errDealAlreadyOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have an open deal for this service'**
+  String get errDealAlreadyOpen;
+
+  /// No description provided for @errAccountNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No account with this phone or email'**
+  String get errAccountNotFound;
+
+  /// No description provided for @errAlreadyReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'This deal has already been reviewed'**
+  String get errAlreadyReviewed;
+
+  /// No description provided for @errUserBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact with this person is blocked'**
+  String get errUserBlocked;
+
+  /// No description provided for @errNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'That can\'t be done right now'**
+  String get errNotNow;
+
+  /// No description provided for @errRatingRange.
+  ///
+  /// In en, this message translates to:
+  /// **'The rating must be from 1 to 5'**
+  String get errRatingRange;
+
+  /// No description provided for @errTermsLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms can\'t change three days after agreeing'**
+  String get errTermsLocked;
+
+  /// No description provided for @errSlowNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'The connection is slow or the server is not answering. Try again later.'**
+  String get errSlowNetwork;
+
+  /// No description provided for @errTooManyAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Try again in 15 minutes, or sign in with your email.'**
+  String get errTooManyAttempts;
+
+  /// No description provided for @errProjectDescriptionTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'The description needs at least 10 characters'**
+  String get errProjectDescriptionTooShort;
+
+  /// No description provided for @errMaxServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} services'**
+  String errMaxServices(int count);
+
+  /// No description provided for @errDoneAfter3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Done can be confirmed three days after agreeing'**
+  String get errDoneAfter3Days;
+
+  /// No description provided for @errOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection, or the server can\'t be reached. Try again later.'**
+  String get errOffline;
+
+  /// No description provided for @dealAcceptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept?'**
+  String get dealAcceptTitle;
+
+  /// No description provided for @dealAcceptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Once you accept the terms, the other side confirms them too.'**
+  String get dealAcceptBody;
+
+  /// No description provided for @dealDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Is the work done?'**
+  String get dealDoneTitle;
+
+  /// No description provided for @dealDoneBodyLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Once you confirm, the deal is complete.'**
+  String get dealDoneBodyLast;
+
+  /// No description provided for @dealDoneBodyFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm the work is fully done? The other side confirms too.'**
+  String get dealDoneBodyFirst;
+
+  /// No description provided for @dealDoneConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get dealDoneConfirm;
+
+  /// No description provided for @dealCancelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the deal?'**
+  String get dealCancelTitle;
+
+  /// No description provided for @dealCancelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The deal will be cancelled. This can\'t be undone.'**
+  String get dealCancelBody;
+
+  /// No description provided for @dealEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the terms?'**
+  String get dealEditTitle;
+
+  /// No description provided for @dealEditBody.
+  ///
+  /// In en, this message translates to:
+  /// **'After the change, both sides confirm again.'**
+  String get dealEditBody;
+
+  /// No description provided for @actionYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get actionYes;
+
+  /// No description provided for @actionNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get actionNo;
+
+  /// No description provided for @fallbackUserName.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get fallbackUserName;
+
+  /// No description provided for @fallbackServiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get fallbackServiceName;
+
+  /// No description provided for @fallbackYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get fallbackYou;
+
+  /// No description provided for @channelAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts'**
+  String get channelAlerts;
+
+  /// No description provided for @channelAlertsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Deals and sub-sector alerts'**
+  String get channelAlertsSub;
+
+  /// No description provided for @channelReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get channelReminders;
+
+  /// No description provided for @channelRemindersSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Deal and client reminders'**
+  String get channelRemindersSub;
+
+  /// No description provided for @channelTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get channelTips;
+
+  /// No description provided for @channelTipsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips to grow your business'**
+  String get channelTipsSub;
+
+  /// No description provided for @errBadApiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'The app\'s server key is wrong. Check the anon key in .env.json and restart the app.'**
+  String get errBadApiKey;
+
+  /// No description provided for @errWrongEmailOrPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong email or password'**
+  String get errWrongEmailOrPassword;
+
+  /// No description provided for @errEmailNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email isn\'t confirmed yet. Open the link we sent, or send it again.'**
+  String get errEmailNotConfirmed;
+
+  /// No description provided for @errEmailTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email exists. Try signing in.'**
+  String get errEmailTaken;
+
+  /// No description provided for @errPhoneTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number is already registered'**
+  String get errPhoneTaken;
 }
 
 class _AppLocalizationsDelegate

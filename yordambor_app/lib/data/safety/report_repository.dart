@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class ReportFailure implements Exception {
   ReportFailure(this.message);
@@ -36,7 +37,7 @@ class ReportRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw ReportFailure('Kirish talab qilinadi');
+      throw ReportFailure(CurrentStrings.value.errSignInRequired);
     }
 
     final trimmed = reason?.trim();

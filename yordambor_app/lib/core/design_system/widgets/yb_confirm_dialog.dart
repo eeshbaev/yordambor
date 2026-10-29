@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:yordambor/core/design_system/theme_extensions.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 Future<bool> showYbConfirmDialog(
   BuildContext context, {
   required String title,
   required String message,
-  String confirmLabel = 'Ha',
-  String cancelLabel = 'Yoʻq',
+  String? confirmLabel,
+  String? cancelLabel,
   bool isDestructive = false,
 }) async {
   final result = await showDialog<bool>(
@@ -19,7 +20,7 @@ Future<bool> showYbConfirmDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(cancelLabel),
+          child: Text(cancelLabel ?? CurrentStrings.value.actionNo),
         ),
         if (isDestructive)
           FilledButton(
@@ -27,12 +28,12 @@ Future<bool> showYbConfirmDialog(
               backgroundColor: context.ybColors.error,
             ),
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text(confirmLabel),
+            child: Text(confirmLabel ?? CurrentStrings.value.actionYes),
           )
         else
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text(confirmLabel),
+            child: Text(confirmLabel ?? CurrentStrings.value.actionYes),
           ),
       ],
     ),

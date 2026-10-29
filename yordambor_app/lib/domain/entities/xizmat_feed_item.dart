@@ -1,5 +1,6 @@
 import 'package:yordambor/domain/entities/xizmat_availability_mode.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class XizmatFeedItem {
   const XizmatFeedItem({
@@ -83,7 +84,7 @@ class XizmatFeedItem {
   String get displayOwnerName {
     final name = ownerName?.trim();
     if (name != null && name.isNotEmpty) return name;
-    return 'Foydalanuvchi';
+    return CurrentStrings.value.fallbackUserName;
   }
 
   /// Drops a leading owner prefix like "Dilnoza — …" when the profile is shown nearby.

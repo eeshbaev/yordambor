@@ -3718,4 +3718,248 @@ class AppLocalizationsUz extends AppLocalizations {
 
   @override
   String get alertAnyCity => 'Istalgan shahar';
+
+  @override
+  String get errSignInRequired => 'Kirish talab qilinadi';
+
+  @override
+  String get errServerNotSetUp => 'Supabase sozlanmagan';
+
+  @override
+  String get errNoPermission => 'Ruxsat yoʻq';
+
+  @override
+  String get errDealNotFound => 'Kelishuv topilmadi';
+
+  @override
+  String get errServiceNotFound => 'Xizmat topilmadi';
+
+  @override
+  String get errOwnService => 'Oʻz xizmatingizga soʻrov yuborib boʻlmaydi';
+
+  @override
+  String get errOwnRequest => 'Oʻz eʼloningizga taklif yuborib boʻlmaydi';
+
+  @override
+  String get errDealNotCreated => 'Kelishuv yaratilmadi';
+
+  @override
+  String get errPhotoRequired => 'Kamida bitta portfolio rasmi kerak';
+
+  @override
+  String get errOfferViaOwnService =>
+      'Faqat oʻz xizmatingiz orqali taklif yuboring';
+
+  @override
+  String get errRequestNotFound => 'Eʼlon topilmadi';
+
+  @override
+  String get errServiceNotUploaded => 'Xizmat yaratildi, lekin yuklanmadi';
+
+  @override
+  String get errMessageTooShort => 'Xabar juda qisqa';
+
+  @override
+  String get errMessageEmpty => 'Xabar boʻsh boʻlmasin';
+
+  @override
+  String get errWrongPhoneOrPassword => 'Telefon raqami yoki parol notoʻgʻri';
+
+  @override
+  String get errDescriptionTooShort =>
+      'Tavsif kamida 10 ta belgidan iborat boʻlsin';
+
+  @override
+  String get errPickSubcategory => 'Subsohani tanlang';
+
+  @override
+  String get errPickCategory => 'Sohani tanlang';
+
+  @override
+  String get errTermsOnlyOpenDeal =>
+      'Shartlarni faqat faol kelishuvda oʻzgartirish mumkin';
+
+  @override
+  String get errPickCity => 'Shaharni tanlang';
+
+  @override
+  String get errTitleMin3 => 'Sarlavha kamida 3 ta belgidan iborat boʻlsin';
+
+  @override
+  String get errTitleMin2 => 'Sarlavha kamida 2 ta belgidan iborat boʻlsin';
+
+  @override
+  String get errSignUpFailed => 'Roʻyxatdan oʻtish amalga oshmadi';
+
+  @override
+  String get errResetLinkExpired =>
+      'Parolni tiklash havolasi muddati tugagan. Qayta soʻrang.';
+
+  @override
+  String get errCannotBlockSelf => 'Oʻzingizni bloklab boʻlmaydi';
+
+  @override
+  String errMaxAlerts(int count) {
+    return 'Koʻpi bilan $count ta sozlama';
+  }
+
+  @override
+  String errMaxCertificates(int count) {
+    return 'Koʻpi bilan $count ta sertifikat';
+  }
+
+  @override
+  String get errDealNotUpdated => 'Kelishuv yangilanmadi';
+
+  @override
+  String get errKeepOnePhoto => 'Kamida bitta portfolio rasmi qolishi kerak';
+
+  @override
+  String get errPickAlertType => 'Kamida bitta bildirishnoma turini tanlang';
+
+  @override
+  String get errOwnProfileOnly =>
+      'Faqat oʻz profilingizga qoʻshishingiz mumkin';
+
+  @override
+  String get errOnlyAgreedDone =>
+      'Faqat jarayondagi kelishuvni yakunlash mumkin';
+
+  @override
+  String get errEmailNotFound => 'Email topilmadi';
+
+  @override
+  String get errDealAlreadyOpen =>
+      'Bu xizmat uchun faol kelishuv allaqachon mavjud';
+
+  @override
+  String get errAccountNotFound =>
+      'Bu telefon yoki email bilan hisob topilmadi';
+
+  @override
+  String get errAlreadyReviewed =>
+      'Bu kelishuv uchun baho allaqachon qoldirilgan';
+
+  @override
+  String get errUserBlocked => 'Bu foydalanuvchi bilan aloqa bloklangan';
+
+  @override
+  String get errNotNow => 'Bu amal hozirgi holatda mumkin emas';
+
+  @override
+  String get errRatingRange => 'Baho 1 dan 5 gacha boʻlishi kerak';
+
+  @override
+  String get errTermsLocked =>
+      '3 kundan keyin shartlarni oʻzgartirib boʻlmaydi';
+
+  @override
+  String get errSlowNetwork =>
+      'Internet aloqasi sekin yoki server javob bermayapti. Keyinroq qayta urinib koʻring.';
+
+  @override
+  String get errTooManyAttempts =>
+      'Juda koʻp urinish. 15 daqiqadan keyin qayta urinib koʻring yoki email bilan kiring.';
+
+  @override
+  String get errProjectDescriptionTooShort =>
+      'Loyiha tavsifi kamida 10 ta belgidan iborat boʻlsin';
+
+  @override
+  String errMaxServices(int count) {
+    return 'Koʻpi bilan $count ta xizmat yaratish mumkin';
+  }
+
+  @override
+  String get errDoneAfter3Days =>
+      'Ishni tugatish jarayon boshlanganidan 3 kun oʻtgach mumkin';
+
+  @override
+  String get errOffline =>
+      'Internet aloqasi yoʻq yoki serverga ulanib boʻlmadi. Keyinroq qayta urinib koʻring.';
+
+  @override
+  String get dealAcceptTitle => 'Qabul qilasizmi?';
+
+  @override
+  String get dealAcceptBody =>
+      'Kelishuv shartlarini qabul qilganingizdan keyin ikkinchi tomon ham tasdiqlashi kerak.';
+
+  @override
+  String get dealDoneTitle => 'Ish bajarildimi?';
+
+  @override
+  String get dealDoneBodyLast => 'Siz tasdiqlasangiz, kelishuv yakunlanadi.';
+
+  @override
+  String get dealDoneBodyFirst =>
+      'Ish toʻliq bajarilganini tasdiqlaysizmi? Ikkinchi tomon ham tasdiqlashi kerak.';
+
+  @override
+  String get dealDoneConfirm => 'Bajarildi';
+
+  @override
+  String get dealCancelTitle => 'Bekor qilasizmi?';
+
+  @override
+  String get dealCancelBody =>
+      'Kelishuv bekor qilinadi. Bu amalni qaytarib boʻlmaydi.';
+
+  @override
+  String get dealEditTitle => 'Shartlarni oʻzgartirasizmi?';
+
+  @override
+  String get dealEditBody =>
+      'Oʻzgarishdan keyin ikkala tomon ham qayta tasdiqlashi kerak boʻladi.';
+
+  @override
+  String get actionYes => 'Ha';
+
+  @override
+  String get actionNo => 'Yoʻq';
+
+  @override
+  String get fallbackUserName => 'Foydalanuvchi';
+
+  @override
+  String get fallbackServiceName => 'Xizmat';
+
+  @override
+  String get fallbackYou => 'Siz';
+
+  @override
+  String get channelAlerts => 'Bildirishnomalar';
+
+  @override
+  String get channelAlertsSub => 'Kelishuv va subsoha bildirishnomalari';
+
+  @override
+  String get channelReminders => 'Eslatmalar';
+
+  @override
+  String get channelRemindersSub => 'Kelishuv va mijoz eslatmalari';
+
+  @override
+  String get channelTips => 'Maslahatlar';
+
+  @override
+  String get channelTipsSub => 'Biznesingizni oʻstirish boʻyicha maslahatlar';
+
+  @override
+  String get errBadApiKey =>
+      'Supabase API kaliti notoʻgʻri. .env.json faylida anon key ni tekshiring va ilovani qayta ishga tushiring.';
+
+  @override
+  String get errWrongEmailOrPassword => 'Email yoki parol notoʻgʻri';
+
+  @override
+  String get errEmailNotConfirmed =>
+      'Email tasdiqlanmagan. Pochtangizdagi havolani bosing yoki qayta yuboring.';
+
+  @override
+  String get errEmailTaken =>
+      'Bu email bilan hisob mavjud. Kirishni sinab koʻring.';
+
+  @override
+  String get errPhoneTaken => 'Bu telefon raqami allaqachon roʻyxatdan oʻtgan';
 }

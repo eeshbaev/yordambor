@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
 import 'package:yordambor/data/demo/demo_reviews.dart';
 import 'package:yordambor/domain/entities/review.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class ReviewFailure implements Exception {
   ReviewFailure(this.message);
@@ -101,16 +102,16 @@ class ReviewRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw ReviewFailure('Kirish talab qilinadi');
+      throw ReviewFailure(CurrentStrings.value.errSignInRequired);
     }
 
     if (input.rating < 1 || input.rating > 5) {
-      throw ReviewFailure('Baho 1 dan 5 gacha boʻlishi kerak');
+      throw ReviewFailure(CurrentStrings.value.errRatingRange);
     }
 
     final existing = await fetchForKelishuv(input.kelishuvId);
     if (existing != null) {
-      throw ReviewFailure('Bu kelishuv uchun baho allaqachon qoldirilgan');
+      throw ReviewFailure(CurrentStrings.value.errAlreadyReviewed);
     }
 
     final inserted = await client
@@ -146,7 +147,7 @@ class ReviewRepository {
     if (reviewId.startsWith('demo-review-')) return;
 
     final client = _client;
-    if (client == null) throw ReviewFailure('Supabase sozlanmagan');
+    if (client == null) throw ReviewFailure(CurrentStrings.value.errServerNotSetUp);
 
     final trimmed = reply.trim();
     await client.from('reviews').update({

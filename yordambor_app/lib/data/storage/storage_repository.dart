@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class StorageFailure implements Exception {
   StorageFailure(this.message);
@@ -25,7 +26,7 @@ class StorageRepository {
   }) async {
     final client = _client;
     if (client == null) {
-      throw StorageFailure('Supabase sozlanmagan');
+      throw StorageFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     final path =
@@ -50,7 +51,7 @@ class StorageRepository {
   }) async {
     final client = _client;
     if (client == null) {
-      throw StorageFailure('Supabase sozlanmagan');
+      throw StorageFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     final path = '$ownerId/avatar/${const Uuid().v4()}.$fileExtension';
@@ -74,7 +75,7 @@ class StorageRepository {
   }) async {
     final client = _client;
     if (client == null) {
-      throw StorageFailure('Supabase sozlanmagan');
+      throw StorageFailure(CurrentStrings.value.errServerNotSetUp);
     }
 
     final path = '$ownerId/certificates/${const Uuid().v4()}.$fileExtension';

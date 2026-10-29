@@ -3753,4 +3753,242 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alertAnyCity => 'Any city';
+
+  @override
+  String get errSignInRequired => 'Please sign in first';
+
+  @override
+  String get errServerNotSetUp => 'The server is not set up';
+
+  @override
+  String get errNoPermission => 'You can\'t do that';
+
+  @override
+  String get errDealNotFound => 'Deal not found';
+
+  @override
+  String get errServiceNotFound => 'Service not found';
+
+  @override
+  String get errOwnService => 'You can\'t send a request to your own service';
+
+  @override
+  String get errOwnRequest => 'You can\'t make an offer on your own request';
+
+  @override
+  String get errDealNotCreated => 'The deal was not created';
+
+  @override
+  String get errPhotoRequired => 'Add at least one portfolio photo';
+
+  @override
+  String get errOfferViaOwnService => 'Offer through one of your own services';
+
+  @override
+  String get errRequestNotFound => 'Request not found';
+
+  @override
+  String get errServiceNotUploaded =>
+      'The service was created but could not be loaded';
+
+  @override
+  String get errMessageTooShort => 'The message is too short';
+
+  @override
+  String get errMessageEmpty => 'Write a message first';
+
+  @override
+  String get errWrongPhoneOrPassword => 'Wrong phone number or password';
+
+  @override
+  String get errDescriptionTooShort =>
+      'The description needs at least 10 characters';
+
+  @override
+  String get errPickSubcategory => 'Choose a sub-sector';
+
+  @override
+  String get errPickCategory => 'Choose a sector';
+
+  @override
+  String get errTermsOnlyOpenDeal =>
+      'Terms can only change while the deal is open';
+
+  @override
+  String get errPickCity => 'Choose a city';
+
+  @override
+  String get errTitleMin3 => 'The title needs at least 3 characters';
+
+  @override
+  String get errTitleMin2 => 'The title needs at least 2 characters';
+
+  @override
+  String get errSignUpFailed => 'Sign-up did not go through';
+
+  @override
+  String get errResetLinkExpired =>
+      'This password reset link has expired. Ask for a new one.';
+
+  @override
+  String get errCannotBlockSelf => 'You can\'t block yourself';
+
+  @override
+  String errMaxAlerts(int count) {
+    return 'Up to $count alerts';
+  }
+
+  @override
+  String errMaxCertificates(int count) {
+    return 'Up to $count certificates';
+  }
+
+  @override
+  String get errDealNotUpdated => 'The deal was not updated';
+
+  @override
+  String get errKeepOnePhoto => 'Keep at least one portfolio photo';
+
+  @override
+  String get errPickAlertType => 'Choose at least one kind of alert';
+
+  @override
+  String get errOwnProfileOnly => 'You can only add to your own profile';
+
+  @override
+  String get errOnlyAgreedDone => 'Only an agreed deal can be marked done';
+
+  @override
+  String get errEmailNotFound => 'Email not found';
+
+  @override
+  String get errDealAlreadyOpen =>
+      'You already have an open deal for this service';
+
+  @override
+  String get errAccountNotFound => 'No account with this phone or email';
+
+  @override
+  String get errAlreadyReviewed => 'This deal has already been reviewed';
+
+  @override
+  String get errUserBlocked => 'Contact with this person is blocked';
+
+  @override
+  String get errNotNow => 'That can\'t be done right now';
+
+  @override
+  String get errRatingRange => 'The rating must be from 1 to 5';
+
+  @override
+  String get errTermsLocked => 'Terms can\'t change three days after agreeing';
+
+  @override
+  String get errSlowNetwork =>
+      'The connection is slow or the server is not answering. Try again later.';
+
+  @override
+  String get errTooManyAttempts =>
+      'Too many attempts. Try again in 15 minutes, or sign in with your email.';
+
+  @override
+  String get errProjectDescriptionTooShort =>
+      'The description needs at least 10 characters';
+
+  @override
+  String errMaxServices(int count) {
+    return 'Up to $count services';
+  }
+
+  @override
+  String get errDoneAfter3Days =>
+      'Done can be confirmed three days after agreeing';
+
+  @override
+  String get errOffline =>
+      'No internet connection, or the server can\'t be reached. Try again later.';
+
+  @override
+  String get dealAcceptTitle => 'Accept?';
+
+  @override
+  String get dealAcceptBody =>
+      'Once you accept the terms, the other side confirms them too.';
+
+  @override
+  String get dealDoneTitle => 'Is the work done?';
+
+  @override
+  String get dealDoneBodyLast => 'Once you confirm, the deal is complete.';
+
+  @override
+  String get dealDoneBodyFirst =>
+      'Confirm the work is fully done? The other side confirms too.';
+
+  @override
+  String get dealDoneConfirm => 'Done';
+
+  @override
+  String get dealCancelTitle => 'Cancel the deal?';
+
+  @override
+  String get dealCancelBody =>
+      'The deal will be cancelled. This can\'t be undone.';
+
+  @override
+  String get dealEditTitle => 'Change the terms?';
+
+  @override
+  String get dealEditBody => 'After the change, both sides confirm again.';
+
+  @override
+  String get actionYes => 'Yes';
+
+  @override
+  String get actionNo => 'No';
+
+  @override
+  String get fallbackUserName => 'User';
+
+  @override
+  String get fallbackServiceName => 'Service';
+
+  @override
+  String get fallbackYou => 'You';
+
+  @override
+  String get channelAlerts => 'Alerts';
+
+  @override
+  String get channelAlertsSub => 'Deals and sub-sector alerts';
+
+  @override
+  String get channelReminders => 'Reminders';
+
+  @override
+  String get channelRemindersSub => 'Deal and client reminders';
+
+  @override
+  String get channelTips => 'Tips';
+
+  @override
+  String get channelTipsSub => 'Tips to grow your business';
+
+  @override
+  String get errBadApiKey =>
+      'The app\'s server key is wrong. Check the anon key in .env.json and restart the app.';
+
+  @override
+  String get errWrongEmailOrPassword => 'Wrong email or password';
+
+  @override
+  String get errEmailNotConfirmed =>
+      'Your email isn\'t confirmed yet. Open the link we sent, or send it again.';
+
+  @override
+  String get errEmailTaken =>
+      'An account with this email exists. Try signing in.';
+
+  @override
+  String get errPhoneTaken => 'This phone number is already registered';
 }

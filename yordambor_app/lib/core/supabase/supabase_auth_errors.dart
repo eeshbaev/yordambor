@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yordambor/core/config/env.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 /// Detects Supabase auth failures caused by offline / DNS issues.
 bool isSupabaseAuthNetworkError(Object error) {
@@ -30,5 +31,5 @@ String mapSupabaseNetworkMessage(Object error) {
   if (!isSupabaseAuthNetworkError(error)) {
     return error.toString();
   }
-  return 'Internet aloqasi yoʻq yoki serverga ulanib boʻlmadi. Keyinroq qayta urinib koʻring.';
+  return CurrentStrings.value.errOffline;
 }

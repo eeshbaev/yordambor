@@ -6,6 +6,7 @@ import 'package:yordambor/data/categories/category_repository.dart';
 import 'package:yordambor/domain/entities/category_item.dart';
 import 'package:yordambor/domain/entities/xizmat_pricing_model.dart';
 import 'package:yordambor/domain/entities/yordam_kerak_post.dart';
+import 'package:yordambor/core/l10n/current_strings.dart';
 
 class YordamKerakFailure implements Exception {
   YordamKerakFailure(this.message);
@@ -126,31 +127,31 @@ class YordamKerakRepository {
     final client = _client;
     final userId = client?.auth.currentUser?.id;
     if (client == null || userId == null) {
-      throw YordamKerakFailure('Kirish talab qilinadi');
+      throw YordamKerakFailure(CurrentStrings.value.errSignInRequired);
     }
 
     if (input.title.trim().length < 3) {
-      throw YordamKerakFailure('Sarlavha kamida 3 ta belgidan iborat boʻlsin');
+      throw YordamKerakFailure(CurrentStrings.value.errTitleMin3);
     }
 
     final message = input.message?.trim() ?? '';
     if (message.length < 10) {
       throw YordamKerakFailure(
-        'Loyiha tavsifi kamida 10 ta belgidan iborat boʻlsin',
+        CurrentStrings.value.errProjectDescriptionTooShort,
       );
     }
 
     if (input.categoryId == null || input.categoryId!.isEmpty) {
-      throw YordamKerakFailure('Sohani tanlang');
+      throw YordamKerakFailure(CurrentStrings.value.errPickCategory);
     }
 
     if (input.subcategoryId == null || input.subcategoryId!.isEmpty) {
-      throw YordamKerakFailure('Subsohani tanlang');
+      throw YordamKerakFailure(CurrentStrings.value.errPickSubcategory);
     }
 
     final serviceCity = input.serviceCity;
     if (!ServiceCities.isValidId(serviceCity)) {
-      throw YordamKerakFailure('Shaharni tanlang');
+      throw YordamKerakFailure(CurrentStrings.value.errPickCity);
     }
 
     final price = input.pricingModel.hasAmount ? input.price : null;
@@ -268,7 +269,7 @@ class YordamKerakRepository {
         subcategoryId,
         language,
       ),
-      authorName: profile?['full_name'] as String? ?? 'Foydalanuvchi',
+      authorName: profile?['full_name'] as String? ?? CurrentStrings.value.fallbackUserName,
       contactPhone: map['contact_phone'] as String?,
       showContactPhone: map['show_contact_phone'] as bool? ?? false,
       showProfile: map['show_profile'] as bool? ?? true,

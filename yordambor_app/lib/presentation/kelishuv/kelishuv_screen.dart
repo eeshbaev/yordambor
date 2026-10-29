@@ -141,11 +141,12 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
   }
 
   Future<void> _accept(String userId) async {
+    final strings = ref.read(appStringsProvider);
     final ok = await showYbConfirmDialog(
       context,
-      title: 'Qabul qilasizmi?',
-      message: 'Kelishuv shartlarini qabul qilganingizdan keyin ikkinchi tomon ham tasdiqlashi kerak.',
-      confirmLabel: 'Qabul qilaman',
+      title: strings.dealAcceptTitle,
+      message: strings.dealAcceptBody,
+      confirmLabel: strings.kelishuvAccept,
     );
     if (!ok || !mounted) return;
 
@@ -183,13 +184,14 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
         ((userId == detail.partyAId && detail.completeB) ||
             (userId == detail.partyBId && detail.completeA));
 
+    final strings = ref.read(appStringsProvider);
     final ok = await showYbConfirmDialog(
       context,
-      title: 'Ish bajarildimi?',
+      title: strings.dealDoneTitle,
       message: otherMarked
-          ? 'Siz tasdiqlasangiz, kelishuv yakunlanadi.'
-          : 'Ish toʻliq bajarilganini tasdiqlaysizmi? Ikkinchi tomon ham tasdiqlashi kerak.',
-      confirmLabel: 'Bajarildi',
+          ? strings.dealDoneBodyLast
+          : strings.dealDoneBodyFirst,
+      confirmLabel: strings.dealDoneConfirm,
     );
     if (!ok || !mounted) return;
 
@@ -232,10 +234,10 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
     final strings = ref.read(appStringsProvider);
     final ok = await showYbConfirmDialog(
       context,
-      title: withdraw ? strings.dealWithdrawTitle : 'Bekor qilasizmi?',
+      title: withdraw ? strings.dealWithdrawTitle : strings.dealCancelTitle,
       message: withdraw
           ? strings.dealWithdrawBody
-          : 'Kelishuv bekor qilinadi. Bu amalni qaytarib boʻlmaydi.',
+          : strings.dealCancelBody,
       confirmLabel:
           withdraw ? strings.dealWithdrawOffer : strings.kelishuvCancel,
       cancelLabel: strings.actionCancel,
@@ -467,7 +469,7 @@ class _KelishuvScreenState extends ConsumerState<KelishuvScreen> {
             });
 
             final otherName = userId == null
-                ? 'Foydalanuvchi'
+                ? strings.fallbackUserName
                 : kelishuv.otherPartyNameFor(userId);
             final slotLabel = strings.kelishuvSlotLabel(
               kelishuv.startDate,
