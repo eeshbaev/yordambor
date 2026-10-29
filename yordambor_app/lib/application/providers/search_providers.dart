@@ -6,6 +6,7 @@ import 'package:yordambor/application/providers/xizmat_providers.dart';
 import 'package:yordambor/core/constants/feed_constants.dart';
 import 'package:yordambor/data/demo/demo_xizmat_feed.dart';
 import 'package:yordambor/domain/entities/xizmat_feed_item.dart';
+import 'package:yordambor/core/utils/money_format.dart';
 
 /// What a search found, and whether the server could be asked at all.
 class XizmatSearchResult {
@@ -25,7 +26,8 @@ final xizmatSearchProvider = FutureProvider.autoDispose
     .family<XizmatSearchResult, String>((ref, query) async {
   final text = query.trim();
   if (text.length < 2) return const XizmatSearchResult(items: []);
-  final needle = text.toLowerCase();
+  // "o'zbek", "o`zbek" and "oʻzbek" all match.
+  final needle = normalizeUz(text);
   final language = ref.watch(onboardingPrefsProvider).language;
 
   // Trades whose name matches, in any of the four languages.
@@ -35,7 +37,7 @@ final xizmatSearchProvider = FutureProvider.autoDispose
       for (final sub in category.subcategories)
         if (sub.id != 'other' &&
             sub.names.values
-                .any((name) => name.toLowerCase().contains(needle)))
+                .any((name) => normalizeUz(name).contains(needle)))
           sub.id,
   };
 

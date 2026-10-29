@@ -227,21 +227,23 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 44,
-      height: 44,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: background, shape: BoxShape.circle),
-      // Like CircleAvatar: the initial stays inside its circle at any text
-      // size. The turn line under the bond says the same in words.
-      child: MediaQuery.withNoTextScaling(
-        child: Text(
-          label,
-          maxLines: 1,
-          style: AppTypography.label.copyWith(
-            color: foreground,
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
+    return SizedBox.square(
+      dimension: 44,
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: background, shape: BoxShape.circle),
+        // Like CircleAvatar: the initial stays inside its circle at any
+        // text size. The turn line under the bond says the same in words.
+        child: Center(
+          child: MediaQuery.withNoTextScaling(
+            child: Text(
+              label,
+              maxLines: 1,
+              style: AppTypography.label.copyWith(
+                color: foreground,
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
         ),
       ),

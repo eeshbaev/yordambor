@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+
+jobs:
+  app:
+    name: Analyze and test the app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: yordambor_app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # The generated translations must match the .arb files.
+      - name: Translations up to date
+        run: |
+          flutter gen-l10n
+          git diff --exit-code -- lib/l10n
+
+      - run: flutter analyze
+
+      - run: flutter test
+
+  database:
+    name: Migrations and database rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Every migration on a throwaway PostgreSQL, the check scripts, and
+      # the behaviour tests (supabase/tests).
+      - name: Run supabase/tests
+        run: |
+          export PATH="$(ls -d /usr/lib/postgresql/*/bin | sort -V | tail -1):$PATH"
+          output="$(yordambor_app/supabase/tests/run_local.sh)"
+          echo "$output"
+          if echo "$output" | grep -q "PROBLEM"; then
+            echo "A behaviour test failed."
+            exit 1
+          fi

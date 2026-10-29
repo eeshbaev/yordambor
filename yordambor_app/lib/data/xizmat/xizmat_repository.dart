@@ -228,7 +228,7 @@ class XizmatRepository {
     final client = _client;
     final text = query.trim();
     if (client == null || text.length < 2) return [];
-    final pattern = '%${_likeEscape(text)}%';
+    final pattern = searchPattern(text);
 
     final ownerRows = await client
         .from('profiles')
@@ -278,6 +278,12 @@ class XizmatRepository {
     }
     return items;
   }
+
+  /// An ILIKE pattern for [text] anywhere in a name. Any apostrophe
+  /// matches any other ("o'zbek" finds "oʻzbek"): it becomes a
+  /// one-character wildcard.
+  static String searchPattern(String text) =>
+      '%${_likeEscape(text).replaceAll(RegExp("[ʻʼ'`‘’ʹ]"), '_')}%';
 
   /// [text] as a literal inside an ILIKE pattern.
   static String _likeEscape(String text) => text

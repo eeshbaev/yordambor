@@ -150,22 +150,25 @@ class YbReviewerAvatar extends StatelessWidget {
     final colors = context.ybColors;
 
     // Reviews come from the people who asked for help: the apricot voice.
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: colors.apricotSoft,
-        shape: BoxShape.circle,
-      ),
-      alignment: Alignment.center,
-      // Like CircleAvatar: initials stay inside the circle at any text size.
-      child: MediaQuery.withNoTextScaling(
-        child: Text(
-          _initials(name),
-          style: AppTypography.caption.copyWith(
-            color: colors.apricotInk,
-            fontWeight: FontWeight.w700,
-            fontSize: size * 0.34,
+    return SizedBox.square(
+      dimension: size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.apricotSoft,
+          shape: BoxShape.circle,
+        ),
+        // Like CircleAvatar: initials stay inside the circle at any text
+        // size.
+        child: Center(
+          child: MediaQuery.withNoTextScaling(
+            child: Text(
+              _initials(name),
+              style: AppTypography.caption.copyWith(
+                color: colors.apricotInk,
+                fontWeight: FontWeight.w700,
+                fontSize: size * 0.34,
+              ),
+            ),
           ),
         ),
       ),

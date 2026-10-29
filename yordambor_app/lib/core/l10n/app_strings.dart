@@ -733,9 +733,6 @@ class AppStrings {
         AuthContextType.deal => _l10n.authContextDeal,
       };
 
-  @Deprecated('Use settingsDeleteAccountConfirm')
-  String get settingsDeleteAccountSoon => _l10n.settingsDeleteAccountConfirm;
-
   String get settingsHelp => _l10n.settingsHelp;
   String get settingsSafety => _l10n.settingsSafety;
   String get supportReportTitle => _l10n.supportReportTitle;

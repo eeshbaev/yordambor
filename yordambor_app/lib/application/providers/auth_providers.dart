@@ -207,14 +207,3 @@ class SessionNotifier extends StateNotifier<SessionState> {
 
 AuthRequirement requirementForAction(AuthRequirement requirement) =>
     requirement;
-
-bool meetsRequirement(SessionState session, AuthRequirement requirement) {
-  switch (requirement) {
-    case AuthRequirement.none:
-      return true;
-    case AuthRequirement.account:
-      return session.isAuthenticated;
-    case AuthRequirement.verifiedEmail:
-      return session.isAuthenticated && session.isEmailVerified;
-  }
-}

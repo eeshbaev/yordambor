@@ -9,10 +9,9 @@ import 'package:yordambor/domain/entities/yordam_kerak_post.dart';
 
 class PublicProfileRepository {
   PublicProfileRepository({
-    required XizmatRepository xizmatRepository,
-    required YordamKerakRepository yordamKerakRepository,
-  })  : _xizmatRepository = xizmatRepository,
-        _yordamKerakRepository = yordamKerakRepository;
+    required this._xizmatRepository,
+    required this._yordamKerakRepository,
+  });
 
   final XizmatRepository _xizmatRepository;
   final YordamKerakRepository _yordamKerakRepository;

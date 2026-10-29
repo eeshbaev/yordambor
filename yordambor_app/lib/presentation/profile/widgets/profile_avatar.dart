@@ -105,32 +105,34 @@ class _ProfileAvatarState extends ConsumerState<ProfileAvatar> {
     final avatarUrl = widget.avatarUrl;
     final initials = _initials(widget.fullName);
 
-    final avatar = Container(
-      width: diameter,
-      height: diameter,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.primaryContainer,
-        image: avatarUrl != null && avatarUrl.isNotEmpty
-            ? DecorationImage(
-                image: CachedNetworkImageProvider(avatarUrl),
-                fit: BoxFit.cover,
+    final avatar = SizedBox.square(
+      dimension: diameter,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).colorScheme.primaryContainer,
+          image: avatarUrl != null && avatarUrl.isNotEmpty
+              ? DecorationImage(
+                  image: CachedNetworkImageProvider(avatarUrl),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: avatarUrl == null || avatarUrl.isEmpty
+            // Like CircleAvatar: initials stay inside the circle.
+            ? Center(
+                child: MediaQuery.withNoTextScaling(
+                  child: Text(
+                    initials,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
               )
             : null,
       ),
-      alignment: Alignment.center,
-      child: avatarUrl == null || avatarUrl.isEmpty
-          // Like CircleAvatar: initials stay inside the circle.
-          ? MediaQuery.withNoTextScaling(
-              child: Text(
-                initials,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            )
-          : null,
     );
 
     if (!widget.editable) return avatar;

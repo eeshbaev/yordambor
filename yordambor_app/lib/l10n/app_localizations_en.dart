@@ -663,18 +663,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareCopied => 'Link copied';
 
   @override
-  String get languageUz => 'Oʻzbek';
-
-  @override
-  String get languageRu => 'Русский';
-
-  @override
-  String get languageEn => 'English';
-
-  @override
-  String get languageZh => '中文';
-
-  @override
   String get actionSave => 'Save';
 
   @override

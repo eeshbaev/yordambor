@@ -47,7 +47,7 @@ Future<void> showReminderAddSheet({
             children: [
               DropdownButtonFormField<String>(
                 icon: const Icon(YbIcons.expandMore),
-                value: selectedClientId,
+                initialValue: selectedClientId,
                 decoration: InputDecoration(
                   labelText: strings.clientBookSelectClient,
                 ),

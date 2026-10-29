@@ -669,18 +669,6 @@ class AppLocalizationsUz extends AppLocalizations {
   String get shareCopied => 'Havola nusxalandi';
 
   @override
-  String get languageUz => 'Oʻzbek';
-
-  @override
-  String get languageRu => 'Русский';
-
-  @override
-  String get languageEn => 'English';
-
-  @override
-  String get languageZh => '中文';
-
-  @override
   String get actionSave => 'Saqlash';
 
   @override

@@ -132,7 +132,7 @@ Future<void> showMarginLineSheet({
               if (units.isNotEmpty) ...[
                 DropdownButtonFormField<String?>(
                   icon: const Icon(YbIcons.expandMore),
-                  value: selectedUnitId,
+                  initialValue: selectedUnitId,
                   decoration: InputDecoration(
                     labelText: strings.marginSelectUnit,
                   ),

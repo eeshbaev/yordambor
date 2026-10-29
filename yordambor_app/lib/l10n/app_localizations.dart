@@ -1320,30 +1320,6 @@ abstract class AppLocalizations {
   /// **'Link copied'**
   String get shareCopied;
 
-  /// No description provided for @languageUz.
-  ///
-  /// In en, this message translates to:
-  /// **'Oʻzbek'**
-  String get languageUz;
-
-  /// No description provided for @languageRu.
-  ///
-  /// In en, this message translates to:
-  /// **'Русский'**
-  String get languageRu;
-
-  /// No description provided for @languageEn.
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get languageEn;
-
-  /// No description provided for @languageZh.
-  ///
-  /// In en, this message translates to:
-  /// **'中文'**
-  String get languageZh;
-
   /// No description provided for @actionSave.
   ///
   /// In en, this message translates to:
