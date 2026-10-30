@@ -121,8 +121,14 @@ class _AuthBottomSheetState extends ConsumerState<AuthBottomSheet>
         initialChildSize: 0.92,
         minChildSize: 0.5,
         maxChildSize: 0.95,
-        builder: (context, scrollController) {
-          return Column(
+        builder: (context, scrollController) => LayoutBuilder(
+          builder: (context, constraints) {
+          // Short windows (a phone in landscape, a split screen): the
+          // header alone would fill the sheet, so the whole sheet scrolls
+          // and the forms get a fixed height of their own.
+          final short = constraints.maxHeight < 640;
+          final content = Column(
+            mainAxisSize: short ? MainAxisSize.min : MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // ── Header: title + social buttons + tab bar ──────────────
@@ -175,7 +181,8 @@ class _AuthBottomSheetState extends ConsumerState<AuthBottomSheet>
                   ),
                 ),
                 // ── Tab forms — fill remaining space and scroll internally ─
-                Expanded(
+                _FormsArea(
+                  short: short,
                   child: TabBarView(
                     controller: _tabController,
                     children: [
@@ -216,8 +223,28 @@ class _AuthBottomSheetState extends ConsumerState<AuthBottomSheet>
               ),
             ],
           );
-        },
+          return short
+              ? SingleChildScrollView(
+                  controller: scrollController,
+                  child: content,
+                )
+              : content;
+          },
+        ),
       ),
     );
   }
+}
+
+/// The login and register forms: the rest of the sheet on a tall window, a
+/// fixed 480 dp inside the scrolling sheet on a short one.
+class _FormsArea extends StatelessWidget {
+  const _FormsArea({required this.short, required this.child});
+
+  final bool short;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) =>
+      short ? SizedBox(height: 480, child: child) : Expanded(child: child);
 }

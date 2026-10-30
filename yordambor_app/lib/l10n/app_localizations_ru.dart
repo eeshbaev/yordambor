@@ -2678,6 +2678,46 @@ class AppLocalizationsRu extends AppLocalizations {
   String get workingHoursSaved => 'Рабочие часы сохранены';
 
   @override
+  String get calendarDayWorking => 'Рабочий день';
+
+  @override
+  String get calendarDayOff => 'Выходной';
+
+  @override
+  String get calendarSlotMarkBusy => 'Отметить как занято';
+
+  @override
+  String get calendarSlotMarkFree => 'Отметить как свободно';
+
+  @override
+  String get calendarPreviousDay => 'Предыдущий день';
+
+  @override
+  String get calendarNextDay => 'Следующий день';
+
+  @override
+  String get remindersShowBusy => 'Показать это время как занятое';
+
+  @override
+  String get remindersShowBusyHint =>
+      'Клиенты увидят это время занятым в ваших услугах.';
+
+  @override
+  String get workingDaysTitle => 'Рабочие дни';
+
+  @override
+  String get workingDaysNone => 'Выберите хотя бы один день.';
+
+  @override
+  String get xizmatTodayDayOff => 'Сегодня выходной';
+
+  @override
+  String get remindersCancelledEmpty => 'Отменённых напоминаний нет.';
+
+  @override
+  String get notificationsAppointmentsTitle => 'Ближайшие встречи';
+
+  @override
   String get xizmatOwnHoursTitle => 'Свои часы для этой услуги';
 
   @override
@@ -4028,43 +4068,4 @@ class AppLocalizationsRu extends AppLocalizations {
   String profileSetupSignedInWith(String provider) {
     return 'Вы вошли через $provider';
   }
-
-  @override
-  String get workingDaysTitle => 'Рабочие дни';
-
-  @override
-  String get workingDaysNone => 'Выберите хотя бы один день.';
-
-  @override
-  String get xizmatTodayDayOff => 'Сегодня выходной';
-
-  @override
-  String get remindersCancelledEmpty => 'Отменённых напоминаний нет.';
-
-  @override
-  String get notificationsAppointmentsTitle => 'Ближайшие встречи';
-
-  @override
-  String get calendarDayWorking => 'Рабочий день';
-
-  @override
-  String get calendarDayOff => 'Выходной';
-
-  @override
-  String get calendarSlotMarkBusy => 'Отметить как занято';
-
-  @override
-  String get calendarSlotMarkFree => 'Отметить как свободно';
-
-  @override
-  String get calendarPreviousDay => 'Предыдущий день';
-
-  @override
-  String get calendarNextDay => 'Следующий день';
-
-  @override
-  String get remindersShowBusy => 'Показать это время как занятое';
-
-  @override
-  String get remindersShowBusyHint => 'Клиенты увидят это время занятым в ваших услугах.';
 }

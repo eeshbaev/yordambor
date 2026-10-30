@@ -2665,6 +2665,46 @@ class AppLocalizationsUz extends AppLocalizations {
   String get workingHoursSaved => 'Ish vaqti saqlandi';
 
   @override
+  String get calendarDayWorking => 'Ish kuni';
+
+  @override
+  String get calendarDayOff => 'Dam olish kuni';
+
+  @override
+  String get calendarSlotMarkBusy => 'Band deb belgilash';
+
+  @override
+  String get calendarSlotMarkFree => 'Boʻsh deb belgilash';
+
+  @override
+  String get calendarPreviousDay => 'Oldingi kun';
+
+  @override
+  String get calendarNextDay => 'Keyingi kun';
+
+  @override
+  String get remindersShowBusy => 'Bu vaqtni band deb koʻrsatish';
+
+  @override
+  String get remindersShowBusyHint =>
+      'Mijozlar xizmatlaringizda bu vaqtni band deb koʻradi.';
+
+  @override
+  String get workingDaysTitle => 'Ish kunlari';
+
+  @override
+  String get workingDaysNone => 'Kamida bitta kunni tanlang.';
+
+  @override
+  String get xizmatTodayDayOff => 'Bugun dam olish kuni';
+
+  @override
+  String get remindersCancelledEmpty => 'Bekor qilingan eslatmalar yoʻq.';
+
+  @override
+  String get notificationsAppointmentsTitle => 'Yaqin uchrashuvlar';
+
+  @override
   String get xizmatOwnHoursTitle => 'Bu xizmat uchun alohida vaqt';
 
   @override
@@ -3994,43 +4034,4 @@ class AppLocalizationsUz extends AppLocalizations {
   String profileSetupSignedInWith(String provider) {
     return '$provider orqali kirdiniz';
   }
-
-  @override
-  String get workingDaysTitle => 'Ish kunlari';
-
-  @override
-  String get workingDaysNone => 'Kamida bitta kunni tanlang.';
-
-  @override
-  String get xizmatTodayDayOff => 'Bugun dam olish kuni';
-
-  @override
-  String get remindersCancelledEmpty => 'Bekor qilingan eslatmalar yoʻq.';
-
-  @override
-  String get notificationsAppointmentsTitle => 'Yaqin uchrashuvlar';
-
-  @override
-  String get calendarDayWorking => 'Ish kuni';
-
-  @override
-  String get calendarDayOff => 'Dam olish kuni';
-
-  @override
-  String get calendarSlotMarkBusy => 'Band deb belgilash';
-
-  @override
-  String get calendarSlotMarkFree => 'Boʻsh deb belgilash';
-
-  @override
-  String get calendarPreviousDay => 'Oldingi kun';
-
-  @override
-  String get calendarNextDay => 'Keyingi kun';
-
-  @override
-  String get remindersShowBusy => 'Bu vaqtni band deb koʻrsatish';
-
-  @override
-  String get remindersShowBusyHint => 'Mijozlar xizmatlaringizda bu vaqtni band deb koʻradi.';
 }

@@ -113,6 +113,9 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
           ? AutovalidateMode.onUserInteraction
           : AutovalidateMode.disabled,
       child: SingleChildScrollView(
+        // Room above the first field for its floating label, and the same
+        // side margins as the login form.
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
